@@ -52,7 +52,7 @@ public class RankManager extends FreedomService
         }
 
         // Developers always show up
-        if (FUtil.isDeveloper(player.getName()))
+        if (FUtil.isDeveloper(player))
         {
             return Title.DEVELOPER;
         }
@@ -96,7 +96,7 @@ public class RankManager extends FreedomService
         }
 
         // Developers always show up
-        if (FUtil.isDeveloper(staffMember.getName()))
+        if (FUtil.isDeveloper((Player)staffMember))
         {
             return Title.DEVELOPER;
         }
@@ -180,7 +180,7 @@ public class RankManager extends FreedomService
         FPlayer fPlayer = plugin.pl.getPlayer(player);
         PlayerData data = plugin.pl.getData(player);
         Displayable display = getDisplay(player);
-        if (plugin.sl.isStaff(player) || data.isMasterBuilder() || data.isDonator() || FUtil.isDeveloper(player.getName()))
+        if (plugin.sl.isStaff(player) || data.isMasterBuilder() || data.isDonator() || FUtil.isDeveloper(player))
         {
             String displayName = display.getColor() + player.getName();
             player.setPlayerListName(displayName);
@@ -249,7 +249,7 @@ public class RankManager extends FreedomService
         }
 
         // Broadcast login message
-        if (isStaff || FUtil.isDeveloper(player.getName()) || plugin.pl.getData(player).isMasterBuilder() || plugin.pl.getData(player).isDonator())
+        if (isStaff || FUtil.isDeveloper(player) || plugin.pl.getData(player).isMasterBuilder() || plugin.pl.getData(player).isDonator())
         {
             if (!plugin.sl.isVanished(player.getName()))
             {
