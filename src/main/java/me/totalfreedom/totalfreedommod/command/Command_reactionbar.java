@@ -14,10 +14,11 @@ public class Command_reactionbar extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        if (!FUtil.isDeveloper(sender.getName()))
+        if (!FUtil.isDeveloper(playerSender))
         {
             return noPerms();
         }
+
         plugin.sh.forceStartReaction();
         msg("Started a reaction.");
         return true;

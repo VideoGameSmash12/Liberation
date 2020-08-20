@@ -54,8 +54,21 @@ public class FUtil
 
     private static final Random RANDOM = new Random();
     public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
-    // See https://github.com/TotalFreedom/License - None of the listed names may be removed.
+    /* See https://github.com/TotalFreedom/License - None of the listed names may be removed.
+    Leaving this list here for anyone running TFM on a cracked server:
     public static final List<String> DEVELOPERS = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "supernt", "Telesphoreo", "CoolJWB");
+    */
+    public static final List<String> DEVELOPERS = Arrays.asList(
+            "1156a81a-23fb-435e-9aff-fe9c2ea7e82d", // Madgeek1450
+            "f9a1982e-252e-4ed3-92ed-52b0506a39c9", // Prozza
+            "90eb5d86-ed60-4165-a36e-bb77aa3c6664", // WickedGamingUK
+            "604cbb51-842d-4b43-8b0a-d1d7c6cd2869", // Wild1145
+            "e67d77c4-fff9-4cea-94cc-9f1f1ab7806b", // aggelosQQ
+            "0061326b-8b3d-44c8-830a-5f2d59f5dc1b", // scripthead
+            "53b1512e-3481-4702-9f4f-63cb9c8be6a1", // supernt
+            "78408086-1991-4c33-a571-d8fa325465b2", // Telesphoreo
+            "67ce0e28-3d6b-469c-ab71-304eec81b614"  // CoolJWB
+    );
     public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     public static final Map<String, ChatColor> CHAT_COLOR_NAMES = new HashMap<>();
     public static final List<ChatColor> CHAT_COLOR_POOL = Arrays.asList(
@@ -121,10 +134,10 @@ public class FUtil
     {
         return ConfigEntry.SERVER_OWNERS.getStringList().contains(name) || ConfigEntry.SERVER_EXECUTIVES.getStringList().contains(name) || ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getStringList().contains(name);
     }
-    
-    public static boolean isDeveloper(String name)
+
+    public static boolean isDeveloper(Player player)
     {
-        return FUtil.DEVELOPERS.contains(name);
+        return DEVELOPERS.contains(player.getUniqueId().toString());
     }
 
     public static boolean inDeveloperMode()
