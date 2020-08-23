@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandPermissions(level = Rank.OP, source = SourceType.ONLY_IN_GAME)
-@CommandParameters(description = "Throw a mob in the direction you are facing when you left click with a stick.",
+@CommandParameters(description = "Throw a mob in the direction you are facing when you right click with a bone.",
         usage = "/<command> <mobtype [speed] | off | list>")
 public class Command_tossmob extends FreedomCommand
 {
@@ -100,7 +100,7 @@ public class Command_tossmob extends FreedomCommand
 
         playerData.enableMobThrower(type, speed);
         msg("MobThrower is enabled. Mob: " + type + " - Speed: " + speed + ".", ChatColor.GREEN);
-        msg("Left click while holding a " + Material.BONE.toString() + " to throw mobs!", ChatColor.GREEN);
+        msg("Right click while holding a " + Material.BONE.toString() + " to throw mobs!", ChatColor.GREEN);
         msg("Type '/tossmob off' to disable. -By Madgeek1450", ChatColor.GREEN);
 
         playerSender.getEquipment().setItemInMainHand(new ItemStack(Material.BONE, 1));
