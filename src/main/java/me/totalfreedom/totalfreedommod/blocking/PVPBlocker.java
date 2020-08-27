@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,6 +42,14 @@ public class PVPBlocker extends FreedomService
                 if (arrow.getShooter() instanceof Player)
                 {
                     player = (Player)arrow.getShooter();
+                }
+            }
+            else if (event.getDamager() instanceof SpectralArrow)
+            {
+                SpectralArrow spectralArrow = (SpectralArrow)event.getDamager();
+                if (spectralArrow.getShooter() instanceof Player)
+                {
+                    player = (Player)spectralArrow.getShooter();
                 }
             }
             else if (event.getDamager() instanceof Trident)
@@ -84,7 +93,5 @@ public class PVPBlocker extends FreedomService
                 event.setCancelled(true);
             }
         }
-
     }
-
 }
