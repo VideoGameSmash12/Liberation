@@ -8,7 +8,6 @@ import org.bukkit.entity.EntityType;
 
 public class Groups
 {
-
     public static final List<Material> WOOL_COLORS = Arrays.asList(
             Material.WHITE_WOOL,
             Material.RED_WOOL,
@@ -81,6 +80,7 @@ public class Groups
             EntityType.PHANTOM,
             EntityType.PIG,
             EntityType.PIGLIN,
+            EntityType.PIGLIN_BRUTE,
             EntityType.PILLAGER,
             EntityType.POLAR_BEAR,
             EntityType.PUFFERFISH,
@@ -147,6 +147,7 @@ public class Groups
             Material.PHANTOM_SPAWN_EGG,
             Material.PIG_SPAWN_EGG,
             Material.PIGLIN_SPAWN_EGG,
+            Material.PIGLIN_BRUTE_SPAWN_EGG,
             Material.PILLAGER_SPAWN_EGG,
             Material.POLAR_BEAR_SPAWN_EGG,
             Material.PUFFERFISH_SPAWN_EGG,
