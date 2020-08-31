@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod;
 
+import io.papermc.lib.PaperLib;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -197,7 +198,7 @@ public class LoginProcess extends FreedomService
             int z = FUtil.randomInteger(-10000, 10000);
             int y = player.getWorld().getHighestBlockYAt(x, z);
             Location location = new Location(player.getLocation().getWorld(), x, y, z);
-            player.teleport(location);
+            PaperLib.teleportAsync(player, location);
             player.sendMessage(ChatColor.AQUA + "You have been teleported to a random location automatically.");
             return;
         }

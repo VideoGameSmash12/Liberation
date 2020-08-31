@@ -3,14 +3,15 @@ package me.totalfreedom.totalfreedommod;
 import ca.momothereal.mojangson.ex.MojangsonParseException;
 import ca.momothereal.mojangson.value.MojangsonCompound;
 import ca.momothereal.mojangson.value.MojangsonValue;
+import io.papermc.lib.PaperLib;
 import java.util.List;
 import java.util.Objects;
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
-import net.minecraft.server.v1_16_R1.NBTTagList;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
+import net.minecraft.server.v1_16_R2.NBTTagList;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -61,7 +62,7 @@ public class MovementValidator extends FreedomService
         if (Math.abs(event.getTo().getX()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getZ()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getY()) >= MAX_XYZ_COORD)
         {
             event.setCancelled(true);
-            player.teleport(player.getWorld().getSpawnLocation());
+            PaperLib.teleportAsync(player, player.getWorld().getSpawnLocation());
         }
 
         if (exploitItem(event.getPlayer().getInventory().getHelmet()))
@@ -110,7 +111,7 @@ public class MovementValidator extends FreedomService
         // Validate position
         if (Math.abs(player.getLocation().getX()) >= MAX_XYZ_COORD || Math.abs(player.getLocation().getZ()) >= MAX_XYZ_COORD || Math.abs(player.getLocation().getY()) >= MAX_XYZ_COORD)
         {
-            player.teleport(player.getWorld().getSpawnLocation()); // Illegal position, teleport to spawn
+            PaperLib.teleportAsync(player, player.getWorld().getSpawnLocation()); // Illegal position, teleport to spawn
         }
     }
 
@@ -131,7 +132,7 @@ public class MovementValidator extends FreedomService
 
     private Boolean exploitItem(ItemStack item)
     {
-        net.minecraft.server.v1_16_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagList modifiers = getAttributeList(nmsStack);
         MojangsonCompound compound = new MojangsonCompound();
         boolean foundNegative = false;
@@ -168,7 +169,7 @@ public class MovementValidator extends FreedomService
     }
 
 
-    private NBTTagList getAttributeList(net.minecraft.server.v1_16_R1.ItemStack stack)
+    private NBTTagList getAttributeList(net.minecraft.server.v1_16_R2.ItemStack stack)
     {
         if (stack.getTag() == null)
         {

@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import io.papermc.lib.PaperLib;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
@@ -19,7 +20,7 @@ public class Command_tprandom extends FreedomCommand
         int z = FUtil.randomInteger(-50000, 50000);
         int y = playerSender.getWorld().getHighestBlockYAt(x, z);
         Location location = new Location(playerSender.getLocation().getWorld(), x, y, z);
-        playerSender.teleport(location);
+        PaperLib.teleportAsync(playerSender, location);
         msg("Poof!", ChatColor.GREEN);
         return true;
     }
