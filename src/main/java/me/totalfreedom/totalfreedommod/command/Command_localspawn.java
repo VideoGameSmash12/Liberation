@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import io.papermc.lib.PaperLib;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ public class Command_localspawn extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        playerSender.teleport(playerSender.getWorld().getSpawnLocation());
+        PaperLib.teleportAsync(playerSender, playerSender.getWorld().getSpawnLocation());
         msg("Teleported to spawnpoint for world \"" + playerSender.getWorld().getName() + "\".");
         return true;
     }

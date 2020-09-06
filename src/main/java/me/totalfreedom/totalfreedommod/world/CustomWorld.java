@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.world;
 
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -49,7 +50,7 @@ public abstract class CustomWorld extends FreedomService
     {
         try
         {
-            player.teleport(getWorld().getSpawnLocation());
+            PaperLib.teleportAsync(player, getWorld().getSpawnLocation());
         }
         catch (Exception ex)
         {
