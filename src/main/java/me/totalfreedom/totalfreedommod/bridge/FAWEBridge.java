@@ -12,11 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import me.totalfreedom.totalfreedommod.FreedomService;
+import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 
 public class FAWEBridge extends FreedomService
@@ -29,7 +32,7 @@ public class FAWEBridge extends FreedomService
     @Override
     public void onStart()
     {
-        api = plugin.cpb.getCoreProtectAPI();
+        api = ((CoreProtect)Bukkit.getPluginManager().getPlugin("CoreProtect")).getAPI();
 
         /*
          * Iterates over blocks placed by GenerationCommands (in the EditSession) and adds them to the CoreProtect logs.
@@ -127,7 +130,12 @@ public class FAWEBridge extends FreedomService
         if (!pattern.apply(blockVector3).getBlockType().getMaterial().isAir())
         {
             blocksPlaced.putIfAbsent(playerAndSessionEntry, new AbstractMap.SimpleEntry<>(pattern, new ArrayList<>()));
-            blocksPlaced.get(playerAndSessionEntry).getValue().add(new Gson().fromJson(new Gson().toJson(blockVector3), blockVector3.getClass()));
+            BlockVector3 vectorClone = new Gson().fromJson(new Gson().toJson(blockVector3), blockVector3.getClass());
+
+            if (!blocksPlaced.get(playerAndSessionEntry).getValue().contains(vectorClone))
+            {
+                blocksPlaced.get(playerAndSessionEntry).getValue().add(vectorClone);
+            }
         }
     }
 
@@ -138,23 +146,23 @@ public class FAWEBridge extends FreedomService
         {
             world = server.getWorld(editSession.getWorld().getName());
         }
-        List<Block> blocks = new ArrayList<>();
+        List<BlockState> blocks = new ArrayList<>();
 
         for (BlockVector3 blockVector3 : region)
         {
-            blocks.add(world.getBlockAt(blockVector3.getBlockX(), blockVector3.getBlockY(), blockVector3.getBlockZ()));
+            blocks.add(world.getBlockAt(blockVector3.getBlockX(), blockVector3.getBlockY(), blockVector3.getBlockZ()).getState());
         }
 
         logBlockEdit(playerName, editSession, pattern, blocks);
     }
 
-    public void logBlockEdit(String playerName, EditSession editSession, Pattern pattern, List<Block> blocks)
+    public void logBlockEdit(String playerName, EditSession editSession, Pattern pattern, List<BlockState> blocks)
     {
         Map.Entry<String, EditSession> playerAndSessionEntry = new AbstractMap.SimpleEntry(playerName, editSession);
 
-        server.getScheduler().scheduleSyncDelayedTask(plugin, () ->
+        server.getScheduler().scheduleAsyncDelayedTask(plugin, () ->
         {
-            for (Block block : blocks)
+            for (BlockState block : blocks)
             {
                 BlockVector3 blockVector3 = BlockVector3.at(block.getX(), block.getY(), block.getZ());
 
