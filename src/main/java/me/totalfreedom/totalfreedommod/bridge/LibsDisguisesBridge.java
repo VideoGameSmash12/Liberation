@@ -46,23 +46,6 @@ public class LibsDisguisesBridge extends FreedomService
         return libsDisguisesPlugin;
     }
 
-    public Boolean isDisguised(Player player)
-    {
-        try
-        {
-            final LibsDisguises libsDisguises = getLibsDisguisesPlugin();
-            if (libsDisguises != null)
-            {
-                return DisguiseAPI.isDisguised(player);
-            }
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-        }
-        return null;
-    }
-
     public void undisguiseAll(boolean staff)
     {
         try
