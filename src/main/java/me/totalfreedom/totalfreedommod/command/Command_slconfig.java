@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.staff.StaffMember;
@@ -285,21 +286,17 @@ public class Command_slconfig extends FreedomCommand
                 FUtil.staffAction(sender.getName(), "Removing " + staffMember.getName() + " from the staff list", true);
                 staffMember.setActive(false);
 
-                if (plugin.pl.getPlayer(player).inStaffChat())
-                {
-                    plugin.pl.getPlayer(player).setStaffChat(false);
-                }
-
                 plugin.sl.save(staffMember);
                 plugin.sl.updateTables();
                 if (player != null)
                 {
                     plugin.rm.updateDisplay(player);
+                    plugin.pl.getPlayer(player).setStaffChat(false);
                 }
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
                 {
-                    plugin.dc.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
+                    Discord.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
                 }
 
                 plugin.amp.updateAccountStatus(staffMember);
