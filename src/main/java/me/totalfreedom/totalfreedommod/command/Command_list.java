@@ -82,15 +82,15 @@ public class Command_list extends FreedomCommand
 
         List<String> n = new ArrayList<>();
 
-        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.sl.isStaff(sender) && plugin.sl.getAdmin(sender).getRank().isAtLeast(Rank.MOD))
+        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.sl.isStaff(sender) && plugin.sl.getAdmin(playerSender).getRank().isAtLeast(Rank.MOD))
         {
             List<StaffMember> connectedStaffMembers = plugin.btb.getConnectedAdmins();
             onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(connectedStaffMembers.size())
                     .append(ChatColor.BLUE)
-                    .append(" staff connected to telnet.");
+                    .append(" staff members connected to telnet.");
             for (StaffMember staffMember : connectedStaffMembers)
             {
-                n.add(plugin.rm.getDisplay(staffMember).getColoredTag() + staffMember.getName());
+                n.add(staffMember.getName());
             }
         }
         else
@@ -139,13 +139,11 @@ public class Command_list extends FreedomCommand
                 .append(": ")
                 .append(StringUtils.join(n, ChatColor.WHITE + ", "));
         if (senderIsConsole)
-
         {
             sender.sendMessage(ChatColor.stripColor(onlineStats.toString()));
             sender.sendMessage(ChatColor.stripColor(onlineUsers.toString()));
         }
         else
-
         {
             sender.sendMessage(onlineStats.toString());
             sender.sendMessage(onlineUsers.toString());

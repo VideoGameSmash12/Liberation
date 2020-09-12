@@ -233,7 +233,7 @@ public class SQLite extends FreedomService
         }
         else if (value instanceof Boolean)
         {
-            result = resultSet.getBoolean(key);
+            result = resultSet.getObject(key);
         }
         else if (value instanceof Long)
         {
@@ -261,7 +261,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to add staff member: " + e.getMessage());
+            FLog.severe("Failed to add staff member: " + e);
         }
     }
 
@@ -289,7 +289,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to add player: " + e.getMessage());
+            FLog.severe("Failed to add player: " + e);
         }
     }
 
@@ -305,7 +305,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to get staff member by name: " + e.getMessage());
+            FLog.severe("Failed to get staff member by name: " + e);
         }
 
         return null;
@@ -323,7 +323,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to get player by name: " + e.getMessage());
+            FLog.severe("Failed to get player by name: " + e);
         }
 
         return null;
@@ -337,7 +337,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to get Master Builders: " + e.getMessage());
+            FLog.severe("Failed to get Master Builders: " + e);
         }
 
         return null;

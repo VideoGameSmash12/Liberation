@@ -414,6 +414,12 @@
                         </goals>
                         <configuration>
                             <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>me.totalfreedom.totalfreedommod.paperlib</shadedPattern> <!-- Replace this -->
+                                </relocation>
+                            </relocations>
                             <artifactSet>
                                 <includes>
                                     <include>commons-io:commons-io</include>
@@ -422,6 +428,7 @@
                                     <include>org.reflections:reflections</include>
                                     <include>javassist:javassist</include>
                                     <include>me.rayzr522:jsonmessage</include>
+                                    <include>io.papermc:paperlib</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

@@ -79,6 +79,18 @@ public class StaffList extends FreedomService
         }
     }
 
+    public void potionSpyMessage(String message)
+    {
+        for (Player player : server.getOnlinePlayers())
+        {
+            StaffMember staffMember = getAdmin(player.getPlayer());
+            if (isStaff(player) && staffMember.getPotionSpy())
+            {
+                player.sendMessage(message);
+            }
+        }
+    }
+
     public synchronized boolean isStaffSync(CommandSender sender)
     {
         return isStaff(sender);
