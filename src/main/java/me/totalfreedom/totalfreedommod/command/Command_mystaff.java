@@ -29,7 +29,7 @@ public class Command_mystaff extends FreedomCommand
         }
 
         Player init = null;
-        StaffMember target = getAdmin(playerSender);
+        StaffMember target = getStaffMember(playerSender);
         Player targetPlayer = playerSender;
 
         // -o switch
@@ -44,7 +44,7 @@ public class Command_mystaff extends FreedomCommand
                 return true;
             }
 
-            target = getAdmin(targetPlayer);
+            target = getStaffMember(targetPlayer);
             if (target == null)
             {
                 msg("That player is not a staff member", ChatColor.RED);

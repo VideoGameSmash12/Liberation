@@ -324,12 +324,12 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         return player;
     }
 
-    protected StaffMember getAdmin(CommandSender sender)
+    protected StaffMember getStaffMember(CommandSender sender)
     {
         return plugin.sl.getAdmin(sender);
     }
 
-    protected StaffMember getAdmin(Player player)
+    protected StaffMember getStaffMember(Player player)
     {
         return plugin.sl.getAdmin(player);
     }

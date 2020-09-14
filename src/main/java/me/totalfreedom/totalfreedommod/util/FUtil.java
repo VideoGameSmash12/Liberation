@@ -132,7 +132,7 @@ public class FUtil
 
     public static boolean isExecutive(String name)
     {
-        return ConfigEntry.SERVER_OWNERS.getStringList().contains(name) || ConfigEntry.SERVER_EXECUTIVES.getStringList().contains(name) || ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getStringList().contains(name);
+        return ConfigEntry.SERVER_OWNERS.getStringList().contains(name) || ConfigEntry.SERVER_EXECUTIVES.getStringList().contains(name);
     }
 
     public static boolean isDeveloper(Player player)
@@ -237,10 +237,10 @@ public class FUtil
             List<String> headers = new ArrayList<>();
             headers.add("Accept:application/json");
             headers.add("Content-Type:application/json");
-            String response = sendRequest("https://api.mojang.com/profiles/minecraft", "POST", headers, json.toString());
+            Response response = sendRequest("https://api.mojang.com/profiles/minecraft", "POST", headers, json.toString());
             // Don't care how stupid this looks, couldn't find anything to parse a json string to something readable in java with something not horrendously huge, maybe im just retarded
             Pattern pattern = Pattern.compile("(?<=\"id\":\")[a-f0-9].{31}");
-            Matcher matcher = pattern.matcher(response);
+            Matcher matcher = pattern.matcher(response.getMessage());
             if (matcher.find())
             {
                 String rawUUID = matcher.group(0).replaceFirst("([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]+)", "$1-$2-$3-$4-$5");
@@ -254,21 +254,34 @@ public class FUtil
         return null;
     }
 
-    public static String sendRequest(String endpoint, String method, List<String>headers, String body) throws IOException
+    public static Response sendRequest(String endpoint, String method, List<String>headers, String body) throws IOException
     {
         URL url = new URL(endpoint);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+
         connection.setRequestMethod(method);
-        for (String header :  headers)
+
+        if (headers != null)
         {
-            String[] kv = header.split(":");
-            connection.setRequestProperty(kv[0], kv[1]);
+
+            for (String header : headers)
+            {
+                String[] kv = header.split(":");
+                connection.setRequestProperty(kv[0], kv[1]);
+            }
         }
-        connection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-        outputStream.writeBytes(body);
-        outputStream.flush();
-        outputStream.close();
+
+        FLog.info(connection.getRequestMethod());
+
+        if (body != null)
+        {
+            connection.setDoOutput(true);
+            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(body);
+            outputStream.flush();
+            outputStream.close();
+        }
+
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
@@ -279,7 +292,8 @@ public class FUtil
         }
 
         in.close();
-        return response.toString();
+
+        return new Response(connection.getResponseCode(), response.toString());
     }
 
     public static void bcastMsg(String message, ChatColor color)
@@ -853,11 +867,5 @@ public class FUtil
                 location.getWorld().createExplosion(location, power);
             }
         }.runTaskLater(TotalFreedomMod.getPlugin(), delay);
-    }
-
-    private static class MojangResponse
-    {
-        String id;
-        String name;
     }
 }

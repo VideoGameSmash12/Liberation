@@ -63,11 +63,6 @@ public class RankManager extends FreedomService
             return Title.EXECUTIVE;
         }
 
-        if (ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getList().contains(player.getName()) && plugin.sl.isStaff(player))
-        {
-            return Title.ASSISTANT_EXECUTIVE;
-        }
-
         if (plugin.sl.isVerifiedStaff(player))
         {
             return Title.VERIFIED_STAFF;
@@ -77,12 +72,6 @@ public class RankManager extends FreedomService
         if (plugin.pl.getData(player).isMasterBuilder() && !plugin.sl.isStaff(player))
         {
             return Title.MASTER_BUILDER;
-        }
-
-        PlayerData playerData = plugin.pl.getData(player);
-        if (!plugin.sl.isStaff(player) && playerData.isDonator())
-        {
-            return Title.DONATOR;
         }
 
         return getRank(player);

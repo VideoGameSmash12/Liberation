@@ -44,14 +44,14 @@ public class Command_doom extends FreedomCommand
         final String ip = player.getAddress().getAddress().getHostAddress().trim();
 
         // Remove from admin
-        StaffMember staffMember = getAdmin(player);
+        StaffMember staffMember = getStaffMember(player);
         if (staffMember != null)
         {
             FUtil.staffAction(sender.getName(), "Removing " + player.getName() + " from the staff list", true);
             staffMember.setActive(false);
             plugin.sl.save(staffMember);
             plugin.sl.updateTables();
-            plugin.amp.updateAccountStatus(staffMember);
+            plugin.ptero.updateAccountStatus(staffMember);
             if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
             {
                 plugin.dc.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());

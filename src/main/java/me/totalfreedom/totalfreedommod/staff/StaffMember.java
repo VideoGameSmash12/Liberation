@@ -47,7 +47,7 @@ public class StaffMember
     private String acFormat = null;
     @Getter
     @Setter
-    private String ampUsername = null;
+    private String pteroID = null;
 
     public StaffMember(Player player)
     {
@@ -69,7 +69,7 @@ public class StaffMember
             this.commandSpy = resultSet.getBoolean("command_spy");
             this.potionSpy = resultSet.getBoolean("potion_spy");
             this.acFormat = resultSet.getString("ac_format");
-            this.ampUsername = resultSet.getString("amp_username");
+            this.pteroID = resultSet.getString("ptero_id");
         }
         catch (SQLException e)
         {
@@ -90,7 +90,7 @@ public class StaffMember
                 .append("- Is Active: ").append(active).append("\n")
                 .append("- Potion Spy: ").append(potionSpy).append("\n")
                 .append("- Admin Chat Format: ").append(acFormat).append("\n")
-                .append("- AMP Username: ").append(ampUsername).append("\n");
+                .append("- Pterodactyl ID: ").append(pteroID).append("\n");
 
         return output.toString();
     }
@@ -108,7 +108,7 @@ public class StaffMember
             put("command_spy", commandSpy);
             put("potion_spy", potionSpy);
             put("ac_format", acFormat);
-            put("amp_username", ampUsername);
+            put("ptero_id", pteroID);
         }};
         return map;
     }

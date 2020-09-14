@@ -82,7 +82,7 @@ public class SQLite extends FreedomService
             {
                 try
                 {
-                    connection.createStatement().execute("CREATE TABLE `staff` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `rank` VARCHAR NOT NULL, `active` BOOLEAN NOT NULL, `last_login` LONG NOT NULL, `login_message` VARCHAR, `command_spy` BOOLEAN NOT NULL, `potion_spy` BOOLEAN NOT NULL, `ac_format` VARCHAR, `amp_username` VARCHAR);");
+                    connection.createStatement().execute("CREATE TABLE `staff` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `rank` VARCHAR NOT NULL, `active` BOOLEAN NOT NULL, `last_login` LONG NOT NULL, `login_message` VARCHAR, `command_spy` BOOLEAN NOT NULL, `potion_spy` BOOLEAN NOT NULL, `ac_format` VARCHAR, `ptero_id` VARCHAR);");
                 }
                 catch (SQLException e)
                 {
@@ -256,7 +256,7 @@ public class SQLite extends FreedomService
             statement.setBoolean(7, staffMember.getCommandSpy());
             statement.setBoolean(8, staffMember.getPotionSpy());
             statement.setString(9, staffMember.getAcFormat());
-            statement.setString(10, staffMember.getAmpUsername());
+            statement.setString(10, staffMember.getPteroID());
             statement.executeUpdate();
         }
         catch (SQLException e)

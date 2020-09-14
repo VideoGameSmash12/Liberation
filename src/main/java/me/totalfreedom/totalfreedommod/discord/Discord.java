@@ -34,6 +34,9 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.internal.utils.concurrent.CountingThreadFactory;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -90,6 +93,9 @@ public class Discord extends FreedomService
                             })
                     .setAutoReconnect(true)
                     .setRateLimitPool(RATELIMIT_EXECUTOR)
+                    .setChunkingFilter(ChunkingFilter.ALL)
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .enableIntents(GatewayIntent.GUILD_MEMBERS)
                     .build();
             FLog.info("Discord verification bot has successfully enabled!");
         }
@@ -143,19 +149,39 @@ public class Discord extends FreedomService
         }
     }
 
-    public void sendAMPInfo(PlayerData playerData, String username, String password)
+    public void sendPteroInfo(PlayerData playerData, String username, String password)
     {
-        User user = bot.getUserById(playerData.getDiscordID());
-        String message = "The following is your AMP details:\n\nUsername: " + username + "\nPassword: " + password + "\n\nYou can connect to AMP at " + plugin.amp.URL;
+        User user = getUser(playerData.getDiscordID());
+        String message = "The following are your Pterodactyl details:\n\nUsername: " + username + "\nPassword: " + password + "\n\nYou can connect to the panel at " + plugin.ptero.URL;
         PrivateChannel privateChannel = user.openPrivateChannel().complete();
         privateChannel.sendMessage(message).complete();
+    }
+
+    public User getUser(String id)
+    {
+        Guild guild = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+
+        if (guild == null)
+        {
+            FLog.severe("Either the bot is not in the discord server or it doesn't exist. Check the server ID.");
+            return null;
+        }
+
+        Member member = guild.getMemberById(id);
+
+        if (member == null)
+        {
+            return null;
+        }
+
+        return member.getUser();
     }
 
     public boolean sendBackupCodes(PlayerData playerData)
     {
         List<String> codes = generateBackupCodes();
         List<String> encryptedCodes = generateEncryptedBackupCodes(codes);
-        User user = bot.getUserById(playerData.getDiscordID());
+        User user = getUser(playerData.getDiscordID());
         File file = generateBackupCodesFile(playerData.getName(), codes);
         if (file == null)
         {

@@ -36,9 +36,6 @@ server:
   # All players who show up as executive
   executives: []
 
-  # All players who show up as assistant executive
-  assistant_executives: []
-
   # All those who can manage the master builder list
   master_builder_management: []
 
@@ -76,8 +73,6 @@ discord:
   admin_role_id: ''
   # Developer role ID
   developer_role_id: ''
-  # Assistant Executive Admin role ID
-  assistant_executive_role_id: ''
   # Executive Admin role ID
   executive_role_id: ''
   # Owner role ID
@@ -95,8 +90,6 @@ reddit:
   client_id: ''
   # Developer app secret
   client_secret: ''
-  # Donator flair ID
-  donator_flair_id: ''
   # Master Builder flair ID
   master_builder_flair_id: ''
   # Trial Mod flair ID
@@ -107,21 +100,23 @@ reddit:
   admin_flair_id: ''
   # Developer flair ID
   developer_flair_id: ''
-  # Assistant Executive Admin flair ID
-  assistant_executive_flair_id: ''
   # Executive Admin flair ID
   executive_flair_id: ''
   # Owner flair ID
   server_owner_flair_id: ''
 
-# AMP
-amp:
+# Pterodactyl
+ptero:
   # URL - do not leave a trailing forward slash
   url: ''
-  # Username
-  username: ''
-  # Password
-  password: ''
+  # The default email domain used to set email addresses for new users - do not include the @
+  default_email_domain: 'example.com'
+  # Server UUID
+  server_uuid: ''
+  # Admin panel API key
+  admin_key: ''
+  # Server API key
+  server_key: ''
   
 # The shop
 shop:

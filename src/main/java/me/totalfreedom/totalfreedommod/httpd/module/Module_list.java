@@ -33,7 +33,6 @@ public class Module_list extends HTTPDModule
             final JSONArray mods = new JSONArray();
             final JSONArray admins = new JSONArray();
             final JSONArray developers = new JSONArray();
-            final JSONArray assistant_executives = new JSONArray();
             final JSONArray executives = new JSONArray();
             final JSONArray owners = new JSONArray();
 
@@ -58,11 +57,6 @@ public class Module_list extends HTTPDModule
                 if (FUtil.DEVELOPERS.contains(player.getName()))
                 {
                     developers.add(player.getName());
-                }
-
-                if (ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getList().contains(player.getName()) && !FUtil.DEVELOPERS.contains(player.getName()))
-                {
-                    assistant_executives.add(player.getName());
                 }
 
                 if (ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) && !FUtil.DEVELOPERS.contains(player.getName()))
@@ -105,7 +99,6 @@ public class Module_list extends HTTPDModule
             responseObject.put("mods", mods);
             responseObject.put("admins", admins);
             responseObject.put("developers", developers);
-            responseObject.put("assistant_executives", assistant_executives);
             responseObject.put("executives", executives);
             responseObject.put("owners", owners);
             responseObject.put("online", server.getOnlinePlayers().size());
@@ -154,7 +147,7 @@ public class Module_list extends HTTPDModule
 
     public boolean hasSpecialTitle(Player player)
     {
-        if (FUtil.DEVELOPERS.contains(player.getName()) || ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_OWNERS.getList().contains(player.getName()))
+        if (FUtil.DEVELOPERS.contains(player.getName()) || ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_OWNERS.getList().contains(player.getName()))
         {
             return true;
         }

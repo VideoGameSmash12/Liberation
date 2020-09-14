@@ -201,23 +201,19 @@ public class Reddit extends FreedomService
     {
         flairList.put(Title.OWNER, ConfigEntry.REDDIT_SERVER_OWNER_FLAIR_ID.getString());
         flairList.put(Title.EXECUTIVE, ConfigEntry.REDDIT_EXECUTIVE_FLAIR_ID.getString());
-        flairList.put(Title.ASSISTANT_EXECUTIVE, ConfigEntry.REDDIT_ASSISTANT_EXECUTIVE_FLAIR_ID.getString());
         flairList.put(Title.DEVELOPER, ConfigEntry.REDDIT_DEVELOPER_FLAIR_ID.getString());
         flairList.put(Rank.ADMIN, ConfigEntry.REDDIT_ADMIN_FLAIR_ID.getString());
         flairList.put(Rank.MOD, ConfigEntry.REDDIT_MOD_FLAIR_ID.getString());
         flairList.put(Rank.TRIAL_MOD, ConfigEntry.REDDIT_TRIAL_MOD_FLAIR_ID.getString());
         flairList.put(Title.MASTER_BUILDER, ConfigEntry.REDDIT_MASTER_BUILDER_FLAIR_ID.getString());
-        flairList.put(Title.DONATOR, ConfigEntry.REDDIT_DONATOR_FLAIR_ID.getString());
 
         // Work around because the current flair id keeps returning null, either a JRAW bug or a reddit bug
         flairNameList.put(Title.OWNER, "Server Owner");
         flairNameList.put(Title.EXECUTIVE, "Executive");
-        flairNameList.put(Title.ASSISTANT_EXECUTIVE, "Assistant Executive");
         flairNameList.put(Title.DEVELOPER, "Developer");
         flairNameList.put(Rank.ADMIN, "Admin");
         flairNameList.put(Rank.MOD, "Mod");
         flairNameList.put(Rank.TRIAL_MOD, "Trial Mod");
         flairNameList.put(Title.MASTER_BUILDER, "Master Builder");
-        flairNameList.put(Title.DONATOR, "Premium");
     }
 }

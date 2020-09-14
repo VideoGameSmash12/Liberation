@@ -135,7 +135,7 @@ public class TotalFreedomMod extends JavaPlugin
     public EntityWiper ew;
     public Sitter st;
     public VanishHandler vh;
-    public AMP amp;
+    public Pterodactyl ptero;
 
     //public HubWorldRestrictions hwr;
     //
@@ -233,7 +233,7 @@ public class TotalFreedomMod extends JavaPlugin
         ew = new EntityWiper();
         st = new Sitter();
         vh = new VanishHandler();
-        amp = new AMP();
+        ptero = new Pterodactyl();
 
         // Single admin utils
         cs = new CommandSpy();

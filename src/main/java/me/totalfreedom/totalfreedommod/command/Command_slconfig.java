@@ -112,7 +112,7 @@ public class Command_slconfig extends FreedomCommand
                     plugin.dc.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
                 }
 
-                plugin.amp.updateAccountStatus(staffMember);
+                plugin.ptero.updateAccountStatus(staffMember);
 
                 msg("Set " + staffMember.getName() + "'s rank to " + rank.getName());
                 return true;
@@ -206,7 +206,7 @@ public class Command_slconfig extends FreedomCommand
 
                     plugin.sl.addAdmin(staffMember);
                     plugin.rm.updateDisplay(player);
-                    plugin.amp.updateAccountStatus(staffMember);
+                    plugin.ptero.updateAccountStatus(staffMember);
                 }
                 else // Existing staff member
                 {
@@ -243,7 +243,7 @@ public class Command_slconfig extends FreedomCommand
                     {
                         plugin.dc.syncRoles(staffMember, plugin.pl.getData(player).getDiscordID());
                     }
-                    plugin.amp.updateAccountStatus(staffMember);
+                    plugin.ptero.updateAccountStatus(staffMember);
                 }
 
                 if (player != null)
@@ -299,7 +299,7 @@ public class Command_slconfig extends FreedomCommand
                     Discord.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
                 }
 
-                plugin.amp.updateAccountStatus(staffMember);
+                plugin.ptero.updateAccountStatus(staffMember);
 
                 return true;
             }
