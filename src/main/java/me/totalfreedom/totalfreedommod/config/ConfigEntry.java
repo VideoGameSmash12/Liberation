@@ -87,7 +87,6 @@ public enum ConfigEntry
     REDDIT_PASSWORD(String.class, "reddit.password"),
     REDDIT_CLIENT_ID(String.class, "reddit.client_id"),
     REDDIT_CLIENT_SECRET(String.class, "reddit.client_secret"),
-    REDDIT_DONATOR_FLAIR_ID(String.class, "reddit.donator_flair_id"),
     REDDIT_MASTER_BUILDER_FLAIR_ID(String.class, "reddit.master_builder_flair_id"),
     REDDIT_TRIAL_MOD_FLAIR_ID(String.class, "reddit.trial_mod_flair_id"),
     REDDIT_MOD_FLAIR_ID(String.class, "reddit.mod_flair_id"),

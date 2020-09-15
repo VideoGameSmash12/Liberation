@@ -142,7 +142,7 @@ shop:
     interval: 300
 
     # How much time do players have to react
-    time: 30
+    time: 30.0
 
     # How many coins do winners get?
     coins_per_win: 5
