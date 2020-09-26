@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import me.totalfreedom.totalfreedommod.FreedomService;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -27,6 +28,9 @@ public class WorldRestrictions extends FreedomService
 
     private final List<String> BLOCKED_WORLDEDIT_COMMANDS = Arrays.asList(
             "green", "fixlava", "fixwater", "br", "brush", "tool", "mat", "range", "cs", "up", "fill", "setblock", "tree", "replacenear", "bigtree");
+
+    private final List<String> BLOCKED_ESSENTIALS_COMMANDS = Arrays.asList(
+            "bigtree", "ebigtree", "largetree", "elargetree");
 
     private final Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>()
     {{
@@ -57,12 +61,7 @@ public class WorldRestrictions extends FreedomService
             }
         }
 
-        if (!plugin.sl.isStaff(player) && player.getWorld().equals(plugin.wm.staffworld.getWorld()))
-        {
-            return true;
-        }
-
-        return false;
+        return !plugin.sl.isStaff(player) && player.getWorld().equals(plugin.wm.staffworld.getWorld());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -127,12 +126,12 @@ public class WorldRestrictions extends FreedomService
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
         final Player player = event.getPlayer();
+        String command = event.getMessage().split("\\s+")[0].substring(1).toLowerCase();
+
         if (doRestrict(player))
         {
             /* This is a very poor way of blocking WorldEdit commands, all the methods I know of
                for obtaining a list of a plugin's commands are returning null for world edit. */
-            String command = event.getMessage().split("\\s+")[0].substring(1, event.getMessage().split("\\s+")[0].length()).toLowerCase();
-
             String allowed = player.getWorld().equals(plugin.wm.staffworld.getWorld()) ? "Staff" : "Master Builders";
 
             if (command.startsWith("/") || BLOCKED_WORLDEDIT_COMMANDS.contains(command))
@@ -147,8 +146,16 @@ public class WorldRestrictions extends FreedomService
                 event.setCancelled(true);
             }
         }
-    }
 
+        if (player.getWorld().equals(Bukkit.getWorld("plotworld")))
+        {
+            if (BLOCKED_ESSENTIALS_COMMANDS.contains(command))
+            {
+                player.sendMessage(ChatColor.RED + "Sorry, this command is restricted in the plotworld");
+                event.setCancelled(true);
+            }
+        }
+    }
 
     public void protectWorld(World world)
     {
