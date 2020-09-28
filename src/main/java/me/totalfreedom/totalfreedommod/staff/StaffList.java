@@ -138,7 +138,7 @@ public class StaffList extends FreedomService
             return false;
         }
 
-        return staffMember.getRank().ordinal() >= Rank.NEW_ADMIN.ordinal();
+        return staffMember.getRank().ordinal() >= Rank.ADMIN.ordinal();
     }
 
     public boolean isAdmin(CommandSender sender)
@@ -283,7 +283,7 @@ public class StaffList extends FreedomService
 
     public boolean removeAdmin(StaffMember staffMember)
     {
-        if (staffMember.getRank().isAtLeast(Rank.NEW_ADMIN))
+        if (staffMember.getRank().isAtLeast(Rank.ADMIN))
         {
             if (plugin.btb != null)
             {

@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.ONLY_IN_GAME)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Vanish/unvanish yourself.", usage = "/<command> [-s[ilent]]", aliases = "v")
 public class Command_vanish extends FreedomCommand
 {

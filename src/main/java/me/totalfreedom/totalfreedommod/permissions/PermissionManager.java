@@ -52,7 +52,7 @@ public class PermissionManager extends FreedomService
 
         adminPermissions = PermissionEntry.ADMINS.getEntry();
         adminPermissions.addAll(masterBuilderPermissions);
-        permissions.put(Rank.NEW_ADMIN, adminPermissions);
+        permissions.put(Rank.ADMIN, adminPermissions);
 
         senioradminPermissions = PermissionEntry.SENIOR_ADMINS.getEntry();
         senioradminPermissions.addAll(adminPermissions);

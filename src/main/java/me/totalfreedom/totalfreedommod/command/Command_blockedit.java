@@ -10,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Restricts/unrestricts block modification abilities for everyone on the server or a certain player.", usage = "/<command> [[-s] <player> [reason] | list | purge | all]")
 public class Command_blockedit extends FreedomCommand
 {

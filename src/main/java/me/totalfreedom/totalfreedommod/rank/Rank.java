@@ -8,9 +8,9 @@ public enum Rank implements Displayable
     IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false),
     NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false),
     OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false),
-    NEW_ADMIN("a", "Moderator", Type.STAFF, "Mod", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true),
-    SENIOR_ADMIN("an", "Administrator", Type.STAFF, "Admin", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
-    NEW_ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
+    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.GREEN, org.bukkit.ChatColor.GREEN, true),
+    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
+    ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
     SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false);
     @Getter
     private final Type type;
@@ -106,9 +106,9 @@ public enum Rank implements Displayable
     {
         switch (this)
         {
-            case NEW_ADMIN:
-            case NEW_ADMIN_CONSOLE:
-                return NEW_ADMIN_CONSOLE;
+            case ADMIN:
+            case ADMIN_CONSOLE:
+                return ADMIN_CONSOLE;
             case SENIOR_ADMIN:
             case SENIOR_CONSOLE:
                 return SENIOR_CONSOLE;
@@ -130,9 +130,8 @@ public enum Rank implements Displayable
         return Rank.NON_OP;
     }
 
-    public static enum Type
+    public enum Type
     {
-
         PLAYER,
         STAFF,
         STAFF_CONSOLE;

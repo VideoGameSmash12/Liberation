@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Manually verify someone", usage = "/<command> <playername>", aliases="mv")
 public class Command_manuallyverify extends FreedomCommand
 {

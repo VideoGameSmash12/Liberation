@@ -203,7 +203,7 @@ public class Reddit extends FreedomService
         flairList.put(Title.EXECUTIVE, ConfigEntry.REDDIT_EXECUTIVE_FLAIR_ID.getString());
         flairList.put(Title.DEVELOPER, ConfigEntry.REDDIT_DEVELOPER_FLAIR_ID.getString());
         flairList.put(Rank.SENIOR_ADMIN, ConfigEntry.REDDIT_SENIOR_ADMIN_FLAIR_ID.getString());
-        flairList.put(Rank.NEW_ADMIN, ConfigEntry.REDDIT_NEW_ADMIN_FLAIR_ID.getString());
+        flairList.put(Rank.ADMIN, ConfigEntry.REDDIT_NEW_ADMIN_FLAIR_ID.getString());
         flairList.put(Title.MASTER_BUILDER, ConfigEntry.REDDIT_MASTER_BUILDER_FLAIR_ID.getString());
 
         // Work around because the current flair ID keeps returning null, either a JRAW bug or a Reddit bug
@@ -211,7 +211,7 @@ public class Reddit extends FreedomService
         flairNameList.put(Title.EXECUTIVE, "Executive");
         flairNameList.put(Title.DEVELOPER, "Developer");
         flairNameList.put(Rank.SENIOR_ADMIN, "Senior Admin");
-        flairNameList.put(Rank.NEW_ADMIN, "Admin");
+        flairNameList.put(Rank.ADMIN, "Admin");
         flairNameList.put(Title.MASTER_BUILDER, "Master Builder");
     }
 }

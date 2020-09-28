@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Sets a specific player's WorldEdit block modification limit to the default limit or to a custom limit.", usage = "/<command> <player> [limit]", aliases = "setpl,spl")
 public class Command_setplayerlimit extends FreedomCommand
 {

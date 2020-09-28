@@ -27,7 +27,7 @@ public class StaffMember
     private boolean active = true;
     @Getter
     @Setter
-    private Rank rank = Rank.NEW_ADMIN;
+    private Rank rank = Rank.ADMIN;
     @Getter
     private final List<String> ips = new ArrayList<>();
     @Getter
@@ -156,7 +156,7 @@ public class StaffMember
 
         if (!active)
         {
-            if (getRank().isAtLeast(Rank.NEW_ADMIN))
+            if (getRank().isAtLeast(Rank.ADMIN))
             {
                 if (plugin.btb != null)
                 {

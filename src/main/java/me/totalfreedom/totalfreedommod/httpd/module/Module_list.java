@@ -78,7 +78,7 @@ public class Module_list extends HTTPDModule
                     StaffMember staffMember = plugin.sl.getAdmin(player);
                     switch (staffMember.getRank())
                     {
-                        case NEW_ADMIN:
+                        case ADMIN:
                             admins.add(player.getName());
                             break;
                         case SENIOR_ADMIN:

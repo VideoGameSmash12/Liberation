@@ -109,7 +109,7 @@ public class RankManager extends FreedomService
         // CONSOLE?
         if (sender.getName().equals("CONSOLE"))
         {
-            return ConfigEntry.STAFFLIST_CONSOLE_IS_ADMIN.getBoolean() ? Rank.SENIOR_CONSOLE : Rank.NEW_ADMIN_CONSOLE;
+            return ConfigEntry.STAFFLIST_CONSOLE_IS_ADMIN.getBoolean() ? Rank.SENIOR_CONSOLE : Rank.ADMIN_CONSOLE;
         }
 
         // Console admin, get by name

@@ -83,7 +83,7 @@ public class Command_slconfig extends FreedomCommand
                     return true;
                 }
 
-                if (!rank.isAtLeast(Rank.NEW_ADMIN))
+                if (!rank.isAtLeast(Rank.ADMIN))
                 {
                     msg("Rank must be Trial Mod or higher.", ChatColor.RED);
                     return true;
@@ -125,7 +125,7 @@ public class Command_slconfig extends FreedomCommand
                     return false;
                 }
 
-                checkRank(Rank.NEW_ADMIN);
+                checkRank(Rank.ADMIN);
 
                 StaffMember staffMember = plugin.sl.getEntryByName(args[1]);
 
@@ -158,7 +158,7 @@ public class Command_slconfig extends FreedomCommand
                 }
 
                 checkConsole();
-                checkRank(Rank.NEW_ADMIN);
+                checkRank(Rank.ADMIN);
 
                 // Player already staff?
                 final Player player = getPlayer(args[1]);
@@ -272,7 +272,7 @@ public class Command_slconfig extends FreedomCommand
                 }
 
                 checkConsole();
-                checkRank(Rank.NEW_ADMIN);
+                checkRank(Rank.ADMIN);
 
                 Player player = getPlayer(args[1]);
                 StaffMember staffMember = player != null ? plugin.sl.getAdmin(player) : plugin.sl.getEntryByName(args[1]);

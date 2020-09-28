@@ -111,7 +111,7 @@ public class PlayerList extends FreedomService
     public boolean isTelnetMasterBuilder(PlayerData playerData)
     {
         StaffMember staffMember = plugin.sl.getEntryByName(playerData.getName());
-        if (staffMember != null && staffMember.getRank().isAtLeast(Rank.NEW_ADMIN) && playerData.isMasterBuilder())
+        if (staffMember != null && staffMember.getRank().isAtLeast(Rank.ADMIN) && playerData.isMasterBuilder())
         {
             return true;
         }

@@ -15,7 +15,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.ONLY_IN_GAME)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Manage your staff entry.", usage = "/<command> [-o <staff member>] <clearips | clearip <ip> | setlogin <message> | clearlogin | setscformat <format> | clearscformat> | oldtags | logstick | syncroles>")
 public class Command_mystaff extends FreedomCommand
 {
@@ -141,7 +141,7 @@ public class Command_mystaff extends FreedomCommand
 
             case "setlogin":
             {
-                checkRank(Rank.NEW_ADMIN);
+                checkRank(Rank.ADMIN);
                 if (args.length < 2)
                 {
                     return false;
@@ -171,7 +171,7 @@ public class Command_mystaff extends FreedomCommand
 
             case "clearlogin":
             {
-                checkRank(Rank.NEW_ADMIN);
+                checkRank(Rank.ADMIN);
                 FUtil.staffAction(sender.getName(), "Clearing personal login message" + (init == null ? "" : " for " + targetPlayer.getName()), false);
                 target.setLoginMessage(null);
                 plugin.sl.save(target);
@@ -186,7 +186,7 @@ public class Command_mystaff extends FreedomCommand
                 plugin.sl.save(target);
                 plugin.sl.updateTables();
                 msg("Set staff chat format to \"" + format + "\".", ChatColor.GRAY);
-                String example = format.replace("%name%", "ExampleStaff").replace("%rank%", Rank.NEW_ADMIN.getAbbr()).replace("%rankcolor%", Rank.NEW_ADMIN.getColor().toString()).replace("%msg%", "The quick brown fox jumps over the lazy dog.");
+                String example = format.replace("%name%", "ExampleStaff").replace("%rank%", Rank.ADMIN.getAbbr()).replace("%rankcolor%", Rank.ADMIN.getColor().toString()).replace("%msg%", "The quick brown fox jumps over the lazy dog.");
                 msg(ChatColor.GRAY + "Example: " + FUtil.colorize(example));
                 return true;
             }

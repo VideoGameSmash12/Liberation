@@ -455,7 +455,7 @@ public class Discord extends FreedomService
             return true;
         }
 
-        if (staffMember.getRank().equals(Rank.NEW_ADMIN))
+        if (staffMember.getRank().equals(Rank.ADMIN))
         {
             if (!member.getRoles().contains(adminRole))
             {

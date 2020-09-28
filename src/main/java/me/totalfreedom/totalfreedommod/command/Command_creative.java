@@ -28,7 +28,7 @@ public class Command_creative extends FreedomCommand
             return true;
         }
 
-        checkRank(Rank.NEW_ADMIN);
+        checkRank(Rank.ADMIN);
 
         if (args[0].equals("-a"))
         {

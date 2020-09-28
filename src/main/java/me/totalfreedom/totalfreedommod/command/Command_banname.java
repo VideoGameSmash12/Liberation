@@ -10,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH, blockHostConsole = true)
+@CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH, blockHostConsole = true)
 @CommandParameters(description = "Bans the specified name.", usage = "/<command> <name> [reason] [-q]")
 public class Command_banname extends FreedomCommand
 {

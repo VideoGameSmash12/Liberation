@@ -84,7 +84,7 @@ public class BukkitTelnetBridge extends FreedomService
 
                 isAdmin = active;
                 isSeniorAdmin = active && staffMember.getRank() == Rank.SENIOR_ADMIN;
-                isTelnetAdmin = active && (isSeniorAdmin || staffMember.getRank() == Rank.NEW_ADMIN);
+                isTelnetAdmin = active && (isSeniorAdmin || staffMember.getRank() == Rank.ADMIN);
             }
 
             playerTags.put("tfm.admin.isAdmin", isAdmin);
