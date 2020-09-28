@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.TRIAL_MOD, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Unmutes a player", usage = "/<command> [-q] <player>")
 public class Command_unmute extends FreedomCommand
 {

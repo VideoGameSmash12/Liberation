@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
 
-@CommandPermissions(level = Rank.TRIAL_MOD, source = SourceType.ONLY_IN_GAME)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Allows staff to see potions that are thrown.", usage = "/<command> <enable | on | disable | off> | history [player] <page>", aliases = "potspy")
 public class Command_potionspy extends FreedomCommand
 {

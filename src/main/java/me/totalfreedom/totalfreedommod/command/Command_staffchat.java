@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.TRIAL_MOD, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Talk privately with other staff on the server.", usage = "/<command> [message]", aliases = "o,sc")
 public class Command_staffchat extends FreedomCommand
 {

@@ -41,7 +41,7 @@ public class Command_slconfig extends FreedomCommand
             case "clean":
             {
                 checkConsole();
-                checkRank(Rank.ADMIN);
+                checkRank(Rank.SENIOR_ADMIN);
 
                 FUtil.staffAction(sender.getName(), "Cleaning staff list", true);
                 plugin.sl.deactivateOldEntries(true);
@@ -52,7 +52,7 @@ public class Command_slconfig extends FreedomCommand
 
             case "reload":
             {
-                checkRank(Rank.ADMIN);
+                checkRank(Rank.SENIOR_ADMIN);
 
                 FUtil.staffAction(sender.getName(), "Reloading the staff list", true);
                 plugin.sl.load();
@@ -63,7 +63,7 @@ public class Command_slconfig extends FreedomCommand
             case "setrank":
             {
                 checkConsole();
-                checkRank(Rank.ADMIN);
+                checkRank(Rank.SENIOR_ADMIN);
 
                 if (args.length < 3)
                 {
@@ -83,7 +83,7 @@ public class Command_slconfig extends FreedomCommand
                     return true;
                 }
 
-                if (!rank.isAtLeast(Rank.TRIAL_MOD))
+                if (!rank.isAtLeast(Rank.NEW_ADMIN))
                 {
                     msg("Rank must be Trial Mod or higher.", ChatColor.RED);
                     return true;
@@ -125,7 +125,7 @@ public class Command_slconfig extends FreedomCommand
                     return false;
                 }
 
-                checkRank(Rank.TRIAL_MOD);
+                checkRank(Rank.NEW_ADMIN);
 
                 StaffMember staffMember = plugin.sl.getEntryByName(args[1]);
 
@@ -158,7 +158,7 @@ public class Command_slconfig extends FreedomCommand
                 }
 
                 checkConsole();
-                checkRank(Rank.MOD);
+                checkRank(Rank.NEW_ADMIN);
 
                 // Player already staff?
                 final Player player = getPlayer(args[1]);
@@ -272,7 +272,7 @@ public class Command_slconfig extends FreedomCommand
                 }
 
                 checkConsole();
-                checkRank(Rank.MOD);
+                checkRank(Rank.NEW_ADMIN);
 
                 Player player = getPlayer(args[1]);
                 StaffMember staffMember = player != null ? plugin.sl.getAdmin(player) : plugin.sl.getEntryByName(args[1]);

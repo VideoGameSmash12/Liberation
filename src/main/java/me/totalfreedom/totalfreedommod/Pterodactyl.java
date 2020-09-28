@@ -43,7 +43,7 @@ public class Pterodactyl extends FreedomService
             return;
         }
 
-        if (!staffMember.isActive() || staffMember.getRank() != Rank.ADMIN)
+        if (!staffMember.isActive() || staffMember.getRank() != Rank.SENIOR_ADMIN)
         {
             FLog.debug("Disabling ptero acc");
             removeAccountFromServer(id);

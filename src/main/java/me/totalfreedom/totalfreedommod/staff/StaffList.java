@@ -138,7 +138,7 @@ public class StaffList extends FreedomService
             return false;
         }
 
-        return staffMember.getRank().ordinal() >= Rank.MOD.ordinal();
+        return staffMember.getRank().ordinal() >= Rank.NEW_ADMIN.ordinal();
     }
 
     public boolean isAdmin(CommandSender sender)
@@ -149,7 +149,7 @@ public class StaffList extends FreedomService
             return false;
         }
 
-        return staffMember.getRank().ordinal() >= Rank.ADMIN.ordinal();
+        return staffMember.getRank().ordinal() >= Rank.SENIOR_ADMIN.ordinal();
     }
 
     public StaffMember getAdmin(CommandSender sender)
@@ -283,7 +283,7 @@ public class StaffList extends FreedomService
 
     public boolean removeAdmin(StaffMember staffMember)
     {
-        if (staffMember.getRank().isAtLeast(Rank.MOD))
+        if (staffMember.getRank().isAtLeast(Rank.NEW_ADMIN))
         {
             if (plugin.btb != null)
             {
@@ -362,7 +362,7 @@ public class StaffList extends FreedomService
     {
         for (StaffMember staffMember : allStaffMembers)
         {
-            if (!staffMember.isActive() || staffMember.getRank().isAtLeast(Rank.ADMIN))
+            if (!staffMember.isActive() || staffMember.getRank().isAtLeast(Rank.SENIOR_ADMIN))
             {
                 continue;
             }

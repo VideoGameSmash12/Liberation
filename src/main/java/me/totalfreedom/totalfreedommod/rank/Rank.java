@@ -8,11 +8,10 @@ public enum Rank implements Displayable
     IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false),
     NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false),
     OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false),
-    TRIAL_MOD("a", "Trial Moderator", Type.STAFF, "Trial Mod", ChatColor.AQUA, org.bukkit.ChatColor.AQUA, true),
-    MOD("a", "Moderator", Type.STAFF, "Mod", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true),
-    ADMIN("an", "Administrator", Type.STAFF, "Admin", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
-    MOD_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
-    ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false);
+    NEW_ADMIN("a", "Moderator", Type.STAFF, "Mod", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true),
+    SENIOR_ADMIN("an", "Administrator", Type.STAFF, "Admin", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
+    NEW_ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
+    SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false);
     @Getter
     private final Type type;
     @Getter
@@ -107,12 +106,12 @@ public enum Rank implements Displayable
     {
         switch (this)
         {
-            case MOD:
-            case MOD_CONSOLE:
-                return MOD_CONSOLE;
-            case ADMIN:
-            case ADMIN_CONSOLE:
-                return ADMIN_CONSOLE;
+            case NEW_ADMIN:
+            case NEW_ADMIN_CONSOLE:
+                return NEW_ADMIN_CONSOLE;
+            case SENIOR_ADMIN:
+            case SENIOR_CONSOLE:
+                return SENIOR_CONSOLE;
             default:
                 return null;
         }

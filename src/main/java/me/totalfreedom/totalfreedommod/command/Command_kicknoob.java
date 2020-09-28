@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.MOD, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Kick all non-staff on server.", usage = "/<command>", aliases = "kickall")
 public class Command_kicknoob extends FreedomCommand
 {

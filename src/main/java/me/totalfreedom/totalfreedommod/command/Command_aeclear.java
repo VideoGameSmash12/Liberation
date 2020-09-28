@@ -9,7 +9,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = Rank.TRIAL_MOD, source = SourceType.BOTH)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.BOTH)
 @CommandParameters(description = "Clears lingering potion area effect clouds.", usage = "/<command>", aliases = "aec")
 public class Command_aeclear extends FreedomCommand
 {

@@ -3,16 +3,13 @@ package me.totalfreedom.totalfreedommod.permissions;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 
-
 public enum PermissionEntry
 {
     REMOVE("remove"),
     OPERATORS("operators"),
     MASTER_BUILDERS("master_builders"),
-    TRIAL_MODS("trial_mods"),
-    MODS("mods"),
-    ADMINS("admins");
-
+    ADMINS("admins"),
+    SENIOR_ADMINS("senior_admins");
 
     private final String configName;
 

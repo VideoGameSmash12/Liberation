@@ -65,12 +65,10 @@ discord:
   role_sync: false
   # Master Builder role ID
   master_builder_role_id: ''
-  # Trial Mod role ID
-  trial_mod_role_id: ''
-  # Mod role ID
-  mod_role_id: ''
   # Admin role ID
   admin_role_id: ''
+  # Senior Admin role ID
+  senior_admin_role_id: ''
   # Developer role ID
   developer_role_id: ''
   # Executive Admin role ID
@@ -92,12 +90,10 @@ reddit:
   client_secret: ''
   # Master Builder flair ID
   master_builder_flair_id: ''
-  # Trial Mod flair ID
-  trial_mod_flair_id: ''
-  # Mod flair ID
-  mod_flair_id: ''
   # Admin flair ID
   admin_flair_id: ''
+  # Senior Admin flair ID
+  senior_admin_flair_id: ''
   # Developer flair ID
   developer_flair_id: ''
   # Executive Admin flair ID

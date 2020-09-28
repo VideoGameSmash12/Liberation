@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-@CommandPermissions(level = Rank.MOD, source = SourceType.ONLY_CONSOLE)
+@CommandPermissions(level = Rank.NEW_ADMIN, source = SourceType.ONLY_CONSOLE)
 @CommandParameters(description = "Wipes the CoreProtect data for the flatlands", usage = "/<command>")
 public class Command_wipecoreprotectdata extends FreedomCommand
 {

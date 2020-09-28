@@ -60,8 +60,6 @@ public class Discord extends FreedomService
     public static JDA bot = null;
     public Boolean enabled = false;
 
-    Random random = new Random();
-
     public void startBot()
     {
         enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
@@ -163,7 +161,7 @@ public class Discord extends FreedomService
 
         if (guild == null)
         {
-            FLog.severe("Either the bot is not in the discord server or it doesn't exist. Check the server ID.");
+            FLog.severe("Either the bot is not in the Discord server or it doesn't exist. Check the server ID.");
             return null;
         }
 
@@ -376,19 +374,19 @@ public class Discord extends FreedomService
         }
         if (ConfigEntry.DISCORD_SERVER_ID.getString().isEmpty())
         {
-            FLog.severe("No discord server ID was specified in the config, but there is a report channel id.");
+            FLog.severe("No Discord server ID was specified in the config, but there is a report channel ID.");
             return false;
         }
         Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         if (server == null)
         {
-            FLog.severe("The discord server ID specified is invalid, or the bot is not on the server.");
+            FLog.severe("The Discord server ID specified is invalid, or the bot is not on the server.");
             return false;
         }
         TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
         if (channel == null)
         {
-            FLog.severe("The report channel ID specified in the config is invalid");
+            FLog.severe("The report channel ID specified in the config is invalid.");
             return false;
         }
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -430,91 +428,57 @@ public class Discord extends FreedomService
             return false;
         }
 
-        Role trialModRole = server.getRoleById(ConfigEntry.DISCORD_TRIAL_MOD_ROLE_ID.getString());
-        if (trialModRole == null)
-        {
-            FLog.severe("The specified Trial Mod role does not exist!");
-            return false;
-        }
-        Role modRole = server.getRoleById(ConfigEntry.DISCORD_MOD_ROLE_ID.getString());
-        if (modRole == null)
-        {
-            FLog.severe("The specified Mod role does not exist!");
-            return false;
-        }
-        Role adminRole = server.getRoleById(ConfigEntry.DISCORD_ADMIN_ROLE_ID.getString());
+        Role adminRole = server.getRoleById(ConfigEntry.DISCORD_NEW_ADMIN_ROLE_ID.getString());
         if (adminRole == null)
         {
             FLog.severe("The specified Admin role does not exist!");
             return false;
         }
 
+        Role senioradminRole = server.getRoleById(ConfigEntry.DISCORD_SENIOR_ADMIN_ROLE_ID.getString());
+        if (senioradminRole == null)
+        {
+            FLog.severe("The specified Senior Admin role does not exist!");
+            return false;
+        }
+
         if (!staffMember.isActive())
         {
-            if (member.getRoles().contains(trialModRole))
-            {
-                server.removeRoleFromMember(member, trialModRole).complete();
-            }
-            if (member.getRoles().contains(modRole))
-            {
-                server.removeRoleFromMember(member, modRole).complete();
-            }
             if (member.getRoles().contains(adminRole))
             {
                 server.removeRoleFromMember(member, adminRole).complete();
+            }
+            if (member.getRoles().contains(senioradminRole))
+            {
+                server.removeRoleFromMember(member, senioradminRole).complete();
             }
             return true;
         }
 
-        if (staffMember.getRank().equals(Rank.TRIAL_MOD))
-        {
-            if (!member.getRoles().contains(trialModRole))
-            {
-                server.addRoleToMember(member, trialModRole).complete();
-            }
-            if (member.getRoles().contains(modRole))
-            {
-                server.removeRoleFromMember(member, modRole).complete();
-            }
-            if (member.getRoles().contains(adminRole))
-            {
-                server.removeRoleFromMember(member, adminRole).complete();
-            }
-            return true;
-        }
-        else if (staffMember.getRank().equals(Rank.MOD))
-        {
-            if (!member.getRoles().contains(modRole))
-            {
-                server.addRoleToMember(member, modRole).complete();
-            }
-            if (member.getRoles().contains(trialModRole))
-            {
-                server.removeRoleFromMember(member, trialModRole).complete();
-            }
-            if (member.getRoles().contains(adminRole))
-            {
-                server.removeRoleFromMember(member, adminRole).complete();
-            }
-            return true;
-        }
-        else if (staffMember.getRank().equals(Rank.ADMIN))
+        if (staffMember.getRank().equals(Rank.NEW_ADMIN))
         {
             if (!member.getRoles().contains(adminRole))
             {
                 server.addRoleToMember(member, adminRole).complete();
             }
-            if (member.getRoles().contains(trialModRole))
+            if (member.getRoles().contains(senioradminRole))
             {
-                server.removeRoleFromMember(member, trialModRole).complete();
-            }
-            if (member.getRoles().contains(modRole))
-            {
-                server.removeRoleFromMember(member, modRole).complete();
+                server.removeRoleFromMember(member, senioradminRole).complete();
             }
             return true;
         }
-
+        else if (staffMember.getRank().equals(Rank.SENIOR_ADMIN))
+        {
+            if (!member.getRoles().contains(senioradminRole))
+            {
+                server.addRoleToMember(member, senioradminRole).complete();
+            }
+            if (member.getRoles().contains(adminRole))
+            {
+                server.removeRoleFromMember(member, adminRole).complete();
+            }
+            return true;
+        }
         return false;
     }
 }

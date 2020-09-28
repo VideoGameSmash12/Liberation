@@ -43,7 +43,7 @@ public enum CommandBlockerRank
         StaffMember staffMember = TotalFreedomMod.plugin().sl.getAdmin(sender);
         if (staffMember != null)
         {
-            if (staffMember.getRank() == Rank.ADMIN)
+            if (staffMember.getRank() == Rank.SENIOR_ADMIN)
             {
                 return SENIOR;
             }

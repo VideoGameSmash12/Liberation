@@ -47,13 +47,13 @@ public class Command_list extends FreedomCommand
                 }
                 case "-v":
                 {
-                    checkRank(Rank.TRIAL_MOD);
+                    checkRank(Rank.NEW_ADMIN);
                     listFilter = ListFilter.VANISHED_STAFF;
                     break;
                 }
                 case "-t":
                 {
-                    checkRank(Rank.MOD);
+                    checkRank(Rank.NEW_ADMIN);
                     listFilter = ListFilter.TELNET_SESSIONS;
                     break;
                 }
@@ -82,7 +82,7 @@ public class Command_list extends FreedomCommand
 
         List<String> n = new ArrayList<>();
 
-        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.sl.isStaff(sender) && plugin.sl.getAdmin(playerSender).getRank().isAtLeast(Rank.MOD))
+        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.sl.isStaff(sender) && plugin.sl.getAdmin(playerSender).getRank().isAtLeast(Rank.NEW_ADMIN))
         {
             List<StaffMember> connectedStaffMembers = plugin.btb.getConnectedAdmins();
             onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(connectedStaffMembers.size())

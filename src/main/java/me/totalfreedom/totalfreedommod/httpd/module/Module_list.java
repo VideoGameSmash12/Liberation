@@ -29,9 +29,8 @@ public class Module_list extends HTTPDModule
             final JSONArray operators = new JSONArray();
             final JSONArray imposters = new JSONArray();
             final JSONArray masterbuilders = new JSONArray();
-            final JSONArray trialmods = new JSONArray();
-            final JSONArray mods = new JSONArray();
             final JSONArray admins = new JSONArray();
+            final JSONArray senioradmins = new JSONArray();
             final JSONArray developers = new JSONArray();
             final JSONArray executives = new JSONArray();
             final JSONArray owners = new JSONArray();
@@ -79,14 +78,11 @@ public class Module_list extends HTTPDModule
                     StaffMember staffMember = plugin.sl.getAdmin(player);
                     switch (staffMember.getRank())
                     {
-                        case TRIAL_MOD:
-                            trialmods.add(player.getName());
-                            break;
-                        case MOD:
-                            mods.add(player.getName());
-                            break;
-                        case ADMIN:
+                        case NEW_ADMIN:
                             admins.add(player.getName());
+                            break;
+                        case SENIOR_ADMIN:
+                            senioradmins.add(player.getName());
                             break;
                     }
                 }
@@ -95,9 +91,8 @@ public class Module_list extends HTTPDModule
             responseObject.put("operators", operators);
             responseObject.put("imposters", imposters);
             responseObject.put("masterbuilders", masterbuilders);
-            responseObject.put("trialmods", trialmods);
-            responseObject.put("mods", mods);
             responseObject.put("admins", admins);
+            responseObject.put("senioradmins", senioradmins);
             responseObject.put("developers", developers);
             responseObject.put("executives", executives);
             responseObject.put("owners", owners);
