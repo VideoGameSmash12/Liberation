@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.rank;
 
-import me.libraryaddict.disguise.DisguiseAPI;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
@@ -20,7 +19,6 @@ import org.bukkit.scoreboard.Team;
 
 public class RankManager extends FreedomService
 {
-
     @Override
     public void onStart()
     {
