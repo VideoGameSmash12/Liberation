@@ -71,6 +71,10 @@ public class Ban
         dedupeIps();
         this.by = by;
         this.at = at;
+        if (expire == null)
+        {
+            expire = FUtil.parseDateOffset("24h");
+        }
         this.expiryUnix = FUtil.getUnixTime(expire);
         this.reason = reason;
     }
