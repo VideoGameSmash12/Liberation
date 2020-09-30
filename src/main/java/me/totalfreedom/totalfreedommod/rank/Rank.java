@@ -8,8 +8,8 @@ public enum Rank implements Displayable
     IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false),
     NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false),
     OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false),
-    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
-    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.LIGHT_PURPLE, org.bukkit.ChatColor.LIGHT_PURPLE, true),
+    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true),
+    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
     ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
     SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false);
     @Getter
