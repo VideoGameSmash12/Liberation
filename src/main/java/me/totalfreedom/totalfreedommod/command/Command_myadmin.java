@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Manage your staff entry.", usage = "/<command> [-o <staff member>] <clearips | clearip <ip> | setlogin <message> | clearlogin | setscformat <format> | clearscformat> | oldtags | logstick | syncroles>")
-public class Command_mystaff extends FreedomCommand
+public class Command_myadmin extends FreedomCommand
 {
 
     @Override
@@ -139,46 +139,6 @@ public class Command_mystaff extends FreedomCommand
                 return true;
             }
 
-            case "setlogin":
-            {
-                checkRank(Rank.ADMIN);
-                if (args.length < 2)
-                {
-                    return false;
-                }
-
-                String message = StringUtils.join(args, " ", 1, args.length);
-                if (!message.contains("%rank%") && !message.contains("%coloredrank%"))
-                {
-                    msg("Your login message must contain your rank. Use either %rank% or %coloredrank% to specify where you want the rank", ChatColor.RED);
-                    return true;
-                }
-                int length = message.replace("%name%", "").replace("%rank%", "").replace("%coloredrank%", "").length();
-                if (length > 100)
-                {
-                    msg("Your login message cannot be more than 100 characters (excluding your rank and your name)", ChatColor.RED);
-                    return true;
-                }
-                FUtil.staffAction(sender.getName(), "Setting personal login message" + (init == null ? "" : " for " + targetPlayer.getName()), false);
-                target.setLoginMessage(message);
-                String previewMessage = plugin.rm.craftLoginMessage(targetPlayer, message);
-                msg((init == null ? "Your" : targetPlayer.getName() + "'s") + " login message is now: ");
-                msg("> " + previewMessage);
-                plugin.sl.save(target);
-                plugin.sl.updateTables();
-                return true;
-            }
-
-            case "clearlogin":
-            {
-                checkRank(Rank.ADMIN);
-                FUtil.staffAction(sender.getName(), "Clearing personal login message" + (init == null ? "" : " for " + targetPlayer.getName()), false);
-                target.setLoginMessage(null);
-                plugin.sl.save(target);
-                plugin.sl.updateTables();
-                return true;
-            }
-
             case "setscformat":
             {
                 String format = StringUtils.join(args, " ", 1, args.length);
@@ -229,10 +189,6 @@ public class Command_mystaff extends FreedomCommand
                 return true;
             }
 
-            case "genbackupcodes":
-                msg("Moved to /pv genbackupcodes", ChatColor.RED);
-                return true;
-
             default:
             {
                 return false;
@@ -248,8 +204,8 @@ public class Command_mystaff extends FreedomCommand
             return Collections.emptyList();
         }
 
-        List<String> singleArguments = Arrays.asList("clearips", "setlogin", "setscformat");
-        List<String> doubleArguments = Arrays.asList("clearip", "clearlogin", "clearscformat", "oldtags", "syncroles");
+        List<String> singleArguments = Arrays.asList("clearips",  "setscformat");
+        List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "syncroles");
         if (args.length == 1)
         {
             List<String> options = new ArrayList<>();

@@ -5,19 +5,20 @@ import net.md_5.bungee.api.ChatColor;
 
 public enum Rank implements Displayable
 {
-    IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false),
-    NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false),
-    OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false),
-    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true),
-    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true),
-    ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false),
-    SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false);
+    IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false, false),
+    NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false, false),
+    OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false, false),
+    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true, true),
+    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
+    ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false),
+    SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false);
     @Getter
     private final Type type;
     @Getter
     private final String name;
     @Getter
     private final String abbr;
+    @Getter
     private final String determiner;
     @Getter
     private final String tag;
@@ -29,8 +30,10 @@ public enum Rank implements Displayable
     private final org.bukkit.ChatColor teamColor;
     @Getter
     private final boolean hasTeam;
+    @Getter
+    private final boolean hasDefaultLoginMessage;
 
-    Rank(String determiner, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam)
+    Rank(String determiner, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
     {
         this.type = type;
         this.name = name;
@@ -41,6 +44,7 @@ public enum Rank implements Displayable
         this.color = color;
         this.teamColor = teamColor;
         this.hasTeam = hasTeam;
+        this.hasDefaultLoginMessage = hasDefaultLoginMessage;
     }
 
     @Override
@@ -59,6 +63,12 @@ public enum Rank implements Displayable
     public boolean hasTeam()
     {
         return hasTeam;
+    }
+
+    @Override
+    public boolean hasDefaultLoginMessage()
+    {
+        return hasDefaultLoginMessage;
     }
 
     @Override

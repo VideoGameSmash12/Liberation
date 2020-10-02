@@ -73,7 +73,7 @@ public class Module_list extends HTTPDModule
                     operators.add(player.getName());
                 }
 
-                if (!hasSpecialTitle(player) && plugin.sl.isStaff(player))
+                if (!hasSpecialTitle(player) && plugin.sl.isStaff(player) && !plugin.sl.isVanished(player.getName()))
                 {
                     StaffMember staffMember = plugin.sl.getAdmin(player);
                     switch (staffMember.getRank())
@@ -142,7 +142,7 @@ public class Module_list extends HTTPDModule
 
     public boolean hasSpecialTitle(Player player)
     {
-        if (FUtil.DEVELOPERS.contains(player.getName()) || ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_OWNERS.getList().contains(player.getName()))
+        if (FUtil.DEVELOPERS.contains(player.getUniqueId().toString()) || ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_OWNERS.getList().contains(player.getName()))
         {
             return true;
         }

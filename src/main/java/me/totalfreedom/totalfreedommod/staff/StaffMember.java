@@ -35,9 +35,6 @@ public class StaffMember
     private Date lastLogin = new Date();
     @Getter
     @Setter
-    private String loginMessage = null;
-    @Getter
-    @Setter
     private Boolean commandSpy = false;
     @Getter
     @Setter
@@ -65,7 +62,6 @@ public class StaffMember
             this.ips.clear();
             this.ips.addAll(FUtil.stringToList(resultSet.getString("ips")));
             this.lastLogin = new Date(resultSet.getLong("last_login"));
-            this.loginMessage = resultSet.getString("login_message");
             this.commandSpy = resultSet.getBoolean("command_spy");
             this.potionSpy = resultSet.getBoolean("potion_spy");
             this.acFormat = resultSet.getString("ac_format");
@@ -85,7 +81,6 @@ public class StaffMember
         output.append("Staff: ").append(name).append("\n")
                 .append("- IPs: ").append(StringUtils.join(ips, ", ")).append("\n")
                 .append("- Last Login: ").append(FUtil.dateToString(lastLogin)).append("\n")
-                .append("- Custom Login Message: ").append(loginMessage).append("\n")
                 .append("- Rank: ").append(rank.getName()).append("\n")
                 .append("- Is Active: ").append(active).append("\n")
                 .append("- Potion Spy: ").append(potionSpy).append("\n")
@@ -104,18 +99,12 @@ public class StaffMember
             put("rank", rank.toString());
             put("ips", FUtil.listToString(ips));
             put("last_login", lastLogin.getTime());
-            put("login_message", loginMessage);
             put("command_spy", commandSpy);
             put("potion_spy", potionSpy);
             put("ac_format", acFormat);
             put("ptero_id", pteroID);
         }};
         return map;
-    }
-
-    public boolean hasLoginMessage()
-    {
-        return loginMessage != null && !loginMessage.isEmpty();
     }
 
     // Util IP methods

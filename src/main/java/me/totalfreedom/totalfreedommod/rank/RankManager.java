@@ -168,7 +168,7 @@ public class RankManager extends FreedomService
         FPlayer fPlayer = plugin.pl.getPlayer(player);
         PlayerData data = plugin.pl.getData(player);
         Displayable display = getDisplay(player);
-        if (plugin.sl.isStaff(player) || data.isMasterBuilder() || data.isDonator() || FUtil.isDeveloper(player))
+        if (plugin.sl.isStaff(player) || data.isMasterBuilder() || FUtil.isDeveloper(player))
         {
             String displayName = display.getColor() + player.getName();
             player.setPlayerListName(displayName);
@@ -237,7 +237,7 @@ public class RankManager extends FreedomService
         }
 
         // Broadcast login message
-        if (isStaff || FUtil.isDeveloper(player) || plugin.pl.getData(player).isMasterBuilder() || plugin.pl.getData(player).isDonator())
+        if (isStaff || FUtil.isDeveloper(player) || plugin.pl.getData(player).isMasterBuilder() || plugin.pl.getData(player).hasLoginMessage())
         {
             if (!plugin.sl.isVanished(player.getName()))
             {
@@ -260,23 +260,32 @@ public class RankManager extends FreedomService
     public String craftLoginMessage(Player player, String message)
     {
         Displayable display = plugin.rm.getDisplay(player);
-        String loginMessage = ChatColor.AQUA + player.getName() + " is " + display.getColoredLoginMessage();
-        if (plugin.sl.isStaff(player))
+        PlayerData playerData = plugin.pl.getData(player);
+        if (message == null)
         {
-            StaffMember staffMember = plugin.sl.getAdmin(player);
-            if (staffMember.hasLoginMessage())
+            if (playerData.hasLoginMessage())
             {
-                if (message == null)
+                message = playerData.getLoginMessage();
+            }
+            else
+            {
+                if (display.hasDefaultLoginMessage())
                 {
-                    message = staffMember.getLoginMessage();
+                    message = "%name% is %det% %coloredrank%";
                 }
-                loginMessage = FUtil.colorize(ChatColor.AQUA + (message.contains("%name%") ? "" : player.getName() + " is ")
-                        + FUtil.colorize(message).replace("%name%", player.getName())
-                        .replace("%rank%", display.getName())
-                        .replace("%coloredrank%", display.getColoredName()));
             }
         }
-        return loginMessage;
+        if (message != null)
+        {
+            String loginMessage = FUtil.colorize(ChatColor.AQUA + (message.contains("%name%") ? "" : player.getName() + " is ")
+                    + FUtil.colorize(message).replace("%name%", player.getName())
+                    .replace("%rank%", display.getName())
+                    .replace("%coloredrank%", display.getColoredName())
+                    .replace("%det%", display.getDeterminer()));
+            return loginMessage;
+        }
+
+        return null;
     }
 
     public void updatePlayerTeam(Player player)

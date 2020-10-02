@@ -33,8 +33,6 @@ public class PlayerData
     private String discordID = null;
     private final List<String> backupCodes = Lists.newArrayList();
     @Setter
-    private boolean donator = false;
-    @Setter
     private Boolean masterBuilder = false;
     @Setter
     private Boolean verification = false;
@@ -53,6 +51,9 @@ public class PlayerData
     @Getter
     @Setter
     private String redditUsername;
+    @Getter
+    @Setter
+    private String loginMessage;
 
     public PlayerData(ResultSet resultSet)
     {
@@ -67,7 +68,6 @@ public class PlayerData
             discordID = resultSet.getString("discord_id");
             backupCodes.clear();
             backupCodes.addAll(FUtil.stringToList(resultSet.getString("backup_codes")));
-            donator = resultSet.getBoolean("donator");
             masterBuilder = resultSet.getBoolean("master_builder");
             verification = resultSet.getBoolean("verification");
             rideMode = resultSet.getString("ride_mode");
@@ -77,6 +77,7 @@ public class PlayerData
             totalVotes = resultSet.getInt("total_votes");
             displayDiscord = resultSet.getBoolean("display_discord");
             redditUsername = resultSet.getString("reddit_username");
+            loginMessage = resultSet.getString("login_message");
         }
         catch (SQLException e)
         {
@@ -104,7 +105,6 @@ public class PlayerData
         output.append("Player: ").append(name).append("\n")
                 .append("- IPs: ").append(StringUtils.join(ips, ", ")).append("\n")
                 .append("- Discord ID: ").append(discordID).append("\n")
-                .append("- Donator: ").append(donator).append("\n")
                 .append("- Master Builder: ").append(masterBuilder).append("\n")
                 .append("- Has Verification: ").append(verification).append("\n")
                 .append("- Coins: ").append(coins).append("\n")
@@ -113,7 +113,8 @@ public class PlayerData
                 .append("- Tag: ").append(FUtil.colorize(tag)).append(ChatColor.GRAY).append("\n")
                 .append("- Ride Mode: ").append(rideMode).append("\n")
                 .append("- Backup Codes: ").append(backupCodes.size()).append("/10").append("\n")
-                .append("- Reddit Username: ").append(redditUsername);
+                .append("- Reddit Username: ").append(redditUsername)
+                .append("- Login Message: ").append(loginMessage);
 
         return output.toString();
     }
@@ -126,6 +127,11 @@ public class PlayerData
     public List<String> getIps()
     {
         return Collections.unmodifiableList(ips);
+    }
+
+    public boolean hasLoginMessage()
+    {
+        return loginMessage != null && !loginMessage.isEmpty();
     }
 
     public boolean addIp(String ip)
@@ -221,11 +227,6 @@ public class PlayerData
         return verification;
     }
 
-    public boolean isDonator()
-    {
-        return donator;
-    }
-
     public boolean isMasterBuilder()
     {
         return masterBuilder;
@@ -241,7 +242,6 @@ public class PlayerData
             put("tag", tag);
             put("discord_id", discordID);
             put("backup_codes", FUtil.listToString(backupCodes));
-            put("donator", donator);
             put("master_builder", masterBuilder);
             put("verification", verification);
             put("ride_mode", rideMode);
@@ -250,6 +250,7 @@ public class PlayerData
             put("total_votes", totalVotes);
             put("display_discord", displayDiscord);
             put("reddit_username", redditUsername);
+            put("login_message", loginMessage);
         }};
         return map;
     }

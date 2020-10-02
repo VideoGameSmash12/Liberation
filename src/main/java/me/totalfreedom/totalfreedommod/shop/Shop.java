@@ -35,6 +35,7 @@ public class Shop extends FreedomService
     public final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "Reaction" + ChatColor.DARK_GRAY + "] ";
     public BukkitTask countdownTask;
     private BossBar countdownBar = null;
+    private final String LOGIN_MESSAGE_GUI_TITLE = ChatColor.DARK_GREEN + ChatColor.BOLD.toString() + "Login Messages";
 
     @Override
     public void onStart()
@@ -174,6 +175,27 @@ public class Shop extends FreedomService
         return gui;
     }
 
+    public Inventory generateLoginMessageGUI(Player player)
+    {
+        Inventory gui = server.createInventory(null, 36, LOGIN_MESSAGE_GUI_TITLE);
+        int slot = 0;
+        for (String loginMessage : ConfigEntry.SHOP_LOGIN_MESSAGES.getStringList())
+        {
+            ItemStack icon = new ItemStack(Material.NAME_TAG);
+            ItemMeta meta = icon.getItemMeta();
+            meta.setDisplayName(FUtil.colorize(plugin.rm.craftLoginMessage(player, loginMessage)));
+            icon.setItemMeta(meta);
+            gui.setItem(slot, icon);
+            slot++;
+        }
+        ItemStack clear = new ItemStack(Material.BARRIER);
+        ItemMeta meta = clear.getItemMeta();
+        meta.setDisplayName(ChatColor.RED + "Clear login message");
+        clear.setItemMeta(meta);
+        gui.setItem(35, clear);
+        return gui;
+    }
+
     public boolean isRealItem(PlayerData data, ShopItem shopItem, PlayerInventory inventory, ItemStack realItem)
     {
         if (isRealItem(data, shopItem, inventory.getItemInMainHand(), realItem) || isRealItem(data, shopItem, inventory.getItemInOffHand(), realItem))
@@ -306,7 +328,7 @@ public class Shop extends FreedomService
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onInventoryClick(InventoryClickEvent event)
+    public void onShopGUIClick(InventoryClickEvent event)
     {
         if (!(event.getWhoClicked() instanceof Player))
         {
@@ -348,6 +370,44 @@ public class Shop extends FreedomService
         {
             player.sendMessage(ChatColor.GREEN + "Run " + shopItem.getCommand() + " to get one!");
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onLoginMessageGUIClick(InventoryClickEvent event)
+    {
+        if (!(event.getWhoClicked() instanceof Player))
+        {
+            return;
+        }
+
+        Inventory inventory = event.getInventory();
+        if (inventory.getSize() != 36 || !event.getView().getTitle().equals(LOGIN_MESSAGE_GUI_TITLE))
+        {
+            return;
+        }
+        event.setCancelled(true);
+
+        int slot = event.getSlot();
+
+        Player player = (Player)event.getWhoClicked();
+        PlayerData data = plugin.pl.getData(player);
+
+        if (slot == 35)
+        {
+            data.setLoginMessage(null);
+            plugin.pl.save(data);
+            player.sendMessage(ChatColor.GREEN + "Removed your login message");
+        }
+        else
+        {
+            String message = ConfigEntry.SHOP_LOGIN_MESSAGES.getStringList().get(slot);
+            data.setLoginMessage(message);
+            plugin.pl.save(data);
+            player.sendMessage(ChatColor.GREEN + "Your login message is now the following:\n" + plugin.rm.craftLoginMessage(player, message));
+        }
+
+        player.closeInventory();
+
     }
 
     public ShopItem getShopItem(int slot)

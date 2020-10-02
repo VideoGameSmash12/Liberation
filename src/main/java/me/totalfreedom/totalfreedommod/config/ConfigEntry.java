@@ -99,11 +99,6 @@ public enum ConfigEntry
     PTERO_ADMIN_KEY(String.class, "ptero.admin_key"),
     PTERO_SERVER_KEY(String.class, "ptero.server_key"),
     //
-    DONATION_PROBOARDS_URL(String.class, "donation.proboards_url"),
-    DONATION_GROUP_ID(String.class, "donation.donator_group_id"),
-    DONATION_SESSION_ID(String.class, "donation.session_id"),
-    DONATION_CSRF_TOKEN(String.class, "donation.csrf_token"),
-    //
     SHOP_ENABLED(Boolean.class, "shop.enabled"),
     SHOP_TITLE(String.class, "shop.title"),
     SHOP_PREFIX(String.class, "shop.prefix"),
@@ -113,12 +108,14 @@ public enum ConfigEntry
     SHOP_REACTIONS_TIME(Double.class, "shop.reactions.time"),
     SHOP_REACTIONS_COINS_PER_WIN(Integer.class, "shop.reactions.coins_per_win"),
     SHOP_REACTIONS_STRING_LENGTH(Integer.class, "shop.reactions.string_length"),
+    SHOP_LOGIN_MESSAGES(List.class, "shop.login_messages"),
     SHOP_PRICES_GRAPPLING_HOOK(Integer.class, "shop.prices.grappling_hook"),
     SHOP_PRICES_LIGHTNING_ROD(Integer.class, "shop.prices.lightning_rod"),
     SHOP_PRICES_FIRE_BALL(Integer.class, "shop.prices.fire_ball"),
     SHOP_PRICES_RIDEABLE_PEARL(Integer.class, "shop.prices.rideable_pearl"),
     SHOP_PRICES_STACKING_POTATO(Integer.class, "shop.prices.stacking_potato"),
     SHOP_PRICES_CLOWN_FISH(Integer.class, "shop.prices.clown_fish"),
+    SHOP_PRICES_LOGIN_MESSAGES(Integer.class, "shop.prices.login_messages"),
     //
     STAFFLIST_CLEAN_THESHOLD_HOURS(Integer.class, "stafflist.clean_threshold_hours"),
     STAFFLIST_CONSOLE_IS_ADMIN(Boolean.class, "stafflist.console_is_admin"),

@@ -64,7 +64,7 @@ public class Module_players extends HTTPDModule
         masterbuilders.addAll(plugin.pl.getMasterBuilderNames());
 
         // Developers
-        developers.addAll(FUtil.DEVELOPERS);
+        developers.addAll(FUtil.DEVELOPER_NAMES);
 
         // Executives
         executives.addAll(ConfigEntry.SERVER_EXECUTIVES.getList());

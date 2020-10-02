@@ -146,6 +146,11 @@ shop:
     # How long is the random string (in characters)?
     string_length: 10
 
+  # Login messages. Use %name% for usernames, and %rank% for ranks/titles
+  login_messages:
+    - '&b%name% is a terrible %coloredrank%'
+    - '&bthat %name% dude is a shitty %coloredrank%'
+
   # Item prices
   prices:
     grappling_hook: 100
@@ -154,6 +159,7 @@ shop:
     rideable_pearl: 700
     stacking_potato: 300
     clown_fish: 1500
+    login_messages: 5000
 
 # Staff list
 stafflist:
@@ -189,12 +195,6 @@ social_links:
   Forum: 'https://forum.totalfreedom.me'
   Website: 'https://totalfreedom.me/'
   Discord: 'https://discordapp.com/invite/XXjmAmV/'
-
-donation:
-  proboards_url: ''
-  donator_group_id: ''
-  session_id: ''
-  csrf_token: ''
 
 # Blocking certain events
 allow:
