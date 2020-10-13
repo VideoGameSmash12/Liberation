@@ -256,12 +256,6 @@ public class ItemFun extends FreedomService
                     break;
                 }
 
-                if (onCooldown(player, ShopItem.CLOWN_FISH))
-                {
-                    player.sendMessage(ChatColor.RED + "You're currently on a cool-down for 30 seconds.");
-                    break;
-                }
-
                 event.setCancelled(true);
                 boolean didHit = false;
 

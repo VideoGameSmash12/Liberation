@@ -88,7 +88,7 @@ public class Command_manageshop extends FreedomCommand
                                 msg(PLAYER_NOT_FOUND);
                                 return true;
                             }
-                            playerData.setCoins(playerData.getCoins() + amount);
+                            playerData.setCoins(playerData.getCoins() - amount);
                             if (playerData.getCoins() < 0)
                             {
                                 playerData.setCoins(0);
