@@ -7,8 +7,12 @@ import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,7 +24,7 @@ public class DiscordToMinecraftListener extends ListenerAdapter
         String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
         if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id))
         {
-            if (!event.getAuthor().getId().equals(Discord.bot.getSelfUser().getId()) && !event.getMessage().getContentDisplay().isEmpty())
+            if (!event.getAuthor().getId().equals(Discord.bot.getSelfUser().getId()))
             {
                 Member member = event.getMember();
                 String tag = getDisplay(member);
@@ -29,15 +33,40 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 {
                     message += " " + tag;
                 }
-                message += " " + ChatColor.RED + ChatColor.stripColor(member.getEffectiveName()) + ChatColor.DARK_GRAY + ": " + ChatColor.RESET + ChatColor.stripColor(event.getMessage().getContentDisplay());
-                for (Player player : Bukkit.getOnlinePlayers())
+                message += " " + ChatColor.RED + ChatColor.stripColor(member.getEffectiveName()) + ChatColor.DARK_GRAY + ": " + ChatColor.RESET;
+                if (!event.getMessage().getContentDisplay().isEmpty())
                 {
-                    if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+                    message += ChatColor.stripColor(event.getMessage().getContentDisplay());
+                    for (Player player : Bukkit.getOnlinePlayers())
                     {
-                        player.sendMessage(message);
+                        if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+                        {
+                            player.sendMessage(message);
+                        }
+                    }
+                    FLog.info(message);
+                }
+                else
+                {
+                    ComponentBuilder builder = new ComponentBuilder(message);
+                    for (Message.Attachment attachment : event.getMessage().getAttachments())
+                    {
+                        if (attachment.getUrl() == null)
+                        {
+                            continue;
+                        }
+                        TextComponent text = new TextComponent(net.md_5.bungee.api.ChatColor.YELLOW + "[Media]");
+                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                        builder.append(text).append(" ");
+                    }
+                    for (Player player : Bukkit.getOnlinePlayers())
+                    {
+                        if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+                        {
+                            player.spigot().sendMessage(builder.create());
+                        }
                     }
                 }
-                FLog.info(message);
             }
         }
     }
