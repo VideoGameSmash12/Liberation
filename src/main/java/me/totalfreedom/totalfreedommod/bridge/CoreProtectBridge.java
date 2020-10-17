@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -103,7 +104,7 @@ public class CoreProtectBridge extends FreedomService
             @Override
             public void run()
             {
-                coreProtect.performRollback(86400, Arrays.asList(name), null, null, null, null, 0, null);
+                coreProtect.performRollback(86400, Collections.singletonList(name), null, null, null, null, 0, null);
             }
         }.runTaskAsynchronously(plugin);
     }
@@ -123,7 +124,7 @@ public class CoreProtectBridge extends FreedomService
             @Override
             public void run()
             {
-                coreProtect.performRestore(86400, Arrays.asList(name), null, null, null, null, 0, null);
+                coreProtect.performRestore(86400, Collections.singletonList(name), null, null, null, null, 0, null);
             }
         }.runTaskAsynchronously(plugin);
     }

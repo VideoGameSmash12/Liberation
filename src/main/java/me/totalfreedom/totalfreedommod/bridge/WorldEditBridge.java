@@ -60,7 +60,7 @@ public class WorldEditBridge extends FreedomService
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        com.sk89q.worldedit.entity.Player fuckyou = (com.sk89q.worldedit.entity.Player)bukkitPlayer;
+                        com.sk89q.worldedit.entity.Player fuckyou = bukkitPlayer;
                         session.undo(session.getBlockBag(fuckyou), fuckyou);
                     }
                 }
