@@ -29,44 +29,41 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 Member member = event.getMember();
                 String tag = getDisplay(member);
                 String message = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "]";
+                Message msg = event.getMessage();
                 if (tag != null)
                 {
                     message += " " + tag;
                 }
-                message += " " + ChatColor.RED + ChatColor.stripColor(member.getEffectiveName()) + ChatColor.DARK_GRAY + ": " + ChatColor.RESET;
-                if (!event.getMessage().getContentDisplay().isEmpty())
+                message += " " + ChatColor.RED + ChatColor.stripColor(member.getEffectiveName()) + ChatColor.DARK_GRAY + ":" + ChatColor.RESET;
+                ComponentBuilder builder = new ComponentBuilder(message);
+                if (!msg.getContentDisplay().isEmpty())
                 {
-                    message += ChatColor.stripColor(event.getMessage().getContentDisplay());
-                    for (Player player : Bukkit.getOnlinePlayers())
-                    {
-                        if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
-                        {
-                            player.sendMessage(message);
-                        }
-                    }
-                    FLog.info(message);
+                    builder.append(" ").append(ChatColor.stripColor(msg.getContentDisplay()));
+                    message += " " + ChatColor.stripColor(msg.getContentDisplay()); // for logging
                 }
-                else
+                if (!msg.getAttachments().isEmpty())
                 {
-                    ComponentBuilder builder = new ComponentBuilder(message);
-                    for (Message.Attachment attachment : event.getMessage().getAttachments())
+                    for (Message.Attachment attachment : msg.getAttachments())
                     {
                         if (attachment.getUrl() == null)
                         {
                             continue;
                         }
-                        TextComponent text = new TextComponent(net.md_5.bungee.api.ChatColor.YELLOW + "[Media]");
+                        builder.append(" ");
+                        TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
                         text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                        builder.append(text).append(" ");
-                    }
-                    for (Player player : Bukkit.getOnlinePlayers())
-                    {
-                        if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
-                        {
-                            player.spigot().sendMessage(builder.create());
-                        }
+                        builder.append(text);
+                        message += " [Media]"; // for logging
                     }
                 }
+                for (Player player : Bukkit.getOnlinePlayers())
+                {
+                    if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+                    {
+                        player.spigot().sendMessage(builder.create());
+                    }
+                }
+                FLog.info(message);
             }
         }
     }
