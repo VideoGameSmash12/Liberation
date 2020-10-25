@@ -5,7 +5,7 @@ import net.md_5.bungee.api.ChatColor;
 public interface Displayable
 {
 
-    public String getDeterminer();
+    public String getArticle();
 
     public String getName();
 

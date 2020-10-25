@@ -19,7 +19,7 @@ public enum Rank implements Displayable
     @Getter
     private final String abbr;
     @Getter
-    private final String determiner;
+    private final String article;
     @Getter
     private final String tag;
     @Getter
@@ -33,12 +33,12 @@ public enum Rank implements Displayable
     @Getter
     private final boolean hasDefaultLoginMessage;
 
-    Rank(String determiner, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
+    Rank(String article, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
     {
         this.type = type;
         this.name = name;
         this.abbr = abbr;
-        this.determiner = determiner;
+        this.article = article;
         this.tag = abbr.isEmpty() ? "" : "[" + abbr + "]";
         this.coloredTag = abbr.isEmpty() ? "" : ChatColor.DARK_GRAY + "[" + color + abbr + ChatColor.DARK_GRAY + "]" + color;
         this.color = color;
@@ -56,7 +56,7 @@ public enum Rank implements Displayable
     @Override
     public String getColoredLoginMessage()
     {
-        return determiner + " " + color + name;
+        return article + " " + color + name;
     }
 
     @Override

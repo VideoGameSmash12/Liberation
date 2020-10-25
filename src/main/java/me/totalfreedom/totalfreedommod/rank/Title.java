@@ -13,7 +13,7 @@ public enum Title implements Displayable
     OWNER("the", "Owner", ChatColor.of("#ff0000"), org.bukkit.ChatColor.DARK_RED, "Owner", true, true);
 
     @Getter
-    private final String determiner;
+    private final String article;
     @Getter
     private final String name;
     @Getter
@@ -30,9 +30,9 @@ public enum Title implements Displayable
     private final boolean hasTeam;
     private final boolean hasDefaultLoginMessage;
 
-    Title(String determiner, String name, ChatColor color, org.bukkit.ChatColor teamColor, String tag, Boolean hasTeam, Boolean hasDefaultLoginMessage)
+    Title(String article, String name, ChatColor color, org.bukkit.ChatColor teamColor, String tag, Boolean hasTeam, Boolean hasDefaultLoginMessage)
     {
-        this.determiner = determiner;
+        this.article = article;
         this.name = name;
         this.coloredTag = ChatColor.DARK_GRAY + "[" + color + tag + ChatColor.DARK_GRAY + "]" + color;
         this.abbr = tag;
@@ -64,6 +64,6 @@ public enum Title implements Displayable
     @Override
     public String getColoredLoginMessage()
     {
-        return determiner + " " + color + name;
+        return article + " " + color + name;
     }
 }

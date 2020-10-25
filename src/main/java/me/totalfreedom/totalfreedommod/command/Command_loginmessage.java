@@ -37,7 +37,7 @@ public class Command_loginmessage extends FreedomCommand
             msg("Your login message must contain your rank. Use either %rank% or %coloredrank% to specify where you want the rank", ChatColor.RED);
             return true;
         }
-        int length = message.replace("%name%", "").replace("%rank%", "").replace("%coloredrank%", "").replace("%det%", "").length();
+        int length = message.replace("%name%", "").replace("%rank%", "").replace("%coloredrank%", "").replace("%art%", "").length();
         if (length > 100)
         {
             msg("Your login message cannot be more than 100 characters (excluding your rank and your name)", ChatColor.RED);

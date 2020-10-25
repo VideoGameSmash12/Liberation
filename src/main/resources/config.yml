@@ -148,8 +148,21 @@ shop:
 
   # Login messages. Use %name% for usernames, and %rank% for ranks/titles
   login_messages:
-    - '&b%name% is a terrible %coloredrank%'
-    - '&bthat %name% dude is a shitty %coloredrank%'
+    - '%name% is a terrible %coloredrank%'
+    - 'that %name% dude is a shitty %coloredrank%'
+    - 'Hi, my name is %name% and I'm %art% %coloredrank%&b that wasted coins on this login message.'
+    - '&aDo not fear, %coloredrank% &b%name% &ais here!'
+    - '%name% is %art% %coloredrank%&b, say hi to them before they gets banned for doing something stupid'
+    - 'Oh. It's &l%name%&r&b the %coloredrank%&b again. Great.'
+    - 'Make way for %name% the %coloredrank%&b!'
+    - 'It's a bird! It's a plane! No, it's %art% %rank%! It's %name%'
+    - '%rank% %name%'
+    - '%coloredrank%&b %name%'
+    - 'A wild %name%, %art% %coloredrank%&b, appeared!'
+    - 'All in all, the %rank% %name% is just another brick in the wall'
+    - '&a%name% &bis a a geeky &6%rank%'
+    - '%name% is the %rank% who just exists'
+    - '%name% based cringe poggers based based %rank%'
 
   # Item prices
   prices:

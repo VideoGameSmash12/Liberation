@@ -271,7 +271,7 @@ public class RankManager extends FreedomService
             {
                 if (display.hasDefaultLoginMessage())
                 {
-                    message = "%name% is %det% %coloredrank%";
+                    message = "%name% is %art% %coloredrank%";
                 }
             }
         }
@@ -281,7 +281,7 @@ public class RankManager extends FreedomService
                     + FUtil.colorize(message).replace("%name%", player.getName())
                     .replace("%rank%", display.getName())
                     .replace("%coloredrank%", display.getColoredName())
-                    .replace("%det%", display.getDeterminer()));
+                    .replace("%art%", display.getDeterminer()));
             return loginMessage;
         }
 
