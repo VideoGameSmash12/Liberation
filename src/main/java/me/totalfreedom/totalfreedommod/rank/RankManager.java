@@ -281,7 +281,7 @@ public class RankManager extends FreedomService
                     + FUtil.colorize(message).replace("%name%", player.getName())
                     .replace("%rank%", display.getName())
                     .replace("%coloredrank%", display.getColoredName())
-                    .replace("%art%", display.getDeterminer()));
+                    .replace("%art%", display.getArticle()));
             return loginMessage;
         }
 
