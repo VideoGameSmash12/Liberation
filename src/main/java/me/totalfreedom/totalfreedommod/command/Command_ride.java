@@ -3,7 +3,6 @@ package me.totalfreedom.totalfreedommod.command;
 import io.papermc.lib.PaperLib;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimerTask;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -12,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @CommandPermissions(level = Rank.OP, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Ride on the top of the specified player.", usage = "/<command> <playername | mode <normal | off | ask>>")
@@ -39,7 +39,7 @@ public class Command_ride extends FreedomCommand
         {
             if (!RIDE_REQUESTS.containsKey(playerSender))
             {
-                msg("You don't have a request currently.");
+                msg("You don't have any pending requests.");
                 return true;
             }
 
@@ -59,6 +59,7 @@ public class Command_ride extends FreedomCommand
                 PaperLib.teleportAsync(requester, playerSender.getLocation());
             }
 
+            RIDE_REQUESTS.remove(playerSender);
             playerSender.addPassenger(requester);
             return true;
         }
@@ -67,7 +68,7 @@ public class Command_ride extends FreedomCommand
         {
             if (!RIDE_REQUESTS.containsKey(playerSender))
             {
-                msg("You don't have a request currently.");
+                msg("You don't have any pending requests.");
                 return true;
             }
             Player requester = RIDE_REQUESTS.get(playerSender);
@@ -125,22 +126,23 @@ public class Command_ride extends FreedomCommand
             player.sendMessage(ChatColor.AQUA + sender.getName() + " has requested to ride you.");
             player.sendMessage(ChatColor.AQUA + "Type " + ChatColor.GREEN + "/ride accept" + ChatColor.AQUA + " to allow the player to ride you.");
             player.sendMessage(ChatColor.AQUA + "Type " + ChatColor.RED + "/ride deny" + ChatColor.AQUA + " to deny the player permission.");
-            player.sendMessage(ChatColor.AQUA + "Request will expire after 30 seconds.");
+            player.sendMessage(ChatColor.AQUA + "Request will expire in 30 seconds.");
             RIDE_REQUESTS.put(player, playerSender);
-            timer.schedule(new TimerTask()
+
+            new BukkitRunnable()
             {
-                @Override
                 public void run()
                 {
                     if (!RIDE_REQUESTS.containsKey(player))
                     {
                         return;
                     }
+
                     RIDE_REQUESTS.remove(player);
-                    msg("Request expired.", ChatColor.RED);
+                    playerSender.sendMessage(ChatColor.RED + "It has been 30 seconds and " + player.getName() + " has not accepted your request.");
                     player.sendMessage(ChatColor.RED + "Request expired.");
                 }
-            }, 30000);
+            }.runTaskLater(plugin, 20 * 30);
             return true;
         }
 
