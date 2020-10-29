@@ -150,12 +150,12 @@ shop:
   login_messages:
     - '%name% is a terrible %coloredrank%'
     - 'that %name% dude is a shitty %coloredrank%'
-    - 'Hi, my name is %name% and I'm %art% %coloredrank%&b that wasted coins on this login message.'
+    - 'Hi, my name is %name% and I''m %art% %coloredrank%&b that wasted coins on this login message.'
     - '&aDo not fear, %coloredrank% &b%name% &ais here!'
     - '%name% is %art% %coloredrank%&b, say hi to them before they gets banned for doing something stupid'
-    - 'Oh. It's &l%name%&r&b the %coloredrank%&b again. Great.'
+    - 'Oh. It''s &l%name%&r&b the %coloredrank%&b again. Great.'
     - 'Make way for %name% the %coloredrank%&b!'
-    - 'It's a bird! It's a plane! No, it's %art% %rank%! It's %name%'
+    - 'It''s a bird! It''s a plane! No, it''s %art% %rank%! It''s %name%'
     - '%rank% %name%'
     - '%coloredrank%&b %name%'
     - 'A wild %name%, %art% %coloredrank%&b, appeared!'
@@ -163,6 +163,7 @@ shop:
     - '&a%name% &bis a a geeky &6%rank%'
     - '%name% is the %rank% who just exists'
     - '%name% based cringe poggers based based %rank%'
+    - '%name% thinks that &dWindows Server 2019 &bis the best server OS'
 
   # Item prices
   prices:

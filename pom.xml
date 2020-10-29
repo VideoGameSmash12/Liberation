@@ -114,20 +114,25 @@
             <id>ess-repo</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
+
+        <repository>
+            <id>telesphoreo-repo</id>
+            <url>https://telesphoreo.me/repo/maven/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.7</version>
+            <version>2.8.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -141,35 +146,49 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.14</version>
+            <version>1.15</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.telesphoreo</groupId>
+            <artifactId>mojangson</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.2-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.TotalFreedom</groupId>
+            <groupId>com.github.TotalFreedomMC</groupId>
             <artifactId>BukkitTelnet</artifactId>
-            <version>4.5-pre1</version>
+            <version>541e9fdb84</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.TFPatches</groupId>
+            <groupId>com.github.TotalFreedomMC</groupId>
             <artifactId>TF-LibsDisguises</artifactId>
-            <version>0cfa32159a</version>
+            <version>48f01cf2fe</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.1.0</version>
+            <version>7.2.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -232,19 +251,21 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <version>0.9.12</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>javassist</groupId>
+            <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.12.1.GA</version>
+            <version>3.27.0-GA</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.TFPatches</groupId>
+            <groupId>com.github.TotalFreedomMC</groupId>
             <artifactId>TFGuilds</artifactId>
-            <version>ad93b9ed00</version>
+            <version>db036fb187</version>
             <scope>provided</scope>
         </dependency>
 
@@ -252,6 +273,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
             <version>3.1.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -419,6 +441,10 @@
                                     <pattern>io.papermc.lib</pattern>
                                     <shadedPattern>me.totalfreedom.totalfreedommod.paperlib</shadedPattern> <!-- Replace this -->
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>me.totalfreedom.totalfreedommod</shadedPattern>
+                                </relocation>
                             </relocations>
                             <artifactSet>
                                 <includes>
@@ -426,9 +452,11 @@
                                     <include>org.apache.commons:commons-lang3</include>
                                     <include>commons-codec:commons-codec</include>
                                     <include>org.reflections:reflections</include>
-                                    <include>javassist:javassist</include>
+                                    <include>org.javassist:javassist</include>
                                     <include>me.rayzr522:jsonmessage</include>
                                     <include>io.papermc:paperlib</include>
+                                    <include>me.telesphoreo:mojangson</include>
+                                    <include>org.bstats:bstats-bukkit</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
