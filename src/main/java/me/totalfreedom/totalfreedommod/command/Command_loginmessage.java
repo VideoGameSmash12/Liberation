@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 @CommandParameters(description = "Change your login message", usage = "/<command> [message]")
 public class Command_loginmessage extends FreedomCommand
 {
-
     @Override
     public boolean run(final CommandSender sender, final Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
