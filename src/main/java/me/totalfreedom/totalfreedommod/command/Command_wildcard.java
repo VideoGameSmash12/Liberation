@@ -14,12 +14,11 @@ import org.bukkit.entity.Player;
 @CommandParameters(description = "Run any command on all users, username placeholder = ?.", usage = "/<command> [fluff] ? [fluff] ?")
 public class Command_wildcard extends FreedomCommand
 {
-
     public static final List<String> BLOCKED_COMMANDS = Arrays.asList(
             "wildcard",
             "gtfo",
             "doom",
-            "saconfig",
+            "slconfig",
             "smite"
     );
 
@@ -52,15 +51,15 @@ public class Command_wildcard extends FreedomCommand
             aliases = Arrays.asList(fCmd.getAliases().split(","));
         }
 
-        for (String blockedCommand : BLOCKED_COMMANDS)
+        for (String arg : args)
         {
-            if (blockedCommand.equals(args[0].toLowerCase()) || aliases.contains(blockedCommand))
+            String strCommand = StringUtils.strip(arg, "/");
+            if (BLOCKED_COMMANDS.contains(strCommand.toLowerCase()) || aliases.contains(strCommand.toLowerCase()))
             {
                 msg("Did you really think that was going to work?", ChatColor.RED);
                 return true;
             }
         }
-
         String baseCommand = StringUtils.join(args, " ");
 
         if (plugin.cb.isCommandBlocked(baseCommand, sender))
@@ -75,7 +74,6 @@ public class Command_wildcard extends FreedomCommand
             msg("Running Command: " + runCommand);
             server.dispatchCommand(sender, runCommand);
         }
-
         return true;
     }
 }
