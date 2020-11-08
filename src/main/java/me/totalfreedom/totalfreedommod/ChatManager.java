@@ -49,7 +49,7 @@ public class ChatManager extends FreedomService
     {
         final Player player = event.getPlayer();
         String message = event.getMessage().trim();
-        
+
         // Format colors and strip &k
         message = FUtil.colorize(message);
         message = message.replaceAll(ChatColor.MAGIC.toString(), "&k");
@@ -121,7 +121,7 @@ public class ChatManager extends FreedomService
         {
             format = tag.replace("%", "%%") + " " + format;
         }
-        
+
         // Check for mentions
         Boolean mentionEveryone = ChatColor.stripColor(message).toLowerCase().contains("@everyone") && plugin.sl.isStaff(player);
         for (Player p : server.getOnlinePlayers())
@@ -186,8 +186,8 @@ public class ChatManager extends FreedomService
             if (plugin.sl.isStaff(player))
             {
                 playerMsg(player, ChatColor.RED + "[REPORTS] " + ChatColor.GOLD + reporter.getName() + " has reported " + reported.getName() + " for " + report);
-                FLog.info("[REPORTS] " + reporter.getName() + " has reported " + reported.getName() + " for " + report);
             }
         }
+        FLog.info("[REPORTS] " + reporter.getName() + " has reported " + reported.getName() + " for " + report);
     }
 }
