@@ -29,7 +29,7 @@ public class Command_verify extends FreedomCommand
             return true;
         }
 
-        if (!plugin.pl.isImposter(playerSender))
+        if (!plugin.pl.IsImpostor(playerSender))
         {
             msg("You are not an impostor, therefore you do not need to verify.", ChatColor.RED);
             return true;
@@ -57,7 +57,7 @@ public class Command_verify extends FreedomCommand
         String code = args[0];
         String backupCode = null;
 
-        if (plugin.pl.isImposter(playerSender))
+        if (plugin.pl.IsImpostor(playerSender))
         {
             PlayerData mapPlayer = plugin.dc.getVerificationCodes().get(code);
             if (mapPlayer == null)

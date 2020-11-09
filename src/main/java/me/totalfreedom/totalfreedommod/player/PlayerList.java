@@ -156,12 +156,13 @@ public class PlayerList extends FreedomService
     public Boolean isPlayerImpostor(Player player)
     {
         PlayerData playerData = getData(player);
-        return !plugin.sl.isStaff(player)
+        return plugin.dc.enabled
+                && !plugin.sl.isStaff(player)
                 && (playerData.hasVerification())
                 && !playerData.getIps().contains(FUtil.getIp(player));
     }
 
-    public boolean isImposter(Player player)
+    public boolean IsImpostor(Player player)
     {
         return isPlayerImpostor(player) || plugin.sl.isStaffImpostor(player);
     }

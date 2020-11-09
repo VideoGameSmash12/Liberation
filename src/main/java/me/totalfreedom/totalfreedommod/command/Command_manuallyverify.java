@@ -33,7 +33,7 @@ public class Command_manuallyverify extends FreedomCommand
             return true;
         }
 
-        if (!plugin.pl.isImposter(player))
+        if (!plugin.pl.IsImpostor(player))
         {
             msg("That player is not an impostor.");
             return true;
