@@ -10,7 +10,6 @@ import org.bukkit.World;
 
 public class GameRuleHandler extends FreedomService
 {
-
     private final Map<GameRule, Boolean> rules = new EnumMap<>(GameRule.class);
 
     public GameRuleHandler()
@@ -61,11 +60,8 @@ public class GameRuleHandler extends FreedomService
     public void commitGameRules()
     {
         List<World> worlds = Bukkit.getWorlds();
-        Iterator<Map.Entry<GameRule, Boolean>> it = rules.entrySet().iterator();
-        while (it.hasNext())
+        for (Map.Entry<GameRule, Boolean> gameRuleEntry : rules.entrySet())
         {
-
-            Map.Entry<GameRule, Boolean> gameRuleEntry = it.next();
             String gameRuleName = gameRuleEntry.getKey().getGameRuleName();
             String gameRuleValue = gameRuleEntry.getValue().toString();
 
@@ -79,13 +75,11 @@ public class GameRuleHandler extends FreedomService
                     world.setTime(time + 24000 + 6000);
                 }
             }
-
         }
     }
 
-    public static enum GameRule
+    public enum GameRule
     {
-
         DO_FIRE_TICK("doFireTick", true),
         MOB_GRIEFING("mobGriefing", true),
         KEEP_INVENTORY("keepInventory", false),
@@ -98,7 +92,7 @@ public class GameRuleHandler extends FreedomService
         ANNOUNCE_ADVANCEMENTS("announceAdvancements", false),
         SHOW_DEATH_MESSAGES("showDeathMessages", false),
         SEND_COMMAND_FEEDBACK("sendCommandFeedback", false);
-        //
+
         private final String gameRuleName;
         private final boolean defaultValue;
 
@@ -118,5 +112,4 @@ public class GameRuleHandler extends FreedomService
             return defaultValue;
         }
     }
-
 }
