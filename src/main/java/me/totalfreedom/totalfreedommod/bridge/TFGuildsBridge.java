@@ -8,7 +8,6 @@ import org.bukkit.plugin.Plugin;
 
 public class TFGuildsBridge extends FreedomService
 {
-
     public boolean enabled = false;
 
     @Override
