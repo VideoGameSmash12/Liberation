@@ -148,10 +148,8 @@ public class BukkitTelnetBridge extends FreedomService
             final BukkitTelnet telnet = getBukkitTelnetPlugin();
             if (telnet != null)
             {
-                final Iterator<ClientSession> it = telnet.appender.getSessions().iterator();
-                while (it.hasNext())
+                for (ClientSession session : telnet.appender.getSessions())
                 {
-                    final ClientSession session = it.next();
                     if (name != null && name.equalsIgnoreCase(session.getUserName()))
                     {
                         sessionsToRemove.add(session);
