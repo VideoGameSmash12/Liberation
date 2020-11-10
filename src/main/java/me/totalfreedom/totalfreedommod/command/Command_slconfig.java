@@ -341,7 +341,7 @@ public class Command_slconfig extends FreedomCommand
         }
         if (args.length == 3 && args[0].equals("setrank"))
         {
-            return Arrays.asList("TRIAL_MOD", "MOD", "ADMIN");
+            return Arrays.asList("ADMIN", "SENIOR_ADMIN");
         }
 
         return Collections.emptyList();

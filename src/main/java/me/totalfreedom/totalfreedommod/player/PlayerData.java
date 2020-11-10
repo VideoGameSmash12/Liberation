@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 
 public class PlayerData
 {
-
     @Getter
     @Setter
     private String name;
