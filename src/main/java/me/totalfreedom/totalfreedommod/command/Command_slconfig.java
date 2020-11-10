@@ -109,7 +109,7 @@ public class Command_slconfig extends FreedomCommand
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
                 {
-                    plugin.dc.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
+                    Discord.syncRoles(staffMember, plugin.pl.getData(staffMember.getName()).getDiscordID());
                 }
 
                 plugin.ptero.updateAccountStatus(staffMember);

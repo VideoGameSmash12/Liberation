@@ -47,43 +47,40 @@ public class Command_mbconfig extends FreedomCommand
 
                 final Player player = getPlayer(args[1]);
 
-                PlayerData data;
+                PlayerData data = player != null ? plugin.pl.getData(player) : plugin.pl.getData(args[1]);
 
-                if (player == null)
+                if (data == null)
                 {
-                    data = plugin.pl.getData(args[1]);
-                    if (data == null)
-                    {
-                        msg(PLAYER_NOT_FOUND);
-                        return true;
-                    }
-                }
-                else
-                {
-                    data = plugin.pl.getData(player);
+                    msg(PLAYER_NOT_FOUND, ChatColor.RED);
+                    return true;
                 }
 
                 if (data.isMasterBuilder() && plugin.pl.isPlayerImpostor(player))
                 {
-                    FUtil.staffAction(sender.getName(), "Re-adding " + player.getName() + " to the Master Builder list", true);
-                    player.setOp(true);
-                    player.sendMessage(YOU_ARE_OP);
+                    FUtil.staffAction(sender.getName(), "Re-adding " + data.getName() + " to the Master Builder list", true);
 
                     if (plugin.pl.getPlayer(player).getFreezeData().isFrozen())
                     {
                         plugin.pl.getPlayer(player).getFreezeData().setFrozen(false);
-                        player.sendMessage(ChatColor.GRAY + "You have been unfrozen.");
                     }
-                    plugin.pl.verify(player, null);
-                    plugin.rm.updateDisplay(player);
+                    if (player != null)
+                    {
+                        plugin.pl.verify(player, null);
+                        plugin.rm.updateDisplay(player);
+                        player.setOp(true);
+                        player.sendMessage(YOU_ARE_OP);
+                    }
                 }
                 else if (!data.isMasterBuilder())
                 {
-                    FUtil.staffAction(sender.getName(), "Adding " + player.getName() + " to the Master Builder list", true);
+                    FUtil.staffAction(sender.getName(), "Adding " + data.getName() + " to the Master Builder list", true);
                     data.setMasterBuilder(true);
                     data.setVerification(true);
                     plugin.pl.save(data);
-                    plugin.rm.updateDisplay(player);
+                    if (player != null)
+                    {
+                        plugin.rm.updateDisplay(player);
+                    }
                     return true;
                 }
                 else
@@ -105,9 +102,9 @@ public class Command_mbconfig extends FreedomCommand
                 }
 
                 Player player = getPlayer(args[1]);
-                PlayerData data = plugin.pl.getData(player);
+                PlayerData data = player != null ? plugin.pl.getData(player) : plugin.pl.getData(args[1]);
 
-                if (!data.isMasterBuilder())
+                if (data == null || !data.isMasterBuilder())
                 {
                     msg("Master Builder not found: " + args[1]);
                     return true;
@@ -120,7 +117,10 @@ public class Command_mbconfig extends FreedomCommand
                     data.setVerification(false);
                 }
                 plugin.pl.save(data);
-                plugin.rm.updateDisplay(player);
+                if (player != null)
+                {
+                    plugin.rm.updateDisplay(player);
+                }
                 return true;
             }
 
@@ -130,6 +130,7 @@ public class Command_mbconfig extends FreedomCommand
             }
         }
     }
+
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
@@ -139,17 +140,15 @@ public class Command_mbconfig extends FreedomCommand
         }
         else if (args.length == 2)
         {
-            if (args[0].equals("add"))
+            if (args[0].equalsIgnoreCase("add"))
             {
                 return FUtil.getPlayerList();
             }
-            else if (args[0].equals("remove"))
+            else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("list"))
             {
                 return plugin.pl.getMasterBuilderNames();
             }
         }
         return Collections.emptyList();
     }
-
-
 }
