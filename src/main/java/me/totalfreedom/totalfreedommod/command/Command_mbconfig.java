@@ -13,10 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.OP, source = SourceType.BOTH)
-@CommandParameters(description = "List, add, or remove master builders, reload the master builder list, or view the info of master builders.", usage = "/<command> <list | <<add | remove> <username>>>")
+@CommandParameters(description = "List, add, or remove master builders. Master builders can also clear their own IPs.", usage = "/<command> <list | clearip <ip> | clearips | <<add | remove> <username>>>")
 public class Command_mbconfig extends FreedomCommand
 {
-
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -33,6 +32,68 @@ public class Command_mbconfig extends FreedomCommand
                 return true;
             }
 
+            case "clearips":
+            {
+                if (args.length > 1)
+                {
+                    return false;
+                }
+
+                if (senderIsConsole)
+                {
+                    msg("Only in-game players may use this command.", ChatColor.RED);
+                    return true;
+                }
+
+                PlayerData data = plugin.pl.getData(sender.getName());
+                if (!data.isMasterBuilder())
+                {
+                    msg("You are not a master builder!", ChatColor.RED);
+                    return true;
+                }
+
+                int counter = data.getIps().size() - 1;
+                data.clearIps();
+                data.addIp(FUtil.getIp(playerSender));
+                plugin.sql.addPlayer(data);
+                msg(counter + " IPs removed.");
+                msg(data.getIps().get(0) + " is now your only IP address");
+                FUtil.staffAction(sender.getName(), "Clearing my IPs", true);
+                return true;
+            }
+            case "clearip":
+            {
+                if (args.length < 2)
+                {
+                    return false;
+                }
+
+                if (senderIsConsole)
+                {
+                    msg("Only in-game players may use this command.", ChatColor.RED);
+                    return true;
+                }
+
+                PlayerData data = plugin.pl.getData(sender.getName());
+                final String targetIp = FUtil.getIp(playerSender);
+
+                if (!data.isMasterBuilder())
+                {
+                    msg("You are not a master builder!", ChatColor.RED);
+                    return true;
+                }
+
+                if (targetIp.equals(args[1]))
+                {
+                    msg("You cannot remove your current IP.");
+                    return true;
+                }
+                data.removeIp(args[1]);
+                plugin.sql.addPlayer(data);
+                msg("Removed IP " + args[1]);
+                msg("Current IPs: " + StringUtils.join(data.getIps(), ", "));
+                return true;
+            }
             case "add":
             {
                 if (args.length < 2)
@@ -123,7 +184,6 @@ public class Command_mbconfig extends FreedomCommand
                 }
                 return true;
             }
-
             default:
             {
                 return false;
@@ -136,7 +196,7 @@ public class Command_mbconfig extends FreedomCommand
     {
         if (args.length == 1)
         {
-            return Arrays.asList("add", "remove", "list");
+            return Arrays.asList("add", "remove", "list", "clearips", "clearip");
         }
         else if (args.length == 2)
         {
@@ -144,9 +204,18 @@ public class Command_mbconfig extends FreedomCommand
             {
                 return FUtil.getPlayerList();
             }
-            else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("list"))
+            else if (args[0].equalsIgnoreCase("remove"))
             {
                 return plugin.pl.getMasterBuilderNames();
+            }
+            else if (args[0].equalsIgnoreCase("clearip"))
+            {
+                PlayerData data = plugin.pl.getData(sender.getName());
+                if (data.isMasterBuilder())
+                {
+                    return data.getIps();
+                }
+                return Collections.emptyList();
             }
         }
         return Collections.emptyList();

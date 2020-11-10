@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.staff.StaffMember;
@@ -16,10 +17,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
-@CommandParameters(description = "Manage your staff entry.", usage = "/<command> [-o <staff member>] <clearips | clearip <ip> | setlogin <message> | clearlogin | setscformat <format> | clearscformat> | oldtags | logstick | syncroles>")
+@CommandParameters(description = "Manage your admin entry.", usage = "/<command> [-o <admin name>] <clearips | clearip <ip> | setlogin <message> | clearlogin | setscformat <format> | clearscformat> | oldtags | logstick | syncroles>")
 public class Command_myadmin extends FreedomCommand
 {
-
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -85,7 +85,6 @@ public class Command_myadmin extends FreedomCommand
 
                 plugin.sl.save(target);
                 plugin.sl.updateTables();
-
                 plugin.pl.syncIps(target);
 
                 msg(counter + " IPs removed.");
@@ -121,7 +120,7 @@ public class Command_myadmin extends FreedomCommand
                     }
                     else
                     {
-                        msg("You cannot remove that staff members's current IP.");
+                        msg("You cannot remove that staff members current IP.");
                     }
                     return true;
                 }
@@ -175,7 +174,7 @@ public class Command_myadmin extends FreedomCommand
                         msg("Please run /linkdiscord first!", ChatColor.RED);
                         return true;
                     }
-                    boolean synced = plugin.dc.syncRoles(target, playerData.getDiscordID());
+                    boolean synced = Discord.syncRoles(target, playerData.getDiscordID());
                     if (synced)
                     {
                         msg("Successfully synced your roles.", ChatColor.GREEN);

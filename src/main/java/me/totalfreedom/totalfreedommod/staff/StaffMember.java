@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 
 public class StaffMember
 {
-
     @Getter
     @Setter
     private String name;
