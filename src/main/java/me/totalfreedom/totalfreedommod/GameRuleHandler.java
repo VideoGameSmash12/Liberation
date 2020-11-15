@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod;
 
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;

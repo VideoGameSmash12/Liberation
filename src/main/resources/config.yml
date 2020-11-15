@@ -31,7 +31,7 @@ server:
 
   # All players who show up as owner
   owners:
-    - Demonic_Mario
+    - Wild1145
 
   # All players who show up as executive
   executives: []
@@ -59,8 +59,10 @@ discord:
   server_id: ''
   # Channel to send /report messages to
   report_channel_id: ''
-  # Channel for discord to minecraft and vice-versa
+  # Channel for Discord to Minecraft and vice-versa
   chat_channel_id: ''
+  # Channel for Discord to AdminChat and vice-versa
+  adminchat_channel_id: ''
   # Do you want roles to sync with the server?
   role_sync: false
   # Master Builder role ID

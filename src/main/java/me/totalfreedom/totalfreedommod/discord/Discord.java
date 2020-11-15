@@ -81,6 +81,7 @@ public class Discord extends FreedomService
             bot = JDABuilder.createDefault(ConfigEntry.DISCORD_TOKEN.getString())
                     .addEventListeners(new PrivateMessageListener(),
                             new DiscordToMinecraftListener(),
+                            new DiscordToAdminChatListener(),
                             new ListenerAdapter()
                             {
                                 @Override
@@ -332,6 +333,26 @@ public class Discord extends FreedomService
         }
     }
 
+    public void messageAdminChatChannel(String message)
+    {
+        String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
+        if (message.contains("@everyone") || message.contains("@here"))
+        {
+            message = StringUtils.remove(message, "@");
+        }
+
+        if (message.toLowerCase().contains("discord.gg"))
+        {
+            return;
+        }
+
+        if (enabled && !chat_channel_id.isEmpty())
+        {
+            CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(message).submit(true);
+            sentMessages.add(sentMessage);
+        }
+    }
+
     public String formatBotTag()
     {
         SelfUser user = bot.getSelfUser();
@@ -356,7 +377,6 @@ public class Discord extends FreedomService
         if (bot != null)
         {
             messageChatChannel("**Server has stopped**");
-            bot.shutdown();
         }
         FLog.info("Discord verification bot has successfully shutdown.");
     }

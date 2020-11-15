@@ -2,10 +2,7 @@ package me.totalfreedom.totalfreedommod.discord;
 
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -17,18 +14,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class DiscordToMinecraftListener extends ListenerAdapter
+public class DiscordToAdminChatListener extends ListenerAdapter
 {
+    DiscordToMinecraftListener dtml = new DiscordToMinecraftListener();
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
+        String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
         if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id))
         {
             if (!event.getAuthor().getId().equals(Discord.bot.getSelfUser().getId()))
             {
                 Member member = event.getMember();
-                String tag = getDisplay(member);
-                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "]");
+                String tag = dtml.getDisplay(member);
+                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "STAFF" + ChatColor.DARK_GRAY + "]");
                 Message msg = event.getMessage();
                 if (tag != null)
                 {
@@ -58,53 +56,13 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 }
                 for (Player player : Bukkit.getOnlinePlayers())
                 {
-                    if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+                    if (TotalFreedomMod.getPlugin().sl.isStaff(player))
                     {
                         player.spigot().sendMessage(builder.create());
                     }
                 }
                 FLog.info(message.toString());
             }
-        }
-    }
-
-    public String getDisplay(Member member)
-    {
-        Guild server = Discord.bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
-        // Server Owner
-        if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_SERVER_OWNER_ROLE_ID.getString())))
-        {
-            return Title.OWNER.getColoredTag();
-        }
-        // Developers
-        else if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_DEVELOPER_ROLE_ID.getString())))
-        {
-            return Title.DEVELOPER.getColoredTag();
-        }
-        // Executives
-        else if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_EXECUTIVE_ROLE_ID.getString())))
-        {
-            return Title.EXECUTIVE.getColoredTag();
-        }
-        // Senior Admins
-        else if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_SENIOR_ADMIN_ROLE_ID.getString())))
-        {
-            return Rank.SENIOR_ADMIN.getColoredTag();
-        }
-        // Admins
-        else if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_NEW_ADMIN_ROLE_ID.getString())))
-        {
-            return Rank.ADMIN.getColoredTag();
-        }
-        // Master Builders
-        else if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_MASTER_BUILDER_ROLE_ID.getString())))
-        {
-            return Title.MASTER_BUILDER.getColoredTag();
-        }
-        // None
-        else
-        {
-            return null;
         }
     }
 }
