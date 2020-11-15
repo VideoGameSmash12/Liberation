@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 
 public class ActivityLogEntry implements IConfig
 {
-
     @Getter
     private String configKey;
     @Getter
@@ -75,9 +74,10 @@ public class ActivityLogEntry implements IConfig
         Date currentTime = Date.from(Instant.now());
         timestamps.add("Login: " + FUtil.dateToString(currentTime));
     }
+
     public void addLogout()
     {
-        String lastLoginString = timestamps.get(timestamps.size() - 1);
+        String lastLoginString = timestamps.get(timestamps.size() - 1); // there's a bug with subtracting the -1 here
         Date currentTime = Date.from(Instant.now());
         timestamps.add("Logout: " + FUtil.dateToString(currentTime));
         lastLoginString = lastLoginString.replace("Login: ", "");
