@@ -72,76 +72,78 @@ public class Command_nickclean extends FreedomCommand
         final String nickName = plugin.esb.getNickname(playerName);
         StringBuilder newNick = new StringBuilder();
         boolean nickChanged = false;
-
-        if(nickName.contains("§x"))
+        if (nickName != null)
         {
-            // Detects colors that are similar to blocked codes.
-            spliterator:
-            for (String split : nickName.split("§x"))
+            if (nickName.contains("§x"))
             {
-                List<Color> colors = new ArrayList<>();
-                String hexColorSub = null;
-                if (split.length() >= 12 && split.contains("§"))
+                // Detects colors that are similar to blocked codes.
+                spliterator:
+                for (String split : nickName.split("§x"))
                 {
-                    hexColorSub = split.substring(0, 12);
-                    split = String.valueOf(split.charAt(12));
-                    String hexColorString = "#" + hexColorSub.replaceAll("§", "");
-                    java.awt.Color hexColor = java.awt.Color.decode(hexColorString);
-
-                    // Get a range of nearby colors that are alike to the color blocked.
-                    Color colorFirst;
-                    Color colorSecond;
-
-                    colorFirst = Color.fromRGB(Math.min(hexColor.getRed() + 20, 255), Math.min(hexColor.getGreen() + 20, 255), Math.min(hexColor.getBlue() + 20, 255));
-                    colorSecond = Color.fromRGB(Math.max(hexColor.getRed() - 20, 0), Math.max(hexColor.getGreen() - 20, 0), Math.max(hexColor.getBlue() - 20, 0));
-                    colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
-
-                    colorFirst = Color.fromRGB(Math.min(hexColor.getRed() + 20, 255), Math.min(hexColor.getGreen(), 255), Math.min(hexColor.getBlue(), 255));
-                    colorSecond = Color.fromRGB(Math.max(hexColor.getRed() - 20, 0), Math.max(hexColor.getGreen(), 0), Math.max(hexColor.getBlue(), 0));
-                    colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
-
-                    colorFirst = Color.fromRGB(Math.min(hexColor.getRed(), 255), Math.min(hexColor.getGreen() + 20, 255), Math.min(hexColor.getBlue(), 255));
-                    colorSecond = Color.fromRGB(Math.max(hexColor.getRed(), 0), Math.max(hexColor.getGreen() - 20, 0), Math.max(hexColor.getBlue(), 0));
-                    colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
-
-                    colorFirst = Color.fromRGB(Math.min(hexColor.getRed(), 255), Math.min(hexColor.getGreen(), 255), Math.min(hexColor.getBlue() + 20, 255));
-                    colorSecond = Color.fromRGB(Math.max(hexColor.getRed(), 0), Math.max(hexColor.getGreen(), 0), Math.max(hexColor.getBlue() - 20, 0));
-                    colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
-
-                    for (String colorCode : ConfigEntry.BLOCKED_CHATCODES.getString().split(","))
+                    List<Color> colors = new ArrayList<>();
+                    String hexColorSub = null;
+                    if (split.length() >= 12 && split.contains("§"))
                     {
-                        // Makes sure that there's hex colors in the split.
-                        for (Color color : colors)
+                        hexColorSub = split.substring(0, 12);
+                        split = String.valueOf(split.charAt(12));
+                        String hexColorString = "#" + hexColorSub.replaceAll("§", "");
+                        java.awt.Color hexColor = java.awt.Color.decode(hexColorString);
+
+                        // Get a range of nearby colors that are alike to the color blocked.
+                        Color colorFirst;
+                        Color colorSecond;
+
+                        colorFirst = Color.fromRGB(Math.min(hexColor.getRed() + 20, 255), Math.min(hexColor.getGreen() + 20, 255), Math.min(hexColor.getBlue() + 20, 255));
+                        colorSecond = Color.fromRGB(Math.max(hexColor.getRed() - 20, 0), Math.max(hexColor.getGreen() - 20, 0), Math.max(hexColor.getBlue() - 20, 0));
+                        colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
+
+                        colorFirst = Color.fromRGB(Math.min(hexColor.getRed() + 20, 255), Math.min(hexColor.getGreen(), 255), Math.min(hexColor.getBlue(), 255));
+                        colorSecond = Color.fromRGB(Math.max(hexColor.getRed() - 20, 0), Math.max(hexColor.getGreen(), 0), Math.max(hexColor.getBlue(), 0));
+                        colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
+
+                        colorFirst = Color.fromRGB(Math.min(hexColor.getRed(), 255), Math.min(hexColor.getGreen() + 20, 255), Math.min(hexColor.getBlue(), 255));
+                        colorSecond = Color.fromRGB(Math.max(hexColor.getRed(), 0), Math.max(hexColor.getGreen() - 20, 0), Math.max(hexColor.getBlue(), 0));
+                        colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
+
+                        colorFirst = Color.fromRGB(Math.min(hexColor.getRed(), 255), Math.min(hexColor.getGreen(), 255), Math.min(hexColor.getBlue() + 20, 255));
+                        colorSecond = Color.fromRGB(Math.max(hexColor.getRed(), 0), Math.max(hexColor.getGreen(), 0), Math.max(hexColor.getBlue() - 20, 0));
+                        colors.addAll(FUtil.createColorGradient(colorFirst, colorSecond, 40));
+
+                        for (String colorCode : ConfigEntry.BLOCKED_CHATCODES.getString().split(","))
                         {
-                            if (colorCodes.get(colorCode) != null && FUtil.colorClose(color, colorCodes.get(colorCode), 40))
+                            // Makes sure that there's hex colors in the split.
+                            for (Color color : colors)
                             {
-                                nickChanged = true;
-                                newNick.append(split);
-                                continue spliterator;
+                                if (colorCodes.get(colorCode) != null && FUtil.colorClose(color, colorCodes.get(colorCode), 40))
+                                {
+                                    nickChanged = true;
+                                    newNick.append(split);
+                                    continue spliterator;
+                                }
                             }
+
                         }
-
+                        newNick.append("§x").append(hexColorSub).append(split);
                     }
-                    newNick.append("§x").append(hexColorSub).append(split);
                 }
             }
-        }
-        else
-        {
-            // Falls back on old code if hex isn't used.
-            final Pattern REGEX = Pattern.compile(FUtil.colorize(ChatColor.COLOR_CHAR + "[" + StringUtils.join(ConfigEntry.BLOCKED_CHATCODES.getString().split(","), "") + "]"), Pattern.CASE_INSENSITIVE);
-            if (!nickName.isEmpty() && !nickName.equalsIgnoreCase(playerName))
+            else
             {
-                final Matcher matcher = REGEX.matcher(nickName);
-                if (matcher.find())
+                // Falls back on old code if hex isn't used.
+                final Pattern REGEX = Pattern.compile(FUtil.colorize(ChatColor.COLOR_CHAR + "[" + StringUtils.join(ConfigEntry.BLOCKED_CHATCODES.getString().split(","), "") + "]"), Pattern.CASE_INSENSITIVE);
+                if (!nickName.isEmpty() && !nickName.equalsIgnoreCase(playerName))
                 {
-                    nickChanged = true;
-                    newNick.append(matcher.replaceAll(""));
+                    final Matcher matcher = REGEX.matcher(nickName);
+                    if (matcher.find())
+                    {
+                        nickChanged = true;
+                        newNick.append(matcher.replaceAll(""));
+                    }
                 }
             }
         }
 
-        if(nickChanged)
+        if (nickChanged)
         {
             msg(ChatColor.RESET + playerName + ": \"" + nickName + ChatColor.RESET + "\" -> \"" + newNick.toString() + ChatColor.RESET + "\".");
         }

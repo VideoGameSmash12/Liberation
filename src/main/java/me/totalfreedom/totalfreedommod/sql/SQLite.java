@@ -247,16 +247,16 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, staffMember.getName());
             statement.setString(2, FUtil.listToString(staffMember.getIps()));
             statement.setString(3, staffMember.getRank().toString());
             statement.setBoolean(4, staffMember.isActive());
             statement.setLong(5, staffMember.getLastLogin().getTime());
-            statement.setBoolean(7, staffMember.getCommandSpy());
-            statement.setBoolean(8, staffMember.getPotionSpy());
-            statement.setString(9, staffMember.getAcFormat());
-            statement.setString(10, staffMember.getPteroID());
+            statement.setBoolean(6, staffMember.getCommandSpy());
+            statement.setBoolean(7, staffMember.getPotionSpy());
+            statement.setString(8, staffMember.getAcFormat());
+            statement.setString(9, staffMember.getPteroID());
             statement.executeUpdate();
         }
         catch (SQLException e)
@@ -270,7 +270,7 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, player.getName());
             statement.setString(2, FUtil.listToString(player.getIps()));
             statement.setString(3, FUtil.listToString(player.getNotes()));
@@ -281,11 +281,11 @@ public class SQLite extends FreedomService
             statement.setBoolean(8, player.hasVerification());
             statement.setString(9, player.getRideMode());
             statement.setInt(10, player.getCoins());
-            statement.setString(12, FUtil.listToString(player.getItems()));
-            statement.setInt(13, player.getTotalVotes());
-            statement.setBoolean(14, player.doesDisplayDiscord());
-            statement.setString(15, player.getRedditUsername());
-            statement.setString(16, player.getLoginMessage());
+            statement.setString(11, FUtil.listToString(player.getItems()));
+            statement.setInt(12, player.getTotalVotes());
+            statement.setBoolean(13, player.doesDisplayDiscord());
+            statement.setString(14, player.getRedditUsername());
+            statement.setString(15, player.getLoginMessage());
             statement.executeUpdate();
         }
         catch (SQLException e)

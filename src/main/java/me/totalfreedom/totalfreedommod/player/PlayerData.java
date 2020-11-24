@@ -112,7 +112,7 @@ public class PlayerData
                 .append("- Tag: ").append(FUtil.colorize(tag)).append(ChatColor.GRAY).append("\n")
                 .append("- Ride Mode: ").append(rideMode).append("\n")
                 .append("- Backup Codes: ").append(backupCodes.size()).append("/10").append("\n")
-                .append("- Reddit Username: ").append(redditUsername)
+                .append("- Reddit Username: ").append(redditUsername).append("\n")
                 .append("- Login Message: ").append(loginMessage);
 
         return output.toString();

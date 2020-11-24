@@ -79,7 +79,7 @@ public class Command_modifyitem extends FreedomCommand
                 Enchantment enchantment = Enchantment.getByName(args[1].toUpperCase());
                 if (enchantment == null)
                 {
-                    msg("Invalid enchantment. Please run /enchantments for a list of valid enchantments.");
+                    msg("Invalid enchantment. Please run /enchant list for a list of valid enchantments.");
                     return true;
                 }
 

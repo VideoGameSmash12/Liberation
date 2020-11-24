@@ -17,7 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
-@CommandParameters(description = "Manage your admin entry.", usage = "/<command> [-o <admin name>] <clearips | clearip <ip> | setlogin <message> | clearlogin | setscformat <format> | clearscformat> | oldtags | logstick | syncroles>")
+@CommandParameters(description = "Manage your admin entry.", usage = "/<command> [-o <admin name>] <clearips | clearip <ip> | setscformat <format> | clearscformat> | syncroles>")
 public class Command_myadmin extends FreedomCommand
 {
     @Override
@@ -76,7 +76,7 @@ public class Command_myadmin extends FreedomCommand
                 }
                 else
                 {
-                    FUtil.staffAction(sender.getName(), "Clearing " + target.getName() + "' IPs", true);
+                    FUtil.staffAction(sender.getName(), "Clearing " + target.getName() + "'s IPs", true);
                 }
 
                 int counter = target.getIps().size() - 1;
@@ -203,7 +203,7 @@ public class Command_myadmin extends FreedomCommand
             return Collections.emptyList();
         }
 
-        List<String> singleArguments = Arrays.asList("clearips",  "setscformat");
+        List<String> singleArguments = Arrays.asList("clearips", "setscformat");
         List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "syncroles");
         if (args.length == 1)
         {
