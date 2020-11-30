@@ -85,7 +85,7 @@ public class Command_slconfig extends FreedomCommand
 
                 if (!rank.isAtLeast(Rank.ADMIN))
                 {
-                    msg("Rank must be Trial Mod or higher.", ChatColor.RED);
+                    msg("Rank must be Admin or higher.", ChatColor.RED);
                     return true;
                 }
 

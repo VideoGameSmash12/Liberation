@@ -53,6 +53,8 @@ public class PlayerData
     @Getter
     @Setter
     private String loginMessage;
+    @Setter
+    private Boolean inspect = false;
 
     public PlayerData(ResultSet resultSet)
     {
@@ -77,6 +79,7 @@ public class PlayerData
             displayDiscord = resultSet.getBoolean("display_discord");
             redditUsername = resultSet.getString("reddit_username");
             loginMessage = resultSet.getString("login_message");
+            inspect = resultSet.getBoolean("inspect");
         }
         catch (SQLException e)
         {
@@ -231,6 +234,11 @@ public class PlayerData
         return masterBuilder;
     }
 
+    public boolean hasInspection()
+    {
+        return inspect;
+    }
+
     public Map<String, Object> toSQLStorable()
     {
         Map<String, Object> map = new HashMap<String, Object>()
@@ -250,6 +258,7 @@ public class PlayerData
             put("display_discord", displayDiscord);
             put("reddit_username", redditUsername);
             put("login_message", loginMessage);
+            put("inspect", inspect);
         }};
         return map;
     }

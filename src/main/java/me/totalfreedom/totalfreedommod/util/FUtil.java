@@ -190,8 +190,9 @@ public class FUtil
 
     /**
      * A way to get a sublist with a page index and a page size.
-     * @param list A list of objects that should be split into pages.
-     * @param size The size of the pages.
+     *
+     * @param list  A list of objects that should be split into pages.
+     * @param size  The size of the pages.
      * @param index The page index, if outside of bounds error will be thrown. The page index starts at 0 as with all lists.
      * @return A list of objects that is the page that has been selected from the previous last parameter.
      */
@@ -254,7 +255,7 @@ public class FUtil
         return null;
     }
 
-    public static Response sendRequest(String endpoint, String method, List<String>headers, String body) throws IOException
+    public static Response sendRequest(String endpoint, String method, List<String> headers, String body) throws IOException
     {
         URL url = new URL(endpoint);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -800,13 +801,13 @@ public class FUtil
         {
             c1values[i] = Math.round(c1values[i] + factor * (c2values[i] - c1values[i]));
         }
-        return Color.fromRGB((int) c1values[0], (int) c1values[1], (int) c1values[2]);
+        return Color.fromRGB((int)c1values[0], (int)c1values[1], (int)c1values[2]);
     }
 
     public static boolean isValidIPv4(String ip)
     {
         if (ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$")
-            || ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([*])\\.([*])$"))
+                || ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([*])\\.([*])$"))
         {
             return true;
         }
@@ -867,5 +868,39 @@ public class FUtil
                 location.getWorld().createExplosion(location, power);
             }
         }.runTaskLater(TotalFreedomMod.getPlugin(), delay);
+    }
+
+    public static class PaginationList<T> extends ArrayList<T>
+    {
+        private final int epp;
+
+        public PaginationList(int epp)
+        {
+            super();
+            this.epp = epp;
+        }
+
+        @SafeVarargs
+        public PaginationList(int epp, T... elements)
+        {
+            super(Arrays.asList(elements));
+            this.epp = epp;
+        }
+
+        public int getPageCount()
+        {
+            return (int)Math.ceil((double)size() / (double)epp);
+        }
+
+        public List<T> getPage(int page)
+        {
+            if (page < 1 || page > getPageCount())
+            {
+                return null;
+            }
+            int startIndex = (page - 1) * epp;
+            int endIndex = Math.min(startIndex + (epp - 1), this.size() - 1);
+            return subList(startIndex, endIndex + 1);
+        }
     }
 }

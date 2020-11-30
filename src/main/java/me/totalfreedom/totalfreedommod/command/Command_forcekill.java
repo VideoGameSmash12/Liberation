@@ -32,7 +32,6 @@ public class Command_forcekill extends FreedomCommand
         }
 
         player.setHealth(0);
-
         return true;
     }
 }
