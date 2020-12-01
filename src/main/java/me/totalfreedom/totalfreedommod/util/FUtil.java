@@ -66,9 +66,13 @@ public class FUtil
             "e67d77c4-fff9-4cea-94cc-9f1f1ab7806b", // aggelosQQ
             "0061326b-8b3d-44c8-830a-5f2d59f5dc1b", // scripthead
             "78408086-1991-4c33-a571-d8fa325465b2", // Telesphoreo
-            "67ce0e28-3d6b-469c-ab71-304eec81b614"  // CoolJWB
+            "67ce0e28-3d6b-469c-ab71-304eec81b614", // CoolJWB
+            "03b41e15-d03f-4025-86f5-f1812df200fa", // elmon_
+            "d018f2b8-ce60-4672-a45f-e580e0331299", // speednt
+            "458de06f-36a5-4e1b-aaa6-ec1d1751c5b6", // SupItsDillon
+            "c8e5af82-6aba-4dd7-83e8-474381380cc9" // Paldiu
     );
-    public static final List<String> DEVELOPER_NAMES = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "Telesphoreo", "CoolJWB");
+    public static final List<String> DEVELOPER_NAMES = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "Telesphoreo", "CoolJWB", "elmon_", "speednt", "SupItsDillon", "Paldiu");
     public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     public static final Map<String, ChatColor> CHAT_COLOR_NAMES = new HashMap<>();
     public static final List<ChatColor> CHAT_COLOR_POOL = Arrays.asList(
