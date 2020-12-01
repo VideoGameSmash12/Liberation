@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We currently support the code running on the "development" branch of this repository. We are not currently versioning this repo so please assume that any code currently on the master branch is code that we are actively supporting by our team. 
+We currently support the code running on the "development" branch of this repository. This is supported in addition to those formal releases, but note anything not yet released should be treated as in-development.
 
 In terms of plugin releases, we support the following versions:
 
