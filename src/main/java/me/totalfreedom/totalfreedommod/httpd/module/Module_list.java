@@ -87,15 +87,16 @@ public class Module_list extends HTTPDModule
                     }
                 }
             }
-
+            
+            // for future refernce - any multi-worded ranks are to be delimited by underscores in the json; eg. senior_admins
+            responseObject.put("owners", owners);
+            responseObject.put("executives", executives);
+            responseObject.put("developers", developers);
+            responseObject.put("senior_admins", senioradmins);
+            responseObject.put("admins", admins);
+            responseObject.put("master_builders", masterbuilders);
             responseObject.put("operators", operators);
             responseObject.put("imposters", imposters);
-            responseObject.put("masterbuilders", masterbuilders);
-            responseObject.put("admins", admins);
-            responseObject.put("senioradmins", senioradmins);
-            responseObject.put("developers", developers);
-            responseObject.put("executives", executives);
-            responseObject.put("owners", owners);
             responseObject.put("online", server.getOnlinePlayers().size());
             responseObject.put("max", server.getMaxPlayers());
 
