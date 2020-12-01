@@ -18,7 +18,7 @@ public class Command_opall extends FreedomCommand
 
         for (Player player : server.getOnlinePlayers())
         {
-            if (player.isOp())
+            if (!player.isOp())
             {
                 player.setOp(true);
                 player.sendMessage(FreedomCommand.YOU_ARE_OP);
