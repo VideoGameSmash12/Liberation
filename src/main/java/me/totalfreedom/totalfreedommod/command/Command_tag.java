@@ -107,10 +107,6 @@ public class Command_tag extends FreedomCommand
                     }
                     return true;
                 }
-                /*
-                {
-                    return false;
-                }*/
             }
         }
         else if (args.length >= 2)
@@ -205,6 +201,7 @@ public class Command_tag extends FreedomCommand
 
                     String from = "", to = "";
                     java.awt.Color awt1, awt2;
+
                     try
                     {
                         if (args[1].equalsIgnoreCase("random") || args[1].equalsIgnoreCase("r"))
@@ -279,14 +276,9 @@ public class Command_tag extends FreedomCommand
                     msg("Tag set to '" + outputTag + ChatColor.GRAY + "'." + (save ? " (Saved)" : "") + from + to);
                     return true;
                 }
-
-                default:
-                {
-                    return false;
-                }
             }
         }
-        return true;
+        return false;
     }
 
     public void save(Player player, String tag)
