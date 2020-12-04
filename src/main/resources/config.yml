@@ -413,7 +413,7 @@ announcer:
     - 'Griefing is not allowed!'
     - 'Hacked clients are allowed!'
     - 'Interested in becoming admin? Type "/ai" for more information!'
-    - 'You may view all online administrators via "/list -s"'
+    - 'You may view all online administrators via "/list -a"'
     - 'Save your buildings via WorldEdit! http://totalfreedom.me for more information!'
     - 'You may contact TotalFreedom support on Twitter! https://tiny.re/tfsupport'
     - 'You may download TotalFreedomMod here: https://tiny.re/tfm+'

@@ -41,6 +41,7 @@ public class Command_list extends FreedomCommand
             switch (s)
             {
                 case "-s":
+                case "-a":
                 {
                     listFilter = ListFilter.ADMINS;
                     break;
