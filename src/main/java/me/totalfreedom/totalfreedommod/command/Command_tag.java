@@ -199,6 +199,11 @@ public class Command_tag extends FreedomCommand
                         return true;
                     }
 
+                    if (args.length < 4)
+                    {
+                        return false;
+                    }
+
                     String from = "", to = "";
                     java.awt.Color awt1, awt2;
 
