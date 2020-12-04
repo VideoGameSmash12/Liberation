@@ -16,7 +16,7 @@ public class Command_loginmessage extends FreedomCommand
     @Override
     public boolean run(final CommandSender sender, final Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        if (!plugin.pl.getData(playerSender).hasItem(ShopItem.LOGIN_MESSAGES) && !isStaff(playerSender))
+        if (!plugin.pl.getData(playerSender).hasItem(ShopItem.LOGIN_MESSAGES) && !isAdmin(playerSender))
         {
             msg("You did not purchase the ability to use login messages! Purchase the ability from the shop.", ChatColor.RED);
             return true;

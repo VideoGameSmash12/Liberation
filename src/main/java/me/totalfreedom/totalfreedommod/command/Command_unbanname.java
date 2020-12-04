@@ -48,7 +48,7 @@ public class Command_unbanname extends FreedomCommand
 
         if (!silent)
         {
-            FUtil.staffAction(sender.getName(), "Unbanned the name " + name, true);
+            FUtil.adminAction(sender.getName(), "Unbanned the name " + name, true);
         }
 
         return true;

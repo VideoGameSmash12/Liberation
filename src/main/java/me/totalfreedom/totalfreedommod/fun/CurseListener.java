@@ -49,5 +49,4 @@ public class CurseListener extends FreedomService
             cursedPlayers.remove(player);
         }
     }
-
 }

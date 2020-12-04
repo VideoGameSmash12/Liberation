@@ -132,13 +132,13 @@ public class BlockBlocker extends FreedomService
             case PLAYER_HEAD:
             case PLAYER_WALL_HEAD:
             {
-                Skull skull = (Skull) event.getBlockPlaced().getState();
+                Skull skull = (Skull)event.getBlockPlaced().getState();
                 if (skull.getOwner() != null)
                 {
                     if (skull.getOwner().contains("\u00A7"))
                     {
                         skull.setOwner(skull.getOwner().replace("\u00A7", ""));
-                        SkullMeta meta = (SkullMeta) event.getItemInHand().getItemMeta();
+                        SkullMeta meta = (SkullMeta)event.getItemInHand().getItemMeta();
                         if (meta != null)
                         {
                             ItemStack newHead = new ItemStack(Material.PLAYER_HEAD, 1);
@@ -173,14 +173,14 @@ public class BlockBlocker extends FreedomService
 
         if (Groups.BANNERS.contains(event.getBlockPlaced().getType()))
         {
-            Banner banner = (Banner) event.getBlockPlaced().getState();
-            List<Pattern> patterns = banner.getPatterns();;
+            Banner banner = (Banner)event.getBlockPlaced().getState();
+            List<Pattern> patterns = banner.getPatterns();
+            ;
             if (patterns.size() >= 2)
             {
                 banner.setPatterns(patterns.subList(0, 2));
                 player.sendMessage(ChatColor.GRAY + "Your banner had too many patterns on it, so some were removed.");
             }
         }
-
     }
 }

@@ -31,8 +31,7 @@ public class Cager extends FreedomService
     public void onBreakBlock(BlockBreakEvent event)
     {
         Player player = event.getPlayer();
-        if (player == null
-                || plugin.sl.isStaff(player))
+        if (player == null || plugin.al.isAdmin(player))
         {
             return;
         }
@@ -113,5 +112,4 @@ public class Cager extends FreedomService
             cage.playerJoin();
         }
     }
-
 }

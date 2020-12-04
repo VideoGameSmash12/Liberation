@@ -301,7 +301,7 @@ public class CoreProtectBridge extends FreedomService
                         }
                     }
 
-                    if (!plugin.sl.isStaff(player))
+                    if (!plugin.al.isAdmin(player))
                     {
                         cooldown.put(player.getName(), System.currentTimeMillis());
                     }
@@ -392,7 +392,7 @@ public class CoreProtectBridge extends FreedomService
                             }
                         }
 
-                        if (!plugin.sl.isStaff(player))
+                        if (!plugin.al.isAdmin(player))
                         {
                             cooldown.put(player.getName(), System.currentTimeMillis());
                         }

@@ -53,7 +53,7 @@ public class Command_unmute extends FreedomCommand
                 return true;
             }
 
-            FUtil.staffAction(sender.getName(), "Unmuting " + player.getName(), true);
+            FUtil.adminAction(sender.getName(), "Unmuting " + player.getName(), true);
             msg("Unmuted " + player.getName());
             msg(player, "You have been unmuted.", ChatColor.RED);
         }

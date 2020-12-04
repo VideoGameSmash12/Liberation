@@ -43,7 +43,7 @@ public class Command_tossmob extends FreedomCommand
             if (args[0].equalsIgnoreCase("off"))
             {
                 playerData.disableMobThrower();
-                msg("MobThrower is disabled.", ChatColor.GREEN);
+                msg("Turned off.", ChatColor.GREEN);
                 return true;
             }
 
@@ -106,6 +106,7 @@ public class Command_tossmob extends FreedomCommand
         playerSender.getEquipment().setItemInMainHand(new ItemStack(Material.BONE, 1));
         return true;
     }
+
     public static List<String> getAllMobNames()
     {
         List<String> names = new ArrayList<>();

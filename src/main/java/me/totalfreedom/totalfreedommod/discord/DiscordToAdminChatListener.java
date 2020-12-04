@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 public class DiscordToAdminChatListener extends ListenerAdapter
 {
     DiscordToMinecraftListener dtml = new DiscordToMinecraftListener();
+
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
@@ -26,7 +27,7 @@ public class DiscordToAdminChatListener extends ListenerAdapter
             {
                 Member member = event.getMember();
                 String tag = dtml.getDisplay(member);
-                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "STAFF" + ChatColor.DARK_GRAY + "]");
+                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "ADMIN" + ChatColor.DARK_GRAY + "]");
                 Message msg = event.getMessage();
                 if (tag != null)
                 {
@@ -56,7 +57,7 @@ public class DiscordToAdminChatListener extends ListenerAdapter
                 }
                 for (Player player : Bukkit.getOnlinePlayers())
                 {
-                    if (TotalFreedomMod.getPlugin().sl.isStaff(player))
+                    if (TotalFreedomMod.getPlugin().al.isAdmin(player))
                     {
                         player.spigot().sendMessage(builder.create());
                     }

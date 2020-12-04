@@ -46,67 +46,76 @@ public class Command_notes extends FreedomCommand
             playerData = plugin.pl.getData(player);
         }
 
-        if (args[1].equals("list"))
+        switch (args[1])
         {
-            final StringBuilder noteList = new StringBuilder();
-            noteList.append(ChatColor.GREEN + "Player notes for " + playerData.getName() + ":");
-            int id = 1;
-            for (String note : playerData.getNotes())
+            case "list":
             {
-                String noteLine = id + ". " + note;
-                noteList.append("\n" + ChatColor.GOLD + noteLine);
-                id++;
-            }
-            msg(noteList.toString());
-            return true;
-        }
-        else if (args[1].equals("add"))
-        {
-            if (args.length < 3)
-            {
-                return false;
-            }
-            String note = sender.getName() + ": " +  StringUtils.join(ArrayUtils.subarray(args, 2, args.length), " ");
-            playerData.addNote(note);
-            plugin.pl.save(playerData);
-            msg("Note added.", ChatColor.GREEN);
-            return true;
-        }
-        else if (args[1].equals("remove"))
-        {
-            if (args.length < 3)
-            {
-                return false;
-            }
-            int id;
-            try
-            {
-                id = Integer.valueOf(args[2]);
-            }
-            catch (NumberFormatException e)
-            {
-                msg("Invalid number: " + args[2], ChatColor.RED);
+                final StringBuilder noteList = new StringBuilder();
+                noteList.append(ChatColor.GREEN + "Player notes for " + playerData.getName() + ":");
+                int id = 1;
+                for (String note : playerData.getNotes())
+                {
+                    String noteLine = id + ". " + note;
+                    noteList.append("\n" + ChatColor.GOLD + noteLine);
+                    id++;
+                }
+                msg(noteList.toString());
                 return true;
             }
-            id--;
-            if (playerData.removeNote(id))
+
+            case "add":
             {
+                if (args.length < 3)
+                {
+                    return false;
+                }
+                String note = sender.getName() + ": " + StringUtils.join(ArrayUtils.subarray(args, 2, args.length), " ");
+                playerData.addNote(note);
                 plugin.pl.save(playerData);
-                msg("Note removed.");
+                msg("Note added.", ChatColor.GREEN);
+                return true;
             }
-            else
+
+            case "remove":
             {
-                msg("No note with the ID of " + args[2] + " exists.", ChatColor.RED);
+                if (args.length < 3)
+                {
+                    return false;
+                }
+
+                int id;
+                try
+                {
+                    id = Integer.parseInt(args[2]);
+                }
+                catch (NumberFormatException e)
+                {
+                    msg("Invalid number: " + args[2], ChatColor.RED);
+                    return true;
+                }
+
+                id--;
+
+                if (playerData.removeNote(id))
+                {
+                    plugin.pl.save(playerData);
+                    msg("Note removed.");
+                }
+                else
+                {
+                    msg("No note with the ID of " + args[2] + " exists.", ChatColor.RED);
+                }
+                return true;
             }
-            return true;
-        }
-        else if (args[1].equals("clear"))
-        {
-            int count = playerData.getNotes().size();
-            playerData.clearNotes();
-            plugin.pl.save(playerData);
-            msg("Cleared " + count + " notes.", ChatColor.GREEN);
-            return true;
+
+            case "clear":
+            {
+                int count = playerData.getNotes().size();
+                playerData.clearNotes();
+                plugin.pl.save(playerData);
+                msg("Cleared " + count + " notes.", ChatColor.GREEN);
+                return true;
+            }
         }
         return false;
     }

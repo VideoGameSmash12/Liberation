@@ -4,8 +4,8 @@ import java.io.File;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
-import me.totalfreedom.totalfreedommod.staff.ActivityLog;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.ActivityLog;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 
 public class Module_activitylog extends HTTPDModule
 {
@@ -39,7 +39,7 @@ public class Module_activitylog extends HTTPDModule
 
     private boolean isAuthorized(String remoteAddress)
     {
-        StaffMember entry = plugin.sl.getEntryByIp(remoteAddress);
+        Admin entry = plugin.al.getEntryByIp(remoteAddress);
         return entry != null && entry.isActive();
     }
 }

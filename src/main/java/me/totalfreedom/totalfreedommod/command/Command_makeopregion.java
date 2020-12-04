@@ -55,7 +55,7 @@ public class Command_makeopregion extends FreedomCommand
 
         LocalSession session = plugin.web.getWorldEditPlugin().getSession(playerSender);
 
-        Region selection = null;
+        Region selection;
 
         try
         {
@@ -91,7 +91,6 @@ public class Command_makeopregion extends FreedomCommand
         regionManager.addRegion(region);
 
         msg("Successfully created the region '" + name + "' for " + player.getName(), ChatColor.GREEN);
-
         return true;
     }
 }

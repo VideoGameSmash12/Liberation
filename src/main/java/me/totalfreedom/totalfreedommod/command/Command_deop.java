@@ -35,7 +35,7 @@ public class Command_deop extends FreedomCommand
             if (player.getName().toLowerCase().contains(targetName) || player.getDisplayName().toLowerCase().contains(targetName)
                     || player.getName().contains(targetName) || player.getDisplayName().contains(targetName))
             {
-                if (player.isOp() && !plugin.sl.isVanished(player.getName()))
+                if (player.isOp() && !plugin.al.isVanished(player.getName()))
                 {
                     matchedPlayerNames.add(player.getName());
                     player.setOp(false);
@@ -48,7 +48,7 @@ public class Command_deop extends FreedomCommand
         {
             if (!silent)
             {
-                FUtil.staffAction(sender.getName(), "De-opping " + StringUtils.join(matchedPlayerNames, ", "), false);
+                FUtil.adminAction(sender.getName(), "De-opping " + StringUtils.join(matchedPlayerNames, ", "), false);
             }
         }
         else

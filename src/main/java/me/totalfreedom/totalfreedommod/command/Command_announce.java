@@ -22,5 +22,4 @@ public class Command_announce extends FreedomCommand
         plugin.an.announce(StringUtils.join(args, " "));
         return true;
     }
-
 }

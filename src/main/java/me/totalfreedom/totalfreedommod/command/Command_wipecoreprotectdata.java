@@ -21,7 +21,7 @@ public class Command_wipecoreprotectdata extends FreedomCommand
             return true;
         }
 
-        FUtil.staffAction(sender.getName(), "Wiping CoreProtect data for the flatlands", true);
+        FUtil.adminAction(sender.getName(), "Wiping CoreProtect data for the flatlands", true);
 
         new BukkitRunnable()
         {

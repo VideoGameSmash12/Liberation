@@ -107,5 +107,4 @@ public class Command_health extends FreedomCommand
             return (double)tickCount / ((double)elapsed / 1000.0);
         }
     }
-
 }

@@ -3,7 +3,7 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class Module_players extends HTTPDModule
         final JSONObject responseObject = new JSONObject();
 
         final JSONArray players = new JSONArray();
-        final JSONArray onlinestaff = new JSONArray();
+        final JSONArray onlineadmins = new JSONArray();
         final JSONArray masterbuilders = new JSONArray();
         final JSONArray admins = new JSONArray();
         final JSONArray senioradmins = new JSONArray();
@@ -35,22 +35,21 @@ public class Module_players extends HTTPDModule
         // All online players
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            if (!plugin.sl.isVanished(player.getName()))
+            if (!plugin.al.isVanished(player.getName()))
             {
                 players.add(player.getName());
-                if (plugin.sl.isStaff(player) && !plugin.sl.isStaffImpostor(player))
+                if (plugin.al.isAdmin(player) && !plugin.al.isAdminImpostor(player))
                 {
-                    onlinestaff.add(player.getName());
+                    onlineadmins.add(player.getName());
                 }
             }
         }
 
-        // Staff
-        for (StaffMember staffMember : plugin.sl.getActiveStaffMembers())
+        // Admins
+        for (Admin admin : plugin.al.getActiveAdmins())
         {
-            final String username = staffMember.getName();
-
-            switch (staffMember.getRank())
+            final String username = admin.getName();
+            switch (admin.getRank())
             {
                 case ADMIN:
                     admins.add(username);

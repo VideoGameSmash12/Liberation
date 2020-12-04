@@ -21,13 +21,8 @@ public class Command_fuckoff extends FreedomCommand
 
         FPlayer player = plugin.pl.getPlayer(playerSender);
 
-        if (!args[0].equals("on"))
+        if (args[0].equalsIgnoreCase("off"))
         {
-            player.disableFuckoff();
-        }
-        else
-        {
-
             double radius = 25.0;
             if (args.length >= 2)
             {
@@ -39,12 +34,14 @@ public class Command_fuckoff extends FreedomCommand
                 {
                 }
             }
-
             player.setFuckoff(radius);
+        }
+        else
+        {
+            player.disableFuckoff();
         }
 
         msg("Fuckoff " + (player.isFuckOff() ? ("enabled. Radius: " + player.getFuckoffRadius() + ".") : "disabled."));
-
         return true;
     }
 }

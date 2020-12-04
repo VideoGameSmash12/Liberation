@@ -46,9 +46,9 @@ public class Monitors extends FreedomService
                     }
                 }
 
-                plugin.sl.potionSpyMessage(ChatColor.translateAlternateColorCodes('&', String.format("&8[&ePotionSpy&8] &r%s splashed %s %s at X: %s Y: %s Z: %s in the world '%s'%s.",
+                plugin.al.potionSpyMessage(ChatColor.translateAlternateColorCodes('&', String.format("&8[&ePotionSpy&8] &r%s splashed %s %s at X: %s Y: %s Z: %s in the world '%s'%s.",
                         player.getName(), potionsThrown, potionsThrown == 1 ? "potion" : "potions", latestThrownPotion.getLocation().getBlockX(), latestThrownPotion.getLocation().getBlockY(), latestThrownPotion.getLocation().getBlockZ(),
-                            latestThrownPotion.getWorld().getName(), trollPotions > 0 ? String.format(" &c(most likely troll %s)", trollPotions == 1 ? "potion" : "potions") : "")));
+                        latestThrownPotion.getWorld().getName(), trollPotions > 0 ? String.format(" &c(most likely troll %s)", trollPotions == 1 ? "potion" : "potions") : "")));
             }
             recentlyThrownPotions.clear();
         }, 0L, 40L);

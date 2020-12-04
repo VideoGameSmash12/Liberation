@@ -28,9 +28,9 @@ public class Votifier extends FreedomService
     {
         Vote vote = event.getVote();
         String name = vote.getUsername();
-        int coinsPerVote =  ConfigEntry.SHOP_COINS_PER_VOTE.getInteger();
+        int coinsPerVote = ConfigEntry.SHOP_COINS_PER_VOTE.getInteger();
         Player player = server.getPlayer(name);
-        PlayerData data = null;
+        PlayerData data;
         if (player != null)
         {
             data = plugin.pl.getData(player);

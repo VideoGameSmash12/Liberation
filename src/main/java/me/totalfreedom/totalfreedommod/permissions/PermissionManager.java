@@ -94,7 +94,7 @@ public class PermissionManager extends FreedomService
             }
         }
 
-        if (plugin.pl.getData(player).isMasterBuilder() && !plugin.sl.isStaff(player))
+        if (plugin.pl.getData(player).isMasterBuilder() && !plugin.al.isAdmin(player))
         {
             if (nodes != null)
             {

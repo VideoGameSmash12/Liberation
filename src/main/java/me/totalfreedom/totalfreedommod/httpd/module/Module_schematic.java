@@ -22,7 +22,7 @@ import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Method;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Response;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -280,9 +280,9 @@ public class Module_schematic extends HTTPDModule
 
     private boolean isAuthorized(String remoteAddress)
     {
-        StaffMember staffMemberEntry = plugin.sl.getEntryByIp(remoteAddress);
+        Admin adminEntry = plugin.al.getEntryByIp(remoteAddress);
         PlayerData data = plugin.pl.getDataByIp(remoteAddress);
-        return ((staffMemberEntry != null && staffMemberEntry.isActive()) || data != null && data.isMasterBuilder());
+        return ((adminEntry != null && adminEntry.isActive()) || data != null && data.isMasterBuilder());
     }
 
     private static class SchematicTransferException extends Exception
@@ -330,7 +330,7 @@ public class Module_schematic extends HTTPDModule
         //
         private final String modeName;
 
-        private ModuleMode(String modeName)
+        ModuleMode(String modeName)
         {
             this.modeName = modeName;
         }

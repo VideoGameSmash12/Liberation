@@ -45,9 +45,9 @@ public class Command_warn extends FreedomCommand
             return true;
         }
 
-        if (plugin.sl.isStaff(player))
+        if (plugin.al.isAdmin(player))
         {
-            msg(ChatColor.RED + "You can not warn staff");
+            msg(ChatColor.RED + "You can not warn admins");
             return true;
         }
 
@@ -62,7 +62,7 @@ public class Command_warn extends FreedomCommand
         }
 
         msg(player, ChatColor.RED + "[WARNING] You received a warning from " + sender.getName() + ": " + warnReason);
-        String staffNotice = ChatColor.RED +
+        String adminNotice = ChatColor.RED +
                 sender.getName() +
                 " - " +
                 "Warning: " +
@@ -70,7 +70,7 @@ public class Command_warn extends FreedomCommand
                 " - Reason: " +
                 ChatColor.YELLOW +
                 warnReason;
-        plugin.sl.messageAllStaff(staffNotice);
+        plugin.al.messageAllAdmins(adminNotice);
         plugin.pl.getPlayer(player).incrementWarnings();
         return true;
     }

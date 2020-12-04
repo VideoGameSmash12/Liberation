@@ -111,7 +111,7 @@ public class Command_toggle extends FreedomCommand
             {
                 boolean active = !plugin.lp.isLockdownEnabled();
                 plugin.lp.setLockdownEnabled(active);
-                FUtil.staffAction(sender.getName(), (active ? "A" : "De-a") + "ctivating server lockdown", true);
+                FUtil.adminAction(sender.getName(), (active ? "A" : "De-a") + "ctivating server lockdown", true);
                 break;
             }
 
@@ -308,7 +308,7 @@ public class Command_toggle extends FreedomCommand
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (!plugin.sl.isStaff(sender))
+        if (!plugin.al.isAdmin(sender))
         {
             return Collections.emptyList();
         }

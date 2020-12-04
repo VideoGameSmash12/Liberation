@@ -61,7 +61,7 @@ public class WorldRestrictions extends FreedomService
             }
         }
 
-        return !plugin.sl.isStaff(player) && player.getWorld().equals(plugin.wm.staffworld.getWorld());
+        return !plugin.al.isAdmin(player) && player.getWorld().equals(plugin.wm.adminworld.getWorld());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -132,7 +132,7 @@ public class WorldRestrictions extends FreedomService
         {
             /* This is a very poor way of blocking WorldEdit commands, all the methods I know of
                for obtaining a list of a plugin's commands are returning null for world edit. */
-            String allowed = player.getWorld().equals(plugin.wm.staffworld.getWorld()) ? "Staff" : "Master Builders";
+            String allowed = player.getWorld().equals(plugin.wm.adminworld.getWorld()) ? "Admin" : "Master Builders";
 
             if (command.startsWith("/") || BLOCKED_WORLDEDIT_COMMANDS.contains(command))
             {

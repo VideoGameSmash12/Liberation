@@ -135,7 +135,7 @@ public class Command_plugincontrol extends FreedomCommand
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (!plugin.sl.isStaff(sender))
+        if (!plugin.al.isAdmin(sender))
         {
             return Collections.emptyList();
         }

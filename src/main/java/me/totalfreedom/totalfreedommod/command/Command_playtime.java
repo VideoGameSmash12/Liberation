@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.ActivityLogEntry;
+import me.totalfreedom.totalfreedommod.admin.ActivityLogEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -21,15 +21,21 @@ public class Command_premium extends FreedomCommand
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
         if (args.length != 1)
+        {
             return false;
+        }
 
         final Player player = getPlayer(args[0]);
         final String name;
 
         if (player != null)
+        {
             name = player.getName();
+        }
         else
+        {
             name = args[0];
+        }
 
         new BukkitRunnable()
         {
@@ -49,16 +55,20 @@ public class Command_premium extends FreedomCommand
                     try
                     {
                         if (urlConnection.getResponseCode() == 200)
+                        {
                             message = ChatColor.GREEN + "Yes";
+                        }
                         else
-                            message = ChatColor.RED + "No";                            
+                        {
+                            message = ChatColor.RED + "No";
+                        }
                         FSync.playerMsg(sender, "Player " + name + " is premium: " + message);
                     }
                     catch (IOException e)
                     {
-                       FSync.playerMsg(sender, ChatColor.RED + "There was an error on trying to connect to the API server");
+                        FSync.playerMsg(sender, ChatColor.RED + "There was an error on trying to connect to the API server");
                     }
-                    
+
                 }
                 catch (IOException ex)
                 {

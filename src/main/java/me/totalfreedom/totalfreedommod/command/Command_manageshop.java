@@ -218,5 +218,4 @@ public class Command_manageshop extends FreedomCommand
         }
         return false;
     }
-
 }

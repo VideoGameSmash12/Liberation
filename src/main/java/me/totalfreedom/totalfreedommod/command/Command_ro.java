@@ -92,10 +92,10 @@ public class Command_ro extends FreedomCommand
             names = StringUtils.join(materials, ", ");
         }
 
-        World staffWorld = null;
+        World adminWorld = null;
         try
         {
-            staffWorld = plugin.wm.staffworld.getWorld();
+            adminWorld = plugin.wm.adminworld.getWorld();
         }
         catch (Exception ex)
         {
@@ -104,11 +104,11 @@ public class Command_ro extends FreedomCommand
         int affected = 0;
         if (targetPlayer == null)
         {
-            FUtil.staffAction(sender.getName(), "Removing all " + names + " within " + radius + " blocks of all players... Brace for lag!", false);
+            FUtil.adminAction(sender.getName(), "Removing all " + names + " within " + radius + " blocks of all players... Brace for lag!", false);
 
             for (final Player player : server.getOnlinePlayers())
             {
-                if (player.getWorld() == staffWorld)
+                if (player.getWorld() == adminWorld)
                 {
                     continue;
                 }
@@ -121,9 +121,9 @@ public class Command_ro extends FreedomCommand
         }
         else
         {
-            if (targetPlayer.getWorld() != staffWorld)
+            if (targetPlayer.getWorld() != adminWorld)
             {
-                FUtil.staffAction(sender.getName(), "Removing all " + names + " within " + radius + " blocks of " + targetPlayer.getName(), false);
+                FUtil.adminAction(sender.getName(), "Removing all " + names + " within " + radius + " blocks of " + targetPlayer.getName(), false);
                 for (Material material : materials)
                 {
                     affected += replaceBlocks(targetPlayer.getLocation(), material, Material.AIR, radius);
@@ -131,7 +131,7 @@ public class Command_ro extends FreedomCommand
             }
         }
 
-        FUtil.staffAction(sender.getName(), "Remove complete! " + affected + " blocks removed.", false);
+        FUtil.adminAction(sender.getName(), "Remove complete! " + affected + " blocks removed.", false);
         return true;
     }
 

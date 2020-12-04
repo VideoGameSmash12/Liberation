@@ -41,8 +41,8 @@ import me.totalfreedom.totalfreedommod.rank.RankManager;
 import me.totalfreedom.totalfreedommod.shop.Shop;
 import me.totalfreedom.totalfreedommod.shop.Votifier;
 import me.totalfreedom.totalfreedommod.sql.SQLite;
-import me.totalfreedom.totalfreedommod.staff.ActivityLog;
-import me.totalfreedom.totalfreedommod.staff.StaffList;
+import me.totalfreedom.totalfreedommod.admin.ActivityLog;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
@@ -84,7 +84,7 @@ public class TotalFreedomMod extends JavaPlugin
     public SavedFlags sf;
     public WorldManager wm;
     public LogViewer lv;
-    public StaffList sl;
+    public AdminList al;
     public ActivityLog acl;
     public RankManager rm;
     public CommandBlocker cb;
@@ -202,7 +202,7 @@ public class TotalFreedomMod extends JavaPlugin
         wm = new WorldManager();
         lv = new LogViewer();
         sql = new SQLite();
-        sl = new StaffList();
+        al = new AdminList();
         acl = new ActivityLog();
         rm = new RankManager();
         cb = new CommandBlocker();

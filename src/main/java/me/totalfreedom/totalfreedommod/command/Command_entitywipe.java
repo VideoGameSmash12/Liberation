@@ -54,7 +54,7 @@ public class Command_entitywipe extends FreedomCommand
             entityName = FUtil.formatName(type.name());
         }
 
-        FUtil.staffAction(sender.getName(), "Purging all " + (type != null ? entityName + "s" : "entities"), true);
+        FUtil.adminAction(sender.getName(), "Purging all " + (type != null ? entityName + "s" : "entities"), true);
         int count;
         if (type != null)
         {

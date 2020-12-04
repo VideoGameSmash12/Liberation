@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
-@CommandParameters(description = "Freeze/Unfreeze a specified player, or all non-staff on the server.", usage = "/<command> [target | purge]", aliases = "fr")
+@CommandParameters(description = "Freeze/Unfreeze a specified player, or all non-admins on the server.", usage = "/<command> [target | purge]", aliases = "fr")
 public class Command_freeze extends FreedomCommand
 {
 
@@ -23,15 +23,15 @@ public class Command_freeze extends FreedomCommand
 
             if (!gFreeze)
             {
-                FUtil.staffAction(sender.getName(), "Disabling global player freeze", false);
+                FUtil.adminAction(sender.getName(), "Disabling global player freeze", false);
                 msg("Players are now free to move.");
                 return true;
             }
 
-            FUtil.staffAction(sender.getName(), "Enabling global player freeze", false);
+            FUtil.adminAction(sender.getName(), "Enabling global player freeze", false);
             for (Player player : server.getOnlinePlayers())
             {
-                if (!isStaff(player))
+                if (!isAdmin(player))
                 {
                     player.sendTitle(ChatColor.RED + "You've been globally frozen.", ChatColor.YELLOW + "Please be patient and you will be unfrozen shortly.", 20, 100, 60);
                     msg(player, "You have been globally frozen due to an OP breaking the rules, please wait and you will be unfrozen soon.", ChatColor.RED);
@@ -41,12 +41,12 @@ public class Command_freeze extends FreedomCommand
             return true;
         }
 
-        if (args[0].equals("purge"))
+        if (args[0].equalsIgnoreCase("purge"))
         {
-            FUtil.staffAction(sender.getName(), "Unfreezing all players", false);
+            FUtil.adminAction(sender.getName(), "Unfreezing all players", false);
             for (Player player : server.getOnlinePlayers())
             {
-                if (!isStaff(player))
+                if (!isAdmin(player))
                 {
                     player.sendTitle(ChatColor.GREEN + "You've been unfrozen.", ChatColor.YELLOW + "You may now move again.", 20, 100, 60);
                 }

@@ -49,15 +49,13 @@ public class Command_curse extends FreedomCommand
         player.setResourcePack("http://play.totalfreedom.me/cursed.zip");
         msg("Attempting to curse " + player.getName(), ChatColor.GREEN);
         plugin.cul.cursedPlayers.put(player, playerSender);
-
-
         return true;
     }
 
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (args.length == 1 && plugin.sl.isStaff(sender) && FUtil.isExecutive(sender.getName()))
+        if (args.length == 1 && plugin.al.isAdmin(sender) && FUtil.isExecutive(sender.getName()))
         {
             return FUtil.getPlayerList();
         }

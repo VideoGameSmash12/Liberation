@@ -5,8 +5,8 @@ import java.util.List;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Displayable;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.StaffList;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
@@ -42,13 +42,13 @@ public class Command_list extends FreedomCommand
             {
                 case "-s":
                 {
-                    listFilter = ListFilter.STAFF;
+                    listFilter = ListFilter.ADMINS;
                     break;
                 }
                 case "-v":
                 {
                     checkRank(Rank.ADMIN);
-                    listFilter = ListFilter.VANISHED_STAFF;
+                    listFilter = ListFilter.VANISHED_ADMINS;
                     break;
                 }
                 case "-t":
@@ -82,20 +82,20 @@ public class Command_list extends FreedomCommand
 
         List<String> n = new ArrayList<>();
 
-        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.sl.isStaff(sender) && plugin.sl.getAdmin(playerSender).getRank().isAtLeast(Rank.ADMIN))
+        if (listFilter == ListFilter.TELNET_SESSIONS && plugin.al.isAdmin(sender) && plugin.al.getAdmin(playerSender).getRank().isAtLeast(Rank.ADMIN))
         {
-            List<StaffMember> connectedStaffMembers = plugin.btb.getConnectedAdmins();
-            onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(connectedStaffMembers.size())
+            List<Admin> connectedAdmins = plugin.btb.getConnectedAdmins();
+            onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(connectedAdmins.size())
                     .append(ChatColor.BLUE)
-                    .append(" staff members connected to telnet.");
-            for (StaffMember staffMember : connectedStaffMembers)
+                    .append(" admins connected to telnet.");
+            for (Admin admin : connectedAdmins)
             {
-                n.add(staffMember.getName());
+                n.add(admin.getName());
             }
         }
         else
         {
-            onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(server.getOnlinePlayers().size() - StaffList.vanished.size())
+            onlineStats.append(ChatColor.BLUE).append("There are ").append(ChatColor.RED).append(server.getOnlinePlayers().size() - AdminList.vanished.size())
                     .append(ChatColor.BLUE)
                     .append(" out of a maximum ")
                     .append(ChatColor.RED)
@@ -104,19 +104,19 @@ public class Command_list extends FreedomCommand
                     .append(" players online.");
             for (Player p : server.getOnlinePlayers())
             {
-                if (listFilter == ListFilter.STAFF && !plugin.sl.isStaff(p))
+                if (listFilter == ListFilter.ADMINS && !plugin.al.isAdmin(p))
                 {
                     continue;
                 }
-                if (listFilter == ListFilter.STAFF && plugin.sl.isVanished(p.getName()))
+                if (listFilter == ListFilter.ADMINS && plugin.al.isVanished(p.getName()))
                 {
                     continue;
                 }
-                if (listFilter == ListFilter.VANISHED_STAFF && !plugin.sl.isVanished(p.getName()))
+                if (listFilter == ListFilter.VANISHED_ADMINS && !plugin.al.isVanished(p.getName()))
                 {
                     continue;
                 }
-                if (listFilter == ListFilter.IMPOSTORS && !plugin.sl.isStaffImpostor(p))
+                if (listFilter == ListFilter.IMPOSTORS && !plugin.al.isAdminImpostor(p))
                 {
                     continue;
                 }
@@ -124,7 +124,7 @@ public class Command_list extends FreedomCommand
                 {
                     continue;
                 }
-                if (listFilter == ListFilter.PLAYERS && plugin.sl.isVanished(p.getName()))
+                if (listFilter == ListFilter.PLAYERS && plugin.al.isVanished(p.getName()))
                 {
                     continue;
                 }
@@ -155,8 +155,8 @@ public class Command_list extends FreedomCommand
     private enum ListFilter
     {
         PLAYERS,
-        STAFF,
-        VANISHED_STAFF,
+        ADMINS,
+        VANISHED_ADMINS,
         TELNET_SESSIONS,
         FAMOUS_PLAYERS,
         IMPOSTORS

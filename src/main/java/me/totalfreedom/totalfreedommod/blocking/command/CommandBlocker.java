@@ -46,12 +46,12 @@ public class CommandBlocker extends FreedomService
     {
         try
         {
-            SimplePluginManager simplePluginManager = (SimplePluginManager) Bukkit.getServer().getPluginManager();
+            SimplePluginManager simplePluginManager = (SimplePluginManager)Bukkit.getServer().getPluginManager();
 
             Field commandMapField = SimplePluginManager.class.getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
 
-            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMapField.get(simplePluginManager);
+            SimpleCommandMap simpleCommandMap = (SimpleCommandMap)commandMapField.get(simplePluginManager);
             return simpleCommandMap;
         }
         catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
@@ -171,7 +171,7 @@ public class CommandBlocker extends FreedomService
 
         for (String part : commandParts)
         {
-            if (command.startsWith("/") && !plugin.sl.isStaff(sender) && (part.contains("#copy") || part.contains("#clipboard")))
+            if (command.startsWith("/") && !plugin.al.isAdmin(sender) && (part.contains("#copy") || part.contains("#clipboard")))
             {
                 FUtil.playerMsg(sender, "WorldEdit copy variables are disabled.");
                 return true;

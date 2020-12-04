@@ -97,7 +97,7 @@ public class Command_tempban extends FreedomCommand
                 }
             }
 
-            FUtil.staffAction(sender.getName(), message.toString(), true);
+            FUtil.adminAction(sender.getName(), message.toString(), true);
         }
         else
         {

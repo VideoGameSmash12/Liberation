@@ -266,5 +266,4 @@ public class Command_enchant extends FreedomCommand
 
         return Collections.emptyList();
     }
-
 }

@@ -8,10 +8,10 @@ public enum Rank implements Displayable
     IMPOSTOR("an", "Impostor", Type.PLAYER, "Imp", ChatColor.YELLOW, null, false, false),
     NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false, false),
     OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false, false),
-    ADMIN("an", "Admin", Type.STAFF, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true, true),
-    SENIOR_ADMIN("a", "Senior Admin", Type.STAFF, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
-    ADMIN_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false),
-    SENIOR_CONSOLE("the", "Console", Type.STAFF_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false);
+    ADMIN("an", "Admin", Type.ADMIN, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true, true),
+    SENIOR_ADMIN("a", "Senior Admin", Type.ADMIN, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
+    ADMIN_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false),
+    SENIOR_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false);
     @Getter
     private final Type type;
     @Getter
@@ -79,7 +79,7 @@ public enum Rank implements Displayable
 
     public boolean isConsole()
     {
-        return getType() == Type.STAFF_CONSOLE;
+        return getType() == Type.ADMIN_CONSOLE;
     }
 
     public int getLevel()
@@ -102,9 +102,9 @@ public enum Rank implements Displayable
         return getConsoleVariant().getLevel() >= rank.getConsoleVariant().getLevel();
     }
 
-    public boolean isStaff()
+    public boolean isAdmin()
     {
-        return getType() == Type.STAFF || getType() == Type.STAFF_CONSOLE;
+        return getType() == Type.ADMIN || getType() == Type.ADMIN_CONSOLE;
     }
 
     public boolean hasConsoleVariant()
@@ -143,10 +143,10 @@ public enum Rank implements Displayable
     public enum Type
     {
         PLAYER,
-        STAFF,
-        STAFF_CONSOLE;
+        ADMIN,
+        ADMIN_CONSOLE;
 
-        public boolean isStaff()
+        public boolean isAdmin()
         {
             return this != PLAYER;
         }

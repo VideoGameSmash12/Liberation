@@ -5,26 +5,26 @@ import net.md_5.bungee.api.ChatColor;
 public interface Displayable
 {
 
-    public String getArticle();
+    String getArticle();
 
-    public String getName();
+    String getName();
 
-    public String getTag();
+    String getTag();
 
-    public String getAbbr();
+    String getAbbr();
 
-    public ChatColor getColor();
+    ChatColor getColor();
 
-    public org.bukkit.ChatColor getTeamColor();
+    org.bukkit.ChatColor getTeamColor();
 
-    public String getColoredName();
+    String getColoredName();
 
-    public String getColoredTag();
+    String getColoredTag();
 
-    public String getColoredLoginMessage();
+    String getColoredLoginMessage();
 
-    public boolean hasTeam();
+    boolean hasTeam();
 
-    public boolean hasDefaultLoginMessage();
+    boolean hasDefaultLoginMessage();
 
 }

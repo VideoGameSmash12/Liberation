@@ -93,7 +93,7 @@ public class Command_tban extends FreedomCommand
 
                 if (reason != null)
                 {
-                    FUtil.staffAction(sender.getName(), "Tempbanning " + player.getName() + " for 5 minutes - Reason: " + reason, true);
+                    FUtil.adminAction(sender.getName(), "Tempbanning " + player.getName() + " for 5 minutes - Reason: " + reason, true);
                     kick.append("\n")
                             .append(ChatColor.RED)
                             .append("Reason: ")
@@ -102,7 +102,7 @@ public class Command_tban extends FreedomCommand
                 }
                 else
                 {
-                    FUtil.staffAction(sender.getName(), "Tempbanning " + player.getName() + " for 5 minutes", true);
+                    FUtil.adminAction(sender.getName(), "Tempbanning " + player.getName() + " for 5 minutes", true);
                 }
             }
         }

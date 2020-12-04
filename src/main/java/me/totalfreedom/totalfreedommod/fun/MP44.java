@@ -22,5 +22,4 @@ public class MP44 extends FreedomService
     {
         plugin.pl.getPlayer(event.getPlayer()).disarmMP44();
     }
-
 }

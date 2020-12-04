@@ -46,7 +46,7 @@ public class Command_blockpvp extends FreedomCommand
 
         if (args[0].equals("purge"))
         {
-            FUtil.staffAction(sender.getName(), "Enabling PVP for all players.", true);
+            FUtil.adminAction(sender.getName(), "Enabling PVP for all players.", true);
             int count = 0;
             for (Player player : server.getOnlinePlayers())
             {
@@ -64,11 +64,11 @@ public class Command_blockpvp extends FreedomCommand
 
         if (args[0].equals("all"))
         {
-            FUtil.staffAction(sender.getName(), "Disabling PVP for all non-staff", true);
+            FUtil.adminAction(sender.getName(), "Disabling PVP for all non-admins", true);
             int counter = 0;
             for (Player player : server.getOnlinePlayers())
             {
-                if (!plugin.sl.isStaff(player))
+                if (!plugin.al.isAdmin(player))
                 {
                     final FPlayer playerdata = plugin.pl.getPlayer(player);
                     playerdata.setPvpBlocked(true);
@@ -106,20 +106,20 @@ public class Command_blockpvp extends FreedomCommand
         final FPlayer pd = plugin.pl.getPlayer(p);
         if (pd.isPvpBlocked())
         {
-            FUtil.staffAction(sender.getName(), "Enabling PVP for " + p.getName(), true);
+            FUtil.adminAction(sender.getName(), "Enabling PVP for " + p.getName(), true);
             pd.setPvpBlocked(false);
-            msg("Enabling PVP  for  " + p.getName());
+            msg("Enabling PVP for " + p.getName());
             msg(p, "Your PVP have been enabled.", ChatColor.GREEN);
         }
         else
         {
-            if (plugin.sl.isStaff(p))
+            if (plugin.al.isAdmin(p))
             {
-                msg(p.getName() + " is a staff member, and cannot have their PVP disabled.");
+                msg(p.getName() + " is an admin, and cannot have their PVP disabled.");
                 return true;
             }
 
-            FUtil.staffAction(sender.getName(), "Disabling PVP for " + p.getName(), true);
+            FUtil.adminAction(sender.getName(), "Disabling PVP for " + p.getName(), true);
             pd.setPvpBlocked(true);
             if (smite)
             {

@@ -1,7 +1,7 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,12 +14,11 @@ public class Command_cmdspy extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        StaffMember staffMember = plugin.sl.getAdmin(playerSender);
-        staffMember.setCommandSpy(!staffMember.getCommandSpy());
-        msg("CommandSpy " + (staffMember.getCommandSpy() ? "enabled." : "disabled."));
-        plugin.sl.save(staffMember);
-        plugin.sl.updateTables();
-
+        Admin admin = plugin.al.getAdmin(playerSender);
+        admin.setCommandSpy(!admin.getCommandSpy());
+        msg("CommandSpy " + (admin.getCommandSpy() ? "enabled." : "disabled."));
+        plugin.al.save(admin);
+        plugin.al.updateTables();
         return true;
     }
 }

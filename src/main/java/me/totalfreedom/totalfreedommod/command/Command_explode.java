@@ -33,10 +33,12 @@ public class Command_explode extends FreedomCommand
 
         player.setFlying(false);
         player.setVelocity(player.getVelocity().clone().add(new Vector(0, 50, 0)));
+
         for (int i = 1; i <= 3; i++)
         {
             FUtil.createExplosionOnDelay(player.getLocation(), 2L, i * 10);
         }
+
         new BukkitRunnable()
         {
             @Override
@@ -58,7 +60,7 @@ public class Command_explode extends FreedomCommand
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (args.length == 1 && plugin.sl.isStaff(sender))
+        if (args.length == 1 && plugin.al.isAdmin(sender))
         {
             return FUtil.getPlayerList();
         }

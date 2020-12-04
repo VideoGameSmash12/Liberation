@@ -46,7 +46,7 @@ public class Freezer extends FreedomService
     {
         final Player player = event.getPlayer();
 
-        if (plugin.sl.isStaff(player))
+        if (plugin.al.isAdmin(player))
         {
             return;
         }
@@ -67,5 +67,4 @@ public class Freezer extends FreedomService
 
         event.setTo(loc);
     }
-
 }

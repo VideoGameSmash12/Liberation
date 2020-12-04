@@ -41,238 +41,252 @@ public class Command_tag extends FreedomCommand
 
         if (args.length == 1)
         {
-
-            if ("list".equalsIgnoreCase(args[0]))
+            switch (args[0].toLowerCase())
             {
-                msg("Tags for all online players:");
-
-                for (final Player player : server.getOnlinePlayers())
+                case "list":
                 {
-                    if (plugin.sl.isVanished(player.getName()) && !plugin.sl.isStaff(sender))
-                    {
-                        continue;
-                    }
-                    final FPlayer playerdata = plugin.pl.getPlayer(player);
-                    if (playerdata.getTag() != null)
-                    {
-                        msg(player.getName() + ": " + playerdata.getTag());
-                    }
-                }
+                    msg("Tags for all online players:");
 
-                return true;
-            }
-            else if ("clearall".equalsIgnoreCase(args[0]))
-            {
-                if (!plugin.sl.isStaff(sender))
-                {
-                    noPerms();
+                    for (final Player player : server.getOnlinePlayers())
+                    {
+                        if (plugin.al.isVanished(player.getName()) && !plugin.al.isAdmin(sender))
+                        {
+                            continue;
+                        }
+
+                        final FPlayer playerdata = plugin.pl.getPlayer(player);
+                        if (playerdata.getTag() != null)
+                        {
+                            msg(player.getName() + ": " + playerdata.getTag());
+                        }
+                    }
                     return true;
                 }
 
-                FUtil.staffAction(sender.getName(), "Removing all tags", false);
-
-                int count = 0;
-                for (final Player player : server.getOnlinePlayers())
+                case "clearall":
                 {
-                    final FPlayer playerdata = plugin.pl.getPlayer(player);
-                    if (playerdata.getTag() != null)
+                    if (!plugin.al.isAdmin(sender))
                     {
-                        count++;
-                        playerdata.setTag(null);
+                        noPerms();
+                        return true;
                     }
-                }
 
-                msg(count + " tag(s) removed.");
+                    FUtil.adminAction(sender.getName(), "Removing all tags", false);
 
-                return true;
-            }
-            else if ("off".equalsIgnoreCase(args[0]))
-            {
-                if (senderIsConsole)
-                {
-                    msg("\"/tag off\" can't be used from the console. Use \"/tag clear <player>\" or \"/tag clearall\" instead.");
-                }
-                else
-                {
-                    plugin.pl.getPlayer(playerSender).setTag(null);
-                    if (save)
+                    int count = 0;
+                    for (final Player player : server.getOnlinePlayers())
                     {
-                        save(playerSender, null);
+                        final FPlayer playerdata = plugin.pl.getPlayer(player);
+                        if (playerdata.getTag() != null)
+                        {
+                            count++;
+                            playerdata.setTag(null);
+                        }
                     }
-                    msg("Your tag has been removed." + (save ? " (Saved)" : ""));
+
+                    msg(count + " tag(s) removed.");
+                    return true;
                 }
 
-                return true;
-            }
-            else
-            {
-                return false;
+                case "off":
+                {
+                    if (senderIsConsole)
+                    {
+                        msg("\"/tag off\" can't be used from the console. Use \"/tag clear <player>\" or \"/tag clearall\" instead.");
+                    }
+                    else
+                    {
+                        plugin.pl.getPlayer(playerSender).setTag(null);
+
+                        if (save)
+                        {
+                            save(playerSender, null);
+                        }
+
+                        msg("Your tag has been removed." + (save ? " (Saved)" : ""));
+                    }
+                    return true;
+                }
+                /*
+                {
+                    return false;
+                }*/
             }
         }
         else if (args.length >= 2)
         {
-            if ("clear".equalsIgnoreCase(args[0]))
+            switch (args[0].toLowerCase())
             {
-                if (!plugin.sl.isStaff(sender))
+                case "clear":
                 {
-                    noPerms();
-                    return true;
-                }
-
-                final Player player = getPlayer(args[1]);
-
-                if (player == null)
-                {
-                    msg(FreedomCommand.PLAYER_NOT_FOUND);
-                    return true;
-                }
-
-                plugin.pl.getPlayer(player).setTag(null);
-                if (save)
-                {
-                    save(player, null);
-                }
-                msg("Removed " + player.getName() + "'s tag." + (save ? " (Saved)" : ""));
-
-                return true;
-            }
-            else if ("set".equalsIgnoreCase(args[0]))
-            {
-                if (senderIsConsole)
-                {
-                    msg("\"/tag set\" can't be used from the console.");
-                    return true;
-                }
-
-                final String inputTag = StringUtils.join(args, " ", 1, args.length);
-                final String strippedTag = StringUtils.replaceEachRepeatedly(StringUtils.strip(inputTag),
-                        new String[]
-                                {
-                                        "" + ChatColor.COLOR_CHAR, "&k"
-                                },
-                        new String[]
-                                {
-                                        "", ""
-                                });
-                final String outputTag = FUtil.colorize(strippedTag);
-
-                int tagLimit = (plugin.sl.isStaff(sender) ? 30 : 20);
-
-                final String rawTag = ChatColor.stripColor(outputTag).toLowerCase();
-
-                if (rawTag.length() > tagLimit)
-                {
-                    msg("That tag is too long (Max is " + tagLimit + " characters).");
-                    return true;
-                }
-
-                if (!plugin.sl.isStaff(sender))
-                {
-                    for (String word : FORBIDDEN_WORDS)
+                    if (!plugin.al.isAdmin(sender))
                     {
-                        if (rawTag.contains(word))
+                        noPerms();
+                        return true;
+                    }
+
+                    final Player player = getPlayer(args[1]);
+
+                    if (player == null)
+                    {
+                        msg(FreedomCommand.PLAYER_NOT_FOUND);
+                        return true;
+                    }
+
+                    plugin.pl.getPlayer(player).setTag(null);
+                    if (save)
+                    {
+                        save(player, null);
+                    }
+
+                    msg("Removed " + player.getName() + "'s tag." + (save ? " (Saved)" : ""));
+                    return true;
+                }
+
+                case "set":
+                {
+                    if (senderIsConsole)
+                    {
+                        msg("\"/tag set\" can't be used from the console.");
+                        return true;
+                    }
+
+                    final String inputTag = StringUtils.join(args, " ", 1, args.length);
+                    final String strippedTag = StringUtils.replaceEachRepeatedly(StringUtils.strip(inputTag),
+                            new String[]
+                                    {
+                                            "" + ChatColor.COLOR_CHAR, "&k"
+                                    },
+                            new String[]
+                                    {
+                                            "", ""
+                                    });
+
+                    final String outputTag = FUtil.colorize(strippedTag);
+                    int tagLimit = (plugin.al.isAdmin(sender) ? 30 : 20);
+                    final String rawTag = ChatColor.stripColor(outputTag).toLowerCase();
+
+                    if (rawTag.length() > tagLimit)
+                    {
+                        msg("That tag is too long (Max is " + tagLimit + " characters).");
+                        return true;
+                    }
+
+                    if (!plugin.al.isAdmin(sender))
+                    {
+                        for (String word : FORBIDDEN_WORDS)
                         {
-                            msg("That tag contains a forbidden word.");
-                            return true;
+                            if (rawTag.contains(word))
+                            {
+                                msg("That tag contains a forbidden word.");
+                                return true;
+                            }
                         }
                     }
-                }
 
-                plugin.pl.getPlayer(playerSender).setTag(outputTag);
-                if (save)
-                {
-                    save(playerSender, strippedTag);
-                }
-                msg("Tag set to '" + outputTag + ChatColor.GRAY + "'." + (save ? " (Saved)" : ""));
+                    plugin.pl.getPlayer(playerSender).setTag(outputTag);
 
-                return true;
-            }
-            else if (args[0].equalsIgnoreCase("gradient"))
-            {
-                if (senderIsConsole)
-                {
-                    msg("\"/tag gradient\" can't be used from the console.");
-                    return true;
-                }
-
-                String from = "", to = "";
-                java.awt.Color awt1, awt2;
-                try
-                {
-                    if (args[1].equalsIgnoreCase("random") ||
-                            args[1].equalsIgnoreCase("r"))
+                    if (save)
                     {
-                        awt1 = FUtil.getRandomAWTColor();
-                        from = " (From: " + FUtil.getHexStringOfAWTColor(awt1) + ")";
+                        save(playerSender, strippedTag);
                     }
-                    else
-                        awt1 = java.awt.Color.decode(args[1]);
-                    if (args[2].equalsIgnoreCase("random") ||
-                            args[2].equalsIgnoreCase("r"))
+
+                    msg("Tag set to '" + outputTag + ChatColor.GRAY + "'." + (save ? " (Saved)" : ""));
+                    return true;
+                }
+
+                case "gradient":
+                {
+                    if (senderIsConsole)
                     {
-                        awt2 = FUtil.getRandomAWTColor();
-                        to = " (To: " + FUtil.getHexStringOfAWTColor(awt2) + ")";
+                        msg("\"/tag gradient\" can't be used from the console.");
+                        return true;
                     }
-                    else
-                        awt2 = java.awt.Color.decode(args[2]);
-                }
-                catch (NumberFormatException ex)
-                {
-                    msg("Invalid hex values.");
-                    return true;
-                }
-                Color c1 = FUtil.fromAWT(awt1);
-                Color c2 = FUtil.fromAWT(awt2);
-                String tag = StringUtils.join(args, " ", 3, args.length);
-                List<Color> gradient = FUtil.createColorGradient(c1, c2, tag.length());
-                String[] splitTag = tag.split("");
-                for (int i = 0; i < splitTag.length; i++)
-                {
-                    splitTag[i] = net.md_5.bungee.api.ChatColor.of(FUtil.toAWT(gradient.get(i))) + splitTag[i];
-                }
-                tag = StringUtils.join(splitTag, "");
-                final String outputTag = FUtil.colorize(tag);
 
-                int tagLimit = (plugin.sl.isStaff(sender) ? 30 : 20);
-
-                final String rawTag = ChatColor.stripColor(outputTag).toLowerCase();
-
-                if (rawTag.length() > tagLimit)
-                {
-                    msg("That tag is too long (Max is " + tagLimit + " characters).");
-                    return true;
-                }
-
-                if (!plugin.sl.isStaff(sender))
-                {
-                    for (String word : FORBIDDEN_WORDS)
+                    String from = "", to = "";
+                    java.awt.Color awt1, awt2;
+                    try
                     {
-                        if (rawTag.contains(word))
+                        if (args[1].equalsIgnoreCase("random") || args[1].equalsIgnoreCase("r"))
                         {
-                            msg("That tag contains a forbidden word.");
-                            return true;
+                            awt1 = FUtil.getRandomAWTColor();
+                            from = " (From: " + FUtil.getHexStringOfAWTColor(awt1) + ")";
+                        }
+                        else
+                        {
+                            awt1 = java.awt.Color.decode(args[1]);
+                        }
+
+                        if (args[2].equalsIgnoreCase("random") || args[2].equalsIgnoreCase("r"))
+                        {
+                            awt2 = FUtil.getRandomAWTColor();
+                            to = " (To: " + FUtil.getHexStringOfAWTColor(awt2) + ")";
+                        }
+                        else
+                        {
+                            awt2 = java.awt.Color.decode(args[2]);
                         }
                     }
+                    catch (NumberFormatException ex)
+                    {
+                        msg("Invalid hex values.");
+                        return true;
+                    }
+
+                    Color c1 = FUtil.fromAWT(awt1);
+                    Color c2 = FUtil.fromAWT(awt2);
+                    String tag = StringUtils.join(args, " ", 3, args.length);
+                    List<Color> gradient = FUtil.createColorGradient(c1, c2, tag.length());
+                    String[] splitTag = tag.split("");
+
+                    for (int i = 0; i < splitTag.length; i++)
+                    {
+                        splitTag[i] = net.md_5.bungee.api.ChatColor.of(FUtil.toAWT(gradient.get(i))) + splitTag[i];
+                    }
+
+                    tag = StringUtils.join(splitTag, "");
+                    final String outputTag = FUtil.colorize(tag);
+
+                    int tagLimit = (plugin.al.isAdmin(sender) ? 30 : 20);
+
+                    final String rawTag = ChatColor.stripColor(outputTag).toLowerCase();
+
+                    if (rawTag.length() > tagLimit)
+                    {
+                        msg("That tag is too long (Max is " + tagLimit + " characters).");
+                        return true;
+                    }
+
+                    if (!plugin.al.isAdmin(sender))
+                    {
+                        for (String word : FORBIDDEN_WORDS)
+                        {
+                            if (rawTag.contains(word))
+                            {
+                                msg("That tag contains a forbidden word.");
+                                return true;
+                            }
+                        }
+                    }
+
+                    plugin.pl.getPlayer(playerSender).setTag(outputTag);
+
+                    if (save)
+                    {
+                        save(playerSender, tag);
+                    }
+
+                    msg("Tag set to '" + outputTag + ChatColor.GRAY + "'." + (save ? " (Saved)" : "") + from + to);
+                    return true;
                 }
 
-                plugin.pl.getPlayer(playerSender).setTag(outputTag);
-                if (save)
+                default:
                 {
-                    save(playerSender, tag);
+                    return false;
                 }
-                msg("Tag set to '" + outputTag + ChatColor.GRAY + "'." + (save ? " (Saved)" : "") + from + to);
-
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
-        else
-        {
-            return false;
-        }
+        return true;
     }
 
     public void save(Player player, String tag)

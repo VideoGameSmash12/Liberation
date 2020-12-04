@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 @CommandParameters(
         description = "Manipulate your potion effects. Duration is measured in server ticks (~20 ticks per second).",
         usage = "/<command> <list | clearall | clear [target name] | add <type> <duration> <amplifier> [target name]>",
-        aliases="effect")
+        aliases = "effect")
 public class Command_potion extends FreedomCommand
 {
 
@@ -42,13 +42,13 @@ public class Command_potion extends FreedomCommand
                 }
                 else if (args[0].equalsIgnoreCase("clearall"))
                 {
-                    if (!(plugin.sl.isStaff(sender) || senderIsConsole))
+                    if (!(plugin.al.isAdmin(sender) || senderIsConsole))
                     {
                         noPerms();
                         return true;
                     }
 
-                    FUtil.staffAction(sender.getName(), "Cleared all potion effects from all players", true);
+                    FUtil.adminAction(sender.getName(), "Cleared all potion effects from all players", true);
                     for (Player target : server.getOnlinePlayers())
                     {
                         for (PotionEffect potion_effect : target.getActivePotionEffects())
@@ -62,11 +62,11 @@ public class Command_potion extends FreedomCommand
                 if (args[0].equalsIgnoreCase("clear"))
                 {
                     Player target = playerSender;
-                    if(args.length == 2)
+                    if (args.length == 2)
                     {
-                        if (!plugin.sl.isStaff(sender) && !target.equals(getPlayer(sender.getName())))
+                        if (!plugin.al.isAdmin(sender) && !target.equals(getPlayer(sender.getName())))
                         {
-                            msg(ChatColor.RED + "Only staff can clear potion effects from other players.");
+                            msg(ChatColor.RED + "Only admins can clear potion effects from other players.");
                             return true;
                         }
                         target = getPlayer(args[1], true);
@@ -103,15 +103,15 @@ public class Command_potion extends FreedomCommand
 
                     if (args.length == 5)
                     {
-                        if (!plugin.sl.isStaff(sender) && !getPlayer(args[4]).equals(getPlayer(sender.getName())))
+                        if (!plugin.al.isAdmin(sender) && !getPlayer(args[4]).equals(getPlayer(sender.getName())))
                         {
-                            sender.sendMessage(ChatColor.RED + "Only staff can apply potion effects to other players.");
+                            sender.sendMessage(ChatColor.RED + "Only admins can apply potion effects to other players.");
                             return true;
                         }
 
                         target = getPlayer(args[4]);
 
-                        if (target == null || plugin.sl.isVanished(target.getName()) && !plugin.sl.isStaff(sender))
+                        if (target == null || plugin.al.isVanished(target.getName()) && !plugin.al.isAdmin(sender))
                         {
                             msg(FreedomCommand.PLAYER_NOT_FOUND, ChatColor.RED);
                             return true;
@@ -180,7 +180,7 @@ public class Command_potion extends FreedomCommand
             case 1:
                 List<String> arguments = new ArrayList<>();
                 arguments.addAll(Arrays.asList("list", "clear", "add"));
-                if (plugin.sl.isStaff(sender))
+                if (plugin.al.isAdmin(sender))
                 {
                     arguments.add("clearall");
                 }
@@ -189,7 +189,7 @@ public class Command_potion extends FreedomCommand
             case 2:
                 if (args[0].equals("clear"))
                 {
-                    if (plugin.sl.isStaff(sender))
+                    if (plugin.al.isAdmin(sender))
                     {
                         return FUtil.getPlayerList();
                     }
@@ -213,9 +213,9 @@ public class Command_potion extends FreedomCommand
                     return Arrays.asList("<amplifier>");
                 }
                 break;
-                
+
             case 5:
-                if (plugin.sl.isStaff(sender))
+                if (plugin.al.isAdmin(sender))
                 {
                     if (args[0].equals("add"))
                     {

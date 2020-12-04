@@ -10,7 +10,7 @@ import java.text.MessageFormat;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 
@@ -78,15 +78,15 @@ public class SQLite extends FreedomService
                 }
             }
 
-            if (!tableExists(meta, "staff"))
+            if (!tableExists(meta, "admins"))
             {
                 try
                 {
-                    connection.createStatement().execute("CREATE TABLE `staff` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `rank` VARCHAR NOT NULL, `active` BOOLEAN NOT NULL, `last_login` LONG NOT NULL, `command_spy` BOOLEAN NOT NULL, `potion_spy` BOOLEAN NOT NULL, `ac_format` VARCHAR, `ptero_id` VARCHAR);");
+                    connection.createStatement().execute("CREATE TABLE `admins` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `rank` VARCHAR NOT NULL, `active` BOOLEAN NOT NULL, `last_login` LONG NOT NULL, `command_spy` BOOLEAN NOT NULL, `potion_spy` BOOLEAN NOT NULL, `ac_format` VARCHAR, `ptero_id` VARCHAR);");
                 }
                 catch (SQLException e)
                 {
-                    FLog.severe("Failed to create the staff table: " + e.getMessage());
+                    FLog.severe("Failed to create the admins table: " + e.getMessage());
                 }
             }
             if (!tableExists(meta, "players"))
@@ -124,24 +124,24 @@ public class SQLite extends FreedomService
         return connection.createStatement().executeQuery("SELECT * FROM bans");
     }
 
-    public ResultSet getStaffList() throws SQLException
+    public ResultSet getAdminList() throws SQLException
     {
-        return connection.createStatement().executeQuery("SELECT * FROM staff");
+        return connection.createStatement().executeQuery("SELECT * FROM admins");
     }
 
-    public void setStaffMemberValue(StaffMember staffMember, String key, Object value)
+    public void setAdminValue(Admin admin, String key, Object value)
     {
         try
         {
-            Object[] data = {key, staffMember.getName()};
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE staff SET {0}=? WHERE username=''{1}''", data));
+            Object[] data = {key, admin.getName()};
+            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE admins SET {0}=? WHERE username=''{1}''", data));
             statement = setUnknownType(statement, 1, value);
             statement.executeUpdate();
 
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to update staff member value:");
+            FLog.severe("Failed to update admin value:");
             FLog.severe(e);
         }
     }
@@ -162,18 +162,18 @@ public class SQLite extends FreedomService
         }
     }
 
-    public void updateStaffMemberName(String oldName, String newName)
+    public void updateAdminName(String oldName, String newName)
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE staff SET username=? WHERE username=''{0}''", oldName));
+            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE admins SET username=? WHERE username=''{0}''", oldName));
             statement = setUnknownType(statement, 1, newName);
             statement.executeUpdate();
 
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to update staff member name: " + e.getMessage());
+            FLog.severe("Failed to update admin name: " + e.getMessage());
         }
     }
 
@@ -243,25 +243,25 @@ public class SQLite extends FreedomService
         return result;
     }
 
-    public void addStaffMember(StaffMember staffMember)
+    public void addAdmin(Admin admin)
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, staffMember.getName());
-            statement.setString(2, FUtil.listToString(staffMember.getIps()));
-            statement.setString(3, staffMember.getRank().toString());
-            statement.setBoolean(4, staffMember.isActive());
-            statement.setLong(5, staffMember.getLastLogin().getTime());
-            statement.setBoolean(6, staffMember.getCommandSpy());
-            statement.setBoolean(7, staffMember.getPotionSpy());
-            statement.setString(8, staffMember.getAcFormat());
-            statement.setString(9, staffMember.getPteroID());
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            statement.setString(1, admin.getName());
+            statement.setString(2, FUtil.listToString(admin.getIps()));
+            statement.setString(3, admin.getRank().toString());
+            statement.setBoolean(4, admin.isActive());
+            statement.setLong(5, admin.getLastLogin().getTime());
+            statement.setBoolean(6, admin.getCommandSpy());
+            statement.setBoolean(7, admin.getPotionSpy());
+            statement.setString(8, admin.getAcFormat());
+            statement.setString(9, admin.getPteroID());
             statement.executeUpdate();
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to add staff member:");
+            FLog.severe("Failed to add admin:");
             FLog.severe(e);
         }
     }
@@ -296,11 +296,11 @@ public class SQLite extends FreedomService
         }
     }
 
-    public ResultSet getStaffMemberByName(String name)
+    public ResultSet getAdminByName(String name)
     {
         try
         {
-            ResultSet resultSet = connection.createStatement().executeQuery(MessageFormat.format("SELECT * FROM staff WHERE username=''{0}''", name));
+            ResultSet resultSet = connection.createStatement().executeQuery(MessageFormat.format("SELECT * FROM admins WHERE username=''{0}''", name));
             if (resultSet.next())
             {
                 return resultSet;
@@ -308,7 +308,7 @@ public class SQLite extends FreedomService
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to get staff member by name:");
+            FLog.severe("Failed to get admin by name:");
             FLog.severe(e);
         }
 
@@ -368,15 +368,15 @@ public class SQLite extends FreedomService
         return null;
     }
 
-    public void removeStaffMember(StaffMember staffMember)
+    public void removeAdmin(Admin admin)
     {
         try
         {
-            connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM staff where name=''{0}''", staffMember.getName()));
+            connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM admins where name=''{0}''", admin.getName()));
         }
         catch (SQLException e)
         {
-            FLog.severe("Failed to remove staff member:");
+            FLog.severe("Failed to remove admin:");
             FLog.severe(e);
         }
     }

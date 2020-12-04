@@ -59,7 +59,7 @@ public class Command_setplayerlimit extends FreedomCommand
         }
         if (success)
         {
-            FUtil.staffAction(sender.getName(), "Setting " + player.getName() + "'s WorldEdit block modification limit to " + amount + ".", true);
+            FUtil.adminAction(sender.getName(), "Setting " + player.getName() + "'s WorldEdit block modification limit to " + amount + ".", true);
         }
         return true;
     }
