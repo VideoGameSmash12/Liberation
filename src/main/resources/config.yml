@@ -297,7 +297,8 @@ blocked_commands:
   - 'n:b:/datapack:_'
   - 'n:b:/bossbar:_'
   - 'n:b://forceload:_'
-
+  - 'n:u:/co purge:_'
+  
   # Admin commands
   - 'a:b:/save-all:_'
   - 'a:b:/kick:_'
@@ -338,6 +339,7 @@ blocked_commands:
   - 'a:b:/team:_'
   - 'a:b:/loot:_'
   - 'a:b:/schedule:_'
+  - 'a:u:/co:_'
 
 # Automatically wipe dropped objects
 auto_wipe: true
