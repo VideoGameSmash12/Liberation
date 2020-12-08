@@ -68,6 +68,7 @@ public class Discord extends FreedomService
         if (enableBot == false)
         {
             FLog.info("Discord Verification has been manually disabled.");
+            return;
         }
         enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
         if (!enabled)
