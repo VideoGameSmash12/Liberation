@@ -183,5 +183,3 @@ public class MovementValidator extends FreedomService
         return stack.getTag().getList("AttributeModifiers", 10);
     }
 }
-
-

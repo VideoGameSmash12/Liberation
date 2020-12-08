@@ -301,7 +301,7 @@ public class CoreProtectBridge extends FreedomService
                         }
                     }
 
-                    if (!plugin.sl.isStaff(player))
+                    if (!plugin.al.isAdmin(player))
                     {
                         cooldown.put(player.getName(), System.currentTimeMillis());
                     }
@@ -333,9 +333,13 @@ public class CoreProtectBridge extends FreedomService
                             {
                                 s = " placed ";
                             }
-                            else
+                            else if (result.getActionString().equals("Removal"))
                             {
                                 s = " broke ";
+                            }
+                            else
+                            {
+                                s = " interacted with ";
                             }
 
                             if (result.isRolledBack())
@@ -365,9 +369,15 @@ public class CoreProtectBridge extends FreedomService
                 {
                     if (data.hasInspection())
                     {
-                        BlockState placedBlock = block.getRelative(event.getBlockFace()).getState();
+                        BlockState blockState = block.getRelative(event.getBlockFace()).getState();
+                        Block placedBlock = blockState.getBlock();
                         event.setCancelled(true);
-                        List<String[]> lookup = coreProtect.blockLookup(placedBlock.getBlock(), -1);
+                        List<String[]> lookup = coreProtect.blockLookup(placedBlock, -1);
+
+                        if (lookup.isEmpty())
+                        {
+                            lookup = coreProtect.blockLookup(block, -1);
+                        }
 
                         int cooldownTime = 3;
 
@@ -382,7 +392,7 @@ public class CoreProtectBridge extends FreedomService
                             }
                         }
 
-                        if (!plugin.sl.isStaff(player))
+                        if (!plugin.al.isAdmin(player))
                         {
                             cooldown.put(player.getName(), System.currentTimeMillis());
                         }
@@ -414,9 +424,13 @@ public class CoreProtectBridge extends FreedomService
                                 {
                                     s = " placed ";
                                 }
-                                else
+                                else if (result.getActionString().equals("Removal"))
                                 {
                                     s = " broke ";
+                                }
+                                else
+                                {
+                                    s = " interacted with ";
                                 }
 
                                 if (result.isRolledBack())

@@ -15,7 +15,7 @@ public class Command_togglechat extends FreedomCommand
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
         ConfigEntry.TOGGLE_CHAT.setBoolean(!ConfigEntry.TOGGLE_CHAT.getBoolean());
-        FUtil.staffAction(sender.getName(), "Chat " + (ConfigEntry.TOGGLE_CHAT.getBoolean() ? "enabled" : "disabled") + ".", true);
+        FUtil.adminAction(sender.getName(), "Chat " + (ConfigEntry.TOGGLE_CHAT.getBoolean() ? "enabled" : "disabled") + ".", true);
         return true;
     }
 }

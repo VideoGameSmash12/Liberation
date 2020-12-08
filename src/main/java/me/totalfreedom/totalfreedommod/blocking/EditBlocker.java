@@ -30,7 +30,7 @@ public class EditBlocker extends FreedomService
             return;
         }
 
-        if (plugin.sl.isStaffSync(event.getPlayer()))
+        if (plugin.al.isAdminSync(event.getPlayer()))
         {
             fPlayer.setEditBlocked(false);
             return;
@@ -49,7 +49,7 @@ public class EditBlocker extends FreedomService
             return;
         }
 
-        if (plugin.sl.isStaffSync(event.getPlayer()))
+        if (plugin.al.isAdminSync(event.getPlayer()))
         {
             fPlayer.setEditBlocked(false);
             return;
@@ -58,5 +58,4 @@ public class EditBlocker extends FreedomService
         FSync.playerMsg(event.getPlayer(), ChatColor.RED + "Your ability to destroy blocks has been disabled!");
         event.setCancelled(true);
     }
-
 }

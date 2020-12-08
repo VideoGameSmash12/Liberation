@@ -21,7 +21,7 @@ public class Command_nicknyan extends FreedomCommand
             return false;
         }
 
-        if ("off".equals(args[0]))
+        if (args[0].equalsIgnoreCase("off"))
         {
             plugin.esb.setNickname(sender.getName(), null);
             msg("Nickname cleared.");
@@ -67,7 +67,6 @@ public class Command_nicknyan extends FreedomCommand
         plugin.esb.setNickname(sender.getName(), newNick.toString());
 
         msg("Your nickname is now: " + newNick.toString());
-
         return true;
     }
 }

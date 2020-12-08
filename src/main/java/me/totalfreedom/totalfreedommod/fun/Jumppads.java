@@ -41,7 +41,7 @@ public class Jumppads extends FreedomService
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        if(!players.containsKey(event.getPlayer()))
+        if (!players.containsKey(event.getPlayer()))
         {
             players.put(event.getPlayer(), JumpPadMode.OFF);
         }

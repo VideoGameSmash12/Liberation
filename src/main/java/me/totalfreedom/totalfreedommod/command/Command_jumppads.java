@@ -32,9 +32,9 @@ public class Command_jumppads extends FreedomCommand
                 return true;
             }
 
-            if ("off".equals(args[0]))
+            if (args[0].equalsIgnoreCase("off"))
             {
-                if(plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.OFF)
+                if (plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.OFF)
                 {
                     msg("Your jumppads are already disabled.");
                     return true;
@@ -44,7 +44,7 @@ public class Command_jumppads extends FreedomCommand
             }
             else
             {
-                if(plugin.jp.players.get(playerSender) != Jumppads.JumpPadMode.OFF)
+                if (plugin.jp.players.get(playerSender) != Jumppads.JumpPadMode.OFF)
                 {
                     msg("Your jumppads are already enabled.");
                     return true;
@@ -65,7 +65,7 @@ public class Command_jumppads extends FreedomCommand
             {
                 if ("off".equals(args[1]))
                 {
-                    if(plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.MADGEEK)
+                    if (plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.MADGEEK)
                     {
                         msg("Your jumppads are already set to normal mode.");
                         return true;
@@ -75,7 +75,7 @@ public class Command_jumppads extends FreedomCommand
                 }
                 else
                 {
-                    if(plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.NORMAL_AND_SIDEWAYS)
+                    if (plugin.jp.players.get(playerSender) == Jumppads.JumpPadMode.NORMAL_AND_SIDEWAYS)
                     {
                         msg("Your jumppads are already set to normal and sideways mode.");
                         return true;
@@ -95,7 +95,7 @@ public class Command_jumppads extends FreedomCommand
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (!plugin.sl.isStaff(sender))
+        if (!plugin.al.isAdmin(sender))
         {
             return Collections.emptyList();
         }

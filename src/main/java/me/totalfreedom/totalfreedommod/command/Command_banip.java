@@ -27,7 +27,7 @@ public class Command_banip extends FreedomCommand
         boolean silent = false;
 
         String reason = null;
-        
+
         String ip = args[0];
 
         if (!FUtil.isValidIPv4(ip))
@@ -72,7 +72,7 @@ public class Command_banip extends FreedomCommand
             {
                 // Broadcast
                 FLog.info(ChatColor.RED + sender.getName() + " - Banned the IP " + ip);
-                String message = ChatColor.RED + sender.getName() + " - Banned " + (plugin.sl.isStaff(player) ? "the IP " + ip : "an IP");
+                String message = ChatColor.RED + sender.getName() + " - Banned " + (plugin.al.isAdmin(player) ? "the IP " + ip : "an IP");
                 player.sendMessage(message);
             }
         }

@@ -23,11 +23,11 @@ public class Command_wipeuserdata extends FreedomCommand
             return true;
         }
 
-        FUtil.staffAction(sender.getName(), "Wiping Essentials and worlds playerdata", true);
+        FUtil.adminAction(sender.getName(), "Wiping Essentials and world player data", true);
 
         for (World w : Bukkit.getWorlds())
         {
-            if (w.getName().equals(plugin.wm.staffworld.getWorld().getName()))
+            if (w.getName().equals(plugin.wm.adminworld.getWorld().getName()))
             {
                 continue;
             }
@@ -37,7 +37,7 @@ public class Command_wipeuserdata extends FreedomCommand
             FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(plugin.wm.flatlands.getName()).getWorldFolder().getName() + "stats"));
             FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(w.getName()).getWorldFolder().getName() + "stats"));
             FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(w.getName()).getWorldFolder().getName() + "playerdata"));
-            msg("All playerdata deleted.");
+            msg("Deleted all player data.");
             return true;
         }
         return false;

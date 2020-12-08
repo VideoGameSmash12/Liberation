@@ -21,7 +21,8 @@ public class Command_sit extends FreedomCommand
         {
             return false;
         }
-        ArmorStand stand = (ArmorStand) playerSender.getWorld().spawnEntity(playerSender.getLocation().clone().subtract(0.0, 1.7, 0.0), EntityType.ARMOR_STAND);
+
+        ArmorStand stand = (ArmorStand)playerSender.getWorld().spawnEntity(playerSender.getLocation().clone().subtract(0.0, 1.7, 0.0), EntityType.ARMOR_STAND);
         stand.setGravity(false);
         stand.setAI(false);
         stand.setVisible(false);

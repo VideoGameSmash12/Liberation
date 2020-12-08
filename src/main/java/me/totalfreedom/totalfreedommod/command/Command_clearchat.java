@@ -16,7 +16,7 @@ public class Command_clearchat extends FreedomCommand
     {
         for (Player player : server.getOnlinePlayers())
         {
-            if (!plugin.sl.isStaff(player))
+            if (!plugin.al.isAdmin(player))
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -24,7 +24,7 @@ public class Command_clearchat extends FreedomCommand
                 }
             }
         }
-        FUtil.staffAction(sender.getName(), "Cleared chat", true);
+        FUtil.adminAction(sender.getName(), "Cleared chat", true);
         return true;
     }
 }

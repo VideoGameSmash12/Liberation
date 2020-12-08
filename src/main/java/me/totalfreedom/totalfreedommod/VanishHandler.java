@@ -31,7 +31,7 @@ public class VanishHandler extends FreedomService
 
         for (Player p : server.getOnlinePlayers())
         {
-            if (!plugin.sl.isStaff(player) && plugin.sl.isVanished(p.getName()))
+            if (!plugin.al.isAdmin(player) && plugin.al.isVanished(p.getName()))
             {
                 player.hidePlayer(plugin, p);
             }
@@ -39,17 +39,17 @@ public class VanishHandler extends FreedomService
 
         for (Player p : server.getOnlinePlayers())
         {
-            if (!plugin.sl.isStaff(p) && plugin.sl.isVanished(player.getName()))
+            if (!plugin.al.isAdmin(p) && plugin.al.isVanished(player.getName()))
             {
                 p.hidePlayer(plugin, player);
             }
         }
 
-        if (plugin.sl.isVanished(player.getName()))
+        if (plugin.al.isVanished(player.getName()))
         {
             plugin.esb.setVanished(player.getName(), true);
             FLog.info(player.getName() + " joined while still vanished.");
-            plugin.sl.messageAllStaff(ChatColor.YELLOW + player.getName() + " has joined silently.");
+            plugin.al.messageAllAdmins(ChatColor.YELLOW + player.getName() + " has joined silently.");
             event.setJoinMessage(null);
 
             new BukkitRunnable()
@@ -57,7 +57,7 @@ public class VanishHandler extends FreedomService
                 @Override
                 public void run()
                 {
-                    if (!plugin.sl.isVanished(player.getName()))
+                    if (!plugin.al.isVanished(player.getName()))
                     {
                         this.cancel();
                     }
@@ -73,11 +73,11 @@ public class VanishHandler extends FreedomService
     {
         Player player = event.getPlayer();
 
-        if (plugin.sl.isVanished(player.getName()))
+        if (plugin.al.isVanished(player.getName()))
         {
             event.setQuitMessage(null);
             FLog.info(player.getName() + " left while still vanished.");
-            plugin.sl.messageAllStaff(ChatColor.YELLOW + player.getName() + " has left silently.");
+            plugin.al.messageAllAdmins(ChatColor.YELLOW + player.getName() + " has left silently.");
         }
     }
 }

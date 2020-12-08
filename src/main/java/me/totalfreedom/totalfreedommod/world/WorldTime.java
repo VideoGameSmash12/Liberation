@@ -17,13 +17,13 @@ public enum WorldTime
     private final int timeTicks;
     private final List<String> aliases;
 
-    private WorldTime()
+    WorldTime()
     {
         this.timeTicks = 0;
         this.aliases = null;
     }
 
-    private WorldTime(String aliases, int timeTicks)
+    WorldTime(String aliases, int timeTicks)
     {
         this.timeTicks = timeTicks;
         this.aliases = Arrays.asList(StringUtils.split(aliases, ","));

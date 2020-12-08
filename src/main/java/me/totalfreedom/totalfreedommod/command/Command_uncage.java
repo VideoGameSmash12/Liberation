@@ -32,7 +32,7 @@ public class Command_uncage extends FreedomCommand
         final FPlayer fPlayer = plugin.pl.getPlayer(player);
         if (fPlayer.getCageData().isCaged())
         {
-            FUtil.staffAction(sender.getName(), "Uncaging " + player.getName(), true);
+            FUtil.adminAction(sender.getName(), "Uncaging " + player.getName(), true);
             fPlayer.getCageData().setCaged(false);
         }
         else

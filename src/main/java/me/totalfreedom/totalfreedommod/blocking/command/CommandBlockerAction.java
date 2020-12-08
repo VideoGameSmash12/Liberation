@@ -8,7 +8,7 @@ public enum CommandBlockerAction
     BLOCK_UNKNOWN("u");
     private final String token;
 
-    private CommandBlockerAction(String token)
+    CommandBlockerAction(String token)
     {
         this.token = token;
     }

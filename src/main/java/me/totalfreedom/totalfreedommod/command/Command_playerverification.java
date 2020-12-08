@@ -68,6 +68,7 @@ public class Command_playerverification extends FreedomCommand
         switch (args[0].toLowerCase())
         {
             case "enable":
+            {
                 if (!plugin.dc.enabled)
                 {
                     msg("The Discord verification system is currently disabled.", ChatColor.RED);
@@ -87,8 +88,10 @@ public class Command_playerverification extends FreedomCommand
                 plugin.pl.save(data);
                 msg("Re-enabled Discord verification.", ChatColor.GREEN);
                 return true;
+            }
 
             case "disable":
+            {
                 if (!data.hasVerification())
                 {
                     msg("Discord verification is already disabled for you.", ChatColor.RED);
@@ -98,16 +101,20 @@ public class Command_playerverification extends FreedomCommand
                 plugin.pl.save(data);
                 msg("Disabled Discord verification.", ChatColor.GREEN);
                 return true;
+            }
 
             case "status":
+            {
                 boolean enabled = target.hasVerification();
                 boolean specified = target.getDiscordID() != null;
                 msg(ChatColor.GRAY + "Discord Verification Enabled: " + (enabled ? ChatColor.GREEN + "true" : ChatColor.RED + "false"));
                 msg(ChatColor.GRAY + "Discord ID: " + (specified ? ChatColor.GREEN + target.getDiscordID() : ChatColor.RED + "not set"));
                 msg(ChatColor.GRAY + "Backup Codes: " + data.getBackupCodes().size() + "/" + "10");
                 return true;
+            }
 
             case "genbackupcodes":
+            {
                 if (!plugin.dc.enabled)
                 {
                     msg("The Discord verification system is currently disabled.", ChatColor.RED);
@@ -130,11 +137,12 @@ public class Command_playerverification extends FreedomCommand
                     msg("Failed to generate backup codes, please contact a developer (preferably Seth)", ChatColor.RED);
                 }
                 return true;
-
+            }
             default:
                 return false;
         }
     }
+
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {

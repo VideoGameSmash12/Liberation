@@ -23,7 +23,7 @@ public class Command_tagrainbow extends FreedomCommand
 
         final String tag = ChatColor.stripColor(FUtil.colorize(StringUtils.join(args, " ")));
 
-        if (!plugin.sl.isStaff(sender))
+        if (!plugin.al.isAdmin(sender))
         {
             final String rawTag = ChatColor.stripColor(tag).toLowerCase();
 
@@ -44,9 +44,7 @@ public class Command_tagrainbow extends FreedomCommand
         }
 
         plugin.pl.getPlayer(playerSender).setTag(FUtil.rainbowify(tag));
-
         msg("Set tag to " + tag);
-
         return true;
     }
 }

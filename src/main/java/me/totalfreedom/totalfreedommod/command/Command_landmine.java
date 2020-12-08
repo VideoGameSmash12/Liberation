@@ -60,8 +60,6 @@ public class Command_landmine extends FreedomCommand
         plugin.lm.add(new Landmine(landmine.getLocation(), playerSender, radius));
 
         msg("Landmine planted - Radius = " + radius + " blocks.", ChatColor.GREEN);
-
         return true;
     }
-
 }

@@ -14,7 +14,7 @@ public enum WorldWeather
     //
     private final List<String> aliases;
 
-    private WorldWeather(String aliases)
+    WorldWeather(String aliases)
     {
         this.aliases = Arrays.asList(StringUtils.split(aliases, ","));
     }

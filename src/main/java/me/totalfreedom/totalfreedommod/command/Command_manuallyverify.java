@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
-@CommandParameters(description = "Manually verify someone", usage = "/<command> <playername>", aliases="mv")
+@CommandParameters(description = "Manually verify someone", usage = "/<command> <playername>", aliases = "mv")
 public class Command_manuallyverify extends FreedomCommand
 {
     @Override
@@ -39,7 +39,7 @@ public class Command_manuallyverify extends FreedomCommand
             return true;
         }
 
-        FUtil.staffAction(sender.getName(), "Manually verifying player " + player.getName(), false);
+        FUtil.adminAction(sender.getName(), "Manually verifying player " + player.getName(), false);
         player.setOp(true);
         player.sendMessage(YOU_ARE_OP);
 

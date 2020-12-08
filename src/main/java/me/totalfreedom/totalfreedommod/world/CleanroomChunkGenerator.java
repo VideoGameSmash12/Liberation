@@ -142,9 +142,8 @@ public class CleanroomChunkGenerator extends ChunkGenerator
 
         for (int y = 0; y < materials.length; y++)
         {
-            result.setRegion(0, y, 0, 16, y+1, 16, materials[y]);
+            result.setRegion(0, y, 0, 16, y + 1, 16, materials[y]);
         }
-      
 
         return result;
     }

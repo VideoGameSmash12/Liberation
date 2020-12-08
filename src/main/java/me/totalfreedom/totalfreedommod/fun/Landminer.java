@@ -118,5 +118,4 @@ public class Landminer extends FreedomService
             return this.location.toString() + ", " + this.radius + ", " + this.planter.getName();
         }
     }
-
 }

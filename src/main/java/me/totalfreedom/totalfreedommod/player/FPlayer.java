@@ -57,7 +57,7 @@ public class FPlayer
     private BukkitTask lockupScheduleTask = null;
     private boolean lockedUp = false;
     private String lastMessage = "";
-    private boolean inStaffchat = false;
+    private boolean inAdminchat = false;
     private boolean allCommandsBlocked = false;
     @Getter
     @Setter
@@ -306,12 +306,12 @@ public class FPlayer
             {
                 if (getPlayer() != null)
                 {
-                    FUtil.staffAction(ConfigEntry.SERVER_NAME.getString(), "Unmuting " + getPlayer().getName(), false);
+                    FUtil.adminAction(ConfigEntry.SERVER_NAME.getString(), "Unmuting " + getPlayer().getName(), false);
                     setMuted(false);
                 }
                 else
                 {
-                    FUtil.staffAction(ConfigEntry.SERVER_NAME.getString(), "Unmuting " + getName(), false);
+                    FUtil.adminAction(ConfigEntry.SERVER_NAME.getString(), "Unmuting " + getName(), false);
                     plugin.mu.MUTED_PLAYERS.remove(getName());
                 }
             }
@@ -348,14 +348,14 @@ public class FPlayer
         return lastMessage;
     }
 
-    public void setStaffChat(boolean inStaffchat)
+    public void setAdminChat(boolean inAdminchat)
     {
-        this.inStaffchat = inStaffchat;
+        this.inAdminchat = inAdminchat;
     }
 
-    public boolean inStaffChat()
+    public boolean inAdminChat()
     {
-        return this.inStaffchat;
+        return this.inAdminchat;
     }
 
     public boolean allCommandsBlocked()

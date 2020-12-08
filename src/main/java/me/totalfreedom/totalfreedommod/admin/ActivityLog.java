@@ -1,4 +1,4 @@
-package me.totalfreedom.totalfreedommod.staff;
+package me.totalfreedom.totalfreedommod.admin;
 
 import com.google.common.collect.Maps;
 import java.util.Map;
@@ -111,10 +111,10 @@ public class ActivityLog extends FreedomService
             activityLog = getEntryByIp(ip);
             if (activityLog != null)
             {
-               // Set the new username
-               activityLog.setName(player.getName());
-               save();
-               updateTables();
+                // Set the new username
+                activityLog.setName(player.getName());
+                save();
+                updateTables();
             }
             else
             {
@@ -167,7 +167,7 @@ public class ActivityLog extends FreedomService
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
-        if (plugin.sl.isStaff(player))
+        if (plugin.al.isAdmin(player))
         {
             getActivityLog(event.getPlayer()).addLogin();
             plugin.acl.save();
@@ -179,7 +179,7 @@ public class ActivityLog extends FreedomService
     public void onPlayerQuit(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
-        if (plugin.sl.isStaff(player))
+        if (plugin.al.isAdmin(player))
         {
             getActivityLog(event.getPlayer()).addLogout();
             plugin.acl.save();

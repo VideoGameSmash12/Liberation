@@ -35,9 +35,9 @@ public class Command_invsee extends FreedomCommand
             return true;
         }
 
-        if (plugin.sl.isStaff(player) && !plugin.sl.isStaff(playerSender))
+        if (plugin.al.isAdmin(player) && !plugin.al.isAdmin(playerSender))
         {
-            msg("You cannot see the inventory of staff members.", ChatColor.RED);
+            msg("You cannot see the inventory of admins.", ChatColor.RED);
             return true;
         }
 
@@ -67,7 +67,7 @@ public class Command_invsee extends FreedomCommand
         }
         inv = player.getInventory();
         playerSender.closeInventory();
-        if (!plugin.sl.isStaff(player))
+        if (!plugin.al.isAdmin(player))
         {
             FPlayer fPlayer = plugin.pl.getPlayer(playerSender);
             fPlayer.setInvSee(true);

@@ -154,7 +154,7 @@ public class Command_ban extends FreedomCommand
                 bcast.append(" - Reason: ").append(ChatColor.YELLOW).append(reason);
             }
             msg(sender, ChatColor.GRAY + username + " has been banned and IP is: " + StringUtils.join(ips, ", "));
-            FUtil.staffAction(sender.getName(), String.format(bcast.toString()), true);
+            FUtil.adminAction(sender.getName(), String.format(bcast.toString()), true);
         }
 
         // Kick player and handle others on IP

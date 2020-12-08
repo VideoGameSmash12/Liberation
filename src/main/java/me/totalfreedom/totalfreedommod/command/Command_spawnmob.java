@@ -77,7 +77,7 @@ public class Command_spawnmob extends FreedomCommand
             return true;
         }
 
-        Location l = playerSender.getTargetBlock((Set<Material>)null, 30).getLocation().add(0, 1, 0);
+        Location l = playerSender.getTargetBlock(null, 30).getLocation().add(0, 1, 0);
         World w = playerSender.getWorld();
         msg("Spawning " + amount + " " + type.name().toLowerCase() + (amount > 1 ? "s." : "."));
 
@@ -87,5 +87,4 @@ public class Command_spawnmob extends FreedomCommand
         }
         return true;
     }
-
 }

@@ -56,7 +56,9 @@ public class Command_nickgradient extends FreedomCommand
                 from = " (From: " + FUtil.getHexStringOfAWTColor(awt1) + ")";
             }
             else
+            {
                 awt1 = java.awt.Color.decode(args[0]);
+            }
             if (args[1].equalsIgnoreCase("random") ||
                     args[1].equalsIgnoreCase("r"))
             {
@@ -64,7 +66,9 @@ public class Command_nickgradient extends FreedomCommand
                 to = " (To: " + FUtil.getHexStringOfAWTColor(awt2) + ")";
             }
             else
+            {
                 awt2 = java.awt.Color.decode(args[1]);
+            }
         }
         catch (NumberFormatException ex)
         {
@@ -85,7 +89,6 @@ public class Command_nickgradient extends FreedomCommand
         plugin.esb.setNickname(sender.getName(), outputNick);
 
         msg("Your nickname is now: '" + outputNick + ChatColor.GRAY + "'" + from + to);
-
         return true;
     }
 }

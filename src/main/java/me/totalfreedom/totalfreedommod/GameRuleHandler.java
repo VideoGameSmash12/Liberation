@@ -95,7 +95,7 @@ public class GameRuleHandler extends FreedomService
         private final String gameRuleName;
         private final boolean defaultValue;
 
-        private GameRule(String gameRuleName, boolean defaultValue)
+        GameRule(String gameRuleName, boolean defaultValue)
         {
             this.gameRuleName = gameRuleName;
             this.defaultValue = defaultValue;

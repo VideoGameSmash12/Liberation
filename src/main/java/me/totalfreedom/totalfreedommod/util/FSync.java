@@ -54,7 +54,7 @@ public class FSync
         }.runTask(plugin);
     }
 
-    public static void staffChatMessage(final CommandSender sender, final String message)
+    public static void adminChatMessage(final CommandSender sender, final String message)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
         new BukkitRunnable()
@@ -63,7 +63,7 @@ public class FSync
             @Override
             public void run()
             {
-                plugin.cm.staffChat(sender, message);
+                plugin.cm.adminChat(sender, message);
             }
 
         }.runTask(plugin);

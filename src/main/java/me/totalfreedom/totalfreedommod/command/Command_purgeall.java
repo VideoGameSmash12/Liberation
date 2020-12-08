@@ -19,7 +19,7 @@ public class Command_purgeall extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        FUtil.staffAction(sender.getName(), "Purging all player data", true);
+        FUtil.adminAction(sender.getName(), "Purging all player data", true);
 
         // Purge entities
         for (World world : Bukkit.getWorlds())

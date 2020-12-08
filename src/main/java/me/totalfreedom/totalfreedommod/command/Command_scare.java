@@ -53,7 +53,7 @@ public class Command_scare extends FreedomCommand
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
-        if (args.length == 1 && plugin.sl.isStaff(sender))
+        if (args.length == 1 && plugin.al.isAdmin(sender))
         {
             return FUtil.getPlayerList();
         }

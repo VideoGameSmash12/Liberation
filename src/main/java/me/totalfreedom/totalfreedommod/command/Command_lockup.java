@@ -22,7 +22,7 @@ public class Command_lockup extends FreedomCommand
         {
             if (args[0].equalsIgnoreCase("all"))
             {
-                FUtil.staffAction(sender.getName(), "Locking up all players", true);
+                FUtil.adminAction(sender.getName(), "Locking up all players", true);
 
                 for (Player player : server.getOnlinePlayers())
                 {
@@ -32,7 +32,7 @@ public class Command_lockup extends FreedomCommand
             }
             else if (args[0].equalsIgnoreCase("purge"))
             {
-                FUtil.staffAction(sender.getName(), "Unlocking all players", true);
+                FUtil.adminAction(sender.getName(), "Unlocking all players", true);
                 for (Player player : server.getOnlinePlayers())
                 {
                     cancelLockup(player);
@@ -59,7 +59,7 @@ public class Command_lockup extends FreedomCommand
 
                 if (!silent)
                 {
-                    FUtil.staffAction(sender.getName(), "Locking up " + player.getName(), true);
+                    FUtil.adminAction(sender.getName(), "Locking up " + player.getName(), true);
                 }
                 startLockup(player);
                 msg("Locked up " + player.getName() + ".");
@@ -76,7 +76,7 @@ public class Command_lockup extends FreedomCommand
 
                 if (!silent)
                 {
-                    FUtil.staffAction(sender.getName(), "Unlocking " + player.getName(), true);
+                    FUtil.adminAction(sender.getName(), "Unlocking " + player.getName(), true);
                 }
                 cancelLockup(player);
                 msg("Unlocked " + player.getName() + ".");

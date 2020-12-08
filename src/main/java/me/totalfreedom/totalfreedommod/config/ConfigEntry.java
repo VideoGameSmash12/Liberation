@@ -64,7 +64,7 @@ public enum ConfigEntry
     SERVER_TABLIST_FOOTER(String.class, "server.tablist_footer"),
     //
     SERVER_BAN_MOTD(String.class, "server.motds.ban"),
-    SERVER_STAFFMODE_MOTD(String.class, "server.motds.staffmode"),
+    SERVER_ADMINMODE_MOTD(String.class, "server.motds.adminmode"),
     SERVER_LOCKDOWN_MOTD(String.class, "server.motds.lockdown"),
     SERVER_WHITELIST_MOTD(String.class, "server.motds.whitelist"),
     SERVER_FULL_MOTD(String.class, "server.motds.full"),
@@ -119,8 +119,8 @@ public enum ConfigEntry
     SHOP_PRICES_CLOWN_FISH(Integer.class, "shop.prices.clown_fish"),
     SHOP_PRICES_LOGIN_MESSAGES(Integer.class, "shop.prices.login_messages"),
     //
-    STAFFLIST_CLEAN_THESHOLD_HOURS(Integer.class, "stafflist.clean_threshold_hours"),
-    STAFFLIST_CONSOLE_IS_ADMIN(Boolean.class, "stafflist.console_is_admin"),
+    ADMINLIST_CLEAN_THESHOLD_HOURS(Integer.class, "adminlist.clean_threshold_hours"),
+    ADMINLIST_CONSOLE_IS_ADMIN(Boolean.class, "adminlist.console_is_admin"),
     //
     COREPROTECT_MYSQL_ENABLED(Boolean.class, "coreprotect.enabled"),
     COREPROTECT_MYSQL_HOST(String.class, "coreprotect.host"),
@@ -166,8 +166,8 @@ public enum ConfigEntry
     BLOCKED_COMMANDS(List.class, "blocked_commands"),
     HOST_SENDER_NAMES(List.class, "host_sender_names"),
     FAMOUS_PLAYERS(List.class, "famous_players"),
-    STAFF_ONLY_MODE(Boolean.class, "staff_only_mode"),
-    STAFF_INFO(List.class, "staffinfo"),
+    ADMIN_ONLY_MODE(Boolean.class, "admin_only_mode"),
+    ADMIN_INFO(List.class, "admininfo"),
     VOTING_INFO(List.class, "votinginfo"),
     MASTER_BUILDER_INFO(List.class, "masterbuilderinfo"),
     AUTO_ENTITY_WIPE(Boolean.class, "auto_wipe"),

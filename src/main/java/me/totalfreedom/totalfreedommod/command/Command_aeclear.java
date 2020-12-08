@@ -17,7 +17,7 @@ public class Command_aeclear extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        FUtil.staffAction(sender.getName(), "Removing all area effect clouds.", true);
+        FUtil.adminAction(sender.getName(), "Removing all area effect clouds", true);
         int removed = 0;
         for (World world : server.getWorlds())
         {

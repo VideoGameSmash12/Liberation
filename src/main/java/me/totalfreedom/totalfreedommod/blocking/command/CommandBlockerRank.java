@@ -2,23 +2,20 @@ package me.totalfreedom.totalfreedommod.blocking.command;
 
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public enum CommandBlockerRank
 {
-
-    ANYONE("a"),
+    EVERYONE("e"),
     OP("o"),
-    SUPER("s"),
-    TELNET("t"),
-    SENIOR("c"),
+    ADMIN("a"),
+    SENIOR_ADMIN("s"),
     NOBODY("n");
     //
     private final String token;
 
-    private CommandBlockerRank(String token)
+    CommandBlockerRank(String token)
     {
         this.token = token;
     }
@@ -35,19 +32,14 @@ public enum CommandBlockerRank
 
     public static CommandBlockerRank fromSender(CommandSender sender)
     {
-        if (!(sender instanceof Player))
+        Admin admin = TotalFreedomMod.plugin().al.getAdmin(sender);
+        if (admin != null)
         {
-            return TELNET;
-        }
-
-        StaffMember staffMember = TotalFreedomMod.plugin().sl.getAdmin(sender);
-        if (staffMember != null)
-        {
-            if (staffMember.getRank() == Rank.SENIOR_ADMIN)
+            if (admin.getRank() == Rank.SENIOR_ADMIN)
             {
-                return SENIOR;
+                return SENIOR_ADMIN;
             }
-            return SUPER;
+            return ADMIN;
         }
 
         if (sender.isOp())
@@ -55,8 +47,7 @@ public enum CommandBlockerRank
             return OP;
         }
 
-        return ANYONE;
-
+        return EVERYONE;
     }
 
     public static CommandBlockerRank fromToken(String token)
@@ -68,6 +59,6 @@ public enum CommandBlockerRank
                 return rank;
             }
         }
-        return ANYONE;
+        return EVERYONE;
     }
 }

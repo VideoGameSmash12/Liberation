@@ -7,7 +7,7 @@ import joptsimple.internal.Strings;
 import lombok.Getter;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.Response;
@@ -34,23 +34,23 @@ public class Pterodactyl extends FreedomService
     {
     }
 
-    public void updateAccountStatus(StaffMember staffMember)
+    public void updateAccountStatus(Admin admin)
     {
-        String id = staffMember.getPteroID();
+        String id = admin.getPteroID();
 
         if (Strings.isNullOrEmpty(id) || !enabled)
         {
             return;
         }
 
-        if (!staffMember.isActive() || staffMember.getRank() != Rank.SENIOR_ADMIN)
+        if (!admin.isActive() || admin.getRank() != Rank.SENIOR_ADMIN)
         {
             FLog.debug("Disabling ptero acc");
             removeAccountFromServer(id);
             return;
         }
 
-        FLog.debug("Enabling aptero acc");
+        FLog.debug("Enabling ptero acc");
         addAccountToServer(id);
     }
 

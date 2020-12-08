@@ -46,7 +46,7 @@ public class Command_blockedit extends FreedomCommand
 
         if (args[0].equals("purge"))
         {
-            FUtil.staffAction(sender.getName(), "Unblocking block modification abilities for all players.", true);
+            FUtil.adminAction(sender.getName(), "Unblocking block modification abilities for all players", true);
             int count = 0;
             for (final Player player : this.server.getOnlinePlayers())
             {
@@ -63,11 +63,11 @@ public class Command_blockedit extends FreedomCommand
 
         if (args[0].equals("all"))
         {
-            FUtil.staffAction(sender.getName(), "Blocking block modification abilities for all non-staff.", true);
+            FUtil.adminAction(sender.getName(), "Blocking block modification abilities for all non-admins", true);
             int counter = 0;
             for (final Player player : this.server.getOnlinePlayers())
             {
-                if (!plugin.sl.isStaff(player))
+                if (!plugin.al.isAdmin(player))
                 {
                     final FPlayer playerdata = plugin.pl.getPlayer(player);
                     playerdata.setEditBlocked(true);
@@ -105,20 +105,20 @@ public class Command_blockedit extends FreedomCommand
         final FPlayer pd = plugin.pl.getPlayer(player2);
         if (pd.isEditBlocked())
         {
-            FUtil.staffAction(sender.getName(), "Unblocking block modification abilities for " + player2.getName(), true);
+            FUtil.adminAction(sender.getName(), "Unblocking block modification abilities for " + player2.getName(), true);
             pd.setEditBlocked(false);
             msg("Unblocking block modification abilities for " + player2.getName());
             msg(player2, "Your block modification abilities have been restored.", ChatColor.RED);
         }
         else
         {
-            if (plugin.sl.isStaff(player2))
+            if (plugin.al.isAdmin(player2))
             {
-                msg(player2.getName() + " is a staff member, and cannot have their block edits blocked.");
+                msg(player2.getName() + " is an admin, and cannot have their block edits blocked.");
                 return true;
             }
 
-            FUtil.staffAction(sender.getName(), "Blocking block modification abilities for " + player2.getName(), true);
+            FUtil.adminAction(sender.getName(), "Blocking block modification abilities for " + player2.getName(), true);
             pd.setEditBlocked(true);
 
             if (smite)

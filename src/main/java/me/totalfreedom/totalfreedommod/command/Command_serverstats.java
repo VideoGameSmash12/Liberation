@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.OP, source = SourceType.BOTH)
-@CommandParameters(description = "Check the status of the server, including opped players, staff, etc.", usage = "/<command>", aliases = "ss")
+@CommandParameters(description = "Check the status of the server, including opped players, admins, etc.", usage = "/<command>", aliases = "ss")
 public class Command_serverstats extends FreedomCommand
 {
 
@@ -17,7 +17,7 @@ public class Command_serverstats extends FreedomCommand
     {
         msg("-==" + ConfigEntry.SERVER_NAME.getString() + " server stats==-", ChatColor.GOLD);
         msg("Total opped players: " + server.getOperators().size(), ChatColor.RED);
-        msg("Total staff: " + plugin.sl.getAllStaffMembers().size() + " (" + plugin.sl.getActiveStaffMembers().size() + " active)", ChatColor.BLUE);
+        msg("Total admins: " + plugin.al.getAllAdmins().size() + " (" + plugin.al.getActiveAdmins().size() + " active)", ChatColor.BLUE);
         int bans = plugin.im.getIndefBans().size();
         int nameBans = plugin.im.getNameBanCount();
         int uuidBans = plugin.im.getUuidBanCount();

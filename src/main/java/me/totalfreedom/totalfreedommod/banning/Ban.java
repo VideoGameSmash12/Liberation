@@ -267,6 +267,5 @@ public class Ban
                 it.remove();
             }
         }
-
     }
 }

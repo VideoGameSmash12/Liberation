@@ -33,7 +33,7 @@ public class Command_vanish extends FreedomCommand
             }
         }
 
-        if (plugin.sl.isVanished(playerSender.getName()))
+        if (plugin.al.isVanished(playerSender.getName()))
         {
             if (silent)
             {
@@ -55,18 +55,18 @@ public class Command_vanish extends FreedomCommand
 
             plugin.pl.getData(playerSender).setTag(tag);
             FLog.info(playerSender.getName() + " is no longer vanished.");
-            plugin.sl.messageAllStaff(ChatColor.YELLOW + sender.getName() + " has unvanished and is now visible to everyone.");
+            plugin.al.messageAllAdmins(ChatColor.YELLOW + sender.getName() + " has unvanished and is now visible to everyone.");
 
             for (Player player : server.getOnlinePlayers())
             {
-                if (!plugin.sl.isStaff(player))
+                if (!plugin.al.isAdmin(player))
                 {
                     player.showPlayer(plugin, playerSender);
                 }
             }
             plugin.esb.setVanished(playerSender.getName(), false);
             playerSender.setPlayerListName(StringUtils.substring(displayName, 0, 16));
-            plugin.sl.vanished.remove(playerSender.getName());
+            plugin.al.vanished.remove(playerSender.getName());
         }
         else
         {
@@ -75,7 +75,7 @@ public class Command_vanish extends FreedomCommand
                 @Override
                 public void run()
                 {
-                    if (plugin.sl.isVanished(playerSender.getName()))
+                    if (plugin.al.isVanished(playerSender.getName()))
                     {
                         playerSender.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GOLD + "You are hidden from other players."));
                     }
@@ -88,24 +88,24 @@ public class Command_vanish extends FreedomCommand
             }
             else
             {
-                msg ("You have vanished.", ChatColor.GOLD);
+                msg("You have vanished.", ChatColor.GOLD);
                 FUtil.bcastMsg(playerSender.getName() + " left the game.", ChatColor.YELLOW);
                 plugin.dc.messageChatChannel("**" + playerSender.getName() + " left the server" + "**");
             }
 
             FLog.info(playerSender.getName() + " is now vanished.");
-            plugin.sl.messageAllStaff(ChatColor.YELLOW + sender.getName() + " has vanished and is now only visible to staff members.");
+            plugin.al.messageAllAdmins(ChatColor.YELLOW + sender.getName() + " has vanished and is now only visible to admins.");
 
             for (Player player : server.getOnlinePlayers())
             {
-                if (!plugin.sl.isStaff(player))
+                if (!plugin.al.isAdmin(player))
                 {
                     player.hidePlayer(plugin, playerSender);
                 }
             }
 
             plugin.esb.setVanished(playerSender.getName(), true);
-            plugin.sl.vanished.add(playerSender.getName());
+            plugin.al.vanished.add(playerSender.getName());
         }
         return true;
     }

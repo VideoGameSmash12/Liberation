@@ -31,17 +31,17 @@ public class Command_tagnyan extends FreedomCommand
 
         String tagStr = tag.toString();
 
-        int tagLimit = (plugin.sl.isStaff(sender) ? 30 : 20);
+        int tagLimit = (plugin.al.isAdmin(sender) ? 30 : 20);
 
         final String rawTag = ChatColor.stripColor(tagStr).toLowerCase();
 
         if (rawTag.length() > tagLimit)
         {
-            msg("That tag is too long (Max is " + String.valueOf(tagLimit) + " characters).");
+            msg("That tag is too long (Max is " + tagLimit + " characters).");
             return true;
         }
 
-        if (!plugin.sl.isStaff(sender))
+        if (!plugin.al.isAdmin(sender))
         {
             for (String word : Command_tag.FORBIDDEN_WORDS)
             {
@@ -57,7 +57,6 @@ public class Command_tagnyan extends FreedomCommand
         data.setTag(tagStr);
 
         msg("Set tag to " + tag);
-
         return true;
     }
 }

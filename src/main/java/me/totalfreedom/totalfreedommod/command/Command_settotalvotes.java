@@ -27,14 +27,14 @@ public class Command_settotalvotes extends FreedomCommand
             return false;
         }
 
-        int votes = 0;
+        int votes;
         try
         {
             votes = Integer.parseInt(args[0]);
         }
         catch (NumberFormatException e)
         {
-            msg("Invalid number: " +  args[0]);
+            msg("Invalid number: " + args[0]);
             return true;
         }
 

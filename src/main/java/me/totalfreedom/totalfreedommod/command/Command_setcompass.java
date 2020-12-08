@@ -15,7 +15,6 @@ public class Command_setcompass extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-
         if (args.length < 3)
         {
             return false;
@@ -23,7 +22,7 @@ public class Command_setcompass extends FreedomCommand
 
         try
         {
-            Location location = new Location(playerSender.getWorld(), Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]));
+            Location location = new Location(playerSender.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
             playerSender.setCompassTarget(location);
             msg("Successfully set your compass coordinates to X: " + args[0] + ", Y: " + args[1] + ", Z: " + args[2] + ".", ChatColor.GREEN);
         }

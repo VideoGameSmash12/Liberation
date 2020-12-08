@@ -17,7 +17,7 @@ import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.staff.StaffMember;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -298,7 +298,7 @@ public class Discord extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        if (!plugin.sl.isVanished(event.getPlayer().getName()))
+        if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
             messageChatChannel("**" + deformat(event.getPlayer().getName()) + " joined the server" + "**");
         }
@@ -307,7 +307,7 @@ public class Discord extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerLeave(PlayerQuitEvent event)
     {
-        if (!plugin.sl.isVanished(event.getPlayer().getName()))
+        if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
             messageChatChannel("**" + deformat(event.getPlayer().getName()) + " left the server" + "**");
         }
@@ -428,7 +428,7 @@ public class Discord extends FreedomService
         return true;
     }
 
-    public static boolean syncRoles(StaffMember staffMember, String discordID)
+    public static boolean syncRoles(Admin admin, String discordID)
     {
         if (discordID == null)
         {
@@ -462,7 +462,7 @@ public class Discord extends FreedomService
             return false;
         }
 
-        if (!staffMember.isActive())
+        if (!admin.isActive())
         {
             if (member.getRoles().contains(adminRole))
             {
@@ -475,7 +475,7 @@ public class Discord extends FreedomService
             return true;
         }
 
-        if (staffMember.getRank().equals(Rank.ADMIN))
+        if (admin.getRank().equals(Rank.ADMIN))
         {
             if (!member.getRoles().contains(adminRole))
             {
@@ -487,7 +487,7 @@ public class Discord extends FreedomService
             }
             return true;
         }
-        else if (staffMember.getRank().equals(Rank.SENIOR_ADMIN))
+        else if (admin.getRank().equals(Rank.SENIOR_ADMIN))
         {
             if (!member.getRoles().contains(senioradminRole))
             {
