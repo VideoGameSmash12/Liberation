@@ -11,13 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.IMPOSTOR, source = SourceType.BOTH)
-@CommandParameters(description = "Sends a verification code to the player, or the player can input the sent code. Staff can manually verify a player impostor.", usage = "/<command> <code | <playername>>")
+@CommandParameters(description = "Sends a verification code to the player, or the player can input the sent code. Admins can manually verify a player impostor.", usage = "/<command> <code | <playername>>")
 public class Command_verify extends FreedomCommand
 {
 
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
-
     {
         boolean enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
         if (!plugin.dc.enabled)
