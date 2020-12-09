@@ -1,15 +1,15 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
-@CommandParameters(description = "Manually verify someone", usage = "/<command> <playername>", aliases="mv")
+@CommandParameters(description = "Manually verify someone", usage = "/<command> <playername>", aliases = "mv")
 public class Command_manuallyverify extends FreedomCommand
 {
     @Override
@@ -26,7 +26,6 @@ public class Command_manuallyverify extends FreedomCommand
             msg("The Discord verification system is currently disabled", ChatColor.RED);
             return true;
         }
-
         if (args.length == 0)
         {
             return false;
@@ -45,7 +44,7 @@ public class Command_manuallyverify extends FreedomCommand
             return true;
         }
 
-        FUtil.staffAction(sender.getName(), "Manually verifying player " + player.getName(), false);
+        FUtil.adminAction(sender.getName(), "Manually verifying player " + player.getName(), false);
         player.setOp(true);
         player.sendMessage(YOU_ARE_OP);
 
