@@ -7,7 +7,6 @@ import java.util.List;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,8 +24,8 @@ public class Command_playerverification extends FreedomCommand
         boolean enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
         List<String> ips = new ArrayList<>();
         ips.addAll(target.getIps());
-        
-        if (enableBot)
+
+        if(enableBot)
         {
             if (args.length == 1)
             {
@@ -68,10 +67,11 @@ public class Command_playerverification extends FreedomCommand
             }
 
             PlayerData data = plugin.pl.getData(playerSender);
+
             switch (args[0].toLowerCase())
             {
-
                 case "enable":
+                {
                     if (!plugin.dc.enabled)
                     {
                         msg("The Discord verification system is currently disabled.", ChatColor.RED);
@@ -91,8 +91,10 @@ public class Command_playerverification extends FreedomCommand
                     plugin.pl.save(data);
                     msg("Re-enabled Discord verification.", ChatColor.GREEN);
                     return true;
+                }
 
                 case "disable":
+                {
                     if (!data.hasVerification())
                     {
                         msg("Discord verification is already disabled for you.", ChatColor.RED);
@@ -102,16 +104,20 @@ public class Command_playerverification extends FreedomCommand
                     plugin.pl.save(data);
                     msg("Disabled Discord verification.", ChatColor.GREEN);
                     return true;
+                }
 
                 case "status":
+                {
                     boolean enabled = target.hasVerification();
                     boolean specified = target.getDiscordID() != null;
                     msg(ChatColor.GRAY + "Discord Verification Enabled: " + (enabled ? ChatColor.GREEN + "true" : ChatColor.RED + "false"));
                     msg(ChatColor.GRAY + "Discord ID: " + (specified ? ChatColor.GREEN + target.getDiscordID() : ChatColor.RED + "not set"));
                     msg(ChatColor.GRAY + "Backup Codes: " + data.getBackupCodes().size() + "/" + "10");
                     return true;
+                }
 
                 case "genbackupcodes":
+                {
                     if (!plugin.dc.enabled)
                     {
                         msg("The Discord verification system is currently disabled.", ChatColor.RED);
@@ -134,7 +140,7 @@ public class Command_playerverification extends FreedomCommand
                         msg("Failed to generate backup codes, please contact a developer (preferably Seth)", ChatColor.RED);
                     }
                     return true;
-
+                }
                 default:
                     return false;
             }
@@ -145,6 +151,7 @@ public class Command_playerverification extends FreedomCommand
         }
         return true;
     }
+
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
