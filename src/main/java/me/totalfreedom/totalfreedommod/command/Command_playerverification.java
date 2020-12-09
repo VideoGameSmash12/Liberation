@@ -7,6 +7,7 @@ import java.util.List;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
+import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,7 +26,7 @@ public class Command_playerverification extends FreedomCommand
         List<String> ips = new ArrayList<>();
         ips.addAll(target.getIps());
         
-        if (enableBot == true)
+        if (enableBot)
         {
             if (args.length == 1)
             {
