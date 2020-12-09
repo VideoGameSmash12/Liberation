@@ -59,7 +59,7 @@ public class Discord extends FreedomService
 
     public static JDA bot = null;
     public Boolean enabled = false;
-	public Boolean enableBot = false;
+    public Boolean enableBot = false;
 
     public void startBot()
     {
