@@ -132,7 +132,7 @@ public class WorldRestrictions extends FreedomService
         {
             /* This is a very poor way of blocking WorldEdit commands, all the methods I know of
                for obtaining a list of a plugin's commands are returning null for world edit. */
-            String allowed = player.getWorld().equals(plugin.wm.adminworld.getWorld()) ? "Admin" : "Master Builders";
+            String allowed = player.getWorld().equals(plugin.wm.adminworld.getWorld()) ? "Admins" : "Master Builders";
 
             if (command.startsWith("/") || BLOCKED_WORLDEDIT_COMMANDS.contains(command))
             {
