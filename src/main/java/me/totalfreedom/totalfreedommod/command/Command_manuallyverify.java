@@ -2,6 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,13 +15,17 @@ public class Command_manuallyverify extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-
+        boolean enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
         if (!plugin.dc.enabled)
         {
             msg("The Discord verification system is currently disabled", ChatColor.RED);
             return true;
         }
-
+        if (!enableBot)
+        {
+            msg("The Discord verification system is currently disabled", ChatColor.RED);
+            return true;
+        }
         if (args.length == 0)
         {
             return false;
