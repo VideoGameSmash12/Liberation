@@ -21,11 +21,11 @@ public class Command_playerverification extends FreedomCommand
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
         PlayerData target = plugin.pl.getData(playerSender);
-        boolean enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
+        boolean verificationEnabled = ConfigEntry.DISCORD_VERIFICATION.getBoolean();
         List<String> ips = new ArrayList<>();
         ips.addAll(target.getIps());
 
-        if(enableBot)
+        if (verificationEnabled)
         {
             if (args.length == 1)
             {
@@ -87,6 +87,7 @@ public class Command_playerverification extends FreedomCommand
                         msg("Please link a discord account with /linkdiscord.", ChatColor.RED);
                         return true;
                     }
+
                     data.setVerification(true);
                     plugin.pl.save(data);
                     msg("Re-enabled Discord verification.", ChatColor.GREEN);
@@ -100,6 +101,7 @@ public class Command_playerverification extends FreedomCommand
                         msg("Discord verification is already disabled for you.", ChatColor.RED);
                         return true;
                     }
+
                     data.setVerification(false);
                     plugin.pl.save(data);
                     msg("Disabled Discord verification.", ChatColor.GREEN);
@@ -137,7 +139,7 @@ public class Command_playerverification extends FreedomCommand
                     }
                     else
                     {
-                        msg("Failed to generate backup codes, please contact a developer (preferably Seth)", ChatColor.RED);
+                        msg("Failed to generate backup codes, please contact a developer.", ChatColor.RED);
                     }
                     return true;
                 }
@@ -147,7 +149,7 @@ public class Command_playerverification extends FreedomCommand
         }
         else
         {
-            msg("The Discord verification system is currently disabled", ChatColor.RED);
+            msg("The Discord verification system is currently disabled.", ChatColor.RED);
         }
         return true;
     }

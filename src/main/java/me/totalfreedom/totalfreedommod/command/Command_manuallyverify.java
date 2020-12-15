@@ -15,17 +15,19 @@ public class Command_manuallyverify extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        boolean enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
+        boolean verificationEnabled = ConfigEntry.DISCORD_VERIFICATION.getBoolean();
         if (!plugin.dc.enabled)
         {
-            msg("The Discord verification system is currently disabled", ChatColor.RED);
+            msg("The Discord verification system is currently disabled.", ChatColor.RED);
             return true;
         }
-        if (!enableBot)
+
+        if (!verificationEnabled)
         {
-            msg("The Discord verification system is currently disabled", ChatColor.RED);
+            msg("The Discord verification system is currently disabled.", ChatColor.RED);
             return true;
         }
+
         if (args.length == 0)
         {
             return false;
@@ -56,7 +58,6 @@ public class Command_manuallyverify extends FreedomCommand
 
         plugin.pl.verify(player, null);
         plugin.rm.updateDisplay(player);
-
         return true;
     }
 }

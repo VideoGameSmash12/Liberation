@@ -59,12 +59,11 @@ public class Discord extends FreedomService
 
     public static JDA bot = null;
     public Boolean enabled = false;
-    public Boolean enableBot = false;
 
     public void startBot()
     {
-		enableBot = (ConfigEntry.DISCORD_VERIFICATION.getBoolean());
-        if (!enableBot)
+        boolean verificationEnabled = ConfigEntry.DISCORD_VERIFICATION.getBoolean();
+        if (!verificationEnabled)
         {
             FLog.info("Discord Verification has been manually disabled.");
             return;

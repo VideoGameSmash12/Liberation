@@ -53,7 +53,7 @@ server:
 
 # Discord
 discord:
-  # Do you want to enable the bot? (Disabled by default)
+  # Do you want to enable the Discord verification system? (Disabled by default)
   verification: false
   # If you do not have a token, make a bot account and get one at https://discordapp.com/developers/applications/me
   token: ''
