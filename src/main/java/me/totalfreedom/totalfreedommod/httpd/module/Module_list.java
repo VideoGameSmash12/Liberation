@@ -25,7 +25,7 @@ public class Module_list extends HTTPDModule
         if (params.get("json") != null && params.get("json").equals("true"))
         {
             final JSONObject responseObject = new JSONObject();
-                
+
             final JSONArray owners = new JSONArray();
             final JSONArray executives = new JSONArray();
             final JSONArray developers = new JSONArray();
@@ -37,7 +37,6 @@ public class Module_list extends HTTPDModule
 
             for (Player player : Bukkit.getOnlinePlayers())
             {
-
                 if (plugin.al.isVanished(player.getName()))
                 {
                     continue;
@@ -53,7 +52,7 @@ public class Module_list extends HTTPDModule
                     masterbuilders.add(player.getName());
                 }
 
-                if (FUtil.DEVELOPERS.contains(player.getName()))
+                if (FUtil.DEVELOPER_NAMES.contains(player.getName()))
                 {
                     developers.add(player.getName());
                 }
