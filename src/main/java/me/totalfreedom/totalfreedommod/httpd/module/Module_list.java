@@ -25,15 +25,20 @@ public class Module_list extends HTTPDModule
         if (params.get("json") != null && params.get("json").equals("true"))
         {
             final JSONObject responseObject = new JSONObject();
-
+                
+            final JSONArray owners = new JSONArray();
+            final JSONArray executives = new JSONArray();
+            final JSONArray developers = new JSONArray();
+            final JSONArray senioradmins = new JSONArray();
+            final JSONArray admins = new JSONArray();
+            final JSONArray masterbuilders = new JSONArray();
             final JSONArray operators = new JSONArray();
             final JSONArray imposters = new JSONArray();
-            final JSONArray masterbuilders = new JSONArray();
-            final JSONArray admins = new JSONArray();
-            final JSONArray senioradmins = new JSONArray();
-            final JSONArray developers = new JSONArray();
-            final JSONArray executives = new JSONArray();
-            final JSONArray owners = new JSONArray();
+
+            
+            
+            
+            
 
             for (Player player : Bukkit.getOnlinePlayers())
             {
