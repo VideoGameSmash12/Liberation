@@ -35,11 +35,6 @@ public class Module_list extends HTTPDModule
             final JSONArray operators = new JSONArray();
             final JSONArray imposters = new JSONArray();
 
-            
-            
-            
-            
-
             for (Player player : Bukkit.getOnlinePlayers())
             {
 
