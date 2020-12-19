@@ -25,10 +25,11 @@ public class CommandSpy extends FreedomService
         {
             if (plugin.al.isAdmin(player) && plugin.al.getAdmin(player).getCommandSpy())
             {
-                if (plugin.al.isAdmin(event.getPlayer()) && !plugin.al.isAdmin(player))
+                if (plugin.al.isAdmin(event.getPlayer()) && !plugin.al.isSeniorAdmin(player))
                 {
                     continue;
                 }
+
                 if (player != event.getPlayer())
                 {
                     FUtil.playerMsg(player, event.getPlayer().getName() + ": " + event.getMessage());
