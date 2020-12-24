@@ -186,8 +186,13 @@ forceip:
 # TotalFreedom Social Media Links, casing will be preserved
 social_links:
   Forum: 'https://forum.totalfreedom.me'
-  Website: 'https://totalfreedom.me/'
+  Website: 'https://totalfreedom.me'
   Discord: 'https://discord.com/invite/PW4savJR9a'
+#  Reddit: 'https://reddit.com/r/TotalFreedom'
+  Twitter: 'https://twitter.com/TotalFreedomMC'
+  Facebook: 'https://facebook.com/TotalFreedomMC'
+#  Tumblr: 'https://totalfreedom.tumblr.com'
+#  Instagram: 'https://www.instagram.com/totalfreedommc/'
 
 # Blocking certain events
 allow:
