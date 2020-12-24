@@ -107,7 +107,6 @@ public class TotalFreedomMod extends JavaPlugin
     public BanManager bm;
     public IndefiniteBanList im;
     public PermissionManager pem;
-    public Reddit rd;
     public GameRuleHandler gr;
     public CommandSpy cs;
     public Cager ca;
@@ -225,7 +224,6 @@ public class TotalFreedomMod extends JavaPlugin
         bm = new BanManager();
         im = new IndefiniteBanList();
         pem = new PermissionManager();
-        rd = new Reddit();
         gr = new GameRuleHandler();
         snp = new SignBlocker();
         ew = new EntityWiper();

@@ -93,7 +93,7 @@ public class SQLite extends FreedomService
             {
                 try
                 {
-                    connection.createStatement().execute("CREATE TABLE `players` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `notes` VARCHAR, `tag` VARCHAR, `discord_id` VARCHAR, `backup_codes` VARCHAR, `master_builder` BOOLEAN NOT NULL,`verification` BOOLEAN NOT NULL, `ride_mode` VARCHAR NOT NULL, `coins` INT, `items` VARCHAR, `total_votes` INT NOT NULL, `display_discord` BOOLEAN NOT NULL, `reddit_username` VARCHAR, `login_message` VARCHAR, `inspect` BOOLEAN NOT NULL);");
+                    connection.createStatement().execute("CREATE TABLE `players` (`username` VARCHAR NOT NULL, `ips` VARCHAR NOT NULL, `notes` VARCHAR, `tag` VARCHAR, `discord_id` VARCHAR, `backup_codes` VARCHAR, `master_builder` BOOLEAN NOT NULL,`verification` BOOLEAN NOT NULL, `ride_mode` VARCHAR NOT NULL, `coins` INT, `items` VARCHAR, `total_votes` INT NOT NULL, `display_discord` BOOLEAN NOT NULL, `login_message` VARCHAR, `inspect` BOOLEAN NOT NULL);");
                 }
                 catch (SQLException e)
                 {
@@ -284,7 +284,6 @@ public class SQLite extends FreedomService
             statement.setString(11, FUtil.listToString(player.getItems()));
             statement.setInt(12, player.getTotalVotes());
             statement.setBoolean(13, player.doesDisplayDiscord());
-            statement.setString(14, player.getRedditUsername());
             statement.setString(15, player.getLoginMessage());
             statement.setBoolean(16, player.hasInspection());
             statement.executeUpdate();

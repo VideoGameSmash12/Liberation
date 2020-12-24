@@ -5,7 +5,7 @@
 
     <groupId>me.totalfreedom</groupId>
     <artifactId>TotalFreedomMod</artifactId>
-    <version>2020.11.5</version>
+    <version>2020.12</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -18,7 +18,7 @@
 
     <name>TotalFreedomMod</name>
     <description>Server modification for the TotalFreedom server</description>
-    <url>https://github.com/TFPatches/TotalFreedomMod</url>
+    <url>https://github.com/AtlasMediaGroup/TotalFreedomMod</url>
 
     <licenses>
         <license>
@@ -202,7 +202,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_222</version>
+            <version>4.2.0_223</version>
             <scope>provided</scope>
         </dependency>
 
@@ -223,7 +223,7 @@
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
             <scope>compile</scope>
         </dependency>
 
@@ -274,13 +274,6 @@
             <artifactId>maven-checkstyle-plugin</artifactId>
             <version>3.1.1</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.dean.jraw</groupId>
-            <artifactId>JRAW</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

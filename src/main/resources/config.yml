@@ -80,31 +80,6 @@ discord:
   # Owner role ID
   server_owner_role_id: ''
 
-# Reddit
-reddit:
-  # Name of your subreddit (the r/NAME, excluding r/)
-  subreddit_name: 'TotalFreedom'
-  # Username of the bot account
-  username: ''
-  # Bot account password
-  password: ''
-  # Developer app id (Make one at https://www.reddit.com/prefs/apps (make sure the type is script))
-  client_id: ''
-  # Developer app secret
-  client_secret: ''
-  # Master Builder flair ID
-  master_builder_flair_id: ''
-  # Admin flair ID
-  admin_flair_id: ''
-  # Senior Admin flair ID
-  senior_admin_flair_id: ''
-  # Developer flair ID
-  developer_flair_id: ''
-  # Executive Admin flair ID
-  executive_flair_id: ''
-  # Owner flair ID
-  server_owner_flair_id: ''
-
 # Pterodactyl
 ptero:
   # URL - do not leave a trailing forward slash

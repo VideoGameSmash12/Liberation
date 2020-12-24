@@ -84,18 +84,6 @@ public enum ConfigEntry
     DISCORD_EXECUTIVE_ROLE_ID(String.class, "discord.executive_role_id"),
     DISCORD_SERVER_OWNER_ROLE_ID(String.class, "discord.server_owner_role_id"),
     //
-    REDDIT_SUBREDDIT_NAME(String.class, "reddit.subreddit_name"),
-    REDDIT_USERNAME(String.class, "reddit.username"),
-    REDDIT_PASSWORD(String.class, "reddit.password"),
-    REDDIT_CLIENT_ID(String.class, "reddit.client_id"),
-    REDDIT_CLIENT_SECRET(String.class, "reddit.client_secret"),
-    REDDIT_MASTER_BUILDER_FLAIR_ID(String.class, "reddit.master_builder_flair_id"),
-    REDDIT_NEW_ADMIN_FLAIR_ID(String.class, "reddit.admin_flair_id"),
-    REDDIT_SENIOR_ADMIN_FLAIR_ID(String.class, "reddit.senior_admin_flair_id"),
-    REDDIT_DEVELOPER_FLAIR_ID(String.class, "reddit.developer_flair_id"),
-    REDDIT_EXECUTIVE_FLAIR_ID(String.class, "reddit.executive_flair_id"),
-    REDDIT_SERVER_OWNER_FLAIR_ID(String.class, "reddit.server_owner_flair_id"),
-    //
     PTERO_URL(String.class, "ptero.url"),
     PTERO_DEFAULT_EMAIL_DOMAIN(String.class, "ptero.default_email_domain"),
     PTERO_SERVER_UUID(String.class, "ptero.server_uuid"),

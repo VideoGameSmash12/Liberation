@@ -49,9 +49,6 @@ public class PlayerData
     private boolean displayDiscord = true;
     @Getter
     @Setter
-    private String redditUsername;
-    @Getter
-    @Setter
     private String loginMessage;
     @Setter
     private Boolean inspect = false;
@@ -77,7 +74,6 @@ public class PlayerData
             items.addAll(FUtil.stringToList(resultSet.getString("items")));
             totalVotes = resultSet.getInt("total_votes");
             displayDiscord = resultSet.getBoolean("display_discord");
-            redditUsername = resultSet.getString("reddit_username");
             loginMessage = resultSet.getString("login_message");
             inspect = resultSet.getBoolean("inspect");
         }
@@ -115,7 +111,6 @@ public class PlayerData
                 .append("- Tag: ").append(FUtil.colorize(tag)).append(ChatColor.GRAY).append("\n")
                 .append("- Ride Mode: ").append(rideMode).append("\n")
                 .append("- Backup Codes: ").append(backupCodes.size()).append("/10").append("\n")
-                .append("- Reddit Username: ").append(redditUsername).append("\n")
                 .append("- Login Message: ").append(loginMessage);
 
         return output.toString();
@@ -256,7 +251,6 @@ public class PlayerData
             put("items", FUtil.listToString(items));
             put("total_votes", totalVotes);
             put("display_discord", displayDiscord);
-            put("reddit_username", redditUsername);
             put("login_message", loginMessage);
             put("inspect", inspect);
         }};
