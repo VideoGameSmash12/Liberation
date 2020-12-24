@@ -332,6 +332,11 @@ public class Discord extends FreedomService
             return;
         }
 
+        if (message.contains("_"))
+        {
+            message = message.replace("_", "\\_");
+        }
+
         if (enabled && !chat_channel_id.isEmpty())
         {
             CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(message).submit(true);
