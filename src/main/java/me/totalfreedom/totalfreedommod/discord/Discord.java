@@ -66,13 +66,14 @@ public class Discord extends FreedomService
         if (!verificationEnabled)
         {
             FLog.info("Discord Verification has been manually disabled.");
-            return;
         }
+
         enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
         if (!enabled)
         {
             return;
         }
+
         if (bot != null)
         {
             RATELIMIT_EXECUTOR = new ScheduledThreadPoolExecutor(5, new CountingThreadFactory(this::poolIdentifier, "RateLimit"));
@@ -82,6 +83,7 @@ public class Discord extends FreedomService
                 bot.removeEventListener(object);
             }
         }
+
         try
         {
             bot = JDABuilder.createDefault(ConfigEntry.DISCORD_TOKEN.getString())
@@ -212,13 +214,13 @@ public class Discord extends FreedomService
 
     public String generateCode(int size)
     {
-        String code = "";
+        StringBuilder code = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < size; i++)
         {
-            code += random.nextInt(10);
+            code.append(random.nextInt(10));
         }
-        return code;
+        return code.toString();
     }
 
     public List<String> generateEncryptedBackupCodes(List<String> codes)
@@ -240,7 +242,7 @@ public class Discord extends FreedomService
 
         for (String code : codes)
         {
-            text.append(code + "\n");
+            text.append(code).append("\n");
         }
 
         String fileUrl = plugin.getDataFolder().getAbsolutePath() + "/TF-Backup-Codes-" + name + ".txt";
@@ -281,18 +283,15 @@ public class Discord extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        try
+        if (!event.getEntity().getWorld().getGameRuleValue(GameRule.SHOW_DEATH_MESSAGES))
         {
-            if (!event.getEntity().getWorld().getGameRuleValue(GameRule.SHOW_DEATH_MESSAGES))
-            {
-                return;
-            }
-        }
-        catch (NullPointerException e)
-        {
+            return;
         }
 
-        messageChatChannel("**" + deformat(event.getDeathMessage()) + "**");
+        if (event.getDeathMessage() != null)
+        {
+            messageChatChannel("**" + deformat(event.getDeathMessage()) + "**");
+        }
     }
 
     @Override
@@ -332,14 +331,9 @@ public class Discord extends FreedomService
             return;
         }
 
-        if (message.contains("_"))
-        {
-            message = message.replace("_", "\\_");
-        }
-
         if (enabled && !chat_channel_id.isEmpty())
         {
-            CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(message).submit(true);
+            CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(deformat(message)).submit(true);
             sentMessages.add(sentMessage);
         }
     }
@@ -357,14 +351,9 @@ public class Discord extends FreedomService
             return;
         }
 
-        if (message.contains("_"))
-        {
-            message = message.replace("_", "\\_");
-        }
-
         if (enabled && !chat_channel_id.isEmpty())
         {
-            CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(message).submit(true);
+            CompletableFuture<Message> sentMessage = bot.getTextChannelById(chat_channel_id).sendMessage(deformat(message)).submit(true);
             sentMessages.add(sentMessage);
         }
     }
@@ -394,6 +383,7 @@ public class Discord extends FreedomService
         {
             messageChatChannel("**Server has stopped**");
         }
+
         FLog.info("Discord verification bot has successfully shutdown.");
     }
 
@@ -408,23 +398,27 @@ public class Discord extends FreedomService
         {
             return false;
         }
+
         if (ConfigEntry.DISCORD_SERVER_ID.getString().isEmpty())
         {
             FLog.severe("No Discord server ID was specified in the config, but there is a report channel ID.");
             return false;
         }
+
         Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         if (server == null)
         {
             FLog.severe("The Discord server ID specified is invalid, or the bot is not on the server.");
             return false;
         }
+
         TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
         if (channel == null)
         {
             FLog.severe("The report channel ID specified in the config is invalid.");
             return false;
         }
+
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Report for " + reported.getName());
         embedBuilder.setDescription(reason);
