@@ -1,18 +1,17 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.io.File;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.banning.IndefiniteBanList;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 
 public class Module_indefbans extends HTTPDModule
 {
 
-    public Module_indefbans(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_indefbans(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package me.totalfreedom.totalfreedommod.fun;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import me.totalfreedom.totalfreedommod.FreedomService;
@@ -53,7 +54,7 @@ public class Trailer extends FreedomService
             return;
         }
 
-        Block toBlock = event.getTo().getBlock();
+        Block toBlock = Objects.requireNonNull(event.getTo()).getBlock();
         if (fromBlock.equals(toBlock))
         {
             return;

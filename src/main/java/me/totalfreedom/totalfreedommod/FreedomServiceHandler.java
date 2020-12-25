@@ -2,12 +2,10 @@ package me.totalfreedom.totalfreedommod;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 
 public class FreedomServiceHandler
 {
-    @Getter
-    private List<FreedomService> services;
+    private final List<FreedomService> services;
 
     public FreedomServiceHandler()
     {
@@ -52,5 +50,10 @@ public class FreedomServiceHandler
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<FreedomService> getServices()
+    {
+        return services;
     }
 }

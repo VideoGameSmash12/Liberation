@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.GameRuleHandler;
+import me.totalfreedom.totalfreedommod.LoginProcess;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -109,8 +110,8 @@ public class Command_toggle extends FreedomCommand
 
             case "lockdown":
             {
-                boolean active = !plugin.lp.isLockdownEnabled();
-                plugin.lp.setLockdownEnabled(active);
+                boolean active = !LoginProcess.isLockdownEnabled();
+                LoginProcess.setLockdownEnabled(active);
                 FUtil.adminAction(sender.getName(), (active ? "A" : "De-a") + "ctivating server lockdown", true);
                 break;
             }

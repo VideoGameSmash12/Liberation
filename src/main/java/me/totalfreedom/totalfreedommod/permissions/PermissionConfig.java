@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.EnumMap;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.FreedomService;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -18,10 +17,9 @@ public class PermissionConfig extends FreedomService
     public static final String PERMISSIONS_FILENAME = "permissions.yml";
     //
     private final EnumMap<PermissionEntry, Object> entries;
-    private final PermissionDefaults defaults;
     public YamlConfiguration configuration;
 
-    public PermissionConfig(TotalFreedomMod plugin)
+    public PermissionConfig()
     {
         entries = new EnumMap<>(PermissionEntry.class);
 
@@ -53,7 +51,7 @@ public class PermissionConfig extends FreedomService
             FLog.severe(ex);
         }
 
-        defaults = tempDefaults;
+        PermissionDefaults defaults = tempDefaults;
     }
 
     @Override
@@ -104,7 +102,7 @@ public class PermissionConfig extends FreedomService
         return new File(plugin.getDataFolder(), PERMISSIONS_FILENAME);
     }
 
-    public List getList(PermissionEntry entry)
+    public List<?> getList(PermissionEntry entry)
     {
         try
         {

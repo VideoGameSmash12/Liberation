@@ -13,16 +13,6 @@ public class ServerInterface extends FreedomService
 {
     public static final String COMPILE_NMS_VERSION = "v1_16_R3";
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public static void warnVersion()
     {
         final String nms = FUtil.getNMSVersion();
@@ -32,6 +22,16 @@ public class ServerInterface extends FreedomService
             FLog.warning(TotalFreedomMod.pluginName + " is compiled for " + COMPILE_NMS_VERSION + " but the server is running version " + nms + "!");
             FLog.warning("This might result in unexpected behaviour!");
         }
+    }
+
+    @Override
+    public void onStart()
+    {
+    }
+
+    @Override
+    public void onStop()
+    {
     }
 
     public void setOnlineMode(boolean mode)

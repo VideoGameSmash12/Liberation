@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.admin.Admin;
+import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -19,11 +19,6 @@ import org.bukkit.entity.ThrownPotion;
 @CommandParameters(description = "Allows admins to see potions that are thrown.", usage = "/<command> <enable | on | disable | off> | history [player] <page>", aliases = "potspy")
 public class Command_potionspy extends FreedomCommand
 {
-    private String titleText = "&8&m------------------&r &ePotionSpy &8&m------------------&r";
-    private String validPageText = "Please specify a valid page number between 1 and %s.";
-    private String noPlayerRecord = "That player has not thrown any potions yet.";
-    private String splashedText = "&r%s splashed a potion at &eX: %s Y: %s Z: %s&r\nin the world '&e%s&r' about &e%s &rago%s.";
-    private String bottomText = "&8&m--------------------&r &e%s / %s &8&m--------------------&r";
 
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
@@ -37,6 +32,11 @@ public class Command_potionspy extends FreedomCommand
         }
         else
         {
+            String titleText = "&8&m------------------&r &ePotionSpy &8&m------------------&r";
+            String validPageText = "Please specify a valid page number between 1 and %s.";
+            String noPlayerRecord = "That player has not thrown any potions yet.";
+            String splashedText = "&r%s splashed a potion at &eX: %s Y: %s Z: %s&r\nin the world '&e%s&r' about &e%s &rago%s.";
+            String bottomText = "&8&m--------------------&r &e%s / %s &8&m--------------------&r";
             switch (args[0].toLowerCase())
             {
                 case "enable":
@@ -59,8 +59,7 @@ public class Command_potionspy extends FreedomCommand
                             return true;
                         }
 
-                        List<Map.Entry<ThrownPotion, Long>> thrownPotions = new ArrayList<>();
-                        thrownPotions.addAll(plugin.mo.getPlayerThrownPotions(player)); // Make a copy of the list to avoid modifying the original.
+                        List<Map.Entry<ThrownPotion, Long>> thrownPotions = new ArrayList<>(plugin.mo.getPlayerThrownPotions(player)); // Make a copy of the list to avoid modifying the original.
 
                         List<String> potionThrowNotifications = new ArrayList<>();
                         int lastPage = (int)Math.ceil(thrownPotions.size() / 5.0);

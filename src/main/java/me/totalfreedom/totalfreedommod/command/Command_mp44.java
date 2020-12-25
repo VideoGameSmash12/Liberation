@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -38,7 +39,7 @@ public class Command_mp44 extends FreedomCommand
             msg("mp44 is ARMED! Left click with gunpowder to start firing, left click again to quit.", ChatColor.GREEN);
             msg("Type /mp44 sling to disable.  -by Madgeek1450", ChatColor.GREEN);
 
-            playerSender.getEquipment().setItemInMainHand(new ItemStack(Material.GUNPOWDER, 1));
+            Objects.requireNonNull(playerSender.getEquipment()).setItemInMainHand(new ItemStack(Material.GUNPOWDER, 1));
         }
         else
         {

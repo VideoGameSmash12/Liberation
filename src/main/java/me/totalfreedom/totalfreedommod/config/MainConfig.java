@@ -22,18 +22,6 @@ public class MainConfig extends FreedomService
     private final ConfigDefaults defaults;
     public YamlConfiguration configuration;
 
-    @Override
-    public void onStart()
-    {
-
-    }
-
-    @Override
-    public void onStop()
-    {
-
-    }
-
     public MainConfig()
     {
         entries = new EnumMap<>(ConfigEntry.class);
@@ -67,6 +55,18 @@ public class MainConfig extends FreedomService
         }
 
         defaults = tempDefaults;
+    }
+
+    @Override
+    public void onStart()
+    {
+
+    }
+
+    @Override
+    public void onStop()
+    {
+
     }
 
     public void load()
@@ -212,7 +212,7 @@ public class MainConfig extends FreedomService
         }
     }
 
-    public List getList(ConfigEntry entry)
+    public List<?> getList(ConfigEntry entry)
     {
         try
         {
@@ -297,11 +297,7 @@ public class MainConfig extends FreedomService
                 defaults.load(isr);
                 isr.close();
             }
-            catch (IOException ex)
-            {
-                FLog.severe(ex);
-            }
-            catch (InvalidConfigurationException ex)
+            catch (IOException | InvalidConfigurationException ex)
             {
                 FLog.severe(ex);
             }

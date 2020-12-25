@@ -2,12 +2,11 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 
 import com.google.common.collect.Lists;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.command.FreedomCommand;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
@@ -24,16 +23,39 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 public class Module_help extends HTTPDModule
 {
 
-    public Module_help(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_help(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
+    }
+
+    private static String buildDescription(Command command)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(
+                "<li><span class=\"commandName\">{$CMD_NAME}</span> - Usage: <span class=\"commandUsage\">{$CMD_USAGE}</span>"
+                        .replace("{$CMD_NAME}", escapeHtml4(command.getName().trim()))
+                        .replace("{$CMD_USAGE}", escapeHtml4(command.getUsage().trim())));
+
+        if (!command.getAliases().isEmpty())
+        {
+            sb.append(
+                    " - Aliases: <span class=\"commandAliases\">{$CMD_ALIASES}</span>"
+                            .replace("{$CMD_ALIASES}", escapeHtml4(StringUtils.join(command.getAliases(), ", "))));
+        }
+
+        sb.append(
+                "<br><span class=\"commandDescription\">{$CMD_DESC}</span></li>\r\n"
+                        .replace("{$CMD_DESC}", escapeHtml4(command.getDescription().trim())));
+
+        return sb.toString();
     }
 
     @Override
     public String getBody()
     {
         final CommandMap map = FreedomCommand.getCommandMap();
-        if (map == null || !(map instanceof SimpleCommandMap))
+        if (!(map instanceof SimpleCommandMap))
         {
             return paragraph("Error loading commands.");
         }
@@ -60,14 +82,12 @@ public class Module_help extends HTTPDModule
             pluginCommands.add(command);
         }
 
-        final Iterator<Map.Entry<String, List<Command>>> it = commandsByPlugin.entrySet().iterator();
-        while (it.hasNext())
+        for (Map.Entry<String, List<Command>> entry : commandsByPlugin.entrySet())
         {
-            final Map.Entry<String, List<Command>> entry = it.next();
             final String pluginName = entry.getKey();
             final List<Command> commands = entry.getValue();
 
-            Collections.sort(commands, new CommandComparator());
+            commands.sort(new CommandComparator());
 
             responseBody.append(heading(pluginName, 2)).append("<ul>\r\n");
 
@@ -80,7 +100,7 @@ public class Module_help extends HTTPDModule
                     continue;
                 }
 
-                Displayable tfmCommandLevel = FreedomCommand.getFrom(command).getPerms().level();
+                Displayable tfmCommandLevel = Objects.requireNonNull(FreedomCommand.getFrom(command)).getPerms().level();
                 if (lastTfmCommandLevel == null || lastTfmCommandLevel != tfmCommandLevel)
                 {
                     responseBody.append("</ul>\r\n").append(heading(tfmCommandLevel.getName(), 3)).append("<ul>\r\n");
@@ -93,29 +113,6 @@ public class Module_help extends HTTPDModule
         }
 
         return responseBody.toString();
-    }
-
-    private static String buildDescription(Command command)
-    {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(
-                "<li><span class=\"commandName\">{$CMD_NAME}</span> - Usage: <span class=\"commandUsage\">{$CMD_USAGE}</span>"
-                        .replace("{$CMD_NAME}", escapeHtml4(command.getName().trim()))
-                        .replace("{$CMD_USAGE}", escapeHtml4(command.getUsage().trim())));
-
-        if (!command.getAliases().isEmpty())
-        {
-            sb.append(
-                    " - Aliases: <span class=\"commandAliases\">{$CMD_ALIASES}</span>"
-                            .replace("{$CMD_ALIASES}", escapeHtml4(StringUtils.join(command.getAliases(), ", "))));
-        }
-
-        sb.append(
-                "<br><span class=\"commandDescription\">{$CMD_DESC}</span></li>\r\n"
-                        .replace("{$CMD_DESC}", escapeHtml4(command.getDescription().trim())));
-
-        return sb.toString();
     }
 
     @Override

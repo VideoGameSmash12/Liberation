@@ -2,8 +2,10 @@ package me.totalfreedom.totalfreedommod.shop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
@@ -28,14 +30,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class Shop extends FreedomService
 {
-    private BukkitTask reactions;
-    public String reactionString = "";
-    public Date reactionStartTime;
     public final int coinsPerReactionWin = ConfigEntry.SHOP_REACTIONS_COINS_PER_WIN.getInteger();
     public final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "Reaction" + ChatColor.DARK_GRAY + "] ";
-    public BukkitTask countdownTask;
-    private BossBar countdownBar = null;
     private final String LOGIN_MESSAGE_GUI_TITLE = ChatColor.DARK_GREEN + ChatColor.BOLD.toString() + "Login Messages";
+    public String reactionString = "";
+    public Date reactionStartTime;
+    public BukkitTask countdownTask;
+    private BukkitTask reactions;
+    private BossBar countdownBar = null;
 
     @Override
     public void onStart()
@@ -90,7 +92,7 @@ public class Shop extends FreedomService
         countdownTask = new BukkitRunnable()
         {
             double seconds = 30;
-            double max = seconds;
+            final double max = seconds;
 
             @Override
             public void run()
@@ -157,6 +159,7 @@ public class Shop extends FreedomService
         {
             ItemStack blank = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
             ItemMeta meta = blank.getItemMeta();
+            assert meta != null;
             meta.setDisplayName(" ");
             blank.setItemMeta(meta);
             gui.setItem(slot, blank);
@@ -169,6 +172,7 @@ public class Shop extends FreedomService
         // Coins
         ItemStack coins = new ItemStack(Material.GOLD_NUGGET);
         ItemMeta meta = coins.getItemMeta();
+        assert meta != null;
         meta.setDisplayName(FUtil.colorize("&c&lYou have &e&l" + playerData.getCoins() + "&c&l coins"));
         coins.setItemMeta(meta);
         gui.setItem(35, coins);
@@ -183,6 +187,7 @@ public class Shop extends FreedomService
         {
             ItemStack icon = new ItemStack(Material.NAME_TAG);
             ItemMeta meta = icon.getItemMeta();
+            assert meta != null;
             meta.setDisplayName(FUtil.colorize(plugin.rm.craftLoginMessage(player, loginMessage)));
             icon.setItemMeta(meta);
             gui.setItem(slot, icon);
@@ -190,6 +195,7 @@ public class Shop extends FreedomService
         }
         ItemStack clear = new ItemStack(Material.BARRIER);
         ItemMeta meta = clear.getItemMeta();
+        assert meta != null;
         meta.setDisplayName(ChatColor.RED + "Clear login message");
         clear.setItemMeta(meta);
         gui.setItem(35, clear);
@@ -198,12 +204,7 @@ public class Shop extends FreedomService
 
     public boolean isRealItem(PlayerData data, ShopItem shopItem, PlayerInventory inventory, ItemStack realItem)
     {
-        if (isRealItem(data, shopItem, inventory.getItemInMainHand(), realItem) || isRealItem(data, shopItem, inventory.getItemInOffHand(), realItem))
-        {
-            return true;
-        }
-
-        return false;
+        return isRealItem(data, shopItem, inventory.getItemInMainHand(), realItem) || isRealItem(data, shopItem, inventory.getItemInOffHand(), realItem);
     }
 
     public boolean isRealItem(PlayerData data, ShopItem shopItem, ItemStack givenItem, ItemStack realItem)
@@ -216,18 +217,16 @@ public class Shop extends FreedomService
         ItemMeta givenMeta = givenItem.getItemMeta();
         ItemMeta realMeta = realItem.getItemMeta();
 
-        if (givenMeta.getDisplayName().equals(realMeta.getDisplayName()) && givenMeta.getLore().equals(realMeta.getLore()))
-        {
-            return true;
-        }
-
-        return false;
+        assert givenMeta != null;
+        assert realMeta != null;
+        return givenMeta.getDisplayName().equals(realMeta.getDisplayName()) && Objects.equals(givenMeta.getLore(), realMeta.getLore());
     }
 
     public ItemStack getLightningRod()
     {
         ItemStack itemStack = new ItemStack(Material.BLAZE_ROD);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(FUtil.colorize("&bL&3i&bg&3h&bt&3i&bn&3g &b&bR&3o&bd"));
         itemMeta.setLore(Arrays.asList(ChatColor.AQUA + "Strike others down with the power of lightning.", ChatColor.RED + ChatColor.ITALIC.toString() + "The classic way to exterminate annoyances."));
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, false);
@@ -239,8 +238,9 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(Material.FISHING_ROD);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.YELLOW + "Grappling Hook");
-        itemMeta.setLore(Arrays.asList(ChatColor.GREEN + "be spider-man but ghetto"));
+        itemMeta.setLore(Collections.singletonList(ChatColor.GREEN + "be spider-man but ghetto"));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -249,8 +249,9 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(Material.FIRE_CHARGE);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.RED + "Fire Ball");
-        itemMeta.setLore(Arrays.asList(ChatColor.GOLD + "Yeet this at people"));
+        itemMeta.setLore(Collections.singletonList(ChatColor.GOLD + "Yeet this at people"));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -259,6 +260,7 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(Material.ENDER_PEARL);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.DARK_PURPLE + "Rideable Ender Pearl");
         itemMeta.setLore(Arrays.asList(ChatColor.LIGHT_PURPLE + "What the title says.", "", ChatColor.WHITE + ChatColor.ITALIC.toString() + "TotalFreedom is not responsible for any injuries", ChatColor.WHITE + ChatColor.ITALIC.toString() + "sustained while using this item."));
         itemMeta.addEnchant(Enchantment.BINDING_CURSE, 1, false);
@@ -270,8 +272,9 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(Material.POTATO);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.YELLOW + "Stacking Potato");
-        itemMeta.setLore(Arrays.asList(ChatColor.GREEN + "Left click to ride a mob, right click to put a mob on your head."));
+        itemMeta.setLore(Collections.singletonList(ChatColor.GREEN + "Left click to ride a mob, right click to put a mob on your head."));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -280,19 +283,16 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(Material.TROPICAL_FISH);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.GOLD + "Clown Fish");
-        itemMeta.setLore(Arrays.asList(ChatColor.AQUA + ":clown:"));
+        itemMeta.setLore(Collections.singletonList(ChatColor.AQUA + ":clown:"));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
     public boolean canAfford(int price, int coins)
     {
-        if (coins >= price)
-        {
-            return true;
-        }
-        return false;
+        return coins >= price;
     }
 
     public int amountNeeded(int price, int coins)
@@ -304,11 +304,12 @@ public class Shop extends FreedomService
     {
         ItemStack itemStack = new ItemStack(item.getIcon());
         ItemMeta itemMeta = itemStack.getItemMeta();
+        assert itemMeta != null;
         itemMeta.setDisplayName(item.getColoredName());
         int price = item.getCost();
         int coins = data.getCoins();
-        Boolean canAfford = canAfford(price, coins);
-        List<String> lore = new ArrayList();
+        boolean canAfford = canAfford(price, coins);
+        List<String> lore = new ArrayList<>();
         if (!data.hasItem(item))
         {
             lore.add(ChatColor.GOLD + "Price: " + (canAfford ? ChatColor.DARK_GREEN : ChatColor.RED) + price);

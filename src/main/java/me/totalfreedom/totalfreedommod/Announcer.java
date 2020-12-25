@@ -3,7 +3,6 @@ package me.totalfreedom.totalfreedommod;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -13,11 +12,8 @@ public class Announcer extends FreedomService
 {
 
     private final List<String> announcements = Lists.newArrayList();
-    @Getter
     private boolean enabled;
-    @Getter
     private long interval;
-    @Getter
     private String prefix;
     private BukkitTask announcer;
 
@@ -80,4 +76,23 @@ public class Announcer extends FreedomService
         FUtil.bcastMsg(prefix + message);
     }
 
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public long getInterval()
+    {
+        return interval;
+    }
+
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
+    public BukkitTask getAnnouncer()
+    {
+        return announcer;
+    }
 }

@@ -30,7 +30,7 @@ public class Command_banip extends FreedomCommand
 
         String ip = args[0];
 
-        if (!FUtil.isValidIPv4(ip))
+        if (FUtil.isValidIPv4(ip))
         {
             msg(ip + " is not a valid IP address", ChatColor.RED);
             return true;

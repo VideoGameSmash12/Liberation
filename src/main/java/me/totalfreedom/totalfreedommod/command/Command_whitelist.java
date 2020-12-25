@@ -169,8 +169,7 @@ public class Command_whitelist extends FreedomCommand
     {
         if (args.length == 1)
         {
-            List<String> arguments = new ArrayList<>();
-            arguments.addAll(Arrays.asList("list", "count"));
+            List<String> arguments = new ArrayList<>(Arrays.asList("list", "count"));
             if (plugin.al.isAdmin(sender))
             {
                 arguments.addAll(Arrays.asList("on", "off", "add", "remove", "addall"));

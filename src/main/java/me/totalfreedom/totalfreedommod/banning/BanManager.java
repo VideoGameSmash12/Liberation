@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.entity.Player;
@@ -74,7 +73,7 @@ public class BanManager extends FreedomService
 
         // Load unbannable usernames
         unbannableUsernames.clear();
-        unbannableUsernames.addAll((Collection<? extends String>)ConfigEntry.FAMOUS_PLAYERS.getList());
+        unbannableUsernames.addAll(ConfigEntry.FAMOUS_PLAYERS.getStringList());
         FLog.info("Loaded " + unbannableUsernames.size() + " unbannable usernames.");
     }
 
@@ -190,7 +189,7 @@ public class BanManager extends FreedomService
         return getByUsername(username) != null;
     }
 
-    public boolean addBan(Ban ban)
+    public void addBan(Ban ban)
     {
         if (ban.getUsername() != null && getByUsername(ban.getUsername()) != null)
         {
@@ -213,22 +212,18 @@ public class BanManager extends FreedomService
         {
             plugin.sql.addBan(ban);
             updateViews();
-            return true;
         }
 
-        return false;
     }
 
-    public boolean removeBan(Ban ban)
+    public void removeBan(Ban ban)
     {
         if (bans.remove(ban))
         {
             plugin.sql.removeBan(ban);
             updateViews();
-            return true;
         }
 
-        return false;
     }
 
     public int purge()

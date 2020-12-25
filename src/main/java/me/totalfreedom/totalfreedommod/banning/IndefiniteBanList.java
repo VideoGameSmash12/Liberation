@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.UUID;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.config.YamlConfig;
@@ -21,17 +20,22 @@ public class IndefiniteBanList extends FreedomService
 
     public static final String CONFIG_FILENAME = "indefinitebans.yml";
 
-    @Getter
+
     private final Set<IndefiniteBan> indefBans = Sets.newHashSet();
 
-    @Getter
+
     private int nameBanCount = 0;
 
-    @Getter
+
     private int uuidBanCount = 0;
 
-    @Getter
+
     private int ipBanCount = 0;
+
+    public static String getConfigFilename()
+    {
+        return CONFIG_FILENAME;
+    }
 
     @Override
     public void onStart()
@@ -51,6 +55,7 @@ public class IndefiniteBanList extends FreedomService
 
             IndefiniteBan indefBan = new IndefiniteBan();
             ConfigurationSection cs = config.getConfigurationSection(name);
+            assert cs != null;
             indefBan.loadFrom(cs);
 
             if (!indefBan.isValid())
@@ -84,7 +89,7 @@ public class IndefiniteBanList extends FreedomService
 
         for (IndefiniteBan indefBan : indefBans)
         {
-            if (username.toLowerCase().equals(indefBan.getUsername().toLowerCase()))
+            if (username.equalsIgnoreCase(indefBan.getUsername()))
             {
                 bannedBy = "username";
                 ban = indefBan;
@@ -136,5 +141,25 @@ public class IndefiniteBanList extends FreedomService
             }
             ipBanCount += indefBan.getIps().size();
         }
+    }
+
+    public Set<IndefiniteBan> getIndefBans()
+    {
+        return indefBans;
+    }
+
+    public int getNameBanCount()
+    {
+        return nameBanCount;
+    }
+
+    public int getUuidBanCount()
+    {
+        return uuidBanCount;
+    }
+
+    public int getIpBanCount()
+    {
+        return ipBanCount;
     }
 }

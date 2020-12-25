@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import org.bukkit.ChatColor;
@@ -64,7 +65,7 @@ public class History
                     FSync.playerMsg(sender, ChatColor.RED + "Player not found!");
                 }
             }
-        }.runTaskAsynchronously(TotalFreedomMod.plugin());
+        }.runTaskAsynchronously(Objects.requireNonNull(TotalFreedomMod.plugin()));
     }
 
     private static void printHistory(CommandSender sender, FName[] oldNames)
@@ -85,9 +86,15 @@ public class History
 
     private static class FName implements Comparable<FName>
     {
+        private final String name;
+        private final long changedToAt;
 
-        private String name;
-        private long changedToAt;
+        //Added constructor because otherwise there's no way name or changedToAt would have been anything other than null.
+        public FName(String name, long changedToAt)
+        {
+            this.name = name;
+            this.changedToAt = changedToAt;
+        }
 
         @Override
         public int compareTo(FName other)

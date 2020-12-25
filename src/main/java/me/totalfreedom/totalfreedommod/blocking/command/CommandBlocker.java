@@ -30,6 +30,24 @@ public class CommandBlocker extends FreedomService
     private final Map<String, CommandBlockerEntry> entryList = Maps.newHashMap();
     private final List<String> unknownCommands = Lists.newArrayList();
 
+    public static CommandMap getCommandMap()
+    {
+        try
+        {
+            SimplePluginManager simplePluginManager = (SimplePluginManager)Bukkit.getServer().getPluginManager();
+
+            Field commandMapField = SimplePluginManager.class.getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+
+            return (SimpleCommandMap)commandMapField.get(simplePluginManager);
+        }
+        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
+        {
+            FLog.severe("Failed to get command map field (" + e.getMessage() + ")");
+        }
+        return null;
+    }
+
     @Override
     public void onStart()
     {
@@ -40,25 +58,6 @@ public class CommandBlocker extends FreedomService
     public void onStop()
     {
         entryList.clear();
-    }
-
-    public static CommandMap getCommandMap()
-    {
-        try
-        {
-            SimplePluginManager simplePluginManager = (SimplePluginManager)Bukkit.getServer().getPluginManager();
-
-            Field commandMapField = SimplePluginManager.class.getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-
-            SimpleCommandMap simpleCommandMap = (SimpleCommandMap)commandMapField.get(simplePluginManager);
-            return simpleCommandMap;
-        }
-        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
-        {
-            FLog.severe("Failed to get command map field (" + e.getMessage() + ")");
-        }
-        return null;
     }
 
     public void load()
@@ -84,7 +83,7 @@ public class CommandBlocker extends FreedomService
             String commandName = parts[2].toLowerCase().substring(1);
             final String message = (parts.length > 3 ? parts[3] : null);
 
-            if (rank == null || action == null || commandName == null || commandName.isEmpty())
+            if (rank == null || action == null || commandName.isEmpty())
             {
                 FLog.warning("Invalid command blocker entry: " + rawEntry);
                 continue;
@@ -98,6 +97,7 @@ public class CommandBlocker extends FreedomService
                 subCommand = StringUtils.join(commandParts, " ", 1, commandParts.length).trim().toLowerCase();
             }
 
+            assert commandMap != null;
             final Command command = commandMap.getCommand(commandName);
 
             // Obtain command from alias

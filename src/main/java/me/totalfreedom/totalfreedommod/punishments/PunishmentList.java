@@ -3,6 +3,7 @@ package me.totalfreedom.totalfreedommod.punishments;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.YamlConfig;
@@ -11,9 +12,8 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 public class PunishmentList extends FreedomService
 {
 
-    private final Set<Punishment> punishments = Sets.newHashSet();
     public static final String CONFIG_FILENAME = "punishments.yml";
-
+    private final Set<Punishment> punishments = Sets.newHashSet();
     //
     private final YamlConfig config;
 
@@ -37,7 +37,7 @@ public class PunishmentList extends FreedomService
             }
 
             Punishment punishment = new Punishment();
-            punishment.loadFrom(config.getConfigurationSection(id));
+            punishment.loadFrom(Objects.requireNonNull(config.getConfigurationSection(id)));
 
             if (!punishment.isValid())
             {
@@ -55,7 +55,7 @@ public class PunishmentList extends FreedomService
     public void onStop()
     {
         saveAll();
-        logger.info("Saved " + punishments.size() + " player bans");
+        FLog.info("Saved " + punishments.size() + " player bans");
     }
 
     public void saveAll()
@@ -113,15 +113,13 @@ public class PunishmentList extends FreedomService
         return size;
     }
 
-    public boolean logPunishment(Punishment punishment)
+    public void logPunishment(Punishment punishment)
     {
         if (punishments.add(punishment))
         {
             saveAll();
-            return true;
         }
 
-        return false;
     }
 
 }

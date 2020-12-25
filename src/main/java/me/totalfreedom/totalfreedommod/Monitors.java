@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,7 +19,6 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Monitors extends FreedomService
 {
-    @Getter
     private final List<Map.Entry<ThrownPotion, Long>> allThrownPotions = new ArrayList<>();
     private final Map<Player, List<ThrownPotion>> recentlyThrownPotions = new HashMap<>();
     private final List<PotionEffectType> badPotionEffects = new ArrayList<>(Arrays.asList(PotionEffectType.BLINDNESS,
@@ -140,5 +138,20 @@ public class Monitors extends FreedomService
         }
 
         return badEffectsDetected > 0;
+    }
+
+    public List<Map.Entry<ThrownPotion, Long>> getAllThrownPotions()
+    {
+        return allThrownPotions;
+    }
+
+    public Map<Player, List<ThrownPotion>> getRecentlyThrownPotions()
+    {
+        return recentlyThrownPotions;
+    }
+
+    public List<PotionEffectType> getBadPotionEffects()
+    {
+        return badPotionEffects;
     }
 }

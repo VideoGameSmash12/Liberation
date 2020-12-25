@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.OfflinePlayer;
@@ -54,7 +55,7 @@ public class Command_ops extends FreedomCommand
                 player.setOp(false);
                 if (player.isOnline())
                 {
-                    msg(player.getPlayer(), FreedomCommand.YOU_ARE_NOT_OP);
+                    msg(Objects.requireNonNull(player.getPlayer()), FreedomCommand.YOU_ARE_NOT_OP);
                 }
             }
             return true;

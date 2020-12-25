@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import static me.totalfreedom.totalfreedommod.util.FUtil.SAVED_FLAGS_FILENAME;
 
@@ -27,7 +28,7 @@ public class SavedFlags extends FreedomService
     {
         Map<String, Boolean> flags = null;
 
-        File input = new File(TotalFreedomMod.plugin().getDataFolder(), SAVED_FLAGS_FILENAME);
+        File input = new File(Objects.requireNonNull(TotalFreedomMod.plugin()).getDataFolder(), SAVED_FLAGS_FILENAME);
         if (input.exists())
         {
             try

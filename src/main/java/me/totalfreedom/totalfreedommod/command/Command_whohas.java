@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -16,6 +15,16 @@ import org.bukkit.entity.Player;
 @CommandParameters(description = "See who has an item and optionally clear the specified item.", usage = "/<command> <item> [clear]", aliases = "wh")
 public class Command_whohas extends FreedomCommand
 {
+
+    public static List<String> getAllMaterials()
+    {
+        List<String> names = new ArrayList<>();
+        for (Material material : Material.values())
+        {
+            names.add(material.name());
+        }
+        return names;
+    }
 
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
@@ -69,16 +78,6 @@ public class Command_whohas extends FreedomCommand
         return true;
     }
 
-    public static List<String> getAllMaterials()
-    {
-        List<String> names = new ArrayList<>();
-        for (Material material : Material.values())
-        {
-            names.add(material.name());
-        }
-        return names;
-    }
-
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
@@ -89,7 +88,7 @@ public class Command_whohas extends FreedomCommand
 
         if (args.length == 2 && plugin.al.isAdmin(sender))
         {
-            return Arrays.asList("clear");
+            return Collections.singletonList("clear");
         }
 
         return Collections.emptyList();

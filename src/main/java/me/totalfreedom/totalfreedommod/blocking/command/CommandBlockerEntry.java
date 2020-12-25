@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.blocking.command;
 
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
@@ -11,15 +10,15 @@ import org.spigotmc.SpigotConfig;
 public class CommandBlockerEntry
 {
 
-    @Getter
+
     private final CommandBlockerRank rank;
-    @Getter
+
     private final CommandBlockerAction action;
-    @Getter
+
     private final String command;
-    @Getter
+
     private final String subCommand;
-    @Getter
+
     private final String message;
 
     public CommandBlockerEntry(CommandBlockerRank rank, CommandBlockerAction action, String command, String message)
@@ -50,5 +49,30 @@ public class CommandBlockerEntry
             return;
         }
         FUtil.playerMsg(sender, FUtil.colorize(message));
+    }
+
+    public CommandBlockerRank getRank()
+    {
+        return rank;
+    }
+
+    public CommandBlockerAction getAction()
+    {
+        return action;
+    }
+
+    public String getCommand()
+    {
+        return command;
+    }
+
+    public String getSubCommand()
+    {
+        return subCommand;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 }

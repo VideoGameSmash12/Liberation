@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.freeze;
 
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.Location;
@@ -12,7 +11,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Freezer extends FreedomService
 {
 
-    @Getter
     private boolean globalFreeze = false;
 
     @Override
@@ -24,11 +22,6 @@ public class Freezer extends FreedomService
     @Override
     public void onStop()
     {
-    }
-
-    public void setGlobalFreeze(boolean frozen)
-    {
-        this.globalFreeze = frozen;
     }
 
     public void purge()
@@ -60,11 +53,17 @@ public class Freezer extends FreedomService
         FUtil.setFlying(player, true);
 
         Location loc = player.getLocation();
-        if (loc == null)
-        {
-            loc = event.getFrom();
-        }
 
         event.setTo(loc);
+    }
+
+    public boolean isGlobalFreeze()
+    {
+        return globalFreeze;
+    }
+
+    public void setGlobalFreeze(boolean frozen)
+    {
+        this.globalFreeze = frozen;
     }
 }

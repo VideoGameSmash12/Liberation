@@ -3,8 +3,8 @@ package me.totalfreedom.totalfreedommod.command;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.admin.ActivityLogEntry;
+import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,16 +45,32 @@ public class Command_playtime extends FreedomCommand
         long cminutes = duration / (60 * 1000) % 60;
         long chours = duration / (60 * 60 * 1000);
         StringBuilder sb = new StringBuilder()
-                .append("Playtime - " + sender.getName() + "\n")
-                .append("Current Session: " + chours + " hours, " + cminutes + " minutes, and " + cseconds + " seconds" + "\n")
-                .append("Overall: " + hours + " hours, " + minutes + " minutes, and " + seconds + " seconds" + "\n");
+                .append("Playtime - ")
+                .append(sender.getName())
+                .append("\n")
+                .append("Current Session: ")
+                .append(chours)
+                .append(" hours, ")
+                .append(cminutes)
+                .append(" minutes, and ")
+                .append(cseconds)
+                .append(" seconds")
+                .append("\n")
+                .append("Overall: ")
+                .append(hours)
+                .append(" hours, ")
+                .append(minutes)
+                .append(" minutes, and ")
+                .append(seconds)
+                .append(" seconds")
+                .append("\n");
         List<String> durations = entry.getDurations();
         if (durations.size() >= 3)
         {
             sb.append("Recent Sessions:");
             for (int i = 0; i < 3; i++)
             {
-                sb.append("\n" + " - " + durations.get((durations.size() - 1) - i));
+                sb.append("\n" + " - ").append(durations.get((durations.size() - 1) - i));
             }
         }
         msg(sb.toString());

@@ -37,6 +37,7 @@ public class SignBlocker extends FreedomService
             ItemStack sign = event.getItemInHand();
             net.minecraft.server.v1_16_R3.ItemStack nmsSign = CraftItemStack.asNMSCopy(sign);
             NBTTagCompound compound = (nmsSign.hasTag()) ? nmsSign.getTag() : new NBTTagCompound();
+            assert compound != null;
             NBTTagCompound bet = compound.getCompound("BlockEntityTag");
             String line1 = bet.getString("Text1");
             String line2 = bet.getString("Text2");

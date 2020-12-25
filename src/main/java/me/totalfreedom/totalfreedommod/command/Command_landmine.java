@@ -50,7 +50,7 @@ public class Command_landmine extends FreedomCommand
             {
                 radius = Math.max(2.0, Math.min(6.0, Double.parseDouble(args[0])));
             }
-            catch (NumberFormatException ex)
+            catch (NumberFormatException ignored)
             {
             }
         }

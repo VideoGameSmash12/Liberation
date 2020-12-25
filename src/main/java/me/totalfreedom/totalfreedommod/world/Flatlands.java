@@ -23,6 +23,7 @@ public class Flatlands extends CustomWorld
         super("flatlands");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected World generateWorld()
     {
@@ -41,6 +42,7 @@ public class Flatlands extends CustomWorld
 
         final World world = Bukkit.getServer().createWorld(worldCreator);
 
+        assert world != null;
         world.setSpawnFlags(false, false);
         world.setSpawnLocation(0, 50, 0);
 
@@ -70,7 +72,7 @@ public class Flatlands extends CustomWorld
         {
             doFlatlandsWipe = plugin.sf.getSavedFlag("do_wipe_flatlands");
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
 

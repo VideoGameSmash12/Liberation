@@ -18,8 +18,6 @@ import org.bukkit.util.Vector;
 
 public class Landminer extends FreedomService
 {
-
-    @Getter
     private final List<Landmine> landmines = new ArrayList<>();
 
     @Override
@@ -43,6 +41,7 @@ public class Landminer extends FreedomService
         landmines.remove(landmine);
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -93,6 +92,11 @@ public class Landminer extends FreedomService
             player.setGameMode(GameMode.SURVIVAL);
             lit.remove();
         }
+    }
+
+    public List<Landmine> getLandmines()
+    {
+        return landmines;
     }
 
     public static class Landmine

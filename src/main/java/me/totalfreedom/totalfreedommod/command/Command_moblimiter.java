@@ -57,7 +57,7 @@ public class Command_moblimiter extends FreedomCommand
                 {
                     ConfigEntry.MOB_LIMITER_MAX.setInteger(Math.max(0, Math.min(2000, Integer.parseInt(args[1]))));
                 }
-                catch (NumberFormatException nfex)
+                catch (NumberFormatException ignored)
                 {
                 }
             }

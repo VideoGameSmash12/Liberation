@@ -3,25 +3,15 @@ package me.totalfreedom.totalfreedommod.banning;
 import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.config.IConfig;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class IndefiniteBan implements IConfig
 {
-
-    @Getter
-    @Setter
-    private String username = null;
-    @Getter
-    @Setter
-    private UUID uuid = null;
-    @Getter
     private final List<String> ips = Lists.newArrayList();
-    @Getter
-    @Setter
+    private String username = null;
+    private UUID uuid = null;
     private String reason = null;
 
     public IndefiniteBan()
@@ -59,5 +49,40 @@ public class IndefiniteBan implements IConfig
     public boolean isValid()
     {
         return username != null;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid)
+    {
+        this.uuid = uuid;
+    }
+
+    public List<String> getIps()
+    {
+        return ips;
+    }
+
+    public String getReason()
+    {
+        return reason;
+    }
+
+    public void setReason(String reason)
+    {
+        this.reason = reason;
     }
 }

@@ -1,10 +1,11 @@
 package me.totalfreedom.totalfreedommod.rank;
 
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -276,21 +277,21 @@ public class RankManager extends FreedomService
         }
         if (message != null)
         {
-            String loginMessage = FUtil.colorize(ChatColor.AQUA + (message.contains("%name%") ? "" : player.getName() + " is ")
+            return FUtil.colorize(ChatColor.AQUA + (message.contains("%name%") ? "" : player.getName() + " is ")
                     + FUtil.colorize(message).replace("%name%", player.getName())
                     .replace("%rank%", display.getName())
                     .replace("%coloredrank%", display.getColoredName())
                     .replace("%art%", display.getArticle()));
-            return loginMessage;
         }
 
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public void updatePlayerTeam(Player player)
     {
         Displayable display = getDisplay(player);
-        Scoreboard scoreboard = server.getScoreboardManager().getMainScoreboard();
+        Scoreboard scoreboard = Objects.requireNonNull(server.getScoreboardManager()).getMainScoreboard();
         Team team = scoreboard.getPlayerTeam(player);
         if (!display.hasTeam())
         {

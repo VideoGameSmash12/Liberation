@@ -29,6 +29,7 @@ public class BlockBlocker extends FreedomService
     {
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent event)
     {
@@ -143,6 +144,7 @@ public class BlockBlocker extends FreedomService
                         {
                             ItemStack newHead = new ItemStack(Material.PLAYER_HEAD, 1);
                             ItemMeta headMeta = newHead.getItemMeta();
+                            assert headMeta != null;
                             headMeta.setDisplayName(ChatColor.YELLOW + "C-sectioned Head");
                             newHead.setItemMeta(headMeta);
                             player.getInventory().setItem(player.getInventory().getHeldItemSlot(), newHead);
@@ -175,7 +177,7 @@ public class BlockBlocker extends FreedomService
         {
             Banner banner = (Banner)event.getBlockPlaced().getState();
             List<Pattern> patterns = banner.getPatterns();
-            ;
+
             if (patterns.size() >= 2)
             {
                 banner.setPatterns(patterns.subList(0, 2));

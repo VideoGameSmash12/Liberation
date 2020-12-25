@@ -12,6 +12,7 @@ public class FSync
     public static void playerMsg(final Player player, final String message)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 
@@ -27,6 +28,7 @@ public class FSync
     public static void playerMsg(final CommandSender sender, final String message)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 
@@ -42,6 +44,7 @@ public class FSync
     public static void playerKick(final Player player, final String reason)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 
@@ -57,6 +60,7 @@ public class FSync
     public static void adminChatMessage(final CommandSender sender, final String message)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 
@@ -72,6 +76,7 @@ public class FSync
     public static void autoEject(final Player player, final String kickMessage)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 
@@ -87,6 +92,7 @@ public class FSync
     public static void bcastMsg(final String message, final ChatColor color)
     {
         final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        assert plugin != null;
         new BukkitRunnable()
         {
 

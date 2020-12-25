@@ -3,6 +3,8 @@ package me.totalfreedom.totalfreedommod;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
+import me.totalfreedom.totalfreedommod.admin.ActivityLog;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.banning.BanManager;
 import me.totalfreedom.totalfreedommod.banning.IndefiniteBanList;
 import me.totalfreedom.totalfreedommod.blocking.BlockBlocker;
@@ -41,8 +43,6 @@ import me.totalfreedom.totalfreedommod.rank.RankManager;
 import me.totalfreedom.totalfreedommod.shop.Shop;
 import me.totalfreedom.totalfreedommod.shop.Votifier;
 import me.totalfreedom.totalfreedommod.sql.SQLite;
-import me.totalfreedom.totalfreedommod.admin.ActivityLog;
-import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
@@ -54,23 +54,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.spigotmc.SpigotConfig;
 
 public class TotalFreedomMod extends JavaPlugin
 {
-    private static TotalFreedomMod plugin;
-
-    public static TotalFreedomMod getPlugin()
-    {
-        return plugin;
-    }
-
     public static final String CONFIG_FILENAME = "config.yml";
     //
     public static final BuildProperties build = new BuildProperties();
     //
     public static String pluginName;
     public static String pluginVersion;
+    private static TotalFreedomMod plugin;
     //
     public MainConfig config;
     public PermissionConfig permissions;
@@ -134,7 +129,6 @@ public class TotalFreedomMod extends JavaPlugin
     public Sitter st;
     public VanishHandler vh;
     public Pterodactyl ptero;
-
     //public HubWorldRestrictions hwr;
     //
     // Bridges
@@ -145,6 +139,23 @@ public class TotalFreedomMod extends JavaPlugin
     public TFGuildsBridge tfg;
     public WorldEditBridge web;
     public WorldGuardBridge wgb;
+
+    public static TotalFreedomMod getPlugin()
+    {
+        return plugin;
+    }
+
+    public static TotalFreedomMod plugin()
+    {
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+        {
+            if (plugin.getName().equalsIgnoreCase(pluginName))
+            {
+                return (TotalFreedomMod)plugin;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void onLoad()
@@ -192,7 +203,7 @@ public class TotalFreedomMod extends JavaPlugin
         BackupManager backups = new BackupManager();
         backups.createAllBackups();
 
-        permissions = new PermissionConfig(this);
+        permissions = new PermissionConfig();
         permissions.load();
 
         // Start services
@@ -291,6 +302,12 @@ public class TotalFreedomMod extends JavaPlugin
         FLog.info("Plugin disabled");
     }
 
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id)
+    {
+        return new CleanroomChunkGenerator(id);
+    }
+
     public static class BuildProperties
     {
         public String author;
@@ -331,23 +348,5 @@ public class TotalFreedomMod extends JavaPlugin
         {
             return pluginVersion + "." + number + " (" + head + ")";
         }
-    }
-
-    public static TotalFreedomMod plugin()
-    {
-        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
-        {
-            if (plugin.getName().equalsIgnoreCase(pluginName))
-            {
-                return (TotalFreedomMod)plugin;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id)
-    {
-        return new CleanroomChunkGenerator(id);
     }
 }

@@ -38,7 +38,7 @@ public class Command_plugincontrol extends FreedomCommand
                 {
                     final String version = serverPlugin.getDescription().getVersion();
                     msg(ChatColor.GRAY + "- " + (serverPlugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED) + serverPlugin.getName()
-                            + ChatColor.GOLD + (version != null && !version.isEmpty() ? " v" + version : "") + " by "
+                            + ChatColor.GOLD + (!version.isEmpty() ? " v" + version : "") + " by "
                             + StringUtils.join(serverPlugin.getDescription().getAuthors(), ", "));
                 }
 

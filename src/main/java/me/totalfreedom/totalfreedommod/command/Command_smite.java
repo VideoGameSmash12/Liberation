@@ -19,51 +19,6 @@ import org.bukkit.entity.Player;
 public class Command_smite extends FreedomCommand
 {
 
-    @Override
-    public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
-    {
-        if (args.length < 1)
-        {
-            return false;
-        }
-
-        String reason = null;
-        boolean silent = false;
-        if (args.length >= 2)
-        {
-            if (args[args.length - 1].equalsIgnoreCase("-q"))
-            {
-                if (args[args.length - 1].equalsIgnoreCase("-q"))
-                {
-                    silent = true;
-                }
-
-                if (args.length >= 3)
-                {
-                    reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length - 1), " ");
-                }
-            }
-            else
-            {
-                reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
-            }
-        }
-
-        final Player player = getPlayer(args[0]);
-
-        if (player == null)
-        {
-            msg(FreedomCommand.PLAYER_NOT_FOUND);
-            return true;
-        }
-
-        smite(sender, player, reason, silent);
-
-        plugin.pul.logPunishment(new Punishment(player.getName(), FUtil.getIp(player), sender.getName(), PunishmentType.SMITE, reason));
-
-        return true;
-    }
-
     public static void smite(CommandSender sender, Player player)
     {
         smite(sender, player, null, false);
@@ -121,5 +76,50 @@ public class Command_smite extends FreedomCommand
             player.sendMessage(ChatColor.RED + "You've been smitten. Reason: " + ChatColor.YELLOW + reason);
             player.sendTitle(ChatColor.RED + "You've been smitten.", ChatColor.YELLOW + "Reason: " + reason, 20, 100, 60);
         }
+    }
+
+    @Override
+    public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
+    {
+        if (args.length < 1)
+        {
+            return false;
+        }
+
+        String reason = null;
+        boolean silent = false;
+        if (args.length >= 2)
+        {
+            if (args[args.length - 1].equalsIgnoreCase("-q"))
+            {
+                if (args[args.length - 1].equalsIgnoreCase("-q"))
+                {
+                    silent = true;
+                }
+
+                if (args.length >= 3)
+                {
+                    reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length - 1), " ");
+                }
+            }
+            else
+            {
+                reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
+            }
+        }
+
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
+        {
+            msg(FreedomCommand.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        smite(sender, player, reason, silent);
+
+        plugin.pul.logPunishment(new Punishment(player.getName(), FUtil.getIp(player), sender.getName(), PunishmentType.SMITE, reason));
+
+        return true;
     }
 }

@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Command_modifyitem extends FreedomCommand
 {
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run(final CommandSender sender, final Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -52,6 +53,7 @@ public class Command_modifyitem extends FreedomCommand
         }
 
         ItemMeta meta = item.getItemMeta();
+        assert meta != null;
         switch (args[0])
         {
             case "name":
@@ -188,6 +190,7 @@ public class Command_modifyitem extends FreedomCommand
                         });
                 cmpnd.setString("Slot", "mainhand");
                 modifiers.add(cmpnd);
+                assert compound != null;
                 compound.set("AttributeModifiers", modifiers);
                 nmsStack.setTag(compound);
                 item = CraftItemStack.asBukkitCopy(nmsStack);
@@ -237,17 +240,6 @@ public class Command_modifyitem extends FreedomCommand
             this.attribute = attribute;
         }
 
-        public String getAttribute()
-        {
-            return attribute;
-        }
-
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-
         public static Attribute getByName(String name)
         {
             for (Attribute attr : Attribute.values())
@@ -258,6 +250,17 @@ public class Command_modifyitem extends FreedomCommand
                 }
             }
             return null;
+        }
+
+        public String getAttribute()
+        {
+            return attribute;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
         }
     }
 }

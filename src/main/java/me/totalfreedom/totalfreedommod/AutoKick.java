@@ -46,9 +46,10 @@ public class AutoKick extends FreedomService
 
     private void autoKickCheck()
     {
+        // No type cast was provided, one has been supplied.
         final boolean doAwayKickCheck
                 = plugin.esb.isEnabled()
-                && ((server.getOnlinePlayers().size() / server.getMaxPlayers()) > autoKickThreshold);
+                && (((float)server.getOnlinePlayers().size() / (float)server.getMaxPlayers()) > autoKickThreshold);
 
         if (!doAwayKickCheck)
         {

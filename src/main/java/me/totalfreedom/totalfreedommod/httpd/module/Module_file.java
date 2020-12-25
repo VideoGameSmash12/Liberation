@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
@@ -25,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 public class Module_file extends HTTPDModule
 {
 
-    private final File rootDir = new File(ConfigEntry.HTTPD_PUBLIC_FOLDER.getString());
     public static final Map<String, String> MIME_TYPES = new HashMap<>();
 
     static
@@ -58,9 +55,11 @@ public class Module_file extends HTTPDModule
         MIME_TYPES.put("class", "application/octet-stream");
     }
 
-    public Module_file(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    private final File rootDir = new File(ConfigEntry.HTTPD_PUBLIC_FOLDER.getString());
+
+    public Module_file(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     private File getRootDir()
@@ -70,31 +69,31 @@ public class Module_file extends HTTPDModule
 
     private String encodeUri(String uri)
     {
-        String newUri = "";
+        StringBuilder newUri = new StringBuilder();
         StringTokenizer st = new StringTokenizer(uri, "/ ", true);
         while (st.hasMoreTokens())
         {
             String tok = st.nextToken();
             if (tok.equals("/"))
             {
-                newUri += "/";
+                newUri.append("/");
             }
             else if (tok.equals(" "))
             {
-                newUri += "%20";
+                newUri.append("%20");
             }
             else
             {
                 try
                 {
-                    newUri += URLEncoder.encode(tok, "UTF-8");
+                    newUri.append(URLEncoder.encode(tok, "UTF-8"));
                 }
                 catch (UnsupportedEncodingException ignored)
                 {
                 }
             }
         }
-        return newUri;
+        return newUri.toString();
     }
 
     public Response serveFile(String uri, Map<String, String> params, File homeDir)
@@ -237,7 +236,6 @@ public class Module_file extends HTTPDModule
                     {
                         res = new Response(Response.Status.RANGE_NOT_SATISFIABLE, NanoHTTPD.MIME_PLAINTEXT, "");
                         res.addHeader("Content-Range", "bytes 0-0/" + fileLen);
-                        res.addHeader("ETag", etag);
                     }
                     else
                     {
@@ -255,25 +253,25 @@ public class Module_file extends HTTPDModule
                         FileInputStream fis = new FileInputStream(f)
                         {
                             @Override
-                            public int available() throws IOException
+                            public int available()
                             {
                                 return (int)dataLen;
                             }
                         };
+                        //noinspection ResultOfMethodCallIgnored
                         fis.skip(startFrom);
 
                         res = new Response(Response.Status.PARTIAL_CONTENT, mime, fis);
                         res.addHeader("Content-Length", "" + dataLen);
                         res.addHeader("Content-Range", "bytes " + startFrom + "-" + endAt + "/" + fileLen);
-                        res.addHeader("ETag", etag);
                     }
                 }
                 else
                 {
                     res = new Response(Response.Status.OK, mime, new FileInputStream(f));
                     res.addHeader("Content-Length", "" + fileLen);
-                    res.addHeader("ETag", etag);
                 }
+                res.addHeader("ETag", etag);
             }
         }
         catch (IOException ioe)
@@ -288,12 +286,12 @@ public class Module_file extends HTTPDModule
     private String listDirectory(String uri, File f)
     {
         String heading = "Directory " + uri;
-        String msg = "<html><head><title>" + heading + "</title><style><!--\n"
+        StringBuilder msg = new StringBuilder("<html><head><title>" + heading + "</title><style><!--\n"
                 + "span.dirname { font-weight: bold; }\n"
                 + "span.filesize { font-size: 75%; }\n"
                 + "// -->\n"
                 + "</style>"
-                + "</head><body><h1>" + heading + "</h1>";
+                + "</head><body><h1>" + heading + "</h1>");
 
         String up = null;
         if (uri.length() > 1)
@@ -306,72 +304,56 @@ public class Module_file extends HTTPDModule
             }
         }
 
-        List<String> files = Arrays.asList(f.list(new FilenameFilter()
-        {
-            @Override
-            public boolean accept(File dir, String name)
-            {
-                return new File(dir, name).isFile();
-            }
-        }));
+        List<String> files = Arrays.asList(f.list((dir, name) -> new File(dir, name).isFile()));
         Collections.sort(files);
-        List<String> directories = Arrays.asList(f.list(new FilenameFilter()
-        {
-            @Override
-            public boolean accept(File dir, String name)
-            {
-                return new File(dir, name).isDirectory();
-            }
-        }));
+        List<String> directories = Arrays.asList(f.list((dir, name) -> new File(dir, name).isDirectory()));
         Collections.sort(directories);
         if (up != null || directories.size() + files.size() > 0)
         {
-            msg += "<ul>";
+            msg.append("<ul>");
             if (up != null || directories.size() > 0)
             {
-                msg += "<section class=\"directories\">";
+                msg.append("<section class=\"directories\">");
                 if (up != null)
                 {
-                    msg += "<li><a rel=\"directory\" href=\"" + up + "\"><span class=\"dirname\">..</span></a></b></li>";
+                    msg.append("<li><a rel=\"directory\" href=\"").append(up).append("\"><span class=\"dirname\">..</span></a></b></li>");
                 }
-                for (int i = 0; i < directories.size(); i++)
+                for (String directory : directories)
                 {
-                    String dir = directories.get(i) + "/";
-                    msg += "<li><a rel=\"directory\" href=\"" + encodeUri(uri + dir) + "\"><span class=\"dirname\">" + dir + "</span></a></b></li>";
+                    String dir = directory + "/";
+                    msg.append("<li><a rel=\"directory\" href=\"").append(encodeUri(uri + dir)).append("\"><span class=\"dirname\">").append(dir).append("</span></a></b></li>");
                 }
-                msg += "</section>";
+                msg.append("</section>");
             }
             if (files.size() > 0)
             {
-                msg += "<section class=\"files\">";
-                for (int i = 0; i < files.size(); i++)
+                msg.append("<section class=\"files\">");
+                for (String file : files)
                 {
-                    String file = files.get(i);
-
-                    msg += "<li><a href=\"" + encodeUri(uri + file) + "\"><span class=\"filename\">" + file + "</span></a>";
+                    msg.append("<li><a href=\"").append(encodeUri(uri + file)).append("\"><span class=\"filename\">").append(file).append("</span></a>");
                     File curFile = new File(f, file);
                     long len = curFile.length();
-                    msg += "&nbsp;<span class=\"filesize\">(";
+                    msg.append("&nbsp;<span class=\"filesize\">(");
                     if (len < 1024)
                     {
-                        msg += len + " bytes";
+                        msg.append(len).append(" bytes");
                     }
                     else if (len < 1024 * 1024)
                     {
-                        msg += len / 1024 + "." + (len % 1024 / 10 % 100) + " KB";
+                        msg.append(len / 1024).append(".").append(len % 1024 / 10 % 100).append(" KB");
                     }
                     else
                     {
-                        msg += len / (1024 * 1024) + "." + len % (1024 * 1024) / 10 % 100 + " MB";
+                        msg.append(len / (1024 * 1024)).append(".").append(len % (1024 * 1024) / 10 % 100).append(" MB");
                     }
-                    msg += ")</span></li>";
+                    msg.append(")</span></li>");
                 }
-                msg += "</section>";
+                msg.append("</section>");
             }
-            msg += "</ul>";
+            msg.append("</ul>");
         }
-        msg += "</body></html>";
-        return msg;
+        msg.append("</body></html>");
+        return msg.toString();
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.FreedomService;
@@ -47,15 +48,11 @@ import org.bukkit.util.Vector;
 public class ItemFun extends FreedomService
 {
 
-    public List<Player> explosivePlayers = new ArrayList<>();
-
     private final Random random = new Random();
-
     private final Map<String, List<String>> cooldownTracker = new HashMap<>();
-
     private final Map<Player, Float> orientationTracker = new HashMap<>();
-
     private final List<UUID> FIRE_BALL_UUIDS = new ArrayList<>();
+    public List<Player> explosivePlayers = new ArrayList<>();
 
     private void cooldown(Player player, ShopItem item, int seconds)
     {
@@ -282,7 +279,7 @@ public class ItemFun extends FreedomService
                             didHit = true;
                         }
                     }
-                    catch (IllegalArgumentException ex)
+                    catch (IllegalArgumentException ignored)
                     {
                     }
                 }
@@ -294,7 +291,7 @@ public class ItemFun extends FreedomService
                     {
                         if (sound.toString().contains("HIT"))
                         {
-                            playerLoc.getWorld().playSound(randomOffset(playerLoc, 5.0), sound, 20f, randomDoubleRange(0.5, 2.0).floatValue());
+                            Objects.requireNonNull(playerLoc.getWorld()).playSound(randomOffset(playerLoc), sound, 20f, randomDoubleRange(0.5, 2.0).floatValue());
                         }
                     }
                     cooldown(player, ShopItem.CLOWN_FISH, 30);
@@ -329,9 +326,10 @@ public class ItemFun extends FreedomService
         }
         if (arrow != null && (arrow.getShooter() instanceof Player))
         {
-            if (explosivePlayers.contains((Player)arrow.getShooter()))
+            //Redundant Player cast is required to avoid suspicious method calls.
+            if (explosivePlayers.contains(arrow.getShooter()))
             {
-                arrow.getLocation().getWorld().createExplosion(arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ(), ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue(), false, ConfigEntry.ALLOW_EXPLOSIONS.getBoolean());
+                Objects.requireNonNull(arrow.getLocation().getWorld()).createExplosion(arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ(), ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue(), false, ConfigEntry.ALLOW_EXPLOSIONS.getBoolean());
                 arrow.remove();
             }
         }
@@ -355,9 +353,9 @@ public class ItemFun extends FreedomService
         }
     }
 
-    private Location randomOffset(Location a, double magnitude)
+    private Location randomOffset(Location a)
     {
-        return a.clone().add(randomDoubleRange(-1.0, 1.0) * magnitude, randomDoubleRange(-1.0, 1.0) * magnitude, randomDoubleRange(-1.0, 1.0) * magnitude);
+        return a.clone().add(randomDoubleRange(-1.0, 1.0) * 5.0, randomDoubleRange(-1.0, 1.0) * 5.0, randomDoubleRange(-1.0, 1.0) * 5.0);
     }
 
     private Double randomDoubleRange(double min, double max)
