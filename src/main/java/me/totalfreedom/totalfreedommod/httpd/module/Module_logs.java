@@ -11,7 +11,7 @@ public class Module_logs extends Module_file
 
     public Module_logs(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override
