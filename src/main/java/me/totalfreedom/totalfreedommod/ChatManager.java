@@ -138,7 +138,7 @@ public class ChatManager extends FreedomService
         // Send to discord
         if (!ConfigEntry.ADMIN_ONLY_MODE.getBoolean() && !Bukkit.hasWhitelist() && !plugin.pl.getPlayer(player).isMuted() && !plugin.tfg.inGuildChat(player))
         {
-            plugin.dc.messageChatChannel(plugin.dc.deformat(player.getName()) + " \u00BB " + ChatColor.stripColor(message));
+            plugin.dc.messageChatChannel(player.getName() + " \u00BB " + ChatColor.stripColor(message));
         }
     }
 

@@ -290,7 +290,7 @@ public class Discord extends FreedomService
 
         if (event.getDeathMessage() != null)
         {
-            messageChatChannel("**" + deformat(event.getDeathMessage()) + "**");
+            messageChatChannel("**" + event.getDeathMessage() + "**");
         }
     }
 
@@ -305,7 +305,7 @@ public class Discord extends FreedomService
     {
         if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
-            messageChatChannel("**" + deformat(event.getPlayer().getName()) + " joined the server" + "**");
+            messageChatChannel("**" + event.getPlayer().getName() + " joined the server" + "**");
         }
     }
 
@@ -314,7 +314,7 @@ public class Discord extends FreedomService
     {
         if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
-            messageChatChannel("**" + deformat(event.getPlayer().getName()) + " left the server" + "**");
+            messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**");
         }
     }
 
