@@ -1,6 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import java.util.Random;
+import java.util.SplittableRandom;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -15,7 +15,7 @@ public class Command_deafen extends FreedomCommand
 {
 
     public static final double STEPS = 10.0;
-    private static final Random random = new Random();
+    private static final SplittableRandom random = new SplittableRandom();
 
     private static Location randomOffset(Location a)
     {

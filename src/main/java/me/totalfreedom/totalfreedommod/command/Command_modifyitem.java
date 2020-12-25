@@ -2,7 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.SplittableRandom;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
@@ -180,7 +180,7 @@ public class Command_modifyitem extends FreedomCommand
                 }
                 cmpnd.setDouble("Amount", amount);
                 cmpnd.setInt("Operation", 0);
-                Random random = new Random();
+                SplittableRandom random = new SplittableRandom();
                 cmpnd.setIntArray("UUID", new int[]
                         {
                                 random.nextInt(),

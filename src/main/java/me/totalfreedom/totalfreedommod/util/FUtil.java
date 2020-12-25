@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -85,7 +85,7 @@ public class FUtil
             ChatColor.DARK_BLUE,
             ChatColor.DARK_PURPLE,
             ChatColor.LIGHT_PURPLE);
-    private static final Random RANDOM = new Random();
+    private static final SplittableRandom RANDOM = new SplittableRandom();
     private static final String CHARACTER_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final Map<Integer, String> TIMEZONE_LOOKUP = new HashMap<>();
     public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
@@ -721,7 +721,7 @@ public class FUtil
 
     public static char getRandomCharacter()
     {
-        return CHARACTER_STRING.charAt(new Random().nextInt(CHARACTER_STRING.length()));
+        return CHARACTER_STRING.charAt(new SplittableRandom().nextInt(CHARACTER_STRING.length()));
     }
 
     public static void give(Player player, Material material, String coloredName, int amount, String... lore)

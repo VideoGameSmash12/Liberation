@@ -19,7 +19,7 @@
 package me.totalfreedom.totalfreedommod.world;
 
 import java.util.Arrays;
-import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -128,7 +128,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
     }
 
     @Override
-    public @NotNull ChunkData generateChunkData(World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome)
+    public @NotNull ChunkData generateChunkData(World world, @NotNull SplittableRandom random, int x, int z, @NotNull BiomeGrid biome)
     {
         int maxHeight = world.getMaxHeight();
         if (materials.length > maxHeight)
@@ -150,7 +150,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
     }
 
     @Override
-    public Location getFixedSpawnLocation(World world, @NotNull Random random)
+    public Location getFixedSpawnLocation(World world, @NotNull SplittableRandom random)
     {
         if (!world.isChunkLoaded(0, 0))
         {

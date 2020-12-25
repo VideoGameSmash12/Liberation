@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import javax.security.auth.login.LoginException;
@@ -292,7 +292,7 @@ public class Discord extends FreedomService
     public String generateCode(int size)
     {
         StringBuilder code = new StringBuilder();
-        Random random = new Random();
+        SplittableRandom random = new SplittableRandom();
         for (int i = 0; i < size; i++)
         {
             code.append(random.nextInt(10));

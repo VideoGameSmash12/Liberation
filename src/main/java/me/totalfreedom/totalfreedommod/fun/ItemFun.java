@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -48,7 +48,7 @@ import org.bukkit.util.Vector;
 public class ItemFun extends FreedomService
 {
 
-    private final Random random = new Random();
+    private final SplittableRandom random = new SplittableRandom();
     private final Map<String, List<String>> cooldownTracker = new HashMap<>();
     private final Map<Player, Float> orientationTracker = new HashMap<>();
     private final List<UUID> FIRE_BALL_UUIDS = new ArrayList<>();
