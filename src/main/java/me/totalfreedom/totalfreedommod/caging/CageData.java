@@ -126,7 +126,7 @@ public class CageData
         this.innerMaterial = inner;
         input = null;
 
-        buildHistory(location, fPlayer);
+        buildHistory(location);
         regenerate();
     }
 
@@ -143,7 +143,7 @@ public class CageData
         this.innerMaterial = inner;
         CageData.input = input;
 
-        buildHistory(location, fPlayer);
+        buildHistory(location);
         regenerate();
     }
 
@@ -197,7 +197,7 @@ public class CageData
         }
     }
 
-    private void buildHistory(Location location, FPlayer playerdata)
+    private void buildHistory(Location location)
     {
         final Block center = location.getBlock();
         for (int xOffset = -2; xOffset <= 2; xOffset++)

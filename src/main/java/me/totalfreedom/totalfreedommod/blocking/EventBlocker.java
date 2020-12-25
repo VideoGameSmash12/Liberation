@@ -134,13 +134,11 @@ public class EventBlocker extends FreedomService
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageEvent event)
     {
-        if (event.getCause() == EntityDamageEvent.DamageCause.LAVA)
+        if ((event.getCause() == EntityDamageEvent.DamageCause.LAVA)
+                && !ConfigEntry.ALLOW_LAVA_DAMAGE.getBoolean())
         {
-            if (!ConfigEntry.ALLOW_LAVA_DAMAGE.getBoolean())
-            {
-                event.setCancelled(true);
-                return;
-            }
+            event.setCancelled(true);
+            return;
         }
 
         if (ConfigEntry.ENABLE_PET_PROTECT.getBoolean())

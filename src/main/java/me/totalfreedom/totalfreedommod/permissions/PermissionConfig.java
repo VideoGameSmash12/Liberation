@@ -23,7 +23,7 @@ public class PermissionConfig extends FreedomService
     {
         entries = new EnumMap<>(PermissionEntry.class);
 
-        PermissionDefaults tempDefaults = null;
+        PermissionDefaults tempDefaults;
         try
         {
             try
@@ -50,8 +50,6 @@ public class PermissionConfig extends FreedomService
         {
             FLog.severe(ex);
         }
-
-        PermissionDefaults defaults = tempDefaults;
     }
 
     @Override

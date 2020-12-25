@@ -133,12 +133,12 @@ public class Punishment implements IConfig
         this.reason = reason;
     }
 
-    public Date getIssued_on()
+    public Date getIssuedOn()
     {
         return issued_on;
     }
 
-    public void setIssued_on(Date issued_on)
+    public void setIssuedOn(Date issued_on)
     {
         this.issued_on = issued_on;
     }

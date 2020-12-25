@@ -187,7 +187,7 @@ public class Discord extends FreedomService
                                 @Override
                                 public void onReady(@NotNull ReadyEvent event)
                                 {
-                                    new StartEvent(event.getJDA()).start();
+                                    new StartEvent().start();
                                 }
                             })
                     .setAutoReconnect(true)
@@ -503,7 +503,7 @@ public class Discord extends FreedomService
     // Do no ask why this is here. I spent two hours trying to make a simple thing work
     public class StartEvent
     {
-        public StartEvent(JDA api)
+        public StartEvent()
         {
         }
 

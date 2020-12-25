@@ -324,14 +324,13 @@ public class ItemFun extends FreedomService
         {
             arrow = (Arrow)entity;
         }
-        if (arrow != null && (arrow.getShooter() instanceof Player))
+        //Redundant Player cast is required to avoid suspicious method calls.
+        if (arrow != null
+                && (arrow.getShooter() instanceof Player)
+                && explosivePlayers.contains((Player)arrow.getShooter()))
         {
-            //Redundant Player cast is required to avoid suspicious method calls.
-            if (explosivePlayers.contains(arrow.getShooter()))
-            {
-                Objects.requireNonNull(arrow.getLocation().getWorld()).createExplosion(arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ(), ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue(), false, ConfigEntry.ALLOW_EXPLOSIONS.getBoolean());
-                arrow.remove();
-            }
+            Objects.requireNonNull(arrow.getLocation().getWorld()).createExplosion(arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ(), ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue(), false, ConfigEntry.ALLOW_EXPLOSIONS.getBoolean());
+            arrow.remove();
         }
 
         if (entity instanceof Fireball)

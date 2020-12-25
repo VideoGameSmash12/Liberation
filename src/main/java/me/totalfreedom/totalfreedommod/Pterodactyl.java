@@ -182,22 +182,22 @@ public class Pterodactyl extends FreedomService
         return URL;
     }
 
-    public String getSERVER_KEY()
+    public String getServerKey()
     {
         return SERVER_KEY;
     }
 
-    public String getADMIN_KEY()
+    public String getAdminKey()
     {
         return ADMIN_KEY;
     }
 
-    public List<String> getSERVER_HEADERS()
+    public List<String> getServerHeaders()
     {
         return SERVER_HEADERS;
     }
 
-    public List<String> getADMIN_HEADERS()
+    public List<String> getAdminHeaders()
     {
         return ADMIN_HEADERS;
     }
