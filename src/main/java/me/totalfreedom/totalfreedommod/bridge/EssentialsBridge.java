@@ -115,14 +115,7 @@ public class EssentialsBridge extends FreedomService
             if (user != null)
             {
                 Long l = FUtil.getField(user, "lastActivity");
-                if (l != null)
-                {
-                    return l;
-                }
-                else
-                {
-                    return 0L;
-                }
+                return (l != null) ? l : 0L;
             }
         }
         catch (Exception ex)
