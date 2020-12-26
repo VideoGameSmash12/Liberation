@@ -167,7 +167,6 @@ public class Discord extends FreedomService
     public User getUser(String id)
     {
         Guild guild = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
-
         if (guild == null)
         {
             FLog.severe("Either the bot is not in the Discord server or it doesn't exist. Check the server ID.");
@@ -175,7 +174,6 @@ public class Discord extends FreedomService
         }
 
         Member member = guild.getMemberById(id);
-
         if (member == null)
         {
             return null;

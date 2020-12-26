@@ -36,6 +36,6 @@ public enum PermissionEntry
 
     private PermissionConfig getConfig()
     {
-        return TotalFreedomMod.plugin().permissions;
+        return TotalFreedomMod.getPlugin().permissions;
     }
 }
