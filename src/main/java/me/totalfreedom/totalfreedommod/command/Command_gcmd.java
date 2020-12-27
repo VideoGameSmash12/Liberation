@@ -32,6 +32,12 @@ public class Command_gcmd extends FreedomCommand
         {
             return true;
         }
+        
+        if (plugin.al.isAdmin(player))     
+        {
+            msg(ChatColor.RED + "You can not use gcmd on admins");
+            return true;
+        }
 
         try
         {
