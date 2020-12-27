@@ -27,66 +27,63 @@ public class DiscordToAdminChatListener extends ListenerAdapter
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
-        if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id))
+        if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id) && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId()))
         {
-            if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId()))
+            Member member = event.getMember();
+            String tag = dtml.getDisplay(member);
+            StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
+            Message msg = event.getMessage();
+            for (Player player : Bukkit.getOnlinePlayers())
             {
-                Member member = event.getMember();
-                String tag = dtml.getDisplay(member);
-                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
-                Message msg = event.getMessage();
-                for (Player player : Bukkit.getOnlinePlayers())
+                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
                 {
-                    if (TotalFreedomMod.getPlugin().al.isAdmin(player))
+                    Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
+                    String format = admin.getAcFormat();
+                    if (format != null)
                     {
-                        Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
-                        String format = admin.getAcFormat();
-                        if (format != null)
-                        {
-                            Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
-                            net.md_5.bungee.api.ChatColor color = getColor(display);
-                            String m = format.replace("%name%", member.getEffectiveName())
-                                    .replace("%rank%", getDisplay(member))
-                                    .replace("%rankcolor%", color.toString())
-                                    .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
-                            message.append(FUtil.colorize(m));
-                        }
-                        else
-                        {
-                            String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
-                                    + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
-                                    + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
-                            message.append(m);
-                        }
+                        Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
+                        net.md_5.bungee.api.ChatColor color = getColor(display);
+                        String m = format.replace("%name%", member.getEffectiveName())
+                                .replace("%rank%", getDisplay(member))
+                                .replace("%rankcolor%", color.toString())
+                                .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
+                        message.append(FUtil.colorize(m));
+                    }
+                    else
+                    {
+                        String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
+                                + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
+                                + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
+                        message.append(m);
                     }
                 }
-
-                ComponentBuilder builder = new ComponentBuilder(message.toString());
-                if (!msg.getAttachments().isEmpty())
-                {
-                    for (Message.Attachment attachment : msg.getAttachments())
-                    {
-                        if (attachment.getUrl() == null)
-                        {
-                            continue;
-                        }
-
-                        TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
-                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                        builder.append(text);
-                        message.append("[Media]"); // for logging
-                    }
-                }
-
-                for (Player player : Bukkit.getOnlinePlayers())
-                {
-                    if (TotalFreedomMod.getPlugin().al.isAdmin(player))
-                    {
-                        player.spigot().sendMessage(builder.create());
-                    }
-                }
-                FLog.info(message.toString());
             }
+
+            ComponentBuilder builder = new ComponentBuilder(message.toString());
+            if (!msg.getAttachments().isEmpty())
+            {
+                for (Message.Attachment attachment : msg.getAttachments())
+                {
+                    if (attachment.getUrl() == null)
+                    {
+                        continue;
+                    }
+
+                    TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
+                    text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                    builder.append(text);
+                    message.append("[Media]"); // for logging
+                }
+            }
+
+            for (Player player : Bukkit.getOnlinePlayers())
+            {
+                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
+                {
+                    player.spigot().sendMessage(builder.create());
+                }
+            }
+            FLog.info(message.toString());
         }
     }
 
