@@ -114,11 +114,6 @@
             <id>ess-repo</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
-
-        <repository>
-            <id>telesphoreo-repo</id>
-            <url>https://telesphoreo.me/repo/maven/</url>
-        </repository>
     </repositories>
 
     <dependencies>
