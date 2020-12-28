@@ -151,16 +151,16 @@
         </dependency>
 
         <dependency>
-            <groupId>me.telesphoreo</groupId>
-            <artifactId>mojangson</artifactId>
-            <version>1.0</version>
+            <groupId>com.github.speedxx</groupId>
+            <artifactId>Mojangson</artifactId>
+            <version>1957eef8d6</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
             <scope>compile</scope>
         </dependency>
 
@@ -202,7 +202,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_223</version>
+            <version>4.2.0_224</version>
             <scope>provided</scope>
         </dependency>
 
@@ -448,7 +448,7 @@
                                     <include>org.javassist:javassist</include>
                                     <include>me.rayzr522:jsonmessage</include>
                                     <include>io.papermc:paperlib</include>
-                                    <include>me.telesphoreo:mojangson</include>
+                                    <include>com.github.speedxx:Mojangson</include>
                                     <include>org.bstats:bstats-bukkit</include>
                                 </includes>
                             </artifactSet>
