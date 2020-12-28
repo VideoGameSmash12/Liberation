@@ -270,7 +270,7 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, player.getName());
             statement.setString(2, FUtil.listToString(player.getIps()));
             statement.setString(3, FUtil.listToString(player.getNotes()));
@@ -284,8 +284,8 @@ public class SQLite extends FreedomService
             statement.setString(11, FUtil.listToString(player.getItems()));
             statement.setInt(12, player.getTotalVotes());
             statement.setBoolean(13, player.doesDisplayDiscord());
-            statement.setString(15, player.getLoginMessage());
-            statement.setBoolean(16, player.hasInspection());
+            statement.setString(14, player.getLoginMessage());
+            statement.setBoolean(15, player.hasInspection());
             statement.executeUpdate();
         }
         catch (SQLException e)
