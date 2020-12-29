@@ -138,6 +138,7 @@ public class Command_myadmin extends FreedomCommand
                 return true;
             }
 
+            case "setacformat":
             case "setscformat":
             {
                 String format = StringUtils.join(args, " ", 1, args.length);
@@ -150,6 +151,7 @@ public class Command_myadmin extends FreedomCommand
                 return true;
             }
 
+            case "clearacformat":
             case "clearscformat":
             {
                 target.setAcFormat(null);
@@ -203,8 +205,8 @@ public class Command_myadmin extends FreedomCommand
             return Collections.emptyList();
         }
 
-        List<String> singleArguments = Arrays.asList("clearips", "setscformat");
-        List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "syncroles");
+        List<String> singleArguments = Arrays.asList("clearips", "setscformat", "setacformat");
+        List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "clearacformat", "syncroles");
         if (args.length == 1)
         {
             List<String> options = new ArrayList<>();

@@ -144,8 +144,7 @@ public class ChatManager extends FreedomService
 
     public ChatColor getColor(Displayable display)
     {
-        ChatColor color = display.getColor();
-        return color;
+        return display.getColor();
     }
 
     public String getColoredTag(Displayable display)
