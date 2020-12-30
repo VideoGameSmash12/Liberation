@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.httpd;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.httpd.module.HTTPDModule;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -10,8 +9,6 @@ import org.bukkit.Bukkit;
 
 public abstract class ModuleExecutable
 {
-
-    @Getter
     private final boolean async;
 
     public ModuleExecutable(boolean async)
@@ -71,4 +68,8 @@ public abstract class ModuleExecutable
 
     public abstract NanoHTTPD.Response getResponse(NanoHTTPD.HTTPSession session);
 
+    public boolean isAsync()
+    {
+        return async;
+    }
 }

@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -21,10 +20,7 @@ import org.bukkit.entity.Player;
 public class PlayerList extends FreedomService
 {
 
-    @Getter
     public final Map<String, FPlayer> playerMap = Maps.newHashMap(); // ip,dataMap
-
-    @Getter
     public final Map<String, PlayerData> dataMap = Maps.newHashMap(); // username, data
 
     @Override
@@ -302,5 +298,15 @@ public class PlayerList extends FreedomService
         }
 
         return player;
+    }
+
+    public Map<String, FPlayer> getPlayerMap()
+    {
+        return playerMap;
+    }
+
+    public Map<String, PlayerData> getDataMap()
+    {
+        return dataMap;
     }
 }

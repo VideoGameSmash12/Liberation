@@ -27,6 +27,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 {
@@ -334,53 +335,75 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             {
                 cmd.sender = sender;
 
-                if (COOLDOWN_TIMERS.containsKey(sender) && COOLDOWN_TIMERS.containsValue(cmd))
-                {
-                    msg(ChatColor.RED + "You are on cooldown for this command.");
-                    return true;
-                }
+                if (func4()) return true;
 
-                if (perms.blockHostConsole() && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
-                {
-                    msg(ChatColor.RED + "Host console is not allowed to use this command!");
-                    return true;
-                }
+                if (func1()) return true;
 
-                if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
-                {
-                    msg(NO_PERMISSION);
-                    return true;
-                }
+                if (func2()) return true;
 
-                if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
-                {
-                    msg(ONLY_CONSOLE);
-                    return true;
-                }
+                func3();
 
-                if (perms.source() == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
-                {
-                    msg(ONLY_IN_GAME);
-                    return true;
-                }
-
-                if (perms.cooldown() != 0 && !isAdmin(sender))
-                {
-                    COOLDOWN_TIMERS.put(sender, cmd);
-                    timer.schedule(new TimerTask()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            COOLDOWN_TIMERS.remove(sender);
-                        }
-                    }, perms.cooldown() * 1000L);
-                }
                 return cmd.onCommand(sender, this, commandLabel, args);
             }
             return false;
         }
 
+        public boolean func1() {
+            if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
+            {
+                msg(ONLY_CONSOLE);
+                return true;
+            }
+
+            if (perms.source() == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
+            {
+                msg(ONLY_IN_GAME);
+                return true;
+            }
+
+            return false;
+        }
+
+        public boolean func2() {
+            if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
+            {
+                msg(NO_PERMISSION);
+                return true;
+            }
+
+            if (perms.blockHostConsole() && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
+            {
+                msg(ChatColor.RED + "Host console is not allowed to use this command!");
+                return true;
+            }
+            return false;
+        }
+
+        public void func3() {
+            if (perms.cooldown() != 0 && !isAdmin(sender))
+            {
+                COOLDOWN_TIMERS.put(sender, cmd);
+                timer.schedule(new TimerTask()
+                {
+                    @Override
+                    public void run()
+                    {
+                        COOLDOWN_TIMERS.remove(sender);
+                    }
+                }, perms.cooldown() * 1000L);
+            }
+        }
+
+        public boolean func4() {
+            if (COOLDOWN_TIMERS.containsKey(sender) && COOLDOWN_TIMERS.containsValue(cmd))
+            {
+                msg(ChatColor.RED + "You are on cooldown for this command.");
+                return true;
+            }
+            return false;
+        }
+
+        @NotNull
         @Override
         public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args)
         {
