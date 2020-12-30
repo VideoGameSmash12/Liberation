@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -181,6 +180,7 @@ public class Module_schematic extends HTTPDModule
         return out.toString();
     }
 
+    //Reduced NPath Complexity.
     private void uploadSchematic(String remoteAddress) throws SchematicTransferException
     {
         Map<String, String> files = getFiles();
@@ -203,6 +203,21 @@ public class Module_schematic extends HTTPDModule
             throw new SchematicTransferException("Can't resolve original file name.");
         }
 
+        func1(tempFile, origFileName);
+
+        final File targetFile = new File(SCHEMATIC_FOLDER.getPath(), origFileName);
+
+        if (targetFile.exists())
+        {
+            throw new SchematicTransferException("Schematic already exists on the server.");
+        }
+
+        func2(tempFile, targetFile, remoteAddress);
+
+    }
+
+    private void func1(File tempFile, String origFileName) throws SchematicTransferException
+    {
         if (tempFile.length() > FileUtils.ONE_MB)
         {
             throw new SchematicTransferException("Schematic is too big (1mb max).");
@@ -217,13 +232,10 @@ public class Module_schematic extends HTTPDModule
         {
             throw new SchematicTransferException("File name must be alphanumeric, between 1 and 30 characters long (inclusive), and have a \".schematic\" extension.");
         }
+    }
 
-        final File targetFile = new File(SCHEMATIC_FOLDER.getPath(), origFileName);
-        if (targetFile.exists())
-        {
-            throw new SchematicTransferException("Schematic already exists on the server.");
-        }
-
+    private void func2(File tempFile, File targetFile, String remoteAddress) throws SchematicTransferException
+    {
         try
         {
             FileUtils.copyFile(tempFile, targetFile);
@@ -251,7 +263,6 @@ public class Module_schematic extends HTTPDModule
             FLog.severe(ex);
             throw new SchematicTransferException();
         }
-
     }
 
     private Response downloadSchematic(String schematicName) throws SchematicTransferException

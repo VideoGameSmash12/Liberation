@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod;
 
-import com.sun.org.apache.xml.internal.security.Init;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
@@ -288,8 +287,10 @@ public class TotalFreedomMod extends JavaPlugin
     /**
      * This class is provided to please Codacy.
      */
-    private final class Initializer {
-        public Initializer() {
+    private final class Initializer
+    {
+        public Initializer()
+        {
             initServices();
             initAdminUtils();
             initBridges();
@@ -297,7 +298,8 @@ public class TotalFreedomMod extends JavaPlugin
             initHTTPD();
         }
 
-        private void initServices() {
+        private void initServices()
+        {
             // Start services
             si = new ServerInterface();
             sf = new SavedFlags();
@@ -335,7 +337,8 @@ public class TotalFreedomMod extends JavaPlugin
             ptero = new Pterodactyl();
         }
 
-        private void initAdminUtils() {
+        private void initAdminUtils()
+        {
             // Single admin utils
             cs = new CommandSpy();
             ca = new Cager();
@@ -350,7 +353,8 @@ public class TotalFreedomMod extends JavaPlugin
             mo = new Monitors();
         }
 
-        private void initBridges() {
+        private void initBridges()
+        {
             // Start bridges
             btb = new BukkitTelnetBridge();
             cpb = new CoreProtectBridge();
@@ -361,7 +365,8 @@ public class TotalFreedomMod extends JavaPlugin
             wgb = new WorldGuardBridge();
         }
 
-        private void initFun() {
+        private void initFun()
+        {
             // Fun
             cul = new CurseListener();
             it = new ItemFun();
@@ -371,7 +376,8 @@ public class TotalFreedomMod extends JavaPlugin
             tr = new Trailer();
         }
 
-        private void initHTTPD() {
+        private void initHTTPD()
+        {
             // HTTPD
             hd = new HTTPDaemon();
         }
