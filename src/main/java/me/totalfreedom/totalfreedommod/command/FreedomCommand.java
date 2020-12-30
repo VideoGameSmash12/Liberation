@@ -2,6 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import com.google.common.collect.Lists;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 {
@@ -205,12 +205,13 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         return false;
     }
 
+    @NotNull
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args)
     {
         List<String> options = getTabCompleteOptions(sender, command, alias, args);
         if (options == null)
         {
-            return null;
+            return new ArrayList<>();
         }
         return StringUtil.copyPartialMatches(args[args.length - 1], options, Lists.newArrayList());
     }
@@ -335,11 +336,20 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             {
                 cmd.sender = sender;
 
-                if (func4()) return true;
+                if (func4())
+                {
+                    return true;
+                }
 
-                if (func1()) return true;
+                if (func1())
+                {
+                    return true;
+                }
 
-                if (func2()) return true;
+                if (func2())
+                {
+                    return true;
+                }
 
                 func3();
 
@@ -348,7 +358,8 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             return false;
         }
 
-        public boolean func1() {
+        public boolean func1()
+        {
             if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
             {
                 msg(ONLY_CONSOLE);
@@ -364,7 +375,8 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             return false;
         }
 
-        public boolean func2() {
+        public boolean func2()
+        {
             if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
             {
                 msg(NO_PERMISSION);
@@ -379,7 +391,8 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             return false;
         }
 
-        public void func3() {
+        public void func3()
+        {
             if (perms.cooldown() != 0 && !isAdmin(sender))
             {
                 COOLDOWN_TIMERS.put(sender, cmd);
@@ -394,7 +407,8 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             }
         }
 
-        public boolean func4() {
+        public boolean func4()
+        {
             if (COOLDOWN_TIMERS.containsKey(sender) && COOLDOWN_TIMERS.containsValue(cmd))
             {
                 msg(ChatColor.RED + "You are on cooldown for this command.");
@@ -411,7 +425,7 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             {
                 return cmd.onTabComplete(sender, this, alias, args);
             }
-            return null;
+            return new ArrayList<>();
         }
     }
 }

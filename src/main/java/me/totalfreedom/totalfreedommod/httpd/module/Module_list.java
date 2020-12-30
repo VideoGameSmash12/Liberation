@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.util.Collection;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
@@ -14,7 +13,7 @@ import org.json.simple.JSONObject;
 public class Module_list extends HTTPDModule
 {
 
-    public Module_list(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_list(NanoHTTPD.HTTPSession session)
     {
         super(session);
     }
@@ -67,12 +66,12 @@ public class Module_list extends HTTPDModule
                     owners.add(player.getName());
                 }
 
-                if (!plugin.al.isAdmin(player) && !hasSpecialTitle(player))
+                if (!plugin.al.isAdmin(player) && hasSpecialTitle(player))
                 {
                     operators.add(player.getName());
                 }
 
-                if (!hasSpecialTitle(player) && plugin.al.isAdmin(player) && !plugin.al.isVanished(player.getName()))
+                if (hasSpecialTitle(player) && plugin.al.isAdmin(player) && !plugin.al.isVanished(player.getName()))
                 {
                     Admin admin = plugin.al.getAdmin(player);
                     switch (admin.getRank())
@@ -125,9 +124,7 @@ public class Module_list extends HTTPDModule
 
             body.append("</ul>\r\n");
 
-            final NanoHTTPD.Response response = new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_HTML, body.toString());
-
-            return response;
+            return new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_HTML, body.toString());
         }
     }
 
@@ -138,7 +135,7 @@ public class Module_list extends HTTPDModule
 
     public boolean hasSpecialTitle(Player player)
     {
-        return FUtil.DEVELOPERS.contains(player.getUniqueId().toString()) || ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) || ConfigEntry.SERVER_OWNERS.getList().contains(player.getName());
+        return !FUtil.DEVELOPERS.contains(player.getUniqueId().toString()) && !ConfigEntry.SERVER_EXECUTIVES.getList().contains(player.getName()) && !ConfigEntry.SERVER_OWNERS.getList().contains(player.getName());
     }
 
     @Override

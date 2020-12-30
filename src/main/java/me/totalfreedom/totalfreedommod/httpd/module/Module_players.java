@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 public class Module_players extends HTTPDModule
 {
 
-    public Module_players(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_players(NanoHTTPD.HTTPSession session)
     {
         super(session);
     }
@@ -25,7 +25,7 @@ public class Module_players extends HTTPDModule
         final JSONObject responseObject = new JSONObject();
 
         final JSONArray players = new JSONArray();
-        final JSONArray onlineadmins = new JSONArray();
+        final JSONArray onlineadmins = new JSONArray(); // updated, never queried.
         final JSONArray masterbuilders = new JSONArray();
         final JSONArray admins = new JSONArray();
         final JSONArray senioradmins = new JSONArray();

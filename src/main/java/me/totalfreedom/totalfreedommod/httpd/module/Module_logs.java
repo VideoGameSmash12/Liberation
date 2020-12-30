@@ -9,7 +9,7 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 public class Module_logs extends Module_file
 {
 
-    public Module_logs(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_logs(NanoHTTPD.HTTPSession session)
     {
         super(session);
     }

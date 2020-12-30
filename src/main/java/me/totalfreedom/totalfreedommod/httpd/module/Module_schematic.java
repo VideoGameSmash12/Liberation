@@ -8,12 +8,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools;
@@ -46,14 +44,14 @@ public class Module_schematic extends HTTPDModule
             + "<button type=\"submit\">Submit</button>\n"
             + "</form>";
 
-    public Module_schematic(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_schematic(NanoHTTPD.HTTPSession session)
     {
         super(session);
     }
 
-    private static String getArg(String[] args, int index)
+    private static String getArg(String[] args)
     {
-        String out = (args.length == index + 1 ? args[index] : null);
+        String out = (args.length == 1 + 1 ? args[1] : null);
         return (out == null ? null : (out.trim().isEmpty() ? null : out.trim()));
     }
 
@@ -85,7 +83,7 @@ public class Module_schematic extends HTTPDModule
         final StringBuilder out = new StringBuilder();
 
         final String[] args = StringUtils.split(uri, "/");
-        final ModuleMode mode = ModuleMode.getMode(getArg(args, 1));
+        final ModuleMode mode = ModuleMode.getMode(getArg(args));
 
         switch (mode)
         {
@@ -112,14 +110,7 @@ public class Module_schematic extends HTTPDModule
                     }
                 }
 
-                Collections.sort(schematicsFormatted, new Comparator<String>()
-                {
-                    @Override
-                    public int compare(String a, String b)
-                    {
-                        return a.toLowerCase().compareTo(b.toLowerCase());
-                    }
-                });
+                schematicsFormatted.sort(Comparator.comparing(String::toLowerCase));
 
                 out.append(HTMLGenerationTools.heading("Schematics:", 1))
                         .append("<ul>")
@@ -190,7 +181,7 @@ public class Module_schematic extends HTTPDModule
         return out.toString();
     }
 
-    private boolean uploadSchematic(String remoteAddress) throws SchematicTransferException
+    private void uploadSchematic(String remoteAddress) throws SchematicTransferException
     {
         Map<String, String> files = getFiles();
 
@@ -244,7 +235,7 @@ public class Module_schematic extends HTTPDModule
             }
             try
             {
-                ClipboardReader reader = format.getReader(new FileInputStream(targetFile));
+                format.getReader(new FileInputStream(targetFile));
             }
             catch (IOException e)
             {
@@ -261,7 +252,6 @@ public class Module_schematic extends HTTPDModule
             throw new SchematicTransferException();
         }
 
-        return true;
     }
 
     private Response downloadSchematic(String schematicName) throws SchematicTransferException

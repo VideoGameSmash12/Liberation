@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod;
 
+import com.sun.org.apache.xml.internal.security.Init;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
@@ -206,76 +207,10 @@ public class TotalFreedomMod extends JavaPlugin
         permissions = new PermissionConfig();
         permissions.load();
 
-        // Start services
-        si = new ServerInterface();
-        sf = new SavedFlags();
-        wm = new WorldManager();
-        lv = new LogViewer();
-        sql = new SQLite();
-        al = new AdminList();
-        acl = new ActivityLog();
-        rm = new RankManager();
-        cb = new CommandBlocker();
-        eb = new EventBlocker();
-        bb = new BlockBlocker();
-        mb = new MobBlocker();
-        ib = new InteractBlocker();
-        pb = new PotionBlocker();
-        lp = new LoginProcess();
-        nu = new AntiNuke();
-        as = new AntiSpam();
-        wr = new WorldRestrictions();
-        pl = new PlayerList();
-        sh = new Shop();
-        vo = new Votifier();
-        an = new Announcer();
-        cm = new ChatManager();
-        dc = new Discord();
-        pul = new PunishmentList();
-        bm = new BanManager();
-        im = new IndefiniteBanList();
-        pem = new PermissionManager();
-        gr = new GameRuleHandler();
-        snp = new SignBlocker();
-        ew = new EntityWiper();
-        st = new Sitter();
-        vh = new VanishHandler();
-        ptero = new Pterodactyl();
-
-        // Single admin utils
-        cs = new CommandSpy();
-        ca = new Cager();
-        fm = new Freezer();
-        or = new Orbiter();
-        mu = new Muter();
-        ebl = new EditBlocker();
-        pbl = new PVPBlocker();
-        fo = new Fuckoff();
-        ak = new AutoKick();
-        ae = new AutoEject();
-        mo = new Monitors();
-
         mv = new MovementValidator();
         sp = new ServerPing();
 
-        // Fun
-        cul = new CurseListener();
-        it = new ItemFun();
-        lm = new Landminer();
-        mp = new MP44();
-        jp = new Jumppads();
-        tr = new Trailer();
-        // HTTPD
-        hd = new HTTPDaemon();
-
-        // Start bridges
-        btb = new BukkitTelnetBridge();
-        cpb = new CoreProtectBridge();
-        esb = new EssentialsBridge();
-        ldb = new LibsDisguisesBridge();
-        tfg = new TFGuildsBridge();
-        web = new WorldEditBridge();
-        wgb = new WorldGuardBridge();
+        new Initializer();
 
         fsh.startServices();
 
@@ -347,6 +282,98 @@ public class TotalFreedomMod extends JavaPlugin
         public String formattedVersion()
         {
             return pluginVersion + "." + number + " (" + head + ")";
+        }
+    }
+
+    /**
+     * This class is provided to please Codacy.
+     */
+    private final class Initializer {
+        public Initializer() {
+            initServices();
+            initAdminUtils();
+            initBridges();
+            initFun();
+            initHTTPD();
+        }
+
+        private void initServices() {
+            // Start services
+            si = new ServerInterface();
+            sf = new SavedFlags();
+            wm = new WorldManager();
+            lv = new LogViewer();
+            sql = new SQLite();
+            al = new AdminList();
+            acl = new ActivityLog();
+            rm = new RankManager();
+            cb = new CommandBlocker();
+            eb = new EventBlocker();
+            bb = new BlockBlocker();
+            mb = new MobBlocker();
+            ib = new InteractBlocker();
+            pb = new PotionBlocker();
+            lp = new LoginProcess();
+            nu = new AntiNuke();
+            as = new AntiSpam();
+            wr = new WorldRestrictions();
+            pl = new PlayerList();
+            sh = new Shop();
+            vo = new Votifier();
+            an = new Announcer();
+            cm = new ChatManager();
+            dc = new Discord();
+            pul = new PunishmentList();
+            bm = new BanManager();
+            im = new IndefiniteBanList();
+            pem = new PermissionManager();
+            gr = new GameRuleHandler();
+            snp = new SignBlocker();
+            ew = new EntityWiper();
+            st = new Sitter();
+            vh = new VanishHandler();
+            ptero = new Pterodactyl();
+        }
+
+        private void initAdminUtils() {
+            // Single admin utils
+            cs = new CommandSpy();
+            ca = new Cager();
+            fm = new Freezer();
+            or = new Orbiter();
+            mu = new Muter();
+            ebl = new EditBlocker();
+            pbl = new PVPBlocker();
+            fo = new Fuckoff();
+            ak = new AutoKick();
+            ae = new AutoEject();
+            mo = new Monitors();
+        }
+
+        private void initBridges() {
+            // Start bridges
+            btb = new BukkitTelnetBridge();
+            cpb = new CoreProtectBridge();
+            esb = new EssentialsBridge();
+            ldb = new LibsDisguisesBridge();
+            tfg = new TFGuildsBridge();
+            web = new WorldEditBridge();
+            wgb = new WorldGuardBridge();
+        }
+
+        private void initFun() {
+            // Fun
+            cul = new CurseListener();
+            it = new ItemFun();
+            lm = new Landminer();
+            mp = new MP44();
+            jp = new Jumppads();
+            tr = new Trailer();
+        }
+
+        private void initHTTPD() {
+            // HTTPD
+            hd = new HTTPDaemon();
         }
     }
 }

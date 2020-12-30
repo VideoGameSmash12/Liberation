@@ -44,8 +44,6 @@ public class Command_tempban extends FreedomCommand
             }
         }
 
-        final String username;
-
         final Player player = getPlayer(args[0]);
         final PlayerData entry;
         if (player == null)
@@ -57,13 +55,10 @@ public class Command_tempban extends FreedomCommand
                 msg("Can't find that user. If target is not logged in, make sure that you spelled the name exactly.");
                 return true;
             }
-
-            username = entry.getName();
         }
         else
         {
             entry = plugin.pl.getData(player);
-            username = player.getName();
         }
         final List<String> ips = new ArrayList<>(entry.getIps());
 
