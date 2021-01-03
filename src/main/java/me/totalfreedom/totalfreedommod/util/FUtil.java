@@ -140,13 +140,15 @@ public class FUtil
 
     public static boolean isDeveloper(Player player)
     {
-        if (getOnlineMode()) {
+        if (Bukkit.getOnlineMode())
+        {
             return DEVELOPERS.contains(player.getUniqueId().toString());
-        } else {
-            return DEVELOPERS.contains(player.getDisplayName());
+        }
+        else
+        {
+            return DEVELOPERS.contains(player.getName());
         }
     }
-
     public static boolean inDeveloperMode()
     {
         return ConfigEntry.DEVELOPER_MODE.getBoolean();
