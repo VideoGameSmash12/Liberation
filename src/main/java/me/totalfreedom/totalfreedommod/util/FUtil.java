@@ -146,7 +146,7 @@ public class FUtil
         }
         else
         {
-            return DEVELOPERS.contains(player.getName());
+            return DEVELOPER_NAMES.contains(player.getName());
         }
     }
     
