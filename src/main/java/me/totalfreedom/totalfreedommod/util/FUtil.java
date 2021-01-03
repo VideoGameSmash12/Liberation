@@ -140,7 +140,11 @@ public class FUtil
 
     public static boolean isDeveloper(Player player)
     {
-        return DEVELOPERS.contains(player.getUniqueId().toString());
+        if (getOnlineMode()) {
+            return DEVELOPERS.contains(player.getUniqueId().toString());
+        } else {
+            return DEVELOPERS.contains(player.getDisplayName());
+        }
     }
 
     public static boolean inDeveloperMode()
