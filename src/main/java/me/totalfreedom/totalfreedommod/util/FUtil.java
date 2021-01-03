@@ -149,6 +149,7 @@ public class FUtil
             return DEVELOPERS.contains(player.getName());
         }
     }
+    
     public static boolean inDeveloperMode()
     {
         return ConfigEntry.DEVELOPER_MODE.getBoolean();
