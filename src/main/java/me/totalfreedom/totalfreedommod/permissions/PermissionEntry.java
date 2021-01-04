@@ -37,6 +37,6 @@ public enum PermissionEntry
 
     private PermissionConfig getConfig()
     {
-        return Objects.requireNonNull(TotalFreedomMod.plugin()).permissions;
+        return TotalFreedomMod.getPlugin().permissions;
     }
 }

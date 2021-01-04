@@ -153,7 +153,7 @@ public class Admin
     {
         this.active = active;
 
-        final TotalFreedomMod plugin = TotalFreedomMod.plugin();
+        final TotalFreedomMod plugin = TotalFreedomMod.getPlugin();
 
         // Avoiding stupid NPE compiler warnings
         if (plugin == null)
