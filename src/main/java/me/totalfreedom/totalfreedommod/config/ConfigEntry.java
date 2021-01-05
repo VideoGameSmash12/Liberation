@@ -247,17 +247,4 @@ public enum ConfigEntry
     {
         return TotalFreedomMod.getPlugin().config;
     }
-
-    public static ConfigEntry findConfigEntry(String name)
-    {
-        name = name.toLowerCase().replace("_", "");
-        for (ConfigEntry entry : values())
-        {
-            if (entry.toString().toLowerCase().replace("_", "").equals(name))
-            {
-                return entry;
-            }
-        }
-        return null;
-    }
 }

@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.httpd;
 
 import java.lang.reflect.Constructor;
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.httpd.module.HTTPDModule;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -26,14 +25,7 @@ public abstract class ModuleExecutable
             }
 
             // Sync to server thread
-            return Bukkit.getScheduler().callSyncMethod(TotalFreedomMod.getPlugin(), new Callable<NanoHTTPD.Response>()
-            {
-                @Override
-                public NanoHTTPD.Response call() throws Exception
-                {
-                    return getResponse(session);
-                }
-            }).get();
+            return Bukkit.getScheduler().callSyncMethod(TotalFreedomMod.getPlugin(), () -> getResponse(session)).get();
 
         }
         catch (Exception ex)
@@ -74,28 +66,6 @@ public abstract class ModuleExecutable
             }
         };
     }
-
-    public NanoHTTPD.Response execute(final NanoHTTPD.HTTPSession session)
-    {
-        try
-        {
-            if (async)
-            {
-                return getResponse(session);
-            }
-
-            // Sync to server thread
-            return Bukkit.getScheduler().callSyncMethod(Objects.requireNonNull(TotalFreedomMod.plugin()), () -> getResponse(session)).get();
-
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-        }
-        return null;
-    }
-
-    public abstract NanoHTTPD.Response getResponse(NanoHTTPD.HTTPSession session);
 
     public boolean isAsync()
     {
