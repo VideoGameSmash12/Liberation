@@ -86,12 +86,12 @@ public class PlayerData
         if (masterBuilder && !verification)
         {
             verification = true;
-            TotalFreedomMod.plugin().pl.save(this);
+            TotalFreedomMod.getPlugin().pl.save(this);
         }
         else if (!masterBuilder && discordID == null && verification)
         {
             this.verification = false;
-            TotalFreedomMod.plugin().pl.save(this);
+            TotalFreedomMod.getPlugin().pl.save(this);
         }
     }
 

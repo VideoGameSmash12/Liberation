@@ -140,9 +140,16 @@ public class FUtil
 
     public static boolean isDeveloper(Player player)
     {
-        return DEVELOPERS.contains(player.getUniqueId().toString());
+        if (Bukkit.getOnlineMode())
+        {
+            return DEVELOPERS.contains(player.getUniqueId().toString());
+        }
+        else
+        {
+            return DEVELOPER_NAMES.contains(player.getName());
+        }
     }
-
+    
     public static boolean inDeveloperMode()
     {
         return ConfigEntry.DEVELOPER_MODE.getBoolean();
@@ -163,7 +170,7 @@ public class FUtil
         List<String> names = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            if (!TotalFreedomMod.plugin().al.isVanished(player.getName()))
+            if (!TotalFreedomMod.getPlugin().al.isVanished(player.getName()))
             {
                 names.add(player.getName());
             }
