@@ -24,6 +24,11 @@ public class DiscordToAdminChatListener extends ListenerAdapter
 {
     DiscordToMinecraftListener dtml = new DiscordToMinecraftListener();
 
+    public static net.md_5.bungee.api.ChatColor getColor(Displayable display)
+    {
+        return display.getColor();
+    }
+
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
@@ -85,11 +90,6 @@ public class DiscordToAdminChatListener extends ListenerAdapter
             }
             FLog.info(message.toString());
         }
-    }
-
-    public static net.md_5.bungee.api.ChatColor getColor(Displayable display)
-    {
-        return display.getColor();
     }
 
     // Needed to display tags in custom AC messages

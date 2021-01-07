@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import static me.totalfreedom.totalfreedommod.util.FUtil.SAVED_FLAGS_FILENAME;
 

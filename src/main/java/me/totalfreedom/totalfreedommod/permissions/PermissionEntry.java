@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.permissions;
 
 import java.util.List;
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 
 public enum PermissionEntry

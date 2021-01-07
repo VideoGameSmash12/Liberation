@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.blocking.command;
 
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.rank.Rank;

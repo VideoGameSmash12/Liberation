@@ -2,8 +2,8 @@ package me.totalfreedom.totalfreedommod.fun;
 
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.SplittableRandom;
 import java.util.Set;
+import java.util.SplittableRandom;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.Location;

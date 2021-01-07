@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.SplittableRandom;
 import java.util.Set;
+import java.util.SplittableRandom;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -148,7 +148,7 @@ public class FUtil
             return DEVELOPER_NAMES.contains(player.getName());
         }
     }
-    
+
     public static boolean inDeveloperMode()
     {
         return ConfigEntry.DEVELOPER_MODE.getBoolean();

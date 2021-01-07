@@ -327,7 +327,7 @@ public class ItemFun extends FreedomService
         //Redundant Player cast is required to avoid suspicious method calls.
         if (arrow != null
                 && (arrow.getShooter() instanceof Player)
-                && explosivePlayers.contains((Player)arrow.getShooter()))
+                && explosivePlayers.contains(arrow.getShooter()))
         {
             Objects.requireNonNull(arrow.getLocation().getWorld()).createExplosion(arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ(), ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue(), false, ConfigEntry.ALLOW_EXPLOSIONS.getBoolean());
             arrow.remove();

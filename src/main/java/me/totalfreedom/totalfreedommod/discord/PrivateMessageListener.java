@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.discord;
 
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.player.PlayerData;

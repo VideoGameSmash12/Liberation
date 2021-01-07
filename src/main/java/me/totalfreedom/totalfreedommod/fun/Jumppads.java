@@ -19,9 +19,9 @@ public class Jumppads extends FreedomService
     public static final double DAMPING_COEFFICIENT = 0.8;
     //
     private final Map<Player, Boolean> pushMap = Maps.newHashMap();
-    public HashMap<Player, JumpPadMode> players = new HashMap<>();
     //
     private final double strength = 1 + 0.1F;
+    public HashMap<Player, JumpPadMode> players = new HashMap<>();
 
     public static double getDampingCoefficient()
     {
