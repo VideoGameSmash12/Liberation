@@ -15,12 +15,12 @@ public abstract class ModuleExecutable
         this.async = async;
     }
 
-    public static ModuleExecutable forClass(final TotalFreedomMod plugin, Class<? extends HTTPDModule> clazz, boolean async)
+    public static ModuleExecutable forClass(Class<? extends HTTPDModule> clazz, boolean async)
     {
         final Constructor<? extends HTTPDModule> cons;
         try
         {
-            cons = clazz.getConstructor(TotalFreedomMod.class, NanoHTTPD.HTTPSession.class);
+            cons = clazz.getConstructor(NanoHTTPD.HTTPSession.class);
         }
         catch (Exception ex)
         {
@@ -34,7 +34,7 @@ public abstract class ModuleExecutable
             {
                 try
                 {
-                    return cons.newInstance(plugin, session).getResponse();
+                    return cons.newInstance(session).getResponse();
                 }
                 catch (Exception ex)
                 {

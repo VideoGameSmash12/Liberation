@@ -137,7 +137,7 @@ public class HTTPDaemon extends FreedomService
 
     private void module(String name, Class<? extends HTTPDModule> clazz, boolean async)
     {
-        modules.put(name, ModuleExecutable.forClass(plugin, clazz, async));
+        modules.put(name, ModuleExecutable.forClass(clazz, async));
     }
 
     private class HTTPD extends NanoHTTPD
@@ -146,12 +146,7 @@ public class HTTPDaemon extends FreedomService
         {
             super(port);
         }
-
-        private HTTPD(String hostname, int port)
-        {
-            super(hostname, port);
-        }
-
+        
         @Override
         public Response serve(HTTPSession session)
         {
