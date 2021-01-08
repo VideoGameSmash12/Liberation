@@ -252,7 +252,10 @@ public abstract class NanoHTTPD
         {
             safeClose(myServerSocket);
             //This should prevent a null pointer :)
-            if (myThread != null) myThread.join();
+            if (myThread != null)
+            {
+                myThread.join();
+            }
         }
         catch (Exception e)
         {
