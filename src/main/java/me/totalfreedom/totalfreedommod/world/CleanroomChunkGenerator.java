@@ -25,11 +25,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
 import static java.lang.System.arraycopy;
 
 public class CleanroomChunkGenerator extends ChunkGenerator
 {
-    private Logger log = Logger.getLogger("Minecraft");
+    private final Logger log = Logger.getLogger("Minecraft");
 
     private Material[] materials;
 
@@ -51,7 +52,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
 
                 if (id.length() > 0)
                 {
-                    String tokens[] = id.split("[,]");
+                    String[] tokens = id.split("[,]");
 
                     if ((tokens.length % 2) != 0)
                     {
@@ -67,7 +68,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
                             height = 64;
                         }
 
-                        String materialTokens[] = tokens[i + 1].split("[:]", 2);
+                        String[] materialTokens = tokens[i + 1].split("[:]", 2);
 
                         if (materialTokens.length == 2)
                         {
@@ -127,7 +128,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
     }
 
     @Override
-    public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome)
+    public @NotNull ChunkData generateChunkData(World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome)
     {
         int maxHeight = world.getMaxHeight();
         if (materials.length > maxHeight)
@@ -149,7 +150,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
     }
 
     @Override
-    public Location getFixedSpawnLocation(World world, Random random)
+    public Location getFixedSpawnLocation(World world, @NotNull Random random)
     {
         if (!world.isChunkLoaded(0, 0))
         {

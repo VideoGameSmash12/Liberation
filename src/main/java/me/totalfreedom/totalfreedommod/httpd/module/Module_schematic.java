@@ -2,18 +2,16 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDPageBuilder;
@@ -22,7 +20,6 @@ import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Method;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Response;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -46,9 +43,15 @@ public class Module_schematic extends HTTPDModule
             + "<button type=\"submit\">Submit</button>\n"
             + "</form>";
 
-    public Module_schematic(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_schematic(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
+    }
+
+    private static String getArg(String[] args)
+    {
+        String out = (args.length == 1 + 1 ? args[1] : null);
+        return (out == null ? null : (out.trim().isEmpty() ? null : out.trim()));
     }
 
     @Override
@@ -79,7 +82,7 @@ public class Module_schematic extends HTTPDModule
         final StringBuilder out = new StringBuilder();
 
         final String[] args = StringUtils.split(uri, "/");
-        final ModuleMode mode = ModuleMode.getMode(getArg(args, 1));
+        final ModuleMode mode = ModuleMode.getMode(getArg(args));
 
         switch (mode)
         {
@@ -106,14 +109,7 @@ public class Module_schematic extends HTTPDModule
                     }
                 }
 
-                Collections.sort(schematicsFormatted, new Comparator<String>()
-                {
-                    @Override
-                    public int compare(String a, String b)
-                    {
-                        return a.toLowerCase().compareTo(b.toLowerCase());
-                    }
-                });
+                schematicsFormatted.sort(Comparator.comparing(String::toLowerCase));
 
                 out.append(HTMLGenerationTools.heading("Schematics:", 1))
                         .append("<ul>")
@@ -184,7 +180,8 @@ public class Module_schematic extends HTTPDModule
         return out.toString();
     }
 
-    private boolean uploadSchematic(String remoteAddress) throws SchematicTransferException
+    //Reduced NPath Complexity.
+    private void uploadSchematic(String remoteAddress) throws SchematicTransferException
     {
         Map<String, String> files = getFiles();
 
@@ -206,6 +203,21 @@ public class Module_schematic extends HTTPDModule
             throw new SchematicTransferException("Can't resolve original file name.");
         }
 
+        func1(tempFile, origFileName);
+
+        final File targetFile = new File(SCHEMATIC_FOLDER.getPath(), origFileName);
+
+        if (targetFile.exists())
+        {
+            throw new SchematicTransferException("Schematic already exists on the server.");
+        }
+
+        func2(tempFile, targetFile, remoteAddress);
+
+    }
+
+    private void func1(File tempFile, String origFileName) throws SchematicTransferException
+    {
         if (tempFile.length() > FileUtils.ONE_MB)
         {
             throw new SchematicTransferException("Schematic is too big (1mb max).");
@@ -220,13 +232,10 @@ public class Module_schematic extends HTTPDModule
         {
             throw new SchematicTransferException("File name must be alphanumeric, between 1 and 30 characters long (inclusive), and have a \".schematic\" extension.");
         }
+    }
 
-        final File targetFile = new File(SCHEMATIC_FOLDER.getPath(), origFileName);
-        if (targetFile.exists())
-        {
-            throw new SchematicTransferException("Schematic already exists on the server.");
-        }
-
+    private void func2(File tempFile, File targetFile, String remoteAddress) throws SchematicTransferException
+    {
         try
         {
             FileUtils.copyFile(tempFile, targetFile);
@@ -238,7 +247,7 @@ public class Module_schematic extends HTTPDModule
             }
             try
             {
-                ClipboardReader reader = format.getReader(new FileInputStream(targetFile));
+                format.getReader(new FileInputStream(targetFile));
             }
             catch (IOException e)
             {
@@ -254,8 +263,6 @@ public class Module_schematic extends HTTPDModule
             FLog.severe(ex);
             throw new SchematicTransferException();
         }
-
-        return true;
     }
 
     private Response downloadSchematic(String schematicName) throws SchematicTransferException
@@ -285,6 +292,41 @@ public class Module_schematic extends HTTPDModule
         return ((adminEntry != null && adminEntry.isActive()) || data != null && data.isMasterBuilder());
     }
 
+    private enum ModuleMode
+    {
+
+        LIST("list"),
+        UPLOAD("upload"),
+        DOWNLOAD("download"),
+        INVALID(null);
+        //
+        private final String modeName;
+
+        ModuleMode(String modeName)
+        {
+            this.modeName = modeName;
+        }
+
+        public static ModuleMode getMode(String needle)
+        {
+            for (ModuleMode mode : values())
+            {
+                final String haystack = mode.toString();
+                if (haystack != null && haystack.equalsIgnoreCase(needle))
+                {
+                    return mode;
+                }
+            }
+            return INVALID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return this.modeName;
+        }
+    }
+
     private static class SchematicTransferException extends Exception
     {
 
@@ -311,47 +353,6 @@ public class Module_schematic extends HTTPDModule
         public Response getResponse()
         {
             return response;
-        }
-    }
-
-    private static String getArg(String[] args, int index)
-    {
-        String out = (args.length == index + 1 ? args[index] : null);
-        return (out == null ? null : (out.trim().isEmpty() ? null : out.trim()));
-    }
-
-    private static enum ModuleMode
-    {
-
-        LIST("list"),
-        UPLOAD("upload"),
-        DOWNLOAD("download"),
-        INVALID(null);
-        //
-        private final String modeName;
-
-        ModuleMode(String modeName)
-        {
-            this.modeName = modeName;
-        }
-
-        @Override
-        public String toString()
-        {
-            return this.modeName;
-        }
-
-        public static ModuleMode getMode(String needle)
-        {
-            for (ModuleMode mode : values())
-            {
-                final String haystack = mode.toString();
-                if (haystack != null && haystack.equalsIgnoreCase(needle))
-                {
-                    return mode;
-                }
-            }
-            return INVALID;
         }
     }
 }

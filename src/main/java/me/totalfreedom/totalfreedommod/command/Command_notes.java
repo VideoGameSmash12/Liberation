@@ -51,12 +51,12 @@ public class Command_notes extends FreedomCommand
             case "list":
             {
                 final StringBuilder noteList = new StringBuilder();
-                noteList.append(ChatColor.GREEN + "Player notes for " + playerData.getName() + ":");
+                noteList.append(ChatColor.GREEN).append("Player notes for ").append(playerData.getName()).append(":");
                 int id = 1;
                 for (String note : playerData.getNotes())
                 {
                     String noteLine = id + ". " + note;
-                    noteList.append("\n" + ChatColor.GOLD + noteLine);
+                    noteList.append("\n").append(ChatColor.GOLD).append(noteLine);
                     id++;
                 }
                 msg(noteList.toString());

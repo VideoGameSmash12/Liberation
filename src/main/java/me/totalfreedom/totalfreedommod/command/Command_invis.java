@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -42,7 +41,7 @@ public class Command_invis extends FreedomCommand
             }
         }
 
-        List<String> players = new ArrayList<String>();
+        List<String> players = new ArrayList<>();
         int clears = 0;
 
         for (Player player : server.getOnlinePlayers())
@@ -81,7 +80,7 @@ public class Command_invis extends FreedomCommand
     {
         if (args.length == 1 && plugin.al.isAdmin(sender))
         {
-            return Arrays.asList("clear");
+            return Collections.singletonList("clear");
         }
 
         return Collections.emptyList();

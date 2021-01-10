@@ -14,17 +14,17 @@ public class Command_attributelist extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        String list = "All possible attributes: ";
+        StringBuilder list = new StringBuilder("All possible attributes: ");
 
         for (Attribute attribute : Attribute.values())
         {
-            list += attribute.name() + ", ";
+            list.append(attribute.name()).append(", ");
         }
 
         // Remove extra comma at the end of the list
-        list = list.substring(0, list.length() - 2);
+        list = new StringBuilder(list.substring(0, list.length() - 2));
 
-        msg(list);
+        msg(list.toString());
         return true;
     }
 }

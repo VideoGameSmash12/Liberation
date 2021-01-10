@@ -1,8 +1,9 @@
 package me.totalfreedom.totalfreedommod.fun;
 
 import java.util.HashSet;
-import java.util.Random;
+import java.util.Objects;
 import java.util.Set;
+import java.util.SplittableRandom;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.Location;
@@ -16,7 +17,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class Trailer extends FreedomService
 {
-    private final Random random = new Random();
+    private final SplittableRandom random = new SplittableRandom();
     private final Set<String> trailPlayers = new HashSet<>(); // player name
 
     @Override
@@ -53,7 +54,7 @@ public class Trailer extends FreedomService
             return;
         }
 
-        Block toBlock = event.getTo().getBlock();
+        Block toBlock = Objects.requireNonNull(event.getTo()).getBlock();
         if (fromBlock.equals(toBlock))
         {
             return;

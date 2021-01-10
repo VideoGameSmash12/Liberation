@@ -56,7 +56,6 @@ public class Command_manageshop extends FreedomCommand
                             {
                                 player.sendMessage(ChatColor.GREEN + sender.getName() + " gave you " + amount + " coins. Your new balance is " + playerData.getCoins());
                             }
-                            return true;
                         }
                         else
                         {
@@ -68,8 +67,8 @@ public class Command_manageshop extends FreedomCommand
                                 player.sendMessage(ChatColor.GREEN + sender.getName() + " gave you " + amount + " coins. Your new balance is " + playerData.getCoins());
                             }
                             msg("Successfully added " + amount + " coins to all online players.", ChatColor.GREEN);
-                            return true;
                         }
+                        return true;
                     }
                     catch (NumberFormatException ex)
                     {
@@ -100,7 +99,6 @@ public class Command_manageshop extends FreedomCommand
                             {
                                 player.sendMessage(ChatColor.RED + sender.getName() + " took " + amount + " coins from you. Your new balance is " + playerData.getCoins());
                             }
-                            return true;
                         }
                         else
                         {
@@ -116,8 +114,8 @@ public class Command_manageshop extends FreedomCommand
                                 player.sendMessage(ChatColor.RED + sender.getName() + " took " + amount + " coins from you. Your new balance is " + playerData.getCoins());
                             }
                             msg("Successfully took " + amount + " coins from all online players.", ChatColor.GREEN);
-                            return true;
                         }
+                        return true;
                     }
                     catch (NumberFormatException ex)
                     {

@@ -1,6 +1,7 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import java.io.File;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.Bukkit;
@@ -32,11 +33,11 @@ public class Command_wipeuserdata extends FreedomCommand
                 continue;
             }
 
-            FUtil.deleteFolder(new File(server.getPluginManager().getPlugin("Essentials").getDataFolder(), "userdata"));
+            FUtil.deleteFolder(new File(Objects.requireNonNull(server.getPluginManager().getPlugin("Essentials")).getDataFolder(), "userdata"));
             FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(plugin.wm.flatlands.getName()).getWorldFolder().getName() + "playerdata"));
             FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(plugin.wm.flatlands.getName()).getWorldFolder().getName() + "stats"));
-            FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(w.getName()).getWorldFolder().getName() + "stats"));
-            FUtil.deleteFolder(new File(Bukkit.getServer().getWorld(w.getName()).getWorldFolder().getName() + "playerdata"));
+            FUtil.deleteFolder(new File(Objects.requireNonNull(Bukkit.getServer().getWorld(w.getName())).getWorldFolder().getName() + "stats"));
+            FUtil.deleteFolder(new File(Objects.requireNonNull(Bukkit.getServer().getWorld(w.getName())).getWorldFolder().getName() + "playerdata"));
             msg("Deleted all player data.");
             return true;
         }

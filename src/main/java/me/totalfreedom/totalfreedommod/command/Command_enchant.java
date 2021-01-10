@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.ChatColor;
@@ -19,6 +20,18 @@ import org.bukkit.inventory.ItemStack;
 public class Command_enchant extends FreedomCommand
 {
 
+    public static List<String> stringNumberRange(int min, int max)
+    {
+        List<String> range = new ArrayList<>();
+        for (int i = min; i <= max; i++)
+        {
+            range.add(String.valueOf(i));
+        }
+
+        return range;
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -27,9 +40,9 @@ public class Command_enchant extends FreedomCommand
             return false;
         }
 
-        ItemStack item = playerSender.getEquipment().getItemInMainHand();
+        ItemStack item = Objects.requireNonNull(playerSender.getEquipment()).getItemInMainHand();
 
-        if (item == null || item.getType() == Material.AIR)
+        if (item.getType() == Material.AIR)
         {
             msg("You have to hold an item to enchant it");
             return true;
@@ -99,7 +112,7 @@ public class Command_enchant extends FreedomCommand
             {
                 ench = Enchantment.getByName(args[1].toUpperCase());
             }
-            catch (Exception ex)
+            catch (Exception ignored)
             {
             }
 
@@ -123,7 +136,7 @@ public class Command_enchant extends FreedomCommand
                     {
                         if (ConfigEntry.ALLOW_UNSAFE_ENCHANTMENTS.getBoolean())
                         {
-                            level = Integer.valueOf(args[2]);
+                            level = Integer.parseInt(args[2]);
                         }
                         else
                         {
@@ -158,9 +171,10 @@ public class Command_enchant extends FreedomCommand
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     public List<String> getAllEnchantments()
     {
-        List<String> enchantments = new ArrayList();
+        List<String> enchantments = new ArrayList<>();
         for (Enchantment enchantment : Enchantment.values())
         {
             enchantments.add(enchantment.getName());
@@ -168,9 +182,10 @@ public class Command_enchant extends FreedomCommand
         return enchantments;
     }
 
+    @SuppressWarnings("deprecation")
     public List<String> getAllEnchantments(ItemStack item)
     {
-        List<String> enchantments = new ArrayList();
+        List<String> enchantments = new ArrayList<>();
         for (Enchantment enchantment : Enchantment.values())
         {
             if (enchantment.canEnchantItem(item))
@@ -181,9 +196,10 @@ public class Command_enchant extends FreedomCommand
         return enchantments;
     }
 
+    @SuppressWarnings("deprecation")
     public List<String> getEnchantments(ItemStack item)
     {
-        List<String> enchantments = new ArrayList();
+        List<String> enchantments = new ArrayList<>();
         for (Enchantment enchantment : item.getEnchantments().keySet())
         {
             enchantments.add(enchantment.getName());
@@ -191,17 +207,7 @@ public class Command_enchant extends FreedomCommand
         return enchantments;
     }
 
-    public static List<String> stringNumberRange(int min, int max)
-    {
-        List<String> range = new ArrayList();
-        for (int i = min; i <= max; i++)
-        {
-            range.add(String.valueOf(i));
-        }
-
-        return range;
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public List<String> getTabCompleteOptions(CommandSender sender, Command command, String alias, String[] args)
     {
@@ -214,9 +220,9 @@ public class Command_enchant extends FreedomCommand
         {
             return Collections.emptyList();
         }
-        ItemStack item = player.getEquipment().getItemInMainHand();
+        ItemStack item = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
 
-        if (item == null || item.getType() == Material.AIR)
+        if (item.getType() == Material.AIR)
         {
             return Collections.emptyList();
         }
@@ -258,7 +264,7 @@ public class Command_enchant extends FreedomCommand
                     }
                     else
                     {
-                        return Arrays.asList("[level]");
+                        return Collections.singletonList("[level]");
                     }
                 }
             }

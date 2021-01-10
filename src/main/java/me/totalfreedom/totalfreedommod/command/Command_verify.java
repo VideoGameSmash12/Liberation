@@ -1,6 +1,7 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -69,14 +70,14 @@ public class Command_verify extends FreedomCommand
             PlayerData mapPlayer = plugin.dc.getVerificationCodes().get(code);
             if (mapPlayer == null)
             {
-                if (!playerData.getBackupCodes().contains(plugin.dc.getMD5(code)))
+                if (!playerData.getBackupCodes().contains(Discord.getMD5(code)))
                 {
                     msg("You have entered an invalid verification code", ChatColor.RED);
                     return true;
                 }
                 else
                 {
-                    backupCode = plugin.dc.getMD5(code);
+                    backupCode = Discord.getMD5(code);
                 }
             }
             else

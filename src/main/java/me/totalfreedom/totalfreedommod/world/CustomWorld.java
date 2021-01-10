@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.world;
 
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.bukkit.Bukkit;
@@ -10,8 +9,6 @@ import org.bukkit.entity.Player;
 
 public abstract class CustomWorld extends FreedomService
 {
-
-    @Getter
     private final String name;
     //
     private World world;
@@ -59,4 +56,9 @@ public abstract class CustomWorld extends FreedomService
     }
 
     protected abstract World generateWorld();
+
+    public String getName()
+    {
+        return name;
+    }
 }

@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import me.totalfreedom.totalfreedommod.FreedomService;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 
@@ -66,7 +66,7 @@ public class SQLite extends FreedomService
         try
         {
             DatabaseMetaData meta = connection.getMetaData();
-            if (!tableExists(meta, "bans"))
+            if (tableExists(meta, "bans"))
             {
                 try
                 {
@@ -78,7 +78,7 @@ public class SQLite extends FreedomService
                 }
             }
 
-            if (!tableExists(meta, "admins"))
+            if (tableExists(meta, "admins"))
             {
                 try
                 {
@@ -89,7 +89,7 @@ public class SQLite extends FreedomService
                     FLog.severe("Failed to create the admins table: " + e.getMessage());
                 }
             }
-            if (!tableExists(meta, "players"))
+            if (tableExists(meta, "players"))
             {
                 try
                 {
@@ -270,7 +270,7 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO players VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, player.getName());
             statement.setString(2, FUtil.listToString(player.getIps()));
             statement.setString(3, FUtil.listToString(player.getNotes()));
@@ -284,8 +284,8 @@ public class SQLite extends FreedomService
             statement.setString(11, FUtil.listToString(player.getItems()));
             statement.setInt(12, player.getTotalVotes());
             statement.setBoolean(13, player.doesDisplayDiscord());
-            statement.setString(15, player.getLoginMessage());
-            statement.setBoolean(16, player.hasInspection());
+            statement.setString(14, player.getLoginMessage());
+            statement.setBoolean(15, player.hasInspection());
             statement.executeUpdate();
         }
         catch (SQLException e)
@@ -423,6 +423,6 @@ public class SQLite extends FreedomService
 
     public boolean tableExists(DatabaseMetaData meta, String name) throws SQLException
     {
-        return meta.getTables(null, null, name, null).next();
+        return !meta.getTables(null, null, name, null).next();
     }
 }

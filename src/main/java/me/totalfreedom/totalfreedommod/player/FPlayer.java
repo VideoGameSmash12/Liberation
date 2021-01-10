@@ -2,8 +2,6 @@ package me.totalfreedom.totalfreedommod.player;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.caging.CageData;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -20,37 +18,32 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class FPlayer
 {
-
     public static final long AUTO_PURGE_TICKS = 5L * 60L * 20L;
 
-    @Getter
+
     private final TotalFreedomMod plugin;
-    @Getter
+
     private final String name;
-    @Getter
+
     private final String ip;
     //
-    @Setter
+    private final FreezeData freezeData = new FreezeData(this);
+    private final CageData cageData = new CageData(this);
+    private final List<LivingEntity> mobThrowerQueue = new ArrayList<>();
     private Player player;
     //
     private BukkitTask unmuteTask;
-    @Getter
-    private final FreezeData freezeData = new FreezeData(this);
-    @Getter
     private double fuckoffRadius = 0;
     private int messageCount = 0;
     private int totalBlockDestroy = 0;
     private int totalBlockPlace = 0;
     private int freecamDestroyCount = 0;
     private int freecamPlaceCount = 0;
-    @Getter
-    private final CageData cageData = new CageData(this);
     private boolean isOrbiting = false;
     private double orbitStrength = 10.0;
     private boolean mobThrowerEnabled = false;
     private EntityType mobThrowerEntity = EntityType.PIG;
     private double mobThrowerSpeed = 4.0;
-    private final List<LivingEntity> mobThrowerQueue = new ArrayList<>();
     private BukkitTask mp44ScheduleTask = null;
     private boolean mp44Armed = false;
     private boolean mp44Firing = false;
@@ -59,21 +52,21 @@ public class FPlayer
     private String lastMessage = "";
     private boolean inAdminchat = false;
     private boolean allCommandsBlocked = false;
-    @Getter
-    @Setter
+
+
     private boolean superadminIdVerified = false;
     private String lastCommand = "";
     private boolean cmdspyEnabled = false;
     private String tag = null;
     private int warningCount = 0;
-    @Getter
-    @Setter
+
+
     private boolean editBlocked = false;
-    @Getter
-    @Setter
+
+
     private boolean pvpBlocked = false;
-    @Getter
-    @Setter
+
+
     private boolean invSee = false;
 
     public FPlayer(TotalFreedomMod plugin, Player player)
@@ -86,6 +79,11 @@ public class FPlayer
         this.plugin = plugin;
         this.name = name;
         this.ip = ip;
+    }
+
+    public static long getAutoPurgeTicks()
+    {
+        return AUTO_PURGE_TICKS;
     }
 
     public Player getPlayer()
@@ -110,9 +108,19 @@ public class FPlayer
         return player;
     }
 
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+
     public boolean isOrbiting()
     {
         return isOrbiting;
+    }
+
+    public void setOrbiting(boolean orbiting)
+    {
+        isOrbiting = orbiting;
     }
 
     public void startOrbiting(double strength)
@@ -299,6 +307,7 @@ public class FPlayer
 
         plugin.mu.MUTED_PLAYERS.add(getPlayer().getName());
 
+        // TODO: Simplify this into a Consumer<BukkitTask> lambda?
         unmuteTask = new BukkitRunnable()
         {
             @Override
@@ -338,14 +347,14 @@ public class FPlayer
         this.lockedUp = lockedUp;
     }
 
-    public void setLastMessage(String message)
-    {
-        this.lastMessage = message;
-    }
-
     public String getLastMessage()
     {
         return lastMessage;
+    }
+
+    public void setLastMessage(String message)
+    {
+        this.lastMessage = message;
     }
 
     public void setAdminChat(boolean inAdminchat)
@@ -388,6 +397,11 @@ public class FPlayer
         return cmdspyEnabled;
     }
 
+    public String getTag()
+    {
+        return this.tag;
+    }
+
     public void setTag(String tag)
     {
         if (tag == null)
@@ -400,14 +414,14 @@ public class FPlayer
         }
     }
 
-    public String getTag()
-    {
-        return this.tag;
-    }
-
     public int getWarningCount()
     {
         return this.warningCount;
+    }
+
+    public void setWarningCount(int warningCount)
+    {
+        this.warningCount = warningCount;
     }
 
     public void incrementWarnings()
@@ -422,7 +436,257 @@ public class FPlayer
         }
     }
 
-    private class ArrowShooter extends BukkitRunnable
+    public TotalFreedomMod getPlugin()
+    {
+        return plugin;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getIp()
+    {
+        return ip;
+    }
+
+    public BukkitTask getUnmuteTask()
+    {
+        return unmuteTask;
+    }
+
+    public void setUnmuteTask(BukkitTask unmuteTask)
+    {
+        this.unmuteTask = unmuteTask;
+    }
+
+    public FreezeData getFreezeData()
+    {
+        return freezeData;
+    }
+
+    public double getFuckoffRadius()
+    {
+        return fuckoffRadius;
+    }
+
+    public void setFuckoffRadius(double fuckoffRadius)
+    {
+        this.fuckoffRadius = fuckoffRadius;
+    }
+
+    public int getMessageCount()
+    {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount)
+    {
+        this.messageCount = messageCount;
+    }
+
+    public int getTotalBlockDestroy()
+    {
+        return totalBlockDestroy;
+    }
+
+    public void setTotalBlockDestroy(int totalBlockDestroy)
+    {
+        this.totalBlockDestroy = totalBlockDestroy;
+    }
+
+    public int getTotalBlockPlace()
+    {
+        return totalBlockPlace;
+    }
+
+    public void setTotalBlockPlace(int totalBlockPlace)
+    {
+        this.totalBlockPlace = totalBlockPlace;
+    }
+
+    public int getFreecamDestroyCount()
+    {
+        return freecamDestroyCount;
+    }
+
+    public void setFreecamDestroyCount(int freecamDestroyCount)
+    {
+        this.freecamDestroyCount = freecamDestroyCount;
+    }
+
+    public int getFreecamPlaceCount()
+    {
+        return freecamPlaceCount;
+    }
+
+    public void setFreecamPlaceCount(int freecamPlaceCount)
+    {
+        this.freecamPlaceCount = freecamPlaceCount;
+    }
+
+    public CageData getCageData()
+    {
+        return cageData;
+    }
+
+    public double getOrbitStrength()
+    {
+        return orbitStrength;
+    }
+
+    public void setOrbitStrength(double orbitStrength)
+    {
+        this.orbitStrength = orbitStrength;
+    }
+
+    public boolean isMobThrowerEnabled()
+    {
+        return mobThrowerEnabled;
+    }
+
+    public void setMobThrowerEnabled(boolean mobThrowerEnabled)
+    {
+        this.mobThrowerEnabled = mobThrowerEnabled;
+    }
+
+    public EntityType getMobThrowerEntity()
+    {
+        return mobThrowerEntity;
+    }
+
+    public void setMobThrowerEntity(EntityType mobThrowerEntity)
+    {
+        this.mobThrowerEntity = mobThrowerEntity;
+    }
+
+    public double getMobThrowerSpeed()
+    {
+        return mobThrowerSpeed;
+    }
+
+    public void setMobThrowerSpeed(double mobThrowerSpeed)
+    {
+        this.mobThrowerSpeed = mobThrowerSpeed;
+    }
+
+    public List<LivingEntity> getMobThrowerQueue()
+    {
+        return mobThrowerQueue;
+    }
+
+    public BukkitTask getMp44ScheduleTask()
+    {
+        return mp44ScheduleTask;
+    }
+
+    public void setMp44ScheduleTask(BukkitTask mp44ScheduleTask)
+    {
+        this.mp44ScheduleTask = mp44ScheduleTask;
+    }
+
+    public boolean isMp44Armed()
+    {
+        return mp44Armed;
+    }
+
+    public void setMp44Armed(boolean mp44Armed)
+    {
+        this.mp44Armed = mp44Armed;
+    }
+
+    public boolean isMp44Firing()
+    {
+        return mp44Firing;
+    }
+
+    public void setMp44Firing(boolean mp44Firing)
+    {
+        this.mp44Firing = mp44Firing;
+    }
+
+    public BukkitTask getLockupScheduleTask()
+    {
+        return lockupScheduleTask;
+    }
+
+    public void setLockupScheduleTask(BukkitTask lockupScheduleTask)
+    {
+        this.lockupScheduleTask = lockupScheduleTask;
+    }
+
+    public boolean isInAdminchat()
+    {
+        return inAdminchat;
+    }
+
+    public void setInAdminchat(boolean inAdminchat)
+    {
+        this.inAdminchat = inAdminchat;
+    }
+
+    public boolean isAllCommandsBlocked()
+    {
+        return allCommandsBlocked;
+    }
+
+    public void setAllCommandsBlocked(boolean allCommandsBlocked)
+    {
+        this.allCommandsBlocked = allCommandsBlocked;
+    }
+
+    public boolean isSuperadminIdVerified()
+    {
+        return superadminIdVerified;
+    }
+
+    public void setSuperadminIdVerified(boolean superadminIdVerified)
+    {
+        this.superadminIdVerified = superadminIdVerified;
+    }
+
+    public boolean isCmdspyEnabled()
+    {
+        return cmdspyEnabled;
+    }
+
+    public void setCmdspyEnabled(boolean cmdspyEnabled)
+    {
+        this.cmdspyEnabled = cmdspyEnabled;
+    }
+
+    public boolean isEditBlocked()
+    {
+        return editBlocked;
+    }
+
+    public void setEditBlocked(boolean editBlocked)
+    {
+        this.editBlocked = editBlocked;
+    }
+
+    public boolean isPvpBlocked()
+    {
+        return pvpBlocked;
+    }
+
+    public void setPvpBlocked(boolean pvpBlocked)
+    {
+        this.pvpBlocked = pvpBlocked;
+    }
+
+    public boolean isInvSee()
+    {
+        return invSee;
+    }
+
+    public void setInvSee(boolean invSee)
+    {
+        this.invSee = invSee;
+    }
+
+    private static class ArrowShooter extends BukkitRunnable
     {
 
         private final Player player;

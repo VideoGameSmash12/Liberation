@@ -1,8 +1,6 @@
 package me.totalfreedom.totalfreedommod.httpd;
 
 import java.lang.reflect.Constructor;
-import java.util.concurrent.Callable;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.httpd.module.HTTPDModule;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -10,8 +8,6 @@ import org.bukkit.Bukkit;
 
 public abstract class ModuleExecutable
 {
-
-    @Getter
     private final boolean async;
 
     public ModuleExecutable(boolean async)
@@ -19,41 +15,12 @@ public abstract class ModuleExecutable
         this.async = async;
     }
 
-    public NanoHTTPD.Response execute(final NanoHTTPD.HTTPSession session)
-    {
-        try
-        {
-            if (async)
-            {
-                return getResponse(session);
-            }
-
-            // Sync to server thread
-            return Bukkit.getScheduler().callSyncMethod(TotalFreedomMod.getPlugin(), new Callable<NanoHTTPD.Response>()
-            {
-                @Override
-                public NanoHTTPD.Response call() throws Exception
-                {
-                    return getResponse(session);
-                }
-            }).get();
-
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-        }
-        return null;
-    }
-
-    public abstract NanoHTTPD.Response getResponse(NanoHTTPD.HTTPSession session);
-
-    public static ModuleExecutable forClass(final TotalFreedomMod plugin, Class<? extends HTTPDModule> clazz, boolean async)
+    public static ModuleExecutable forClass(Class<? extends HTTPDModule> clazz, boolean async)
     {
         final Constructor<? extends HTTPDModule> cons;
         try
         {
-            cons = clazz.getConstructor(TotalFreedomMod.class, NanoHTTPD.HTTPSession.class);
+            cons = clazz.getConstructor(NanoHTTPD.HTTPSession.class);
         }
         catch (Exception ex)
         {
@@ -67,7 +34,7 @@ public abstract class ModuleExecutable
             {
                 try
                 {
-                    return cons.newInstance(plugin, session).getResponse();
+                    return cons.newInstance(session).getResponse();
                 }
                 catch (Exception ex)
                 {
@@ -78,4 +45,30 @@ public abstract class ModuleExecutable
         };
     }
 
+    public NanoHTTPD.Response execute(final NanoHTTPD.HTTPSession session)
+    {
+        try
+        {
+            if (async)
+            {
+                return getResponse(session);
+            }
+
+            // Sync to server thread
+            return Bukkit.getScheduler().callSyncMethod(TotalFreedomMod.getPlugin(), () -> getResponse(session)).get();
+
+        }
+        catch (Exception ex)
+        {
+            FLog.severe(ex);
+        }
+        return null;
+    }
+
+    public abstract NanoHTTPD.Response getResponse(NanoHTTPD.HTTPSession session);
+
+    public boolean isAsync()
+    {
+        return async;
+    }
 }

@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.caging;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,139 +11,19 @@ import org.bukkit.block.Skull;
 public class CageData
 {
 
+    private static String input = null;
     private final FPlayer fPlayer;
     //
-    private final List<BlockData> cageHistory = new ArrayList<>();
     //
-    @Getter
+    private final List<BlockData> cageHistory = new ArrayList<>();
     private boolean caged = false;
-    @Getter
     private Location location;
-    @Getter
     private Material outerMaterial = Material.GLASS;
-    @Getter
     private Material innerMaterial = Material.AIR;
-    @Getter
-    private static String input = null;
 
     public CageData(FPlayer player)
     {
         this.fPlayer = player;
-    }
-
-    public void setCaged(boolean cage)
-    {
-        if (cage)
-        {
-            cage(fPlayer.getPlayer().getLocation(), Material.GLASS, Material.GLASS);
-        }
-        else
-        {
-            this.caged = false;
-            regenerateHistory();
-            clearHistory();
-        }
-
-    }
-
-    public void cage(Location location, Material outer, Material inner)
-    {
-        if (isCaged())
-        {
-            setCaged(false);
-        }
-
-        this.caged = true;
-        this.location = location;
-        this.outerMaterial = outer;
-        this.innerMaterial = inner;
-        this.input = null;
-
-        buildHistory(location, 2, fPlayer);
-        regenerate();
-    }
-
-    public void cage(Location location, Material outer, Material inner, String input)
-    {
-        if (isCaged())
-        {
-            setCaged(false);
-        }
-
-        this.caged = true;
-        this.location = location;
-        this.outerMaterial = outer;
-        this.innerMaterial = inner;
-        this.input = input;
-
-        buildHistory(location, 2, fPlayer);
-        regenerate();
-    }
-
-    public void regenerate()
-    {
-
-        if (!caged
-                || location == null
-                || outerMaterial == null
-                || innerMaterial == null)
-        {
-            return;
-        }
-
-        generateHollowCube(location, 2, outerMaterial);
-        generateCube(location, 1, innerMaterial);
-    }
-
-    // TODO: EventHandlerize this?
-    public void playerJoin()
-    {
-        if (!isCaged())
-        {
-            return;
-        }
-
-        cage(fPlayer.getPlayer().getLocation(), outerMaterial, innerMaterial, input);
-    }
-
-    public void playerQuit()
-    {
-        regenerateHistory();
-        clearHistory();
-    }
-
-    public void clearHistory()
-    {
-        cageHistory.clear();
-    }
-
-    private void insertHistoryBlock(Location location, Material material)
-    {
-        cageHistory.add(new BlockData(location, material));
-    }
-
-    private void regenerateHistory()
-    {
-        for (BlockData blockdata : this.cageHistory)
-        {
-            blockdata.location.getBlock().setType(blockdata.material);
-        }
-    }
-
-    private void buildHistory(Location location, int length, FPlayer playerdata)
-    {
-        final Block center = location.getBlock();
-        for (int xOffset = -length; xOffset <= length; xOffset++)
-        {
-            for (int yOffset = -length; yOffset <= length; yOffset++)
-            {
-                for (int zOffset = -length; zOffset <= length; zOffset++)
-                {
-                    final Block block = center.getRelative(xOffset, yOffset, zOffset);
-                    insertHistoryBlock(block.getLocation(), block.getType());
-                }
-            }
-        }
     }
 
     // Util methods
@@ -167,6 +46,7 @@ public class CageData
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static void generateHollowCube(Location location, int length, Material material)
     {
         final Block center = location.getBlock();
@@ -213,7 +93,7 @@ public class CageData
                                 skull.setOwner(input);
                                 skull.update();
                             }
-                            catch (ClassCastException e)
+                            catch (ClassCastException ignored)
                             {
                             }
                         }
@@ -221,6 +101,176 @@ public class CageData
                 }
             }
         }
+    }
+
+    public static String getInput()
+    {
+        return input;
+    }
+
+    public static void setInput(String input)
+    {
+        CageData.input = input;
+    }
+
+    public void cage(Location location, Material outer, Material inner)
+    {
+        if (isCaged())
+        {
+            setCaged(false);
+        }
+
+        this.caged = true;
+        this.location = location;
+        this.outerMaterial = outer;
+        this.innerMaterial = inner;
+        input = null;
+
+        buildHistory(location);
+        regenerate();
+    }
+
+    public void cage(Location location, Material outer, Material inner, String input)
+    {
+        if (isCaged())
+        {
+            setCaged(false);
+        }
+
+        this.caged = true;
+        this.location = location;
+        this.outerMaterial = outer;
+        this.innerMaterial = inner;
+        CageData.input = input;
+
+        buildHistory(location);
+        regenerate();
+    }
+
+    public void regenerate()
+    {
+
+        if (!caged
+                || location == null
+                || outerMaterial == null
+                || innerMaterial == null)
+        {
+            return;
+        }
+
+        generateHollowCube(location, 2, outerMaterial);
+        generateCube(location, 1, innerMaterial);
+    }
+
+    // TODO: EventHandler this?
+    public void playerJoin()
+    {
+        if (!isCaged())
+        {
+            return;
+        }
+
+        cage(fPlayer.getPlayer().getLocation(), outerMaterial, innerMaterial, input);
+    }
+
+    public void playerQuit()
+    {
+        regenerateHistory();
+        clearHistory();
+    }
+
+    public void clearHistory()
+    {
+        cageHistory.clear();
+    }
+
+    private void insertHistoryBlock(Location location, Material material)
+    {
+        cageHistory.add(new BlockData(location, material));
+    }
+
+    private void regenerateHistory()
+    {
+        for (BlockData blockdata : this.cageHistory)
+        {
+            blockdata.location.getBlock().setType(blockdata.material);
+        }
+    }
+
+    private void buildHistory(Location location)
+    {
+        final Block center = location.getBlock();
+        for (int xOffset = -2; xOffset <= 2; xOffset++)
+        {
+            for (int yOffset = -2; yOffset <= 2; yOffset++)
+            {
+                for (int zOffset = -2; zOffset <= 2; zOffset++)
+                {
+                    final Block block = center.getRelative(xOffset, yOffset, zOffset);
+                    insertHistoryBlock(block.getLocation(), block.getType());
+                }
+            }
+        }
+    }
+
+    public FPlayer getfPlayer()
+    {
+        return fPlayer;
+    }
+
+    public List<BlockData> getCageHistory()
+    {
+        return cageHistory;
+    }
+
+    public boolean isCaged()
+    {
+        return caged;
+    }
+
+    public void setCaged(boolean cage)
+    {
+        if (cage)
+        {
+            cage(fPlayer.getPlayer().getLocation(), Material.GLASS, Material.GLASS);
+        }
+        else
+        {
+            this.caged = false;
+            regenerateHistory();
+            clearHistory();
+        }
+
+    }
+
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    public void setLocation(Location location)
+    {
+        this.location = location;
+    }
+
+    public Material getOuterMaterial()
+    {
+        return outerMaterial;
+    }
+
+    public void setOuterMaterial(Material outerMaterial)
+    {
+        this.outerMaterial = outerMaterial;
+    }
+
+    public Material getInnerMaterial()
+    {
+        return innerMaterial;
+    }
+
+    public void setInnerMaterial(Material innerMaterial)
+    {
+        this.innerMaterial = innerMaterial;
     }
 
     private static class BlockData

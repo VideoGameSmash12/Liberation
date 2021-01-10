@@ -3,32 +3,30 @@ package me.totalfreedom.totalfreedommod.punishments;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.config.IConfig;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class Punishment implements IConfig
 {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 
-    @Getter
-    @Setter
+
     private String username = null;
-    @Getter
+
     private String ip = null;
-    @Getter
-    @Setter
+
+
     private String by = null;
-    @Getter
-    @Setter
+
+
     private PunishmentType type = null;
-    @Getter
-    @Setter
+
+
     private String reason = null;
-    @Getter
-    @Setter
+
+
     private Date issued_on = null;
 
     public Punishment()
@@ -45,13 +43,18 @@ public class Punishment implements IConfig
         this.issued_on = new Date();
     }
 
+    public static SimpleDateFormat getDateFormat()
+    {
+        return DATE_FORMAT;
+    }
+
     @Override
     public void loadFrom(ConfigurationSection cs)
     {
         this.username = cs.getString("username", null);
         this.ip = cs.getString("ip", null);
         this.by = cs.getString("by", null);
-        this.type = PunishmentType.valueOf(cs.getString("type", null).toUpperCase());
+        this.type = PunishmentType.valueOf(Objects.requireNonNull(cs.getString("type", null)).toUpperCase());
         this.reason = cs.getString("reason", null);
         try
         {
@@ -62,7 +65,6 @@ public class Punishment implements IConfig
             this.issued_on = null;
         }
     }
-
 
     @Override
     public void saveTo(ConfigurationSection cs)
@@ -79,5 +81,65 @@ public class Punishment implements IConfig
     public boolean isValid()
     {
         return username != null || ip != null;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public String getIp()
+    {
+        return ip;
+    }
+
+    public void setIp(String ip)
+    {
+        this.ip = ip;
+    }
+
+    public String getBy()
+    {
+        return by;
+    }
+
+    public void setBy(String by)
+    {
+        this.by = by;
+    }
+
+    public PunishmentType getType()
+    {
+        return type;
+    }
+
+    public void setType(PunishmentType type)
+    {
+        this.type = type;
+    }
+
+    public String getReason()
+    {
+        return reason;
+    }
+
+    public void setReason(String reason)
+    {
+        this.reason = reason;
+    }
+
+    public Date getIssuedOn()
+    {
+        return issued_on;
+    }
+
+    public void setIssuedOn(Date issued_on)
+    {
+        this.issued_on = issued_on;
     }
 }

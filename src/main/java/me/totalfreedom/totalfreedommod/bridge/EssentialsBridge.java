@@ -42,7 +42,8 @@ public class EssentialsBridge extends FreedomService
             try
             {
                 final Plugin essentials = server.getPluginManager().getPlugin("Essentials");
-                if (essentials != null && essentials instanceof Essentials)
+                assert essentials != null;
+                if (essentials instanceof Essentials)
                 {
                     essentialsPlugin = (Essentials)essentials;
                 }
@@ -113,7 +114,8 @@ public class EssentialsBridge extends FreedomService
             User user = getEssentialsUser(username);
             if (user != null)
             {
-                return FUtil.getField(user, "lastActivity");
+                Long l = FUtil.getField(user, "lastActivity");
+                return (l != null) ? l : 0L;
             }
         }
         catch (Exception ex)
@@ -150,7 +152,7 @@ public class EssentialsBridge extends FreedomService
         if (inventoryType == InventoryType.PLAYER && fPlayer.isInvSee())
         {
             final InventoryHolder inventoryHolder = inventory.getHolder();
-            if (inventoryHolder != null && inventoryHolder instanceof HumanEntity)
+            if (inventoryHolder instanceof HumanEntity)
             {
                 Player invOwner = (Player)inventoryHolder;
                 Rank recieverRank = plugin.rm.getRank(player);
@@ -203,6 +205,7 @@ public class EssentialsBridge extends FreedomService
         }
     }
 
+    // TODO: Actually use this for something or remove it.
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event)
     {

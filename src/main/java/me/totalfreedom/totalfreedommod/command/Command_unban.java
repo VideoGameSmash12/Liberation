@@ -22,7 +22,6 @@ public class Command_unban extends FreedomCommand
         if (args.length > 0)
         {
             String username;
-            final List<String> ips = new ArrayList<>();
             final PlayerData entry = plugin.pl.getData(args[0]);
 
             if (entry == null)
@@ -32,7 +31,7 @@ public class Command_unban extends FreedomCommand
             }
 
             username = entry.getName();
-            ips.addAll(entry.getIps());
+            final List<String> ips = new ArrayList<>(entry.getIps());
 
             FUtil.adminAction(sender.getName(), "Unbanning " + username, true);
             msg(username + " has been unbanned along with the following IPs: " + StringUtils.join(ips, ", "));

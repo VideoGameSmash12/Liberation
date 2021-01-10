@@ -22,8 +22,7 @@ public class Command_playerverification extends FreedomCommand
     {
         PlayerData target = plugin.pl.getData(playerSender);
         boolean verificationEnabled = ConfigEntry.DISCORD_VERIFICATION.getBoolean();
-        List<String> ips = new ArrayList<>();
-        ips.addAll(target.getIps());
+        List<String> ips = new ArrayList<>(target.getIps());
 
         if (verificationEnabled)
         {
@@ -49,15 +48,7 @@ public class Command_playerverification extends FreedomCommand
                 }
                 else if (args[0].equalsIgnoreCase("clearip"))
                 {
-                    if (args.length < 2)
-                    {
-                        return false;
-                    }
-                    target.removeIp(args[1]);
-                    msg("Removed" + args[1] + " from your list of IPs");
-                    plugin.pl.save(target);
-                    plugin.pl.syncIps(target);
-                    return true;
+                    return false;
                 }
             }
 

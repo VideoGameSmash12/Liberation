@@ -29,6 +29,8 @@ public final class HubWorld extends CustomWorld
         super.sendToWorld(player);
     }
 
+    // TODO: Replace instances of org.bukkit.Sign with a non deprecated version. This might include more boilerplate.
+    @SuppressWarnings("deprecation")
     @Override
     protected World generateWorld()
     {
@@ -40,6 +42,7 @@ public final class HubWorld extends CustomWorld
 
         final World world = server.createWorld(worldCreator);
 
+        assert world != null;
         world.setSpawnFlags(false, false);
         world.setSpawnLocation(0, 50, 0);
 
@@ -73,7 +76,7 @@ public final class HubWorld extends CustomWorld
         {
             weatherMode.setWorldToWeather(getWorld());
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
     }
@@ -91,7 +94,7 @@ public final class HubWorld extends CustomWorld
         {
             timeOfDay.setWorldToTime(getWorld());
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
     }

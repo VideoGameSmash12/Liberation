@@ -1,15 +1,14 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
-import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.admin.Admin;
+import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 
 public class Module_bans extends HTTPDModule
 {
 
-    public Module_bans(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_bans(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override

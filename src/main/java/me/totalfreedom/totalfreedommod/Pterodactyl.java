@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import joptsimple.internal.Strings;
-import lombok.Getter;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.Response;
@@ -23,7 +22,6 @@ public class Pterodactyl extends FreedomService
     private final List<String> SERVER_HEADERS = Arrays.asList("Accept:Application/vnd.pterodactyl.v1+json", "Content-Type:application/json", "Authorization:Bearer " + SERVER_KEY);
     private final List<String> ADMIN_HEADERS = Arrays.asList("Accept:Application/vnd.pterodactyl.v1+json", "Content-Type:application/json", "Authorization:Bearer " + ADMIN_KEY);
 
-    @Getter
     private boolean enabled = !Strings.isNullOrEmpty(URL);
 
     public void onStart()
@@ -54,6 +52,7 @@ public class Pterodactyl extends FreedomService
         addAccountToServer(id);
     }
 
+    @SuppressWarnings("unchecked")
     public String createAccount(String username, String password)
     {
         JSONObject json = new JSONObject();
@@ -94,6 +93,7 @@ public class Pterodactyl extends FreedomService
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void addAccountToServer(String id)
     {
         String url = URL + "/api/client/servers/" + ConfigEntry.PTERO_SERVER_UUID.getString() + "/users";
@@ -161,6 +161,7 @@ public class Pterodactyl extends FreedomService
     }
 
     // API patch function on users doesnt work rn, it throws 500 errors, so it's probably not written yet
+    @SuppressWarnings("unchecked")
     public void setPassword(String id, String password)
     {
         JSONObject json = new JSONObject();
@@ -174,5 +175,40 @@ public class Pterodactyl extends FreedomService
         {
             FLog.severe(e);
         }
+    }
+
+    public String getURL()
+    {
+        return URL;
+    }
+
+    public String getServerKey()
+    {
+        return SERVER_KEY;
+    }
+
+    public String getAdminKey()
+    {
+        return ADMIN_KEY;
+    }
+
+    public List<String> getServerHeaders()
+    {
+        return SERVER_HEADERS;
+    }
+
+    public List<String> getAdminHeaders()
+    {
+        return ADMIN_HEADERS;
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 }

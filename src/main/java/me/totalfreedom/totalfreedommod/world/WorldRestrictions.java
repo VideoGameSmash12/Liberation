@@ -38,7 +38,6 @@ public class WorldRestrictions extends FreedomService
         put(Flags.DESTROY_VEHICLE, StateFlag.State.DENY);
         put(Flags.ENTITY_ITEM_FRAME_DESTROY, StateFlag.State.DENY);
         put(Flags.ENTITY_PAINTING_DESTROY, StateFlag.State.DENY);
-        put(net.goldtreeservers.worldguardextraflags.flags.Flags.WORLDEDIT, StateFlag.State.DENY);
     }};
 
     @Override
@@ -53,7 +52,7 @@ public class WorldRestrictions extends FreedomService
 
     public boolean doRestrict(Player player)
     {
-        if (!plugin.pl.getData(player).isMasterBuilder() && !plugin.pl.canManageMasterBuilders(player.getName()))
+        if (!plugin.pl.getData(player).isMasterBuilder() && plugin.pl.canManageMasterBuilders(player.getName()))
         {
             if (player.getWorld().equals(plugin.wm.masterBuilderWorld.getWorld()) || player.getWorld().equals(plugin.wm.hubworld.getWorld()))
             {

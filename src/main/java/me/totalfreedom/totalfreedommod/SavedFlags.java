@@ -26,8 +26,8 @@ public class SavedFlags extends FreedomService
     public Map<String, Boolean> getSavedFlags()
     {
         Map<String, Boolean> flags = null;
-
         File input = new File(TotalFreedomMod.getPlugin().getDataFolder(), SAVED_FLAGS_FILENAME);
+
         if (input.exists())
         {
             try

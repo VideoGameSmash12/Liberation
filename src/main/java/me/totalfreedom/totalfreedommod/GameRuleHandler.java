@@ -56,6 +56,7 @@ public class GameRuleHandler extends FreedomService
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void commitGameRules()
     {
         List<World> worlds = Bukkit.getWorlds();

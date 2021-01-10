@@ -1,11 +1,13 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import java.util.Objects;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
 import me.totalfreedom.totalfreedommod.punishments.PunishmentType;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +43,7 @@ public class Command_doom extends FreedomCommand
         FUtil.adminAction(sender.getName(), "Casting oblivion over " + player.getName(), true);
         FUtil.bcastMsg(player.getName() + " will be completely obliviated!", ChatColor.RED);
 
-        final String ip = player.getAddress().getAddress().getHostAddress().trim();
+        final String ip = Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress().trim();
 
         // Remove from admin
         Admin admin = getAdmin(player);
@@ -54,7 +56,7 @@ public class Command_doom extends FreedomCommand
             plugin.ptero.updateAccountStatus(admin);
             if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
             {
-                plugin.dc.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
+                Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
             }
         }
 
@@ -125,7 +127,6 @@ public class Command_doom extends FreedomCommand
 
                 // generate explosion
                 player.getWorld().createExplosion(player.getLocation(), 0F, false);
-                ;
 
                 // kick player
                 player.kickPlayer(ChatColor.RED + kickReason);

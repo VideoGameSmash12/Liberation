@@ -55,7 +55,7 @@ public class UUIDFetcher
         return null;
     }
 
-    private class FetchedUuid
+    private static class FetchedUuid
     {
 
         private String id;

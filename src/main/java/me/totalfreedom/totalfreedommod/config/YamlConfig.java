@@ -6,15 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class YamlConfig extends YamlConfiguration
 {
-    private final TotalFreedomMod plugin;
     private final File file;
-    private final boolean copyDefaults;
 
     public YamlConfig(TotalFreedomMod plugin, String name, boolean copyDefaults)
     {
-        this.plugin = plugin;
         this.file = new File(plugin.getDataFolder(), name);
-        this.copyDefaults = copyDefaults;
 
         if (copyDefaults)
         {

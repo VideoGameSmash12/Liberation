@@ -1,18 +1,17 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.io.File;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.punishments.PunishmentList;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 
 public class Module_punishments extends HTTPDModule
 {
 
-    public Module_punishments(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_punishments(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override

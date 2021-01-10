@@ -25,6 +25,7 @@ public class Command_wipewarps extends FreedomCommand
         File warps = new File(essentials.getDataFolder(), "warps");
         FUtil.adminAction(sender.getName(), "Wiping Essentials warps", true);
         FUtil.deleteFolder(warps);
+        //noinspection ResultOfMethodCallIgnored
         warps.mkdir();
         essentials.reload();
         msg("All warps deleted.");

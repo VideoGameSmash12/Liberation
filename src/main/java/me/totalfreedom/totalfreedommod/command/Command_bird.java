@@ -2,7 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.SplittableRandom;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -27,7 +27,7 @@ public class Command_bird extends FreedomCommand
     public EntityType getRandomFish()
     {
         List<EntityType> fishTypes = Arrays.asList(EntityType.COD, EntityType.SALMON, EntityType.PUFFERFISH, EntityType.TROPICAL_FISH);
-        Random random = new Random();
+        SplittableRandom random = new SplittableRandom();
         return fishTypes.get(random.nextInt(fishTypes.size()));
     }
 }

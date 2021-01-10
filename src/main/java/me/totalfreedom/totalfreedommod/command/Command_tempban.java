@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
@@ -22,7 +23,7 @@ import org.bukkit.entity.Player;
 public class Command_tempban extends FreedomCommand
 {
 
-    private static final SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
+    private static final SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
@@ -43,30 +44,25 @@ public class Command_tempban extends FreedomCommand
             }
         }
 
-        final String username;
-        final List<String> ips = new ArrayList<>();
-
         final Player player = getPlayer(args[0]);
+        final PlayerData entry;
         if (player == null)
         {
-            final PlayerData entry = plugin.pl.getData(args[0]);
+            entry = plugin.pl.getData(args[0]);
 
             if (entry == null)
             {
                 msg("Can't find that user. If target is not logged in, make sure that you spelled the name exactly.");
                 return true;
             }
-
-            username = entry.getName();
-            ips.addAll(entry.getIps());
         }
         else
         {
-            final PlayerData entry = plugin.pl.getData(player);
-            username = player.getName();
-            ips.addAll(entry.getIps());
+            entry = plugin.pl.getData(player);
         }
+        final List<String> ips = new ArrayList<>(entry.getIps());
 
+        assert player != null;
         final StringBuilder message = new StringBuilder("Temporarily banned " + player.getName());
 
         Date expires = FUtil.parseDateOffset("30m");
@@ -93,7 +89,7 @@ public class Command_tempban extends FreedomCommand
                 for (int z = -1; z <= 1; z++)
                 {
                     final Location strike_pos = new Location(targetPos.getWorld(), targetPos.getBlockX() + x, targetPos.getBlockY(), targetPos.getBlockZ() + z);
-                    targetPos.getWorld().strikeLightningEffect(strike_pos);
+                    Objects.requireNonNull(targetPos.getWorld()).strikeLightningEffect(strike_pos);
                 }
             }
 
@@ -107,14 +103,7 @@ public class Command_tempban extends FreedomCommand
 
         Ban ban;
 
-        if (player != null)
-        {
-            ban = Ban.forPlayer(player, sender, null, reason);
-        }
-        else
-        {
-            ban = Ban.forPlayerName(username, sender, null, reason);
-        }
+        ban = Ban.forPlayer(player, sender, null, reason);
 
         for (String ip : ips)
         {

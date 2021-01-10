@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.util.Set;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDPageBuilder;
@@ -11,9 +10,9 @@ import org.reflections.Reflections;
 public class Module_index extends HTTPDModule
 {
 
-    public Module_index(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_index(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override
@@ -32,7 +31,7 @@ public class Module_index extends HTTPDModule
 
         Set<Class<? extends HTTPDModule>> moduleClasses = r.getSubTypesOf(HTTPDModule.class);
 
-        for (Class c : moduleClasses)
+        for (Class<?> c : moduleClasses)
         {
             String name = c.getSimpleName().replace("Module_", "");
 

@@ -2,6 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -21,6 +22,16 @@ import org.bukkit.inventory.ItemStack;
 public class Command_tossmob extends FreedomCommand
 {
 
+    public static List<String> getAllMobNames()
+    {
+        List<String> names = new ArrayList<>();
+        for (EntityType entityType : Groups.MOB_TYPES)
+        {
+            names.add(entityType.name());
+        }
+        return names;
+    }
+
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -38,41 +49,38 @@ public class Command_tossmob extends FreedomCommand
         FPlayer playerData = plugin.pl.getPlayer(playerSender);
 
         EntityType type = null;
-        if (args.length >= 1)
+        if (args[0].equalsIgnoreCase("off"))
         {
-            if (args[0].equalsIgnoreCase("off"))
-            {
-                playerData.disableMobThrower();
-                msg("Turned off.", ChatColor.GREEN);
-                return true;
-            }
+            playerData.disableMobThrower();
+            msg("Turned off.", ChatColor.GREEN);
+            return true;
+        }
 
-            if (args[0].equalsIgnoreCase("list"))
-            {
-                msg("Supported mobs: " + getAllMobNames(), ChatColor.GREEN);
-                return true;
-            }
+        if (args[0].equalsIgnoreCase("list"))
+        {
+            msg("Supported mobs: " + getAllMobNames(), ChatColor.GREEN);
+            return true;
+        }
 
-            for (EntityType loop : EntityType.values())
+        for (EntityType loop : EntityType.values())
+        {
+            if (loop != null && loop.name().equalsIgnoreCase(args[0]))
             {
-                if (loop != null && loop.name().equalsIgnoreCase(args[0]))
-                {
-                    type = loop;
-                    break;
-                }
+                type = loop;
+                break;
             }
+        }
 
-            if (type == null)
-            {
-                msg("Unknown entity type: " + args[0], ChatColor.RED);
-                return true;
-            }
+        if (type == null)
+        {
+            msg("Unknown entity type: " + args[0], ChatColor.RED);
+            return true;
+        }
 
-            if (!Groups.MOB_TYPES.contains(type))
-            {
-                msg(FUtil.formatName(type.name()) + " is an entity, however it is not a mob.", ChatColor.RED);
-                return true;
-            }
+        if (!Groups.MOB_TYPES.contains(type))
+        {
+            msg(FUtil.formatName(type.name()) + " is an entity, however it is not a mob.", ChatColor.RED);
+            return true;
         }
 
         double speed = 1.0;
@@ -103,17 +111,7 @@ public class Command_tossmob extends FreedomCommand
         msg("Right click while holding a " + Material.BONE.toString() + " to throw mobs!", ChatColor.GREEN);
         msg("Type '/tossmob off' to disable. -By Madgeek1450", ChatColor.GREEN);
 
-        playerSender.getEquipment().setItemInMainHand(new ItemStack(Material.BONE, 1));
+        Objects.requireNonNull(playerSender.getEquipment()).setItemInMainHand(new ItemStack(Material.BONE, 1));
         return true;
-    }
-
-    public static List<String> getAllMobNames()
-    {
-        List<String> names = new ArrayList<>();
-        for (EntityType entityType : Groups.MOB_TYPES)
-        {
-            names.add(entityType.name());
-        }
-        return names;
     }
 }

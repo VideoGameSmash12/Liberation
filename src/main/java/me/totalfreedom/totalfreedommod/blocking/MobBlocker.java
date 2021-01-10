@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.blocking;
 
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.bukkit.attribute.Attributable;
@@ -42,13 +43,13 @@ public class MobBlocker extends FreedomService
         Entity entity = e.getEntity();
         if (entity instanceof Attributable)
         {
-            if (((Attributable)entity).getAttribute(Attribute.GENERIC_FOLLOW_RANGE).getBaseValue() > 255.0)
+            if (Objects.requireNonNull(((Attributable)entity).getAttribute(Attribute.GENERIC_FOLLOW_RANGE)).getBaseValue() > 255.0)
             {
-                ((Attributable)entity).getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(255.0);
+                Objects.requireNonNull(((Attributable)entity).getAttribute(Attribute.GENERIC_FOLLOW_RANGE)).setBaseValue(255.0);
             }
-            if (((Attributable)entity).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue() > 10.0)
+            if (Objects.requireNonNull(((Attributable)entity).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).getBaseValue() > 10.0)
             {
-                ((Attributable)entity).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(10.0);
+                Objects.requireNonNull(((Attributable)entity).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(10.0);
             }
         }
     }
@@ -117,7 +118,7 @@ public class MobBlocker extends FreedomService
         }
 
         int mobcount = 0;
-        for (Entity entity : event.getLocation().getWorld().getLivingEntities())
+        for (Entity entity : Objects.requireNonNull(event.getLocation().getWorld()).getLivingEntities())
         {
             if (!(entity instanceof HumanEntity) && entity instanceof LivingEntity)
             {

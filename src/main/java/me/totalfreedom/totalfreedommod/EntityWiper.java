@@ -14,8 +14,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class EntityWiper extends FreedomService
 {
-    private BukkitTask wiper;
-
     public List<EntityType> BLACKLIST = Arrays.asList(
             EntityType.ARMOR_STAND,
             EntityType.PAINTING,
@@ -24,6 +22,7 @@ public class EntityWiper extends FreedomService
             EntityType.ITEM_FRAME,
             EntityType.MINECART
     );
+    private BukkitTask wiper;
 
     @Override
     public void onStart()

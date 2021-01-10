@@ -29,6 +29,7 @@ public class Command_cake extends FreedomCommand
 
         final ItemStack heldItem = new ItemStack(Material.CAKE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
+        assert heldItemMeta != null;
         heldItemMeta.setDisplayName(ChatColor.WHITE + "The " + ChatColor.DARK_GRAY + "Lie");
         heldItem.setItemMeta(heldItemMeta);
 

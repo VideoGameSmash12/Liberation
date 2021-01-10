@@ -2,6 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
@@ -31,8 +32,8 @@ public class Command_ban extends FreedomCommand
         }
 
         String reason = null;
-        Boolean silent = false;
-        Boolean cancelRollback = false;
+        boolean silent = false;
+        boolean cancelRollback = false;
         if (args.length >= 2)
         {
             if (args[args.length - 1].equalsIgnoreCase("-nrb") || args[args.length - 1].equalsIgnoreCase("-q"))
@@ -100,7 +101,7 @@ public class Command_ban extends FreedomCommand
                     for (int z = -1; z <= 1; z++)
                     {
                         final Location strike_pos = new Location(targetPos.getWorld(), targetPos.getBlockX() + x, targetPos.getBlockY(), targetPos.getBlockZ() + z);
-                        targetPos.getWorld().strikeLightning(strike_pos);
+                        Objects.requireNonNull(targetPos.getWorld()).strikeLightning(strike_pos);
                     }
                 }
             }
@@ -154,7 +155,7 @@ public class Command_ban extends FreedomCommand
                 bcast.append(" - Reason: ").append(ChatColor.YELLOW).append(reason);
             }
             msg(sender, ChatColor.GRAY + username + " has been banned and IP is: " + StringUtils.join(ips, ", "));
-            FUtil.adminAction(sender.getName(), String.format(bcast.toString()), true);
+            FUtil.adminAction(sender.getName(), bcast.toString(), true);
         }
 
         // Kick player and handle others on IP

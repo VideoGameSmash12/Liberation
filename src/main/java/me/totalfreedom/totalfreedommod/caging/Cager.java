@@ -1,6 +1,7 @@
 package me.totalfreedom.totalfreedommod.caging;
 
 import io.papermc.lib.PaperLib;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -31,7 +32,7 @@ public class Cager extends FreedomService
     public void onBreakBlock(BlockBreakEvent event)
     {
         Player player = event.getPlayer();
-        if (player == null || plugin.al.isAdmin(player))
+        if (plugin.al.isAdmin(player))
         {
             return;
         }
@@ -60,7 +61,7 @@ public class Cager extends FreedomService
         Location cageLoc = cage.getLocation();
 
         final boolean outOfCage;
-        if (!playerLoc.getWorld().equals(cageLoc.getWorld()))
+        if (!Objects.equals(playerLoc.getWorld(), cageLoc.getWorld()))
         {
             outOfCage = true;
         }

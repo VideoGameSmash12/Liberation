@@ -36,15 +36,46 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CoreProtectBridge extends FreedomService
 {
-    private CoreProtectAPI coreProtectAPI = null;
-
+    public static Map<Player, FUtil.PaginationList<String>> HISTORY_MAP = new HashMap<>();
     private final List<String> tables = Arrays.asList("co_sign", "co_session", "co_container", "co_block");
 
     private final HashMap<String, Long> cooldown = new HashMap<>();
-
-    public static Map<Player, FUtil.PaginationList<String>> HISTORY_MAP = new HashMap<>();
-
+    private CoreProtectAPI coreProtectAPI = null;
     private BukkitTask wiper;
+
+    public static Long getSecondsLeft(long prevTime, int timeAdd)
+    {
+        return prevTime / 1000L + timeAdd - System.currentTimeMillis() / 1000L;
+    }
+
+    // Unix timestamp converter taken from Functions class in CoreProtect, not my code
+    public static String getTimeAgo(int logTime, int currentTime)
+    {
+        StringBuilder message = new StringBuilder();
+        double timeSince = (double)currentTime - ((double)logTime + 0.0D);
+        timeSince /= 60.0D;
+        if (timeSince < 60.0D)
+        {
+            message.append((new DecimalFormat("0.00")).format(timeSince)).append("/m ago");
+        }
+
+        if (message.length() == 0)
+        {
+            timeSince /= 60.0D;
+            if (timeSince < 24.0D)
+            {
+                message.append((new DecimalFormat("0.00")).format(timeSince)).append("/h ago");
+            }
+        }
+
+        if (message.length() == 0)
+        {
+            timeSince /= 24.0D;
+            message.append((new DecimalFormat("0.00")).format(timeSince)).append("/d ago");
+        }
+
+        return message.toString();
+    }
 
     @Override
     public void onStart()
@@ -62,8 +93,8 @@ public class CoreProtectBridge extends FreedomService
         try
         {
             final Plugin coreProtectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
-
-            if (coreProtectPlugin != null && coreProtectPlugin instanceof CoreProtect)
+            assert coreProtectPlugin != null;
+            if (coreProtectPlugin instanceof CoreProtect)
             {
                 coreProtect = (CoreProtect)coreProtectPlugin;
             }
@@ -187,7 +218,7 @@ public class CoreProtectBridge extends FreedomService
 
         /* As CoreProtect doesn't have an API method for deleting all of the data for a specific world
            we have to do this manually via SQL */
-        Connection connection = null;
+        Connection connection;
         try
         {
             String host = ConfigEntry.COREPROTECT_MYSQL_HOST.getString();
@@ -235,40 +266,6 @@ public class CoreProtectBridge extends FreedomService
         {
             server.shutdown();
         }
-    }
-
-    public static Long getSecondsLeft(long prevTime, int timeAdd)
-    {
-        return prevTime / 1000L + timeAdd - System.currentTimeMillis() / 1000L;
-    }
-
-    // Unix timestamp converter taken from Functions class in CoreProtect, not my code
-    public static String getTimeAgo(int logTime, int currentTime)
-    {
-        StringBuilder message = new StringBuilder();
-        double timeSince = (double)currentTime - ((double)logTime + 0.0D);
-        timeSince /= 60.0D;
-        if (timeSince < 60.0D)
-        {
-            message.append((new DecimalFormat("0.00")).format(timeSince)).append("/m ago");
-        }
-
-        if (message.length() == 0)
-        {
-            timeSince /= 60.0D;
-            if (timeSince < 24.0D)
-            {
-                message.append((new DecimalFormat("0.00")).format(timeSince)).append("/h ago");
-            }
-        }
-
-        if (message.length() == 0)
-        {
-            timeSince /= 24.0D;
-            message.append((new DecimalFormat("0.00")).format(timeSince)).append("/d ago");
-        }
-
-        return message.toString();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

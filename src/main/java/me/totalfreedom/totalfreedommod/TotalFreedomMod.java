@@ -3,6 +3,8 @@ package me.totalfreedom.totalfreedommod;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
+import me.totalfreedom.totalfreedommod.admin.ActivityLog;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.banning.BanManager;
 import me.totalfreedom.totalfreedommod.banning.IndefiniteBanList;
 import me.totalfreedom.totalfreedommod.blocking.BlockBlocker;
@@ -41,8 +43,6 @@ import me.totalfreedom.totalfreedommod.rank.RankManager;
 import me.totalfreedom.totalfreedommod.shop.Shop;
 import me.totalfreedom.totalfreedommod.shop.Votifier;
 import me.totalfreedom.totalfreedommod.sql.SQLite;
-import me.totalfreedom.totalfreedommod.admin.ActivityLog;
-import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
@@ -54,23 +54,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.spigotmc.SpigotConfig;
 
 public class TotalFreedomMod extends JavaPlugin
 {
-    private static TotalFreedomMod plugin;
-
-    public static TotalFreedomMod getPlugin()
-    {
-        return plugin;
-    }
-
     public static final String CONFIG_FILENAME = "config.yml";
     //
     public static final BuildProperties build = new BuildProperties();
     //
     public static String pluginName;
     public static String pluginVersion;
+    private static TotalFreedomMod plugin;
     //
     public MainConfig config;
     public PermissionConfig permissions;
@@ -134,7 +129,6 @@ public class TotalFreedomMod extends JavaPlugin
     public Sitter st;
     public VanishHandler vh;
     public Pterodactyl ptero;
-
     //public HubWorldRestrictions hwr;
     //
     // Bridges
@@ -145,6 +139,23 @@ public class TotalFreedomMod extends JavaPlugin
     public TFGuildsBridge tfg;
     public WorldEditBridge web;
     public WorldGuardBridge wgb;
+
+    public static TotalFreedomMod getPlugin()
+    {
+        return plugin;
+    }
+
+    public static TotalFreedomMod plugin()
+    {
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+        {
+            if (plugin.getName().equalsIgnoreCase(pluginName))
+            {
+                return (TotalFreedomMod)plugin;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void onLoad()
@@ -192,79 +203,13 @@ public class TotalFreedomMod extends JavaPlugin
         BackupManager backups = new BackupManager();
         backups.createAllBackups();
 
-        permissions = new PermissionConfig(this);
+        permissions = new PermissionConfig();
         permissions.load();
-
-        // Start services
-        si = new ServerInterface();
-        sf = new SavedFlags();
-        wm = new WorldManager();
-        lv = new LogViewer();
-        sql = new SQLite();
-        al = new AdminList();
-        acl = new ActivityLog();
-        rm = new RankManager();
-        cb = new CommandBlocker();
-        eb = new EventBlocker();
-        bb = new BlockBlocker();
-        mb = new MobBlocker();
-        ib = new InteractBlocker();
-        pb = new PotionBlocker();
-        lp = new LoginProcess();
-        nu = new AntiNuke();
-        as = new AntiSpam();
-        wr = new WorldRestrictions();
-        pl = new PlayerList();
-        sh = new Shop();
-        vo = new Votifier();
-        an = new Announcer();
-        cm = new ChatManager();
-        dc = new Discord();
-        pul = new PunishmentList();
-        bm = new BanManager();
-        im = new IndefiniteBanList();
-        pem = new PermissionManager();
-        gr = new GameRuleHandler();
-        snp = new SignBlocker();
-        ew = new EntityWiper();
-        st = new Sitter();
-        vh = new VanishHandler();
-        ptero = new Pterodactyl();
-
-        // Single admin utils
-        cs = new CommandSpy();
-        ca = new Cager();
-        fm = new Freezer();
-        or = new Orbiter();
-        mu = new Muter();
-        ebl = new EditBlocker();
-        pbl = new PVPBlocker();
-        fo = new Fuckoff();
-        ak = new AutoKick();
-        ae = new AutoEject();
-        mo = new Monitors();
 
         mv = new MovementValidator();
         sp = new ServerPing();
 
-        // Fun
-        cul = new CurseListener();
-        it = new ItemFun();
-        lm = new Landminer();
-        mp = new MP44();
-        jp = new Jumppads();
-        tr = new Trailer();
-        // HTTPD
-        hd = new HTTPDaemon();
-
-        // Start bridges
-        btb = new BukkitTelnetBridge();
-        cpb = new CoreProtectBridge();
-        esb = new EssentialsBridge();
-        ldb = new LibsDisguisesBridge();
-        tfg = new TFGuildsBridge();
-        web = new WorldEditBridge();
-        wgb = new WorldGuardBridge();
+        new Initializer();
 
         fsh.startServices();
 
@@ -289,6 +234,12 @@ public class TotalFreedomMod extends JavaPlugin
         getServer().getScheduler().cancelTasks(plugin);
 
         FLog.info("Plugin disabled");
+    }
+
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id)
+    {
+        return new CleanroomChunkGenerator(id);
     }
 
     public static class BuildProperties
@@ -333,21 +284,102 @@ public class TotalFreedomMod extends JavaPlugin
         }
     }
 
-    public static TotalFreedomMod plugin()
+    /**
+     * This class is provided to please Codacy.
+     */
+    private final class Initializer
     {
-        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+        public Initializer()
         {
-            if (plugin.getName().equalsIgnoreCase(pluginName))
-            {
-                return (TotalFreedomMod)plugin;
-            }
+            initServices();
+            initAdminUtils();
+            initBridges();
+            initFun();
+            initHTTPD();
         }
-        return null;
-    }
 
-    @Override
-    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id)
-    {
-        return new CleanroomChunkGenerator(id);
+        private void initServices()
+        {
+            // Start services
+            si = new ServerInterface();
+            sf = new SavedFlags();
+            wm = new WorldManager();
+            lv = new LogViewer();
+            sql = new SQLite();
+            al = new AdminList();
+            acl = new ActivityLog();
+            rm = new RankManager();
+            cb = new CommandBlocker();
+            eb = new EventBlocker();
+            bb = new BlockBlocker();
+            mb = new MobBlocker();
+            ib = new InteractBlocker();
+            pb = new PotionBlocker();
+            lp = new LoginProcess();
+            nu = new AntiNuke();
+            as = new AntiSpam();
+            wr = new WorldRestrictions();
+            pl = new PlayerList();
+            sh = new Shop();
+            vo = new Votifier();
+            an = new Announcer();
+            cm = new ChatManager();
+            dc = new Discord();
+            pul = new PunishmentList();
+            bm = new BanManager();
+            im = new IndefiniteBanList();
+            pem = new PermissionManager();
+            gr = new GameRuleHandler();
+            snp = new SignBlocker();
+            ew = new EntityWiper();
+            st = new Sitter();
+            vh = new VanishHandler();
+            ptero = new Pterodactyl();
+        }
+
+        private void initAdminUtils()
+        {
+            // Single admin utils
+            cs = new CommandSpy();
+            ca = new Cager();
+            fm = new Freezer();
+            or = new Orbiter();
+            mu = new Muter();
+            ebl = new EditBlocker();
+            pbl = new PVPBlocker();
+            fo = new Fuckoff();
+            ak = new AutoKick();
+            ae = new AutoEject();
+            mo = new Monitors();
+        }
+
+        private void initBridges()
+        {
+            // Start bridges
+            btb = new BukkitTelnetBridge();
+            cpb = new CoreProtectBridge();
+            esb = new EssentialsBridge();
+            ldb = new LibsDisguisesBridge();
+            tfg = new TFGuildsBridge();
+            web = new WorldEditBridge();
+            wgb = new WorldGuardBridge();
+        }
+
+        private void initFun()
+        {
+            // Fun
+            cul = new CurseListener();
+            it = new ItemFun();
+            lm = new Landminer();
+            mp = new MP44();
+            jp = new Jumppads();
+            tr = new Trailer();
+        }
+
+        private void initHTTPD()
+        {
+            // HTTPD
+            hd = new HTTPDaemon();
+        }
     }
 }

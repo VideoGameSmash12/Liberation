@@ -28,7 +28,7 @@ public class Command_expel extends FreedomCommand
             {
                 radius = Math.max(1.0, Math.min(100.0, Double.parseDouble(args[0])));
             }
-            catch (NumberFormatException ex)
+            catch (NumberFormatException ignored)
             {
             }
         }
@@ -39,7 +39,7 @@ public class Command_expel extends FreedomCommand
             {
                 strength = Math.max(0.0, Math.min(50.0, Double.parseDouble(args[1])));
             }
-            catch (NumberFormatException ex)
+            catch (NumberFormatException ignored)
             {
             }
         }
@@ -63,7 +63,7 @@ public class Command_expel extends FreedomCommand
             {
                 inRange = targetPosVec.distanceSquared(senderPos) < (radius * radius);
             }
-            catch (IllegalArgumentException ex)
+            catch (IllegalArgumentException ignored)
             {
             }
 

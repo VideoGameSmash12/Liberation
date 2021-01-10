@@ -3,7 +3,6 @@ package me.totalfreedom.totalfreedommod.fun;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.bukkit.GameMode;
@@ -18,8 +17,6 @@ import org.bukkit.util.Vector;
 
 public class Landminer extends FreedomService
 {
-
-    @Getter
     private final List<Landmine> landmines = new ArrayList<>();
 
     @Override
@@ -43,6 +40,7 @@ public class Landminer extends FreedomService
         landmines.remove(landmine);
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -95,14 +93,15 @@ public class Landminer extends FreedomService
         }
     }
 
+    public List<Landmine> getLandmines()
+    {
+        return landmines;
+    }
+
     public static class Landmine
     {
-
-        @Getter
         private final Location location;
-        @Getter
         private final Player planter;
-        @Getter
         private final double radius;
 
         public Landmine(Location location, Player player, double radius)
@@ -116,6 +115,21 @@ public class Landminer extends FreedomService
         public String toString()
         {
             return this.location.toString() + ", " + this.radius + ", " + this.planter.getName();
+        }
+
+        public Location getLocation()
+        {
+            return location;
+        }
+
+        public Player getPlanter()
+        {
+            return planter;
+        }
+
+        public double getRadius()
+        {
+            return radius;
         }
     }
 }

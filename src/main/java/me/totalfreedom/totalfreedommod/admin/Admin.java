@@ -7,42 +7,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.LogViewer.LogsRegistrationMode;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Admin
 {
-    @Getter
-    @Setter
-    private String name;
-    @Getter
-    private boolean active = true;
-    @Getter
-    @Setter
-    private Rank rank = Rank.ADMIN;
-    @Getter
+
+
     private final List<String> ips = new ArrayList<>();
-    @Getter
-    @Setter
+    private String name;
+    private boolean active = true;
+    private Rank rank = Rank.ADMIN;
     private Date lastLogin = new Date();
-    @Getter
-    @Setter
+
+
     private Boolean commandSpy = false;
-    @Getter
-    @Setter
+
+
     private Boolean potionSpy = false;
-    @Getter
-    @Setter
+
+
     private String acFormat = null;
-    @Getter
-    @Setter
+
+
     private String pteroID = null;
 
     public Admin(Player player)
@@ -125,10 +118,7 @@ public class Admin
 
     public void removeIp(String ip)
     {
-        if (ips.contains(ip))
-        {
-            ips.remove(ip);
-        }
+        ips.remove(ip);
     }
 
     public void clearIPs()
@@ -136,11 +126,41 @@ public class Admin
         ips.clear();
     }
 
+    public boolean isValid()
+    {
+        return name != null
+                && rank != null
+                && !ips.isEmpty()
+                && lastLogin != null;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public boolean isActive()
+    {
+        return active;
+    }
+
     public void setActive(boolean active)
     {
         this.active = active;
 
         final TotalFreedomMod plugin = TotalFreedomMod.getPlugin();
+
+        // Avoiding stupid NPE compiler warnings
+        if (plugin == null)
+        {
+            Bukkit.getLogger().severe("The plugin is null!! This is a major issue and WILL break the plugin!");
+            return;
+        }
 
         if (!active)
         {
@@ -156,11 +176,68 @@ public class Admin
         }
     }
 
-    public boolean isValid()
+    public Rank getRank()
     {
-        return name != null
-                && rank != null
-                && !ips.isEmpty()
-                && lastLogin != null;
+        return rank;
+    }
+
+    public void setRank(Rank rank)
+    {
+        this.rank = rank;
+    }
+
+    public List<String> getIps()
+    {
+        return ips;
+    }
+
+    public Date getLastLogin()
+    {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin)
+    {
+        this.lastLogin = lastLogin;
+    }
+
+    public Boolean getCommandSpy()
+    {
+        return commandSpy;
+    }
+
+    public void setCommandSpy(Boolean commandSpy)
+    {
+        this.commandSpy = commandSpy;
+    }
+
+    public Boolean getPotionSpy()
+    {
+        return potionSpy;
+    }
+
+    public void setPotionSpy(Boolean potionSpy)
+    {
+        this.potionSpy = potionSpy;
+    }
+
+    public String getAcFormat()
+    {
+        return acFormat;
+    }
+
+    public void setAcFormat(String acFormat)
+    {
+        this.acFormat = acFormat;
+    }
+
+    public String getPteroID()
+    {
+        return pteroID;
+    }
+
+    public void setPteroID(String pteroID)
+    {
+        this.pteroID = pteroID;
     }
 }

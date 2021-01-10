@@ -1,18 +1,17 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import java.io.File;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
-import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
-import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.admin.ActivityLog;
 import me.totalfreedom.totalfreedommod.admin.Admin;
+import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
+import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 
 public class Module_activitylog extends HTTPDModule
 {
 
-    public Module_activitylog(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_activitylog(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override

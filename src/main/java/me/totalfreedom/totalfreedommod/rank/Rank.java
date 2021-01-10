@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.rank;
 
-import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 
 public enum Rank implements Displayable
@@ -12,25 +11,25 @@ public enum Rank implements Displayable
     SENIOR_ADMIN("a", "Senior Admin", Type.ADMIN, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
     ADMIN_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false),
     SENIOR_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false);
-    @Getter
+
     private final Type type;
-    @Getter
+
     private final String name;
-    @Getter
+
     private final String abbr;
-    @Getter
+
     private final String article;
-    @Getter
+
     private final String tag;
-    @Getter
+
     private final String coloredTag;
-    @Getter
+
     private final ChatColor color;
-    @Getter
+
     private final org.bukkit.ChatColor teamColor;
-    @Getter
+
     private final boolean hasTeam;
-    @Getter
+
     private final boolean hasDefaultLoginMessage;
 
     Rank(String article, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
@@ -45,6 +44,19 @@ public enum Rank implements Displayable
         this.teamColor = teamColor;
         this.hasTeam = hasTeam;
         this.hasDefaultLoginMessage = hasDefaultLoginMessage;
+    }
+
+    public static Rank findRank(String string)
+    {
+        try
+        {
+            return Rank.valueOf(string.toUpperCase());
+        }
+        catch (Exception ignored)
+        {
+        }
+
+        return Rank.NON_OP;
     }
 
     @Override
@@ -99,6 +111,8 @@ public enum Rank implements Displayable
             return true;
         }
 
+        assert getConsoleVariant() != null;
+        assert rank.getConsoleVariant() != null;
         return getConsoleVariant().getLevel() >= rank.getConsoleVariant().getLevel();
     }
 
@@ -127,17 +141,55 @@ public enum Rank implements Displayable
         }
     }
 
-    public static Rank findRank(String string)
+    public Type getType()
     {
-        try
-        {
-            return Rank.valueOf(string.toUpperCase());
-        }
-        catch (Exception ignored)
-        {
-        }
+        return type;
+    }
 
-        return Rank.NON_OP;
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
+    @Override
+    public String getArticle()
+    {
+        return article;
+    }
+
+    @Override
+    public String getTag()
+    {
+        return tag;
+    }
+
+    @Override
+    public String getColoredTag()
+    {
+        return coloredTag;
+    }
+
+    @Override
+    public ChatColor getColor()
+    {
+        return color;
+    }
+
+    @Override
+    public org.bukkit.ChatColor getTeamColor()
+    {
+        return teamColor;
+    }
+
+    public boolean isHasTeam()
+    {
+        return hasTeam;
+    }
+
+    public boolean isHasDefaultLoginMessage()
+    {
+        return hasDefaultLoginMessage;
     }
 
     public enum Type

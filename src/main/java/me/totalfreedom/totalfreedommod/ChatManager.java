@@ -1,11 +1,11 @@
 package me.totalfreedom.totalfreedommod;
 
 import com.google.common.base.Strings;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Displayable;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FSync;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -96,8 +96,8 @@ public class ChatManager extends FreedomService
         }
 
         // Check for 4chan trigger
-        Boolean green = ChatColor.stripColor(message).toLowerCase().startsWith(">");
-        Boolean orange = ChatColor.stripColor(message).toLowerCase().endsWith("<");
+        boolean green = ChatColor.stripColor(message).toLowerCase().startsWith(">");
+        boolean orange = ChatColor.stripColor(message).toLowerCase().endsWith("<");
         if (ConfigEntry.FOURCHAN_ENABLED.getBoolean())
         {
             if (green)
@@ -123,7 +123,7 @@ public class ChatManager extends FreedomService
         }
 
         // Check for mentions
-        Boolean mentionEveryone = ChatColor.stripColor(message).toLowerCase().contains("@everyone") && plugin.al.isAdmin(player);
+        boolean mentionEveryone = ChatColor.stripColor(message).toLowerCase().contains("@everyone") && plugin.al.isAdmin(player);
         for (Player p : server.getOnlinePlayers())
         {
             if (ChatColor.stripColor(message).toLowerCase().contains("@" + p.getName().toLowerCase()) || mentionEveryone)

@@ -12,6 +12,7 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Response;
 import me.totalfreedom.totalfreedommod.httpd.module.HTTPDModule;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_activitylog;
+import me.totalfreedom.totalfreedommod.httpd.module.Module_admins;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_bans;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_file;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_help;
@@ -23,7 +24,6 @@ import me.totalfreedom.totalfreedommod.httpd.module.Module_logs;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_players;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_punishments;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_schematic;
-import me.totalfreedom.totalfreedommod.httpd.module.Module_admins;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -32,12 +32,50 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 public class HTTPDaemon extends FreedomService
 {
 
+    private static final Pattern EXT_REGEX = Pattern.compile("\\.([^.\\s]+)$");
     public static String MIME_DEFAULT_BINARY = "application/octet-stream";
-    private static final Pattern EXT_REGEX = Pattern.compile("\\.([^\\.\\s]+)$");
     //
     public int port;
-    private HTTPD httpd;
     public Map<String, ModuleExecutable> modules = new HashMap<>();
+    private HTTPD httpd;
+
+    public static Response serveFileBasic(File file)
+    {
+        Response response = null;
+
+        if (file != null && file.exists())
+        {
+            try
+            {
+                String mimetype = null;
+
+                Matcher matcher = EXT_REGEX.matcher(file.getCanonicalPath());
+                if (matcher.find())
+                {
+                    mimetype = Module_file.MIME_TYPES.get(matcher.group(1));
+                }
+
+                if (mimetype == null || mimetype.trim().isEmpty())
+                {
+                    mimetype = MIME_DEFAULT_BINARY;
+                }
+
+                // Some browsers like firefox download the file for text/yaml mime types
+                if (FilenameUtils.getExtension(file.getName()).equals("yml"))
+                {
+                    mimetype = NanoHTTPD.MIME_PLAINTEXT;
+                }
+
+                response = new Response(Response.Status.OK, mimetype, new FileInputStream(file));
+                response.addHeader("Content-Length", "" + file.length());
+            }
+            catch (IOException ex)
+            {
+                FLog.severe(ex);
+            }
+        }
+        return response;
+    }
 
     @Override
     public void onStart()
@@ -99,7 +137,7 @@ public class HTTPDaemon extends FreedomService
 
     private void module(String name, Class<? extends HTTPDModule> clazz, boolean async)
     {
-        modules.put(name, ModuleExecutable.forClass(plugin, clazz, async));
+        modules.put(name, ModuleExecutable.forClass(clazz, async));
     }
 
     private class HTTPD extends NanoHTTPD
@@ -108,12 +146,7 @@ public class HTTPDaemon extends FreedomService
         {
             super(port);
         }
-
-        private HTTPD(String hostname, int port)
-        {
-            super(hostname, port);
-        }
-
+        
         @Override
         public Response serve(HTTPSession session)
         {
@@ -140,43 +173,5 @@ public class HTTPDaemon extends FreedomService
                 return new Response(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, "Error 500: Internal Server Error\r\n" + ex.getMessage() + "\r\n" + ExceptionUtils.getStackTrace(ex));
             }
         }
-    }
-
-    public static Response serveFileBasic(File file)
-    {
-        Response response = null;
-
-        if (file != null && file.exists())
-        {
-            try
-            {
-                String mimetype = null;
-
-                Matcher matcher = EXT_REGEX.matcher(file.getCanonicalPath());
-                if (matcher.find())
-                {
-                    mimetype = Module_file.MIME_TYPES.get(matcher.group(1));
-                }
-
-                if (mimetype == null || mimetype.trim().isEmpty())
-                {
-                    mimetype = MIME_DEFAULT_BINARY;
-                }
-
-                // Some browsers like firefox download the file for text/yaml mime types
-                if (FilenameUtils.getExtension(file.getName()).equals("yml"))
-                {
-                    mimetype = NanoHTTPD.MIME_PLAINTEXT;
-                }
-
-                response = new Response(Response.Status.OK, mimetype, new FileInputStream(file));
-                response.addHeader("Content-Length", "" + file.length());
-            }
-            catch (IOException ex)
-            {
-                FLog.severe(ex);
-            }
-        }
-        return response;
     }
 }
