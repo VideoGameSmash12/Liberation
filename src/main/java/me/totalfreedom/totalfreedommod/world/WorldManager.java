@@ -78,7 +78,7 @@ public class WorldManager extends FreedomService
                 return;
             }
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
 
@@ -106,7 +106,7 @@ public class WorldManager extends FreedomService
                 return;
             }
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
 

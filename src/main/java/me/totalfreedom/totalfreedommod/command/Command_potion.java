@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Command_potion extends FreedomCommand
 {
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -178,8 +179,7 @@ public class Command_potion extends FreedomCommand
         switch (args.length)
         {
             case 1:
-                List<String> arguments = new ArrayList<>();
-                arguments.addAll(Arrays.asList("list", "clear", "add"));
+                List<String> arguments = new ArrayList<>(Arrays.asList("list", "clear", "add"));
                 if (plugin.al.isAdmin(sender))
                 {
                     arguments.add("clearall");
@@ -203,14 +203,14 @@ public class Command_potion extends FreedomCommand
             case 3:
                 if (args[0].equals("add"))
                 {
-                    return Arrays.asList("<duration>");
+                    return Collections.singletonList("<duration>");
                 }
                 break;
 
             case 4:
                 if (args[0].equals("add"))
                 {
-                    return Arrays.asList("<amplifier>");
+                    return Collections.singletonList("<amplifier>");
                 }
                 break;
 

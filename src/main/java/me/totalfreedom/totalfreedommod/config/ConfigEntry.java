@@ -172,6 +172,19 @@ public enum ConfigEntry
         this.configName = configName;
     }
 
+    public static ConfigEntry findConfigEntry(String name)
+    {
+        name = name.toLowerCase().replace("_", "");
+        for (ConfigEntry entry : values())
+        {
+            if (entry.toString().toLowerCase().replace("_", "").equals(name))
+            {
+                return entry;
+            }
+        }
+        return null;
+    }
+
     public Class<?> getType()
     {
         return type;
@@ -187,21 +200,14 @@ public enum ConfigEntry
         return getConfig().getString(this);
     }
 
-    public String setString(String value)
-    {
-        getConfig().setString(this, value);
-        return value;
-    }
-
     public Double getDouble()
     {
         return getConfig().getDouble(this);
     }
 
-    public Double setDouble(Double value)
+    public void setDouble(Double value)
     {
         getConfig().setDouble(this, value);
-        return value;
     }
 
     public Boolean getBoolean()
@@ -220,10 +226,9 @@ public enum ConfigEntry
         return getConfig().getInteger(this);
     }
 
-    public Integer setInteger(Integer value)
+    public void setInteger(Integer value)
     {
         getConfig().setInteger(this, value);
-        return value;
     }
 
     public List<?> getList()
@@ -240,18 +245,5 @@ public enum ConfigEntry
     private MainConfig getConfig()
     {
         return TotalFreedomMod.getPlugin().config;
-    }
-
-    public static ConfigEntry findConfigEntry(String name)
-    {
-        name = name.toLowerCase().replace("_", "");
-        for (ConfigEntry entry : values())
-        {
-            if (entry.toString().toLowerCase().replace("_", "").equals(name))
-            {
-                return entry;
-            }
-        }
-        return null;
     }
 }

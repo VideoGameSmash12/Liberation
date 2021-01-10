@@ -2,6 +2,7 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
@@ -40,12 +41,12 @@ public class Command_tban extends FreedomCommand
         }
 
         final String username;
-        final List<String> ips = new ArrayList<>();
 
         final Player player = getPlayer(args[0]);
+        final PlayerData entry;
         if (player == null)
         {
-            final PlayerData entry = plugin.pl.getData(args[0]);
+            entry = plugin.pl.getData(args[0]);
 
             if (entry == null)
             {
@@ -54,14 +55,13 @@ public class Command_tban extends FreedomCommand
             }
 
             username = entry.getName();
-            ips.addAll(entry.getIps());
         }
         else
         {
-            final PlayerData entry = plugin.pl.getData(player);
+            entry = plugin.pl.getData(player);
             username = player.getName();
-            ips.addAll(entry.getIps());
         }
+        final List<String> ips = new ArrayList<>(entry.getIps());
 
         String reason = null;
         if (args.length > 1)
@@ -84,7 +84,7 @@ public class Command_tban extends FreedomCommand
                     for (int z = -1; z <= 1; z++)
                     {
                         final Location strike_pos = new Location(targetPos.getWorld(), targetPos.getBlockX() + x, targetPos.getBlockY(), targetPos.getBlockZ() + z);
-                        targetPos.getWorld().strikeLightning(strike_pos);
+                        Objects.requireNonNull(targetPos.getWorld()).strikeLightning(strike_pos);
                     }
                 }
 

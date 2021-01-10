@@ -42,7 +42,6 @@ public class AntiNuke extends FreedomService
             fPlayer.resetBlockDestroyCount();
 
             event.setCancelled(true);
-            return;
         }
     }
 

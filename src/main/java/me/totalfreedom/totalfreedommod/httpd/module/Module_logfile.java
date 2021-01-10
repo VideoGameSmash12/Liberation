@@ -3,17 +3,15 @@ package me.totalfreedom.totalfreedommod.httpd.module;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDPageBuilder;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Response;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -29,9 +27,15 @@ public class Module_logfile extends HTTPDModule
                     "gz"
             };
 
-    public Module_logfile(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_logfile(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
+    }
+
+    private static String getArg(String[] args)
+    {
+        String out = (args.length == 1 + 1 ? args[1] : null);
+        return (out == null ? null : (out.trim().isEmpty() ? null : out.trim()));
     }
 
     @Override
@@ -63,13 +67,13 @@ public class Module_logfile extends HTTPDModule
         final StringBuilder out = new StringBuilder();
         final String remoteAddress = socket.getInetAddress().getHostAddress();
         final String[] args = StringUtils.split(uri, "/");
-        final ModuleMode mode = ModuleMode.getMode(getArg(args, 1));
+        final ModuleMode mode = ModuleMode.getMode(getArg(args));
 
         switch (mode)
         {
             case LIST:
             {
-                if (!isAuthorized(remoteAddress))
+                if (isAuthorized(remoteAddress))
                 {
 
                     out.append(HTMLGenerationTools.paragraph("Log files access denied: Your IP, " + remoteAddress + ", is not registered to an admin on this server."));
@@ -88,14 +92,7 @@ public class Module_logfile extends HTTPDModule
 
                     }
 
-                    Collections.sort(LogFilesFormatted, new Comparator<String>()
-                    {
-                        @Override
-                        public int compare(String a, String b)
-                        {
-                            return a.toLowerCase().compareTo(b.toLowerCase());
-                        }
-                    });
+                    LogFilesFormatted.sort(Comparator.comparing(String::toLowerCase));
 
                     out
                             .append(HTMLGenerationTools.heading("Logfiles:", 1))
@@ -107,7 +104,7 @@ public class Module_logfile extends HTTPDModule
             }
             case DOWNLOAD:
             {
-                if (!isAuthorized(remoteAddress))
+                if (isAuthorized(remoteAddress))
                 {
                     out.append(HTMLGenerationTools.paragraph("Log files access denied: Your IP, " + remoteAddress + ", is not registered to an admin on this server."));
                     FLog.info("An unregistered IP (" + remoteAddress + ") has tried to download a log file");
@@ -166,16 +163,45 @@ public class Module_logfile extends HTTPDModule
     private boolean isAuthorized(String remoteAddress)
     {
         Admin entry = plugin.al.getEntryByIp(remoteAddress);
-        return entry != null && entry.isActive();
+        return entry == null || !entry.isActive();
+    }
+
+    private enum ModuleMode
+    {
+
+        LIST("list"),
+        DOWNLOAD("download"),
+        INVALID(null);
+        //
+        private final String modeName;
+
+        ModuleMode(String modeName)
+        {
+            this.modeName = modeName;
+        }
+
+        public static ModuleMode getMode(String needle)
+        {
+            for (ModuleMode mode : values())
+            {
+                final String haystack = mode.toString();
+                if (haystack != null && haystack.equalsIgnoreCase(needle))
+                {
+                    return mode;
+                }
+            }
+            return INVALID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return this.modeName;
+        }
     }
 
     private static class LogFileTransferException extends Exception
     {
-
-        public LogFileTransferException()
-        {
-        }
-
         public LogFileTransferException(String string)
         {
             super(string);
@@ -195,46 +221,6 @@ public class Module_logfile extends HTTPDModule
         public Response getResponse()
         {
             return response;
-        }
-    }
-
-    private static String getArg(String[] args, int index)
-    {
-        String out = (args.length == index + 1 ? args[index] : null);
-        return (out == null ? null : (out.trim().isEmpty() ? null : out.trim()));
-    }
-
-    private static enum ModuleMode
-    {
-
-        LIST("list"),
-        DOWNLOAD("download"),
-        INVALID(null);
-        //
-        private final String modeName;
-
-        private ModuleMode(String modeName)
-        {
-            this.modeName = modeName;
-        }
-
-        @Override
-        public String toString()
-        {
-            return this.modeName;
-        }
-
-        public static ModuleMode getMode(String needle)
-        {
-            for (ModuleMode mode : values())
-            {
-                final String haystack = mode.toString();
-                if (haystack != null && haystack.equalsIgnoreCase(needle))
-                {
-                    return mode;
-                }
-            }
-            return INVALID;
         }
     }
 }

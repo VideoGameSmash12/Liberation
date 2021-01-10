@@ -4,8 +4,6 @@ import io.papermc.lib.PaperLib;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import lombok.Getter;
-import lombok.Setter;
 import me.rayzr522.jsonmessage.JSONMessage;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
@@ -29,12 +27,19 @@ public class LoginProcess extends FreedomService
     public static final int MIN_USERNAME_LENGTH = 2;
     public static final int MAX_USERNAME_LENGTH = 20;
     public static final Pattern USERNAME_REGEX = Pattern.compile("^[\\w\\d_]{3,20}$");
+    private static boolean lockdownEnabled = false;
     public List<String> TELEPORT_ON_JOIN = new ArrayList<>();
     public List<String> CLEAR_ON_JOIN = new ArrayList<>();
 
-    @Getter
-    @Setter
-    private static boolean lockdownEnabled = false;
+    public static boolean isLockdownEnabled()
+    {
+        return lockdownEnabled;
+    }
+
+    public static void setLockdownEnabled(boolean lockdownEnabled)
+    {
+        LoginProcess.lockdownEnabled = lockdownEnabled;
+    }
 
     @Override
     public void onStart()
@@ -174,7 +179,6 @@ public class LoginProcess extends FreedomService
             if (!plugin.si.getWhitelisted().contains(username.toLowerCase()))
             {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
-                return;
             }
         }
     }

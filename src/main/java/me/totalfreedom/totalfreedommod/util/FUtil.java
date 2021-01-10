@@ -3,7 +3,6 @@ package me.totalfreedom.totalfreedommod.util;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -21,8 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
+import java.util.Objects;
 import java.util.Set;
+import java.util.SplittableRandom;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -52,7 +52,6 @@ import static org.bukkit.Bukkit.getServer;
 public class FUtil
 {
 
-    private static final Random RANDOM = new Random();
     public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
     /* See https://github.com/TotalFreedom/License - None of the listed names may be removed.
     Leaving this list here for anyone running TFM on a cracked server:
@@ -72,7 +71,6 @@ public class FUtil
             "c8e5af82-6aba-4dd7-83e8-474381380cc9" // Paldiu
     );
     public static final List<String> DEVELOPER_NAMES = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "CoolJWB", "elmon_", "speednt", "SupItsDillon", "Paldiu");
-    public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     public static final Map<String, ChatColor> CHAT_COLOR_NAMES = new HashMap<>();
     public static final List<ChatColor> CHAT_COLOR_POOL = Arrays.asList(
             ChatColor.DARK_RED,
@@ -87,9 +85,10 @@ public class FUtil
             ChatColor.DARK_BLUE,
             ChatColor.DARK_PURPLE,
             ChatColor.LIGHT_PURPLE);
-    private static Iterator<ChatColor> CHAT_COLOR_ITERATOR;
-    private static String CHARACTER_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static Map<Integer, String> TIMEZONE_LOOKUP = new HashMap<>();
+    private static final SplittableRandom RANDOM = new SplittableRandom();
+    private static final String CHARACTER_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final Map<Integer, String> TIMEZONE_LOOKUP = new HashMap<>();
+    public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
 
     static
     {
@@ -128,7 +127,7 @@ public class FUtil
         {
             task.cancel();
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
     }
@@ -149,7 +148,7 @@ public class FUtil
             return DEVELOPER_NAMES.contains(player.getName());
         }
     }
-    
+
     public static boolean inDeveloperMode()
     {
         return ConfigEntry.DEVELOPER_MODE.getBoolean();
@@ -239,6 +238,7 @@ public class FUtil
         return names;
     }
 
+    @SuppressWarnings("unchecked")
     public static UUID nameToUUID(String name)
     {
         try
@@ -295,7 +295,7 @@ public class FUtil
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
 
         while ((inputLine = in.readLine()) != null)
         {
@@ -361,7 +361,7 @@ public class FUtil
     public static String formatLocation(Location location)
     {
         return String.format("%s: (%d, %d, %d)",
-                location.getWorld().getName(),
+                Objects.requireNonNull(location.getWorld()).getName(),
                 Math.round(location.getX()),
                 Math.round(location.getY()),
                 Math.round(location.getZ()));
@@ -378,14 +378,7 @@ public class FUtil
 
     public static void deleteCoreDumps()
     {
-        final File[] coreDumps = new File(".").listFiles(new FileFilter()
-        {
-            @Override
-            public boolean accept(File file)
-            {
-                return file.getName().startsWith("java.core");
-            }
-        });
+        final File[] coreDumps = new File(".").listFiles(file -> file.getName().startsWith("java.core"));
 
         for (File dump : coreDumps)
         {
@@ -552,7 +545,7 @@ public class FUtil
             octets = 1;
         }
 
-        for (int i = 0; i < octets && i < 4; i++)
+        for (int i = 0; i < octets; i++)
         {
             if (aParts[i].equals("*") || bParts[i].equals("*"))
             {
@@ -594,7 +587,7 @@ public class FUtil
                 return (T)field.get(from);
 
             }
-            catch (NoSuchFieldException | IllegalAccessException ex)
+            catch (NoSuchFieldException | IllegalAccessException ignored)
             {
             }
         }
@@ -611,7 +604,7 @@ public class FUtil
 
     public static String rainbowify(String string)
     {
-        CHAT_COLOR_ITERATOR = CHAT_COLOR_POOL.iterator();
+        Iterator<ChatColor> CHAT_COLOR_ITERATOR = CHAT_COLOR_POOL.iterator();
 
         StringBuilder newString = new StringBuilder();
         char[] chars = string.toCharArray();
@@ -673,37 +666,36 @@ public class FUtil
     public static int randomInteger(int min, int max)
     {
         int range = max - min + 1;
-        int value = (int)(Math.random() * range) + min;
-        return value;
+        return (int)(Math.random() * range) + min;
     }
 
     public static String randomString(int length)
     {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789-_=+[]{};:,.<>~";
-        String randomString = "";
+        StringBuilder randomString = new StringBuilder();
         for (int i = 0; i < length; i++)
         {
             int selectedCharacter = randomInteger(1, characters.length()) - 1;
 
-            randomString += characters.charAt(selectedCharacter);
+            randomString.append(characters.charAt(selectedCharacter));
         }
 
-        return randomString;
+        return randomString.toString();
 
     }
 
     public static String randomAlphanumericString(int length)
     {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
-        String randomString = "";
+        StringBuilder randomString = new StringBuilder();
         for (int i = 0; i < length; i++)
         {
             int selectedCharacter = randomInteger(1, characters.length()) - 1;
 
-            randomString += characters.charAt(selectedCharacter);
+            randomString.append(characters.charAt(selectedCharacter));
         }
 
-        return randomString;
+        return randomString.toString();
 
     }
 
@@ -736,13 +728,14 @@ public class FUtil
 
     public static char getRandomCharacter()
     {
-        return CHARACTER_STRING.charAt(new Random().nextInt(CHARACTER_STRING.length()));
+        return CHARACTER_STRING.charAt(new SplittableRandom().nextInt(CHARACTER_STRING.length()));
     }
 
     public static void give(Player player, Material material, String coloredName, int amount, String... lore)
     {
         ItemStack stack = new ItemStack(material, amount);
         ItemMeta meta = stack.getItemMeta();
+        assert meta != null;
         meta.setDisplayName(FUtil.colorize(coloredName));
         List<String> loreList = new ArrayList<>();
         for (String entry : lore)
@@ -795,7 +788,7 @@ public class FUtil
 
     public static String getIp(Player player)
     {
-        return player.getAddress().getAddress().getHostAddress().trim();
+        return Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress().trim();
     }
 
     public static String getIp(PlayerLoginEvent event)
@@ -816,12 +809,8 @@ public class FUtil
 
     public static boolean isValidIPv4(String ip)
     {
-        if (ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$")
-                || ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([*])\\.([*])$"))
-        {
-            return true;
-        }
-        return false;
+        return !ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$")
+                && !ip.matches("^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\\.([*])\\.([*])$");
     }
 
     public static List<Color> createColorGradient(Color c1, Color c2, int steps)
@@ -875,7 +864,7 @@ public class FUtil
             @Override
             public void run()
             {
-                location.getWorld().createExplosion(location, power);
+                Objects.requireNonNull(location.getWorld()).createExplosion(location, power);
             }
         }.runTaskLater(TotalFreedomMod.getPlugin(), delay);
     }

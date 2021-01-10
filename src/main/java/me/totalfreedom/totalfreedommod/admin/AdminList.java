@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -22,16 +21,19 @@ import org.bukkit.entity.Player;
 
 public class AdminList extends FreedomService
 {
-    @Getter
+    public static final List<String> vanished = new ArrayList<>();
+    public final List<String> verifiedNoAdmin = new ArrayList<>();
+    public final Map<String, List<String>> verifiedNoAdminIps = Maps.newHashMap();
     private final Set<Admin> allAdmins = Sets.newHashSet(); // Includes disabled admins
     // Only active admins below
-    @Getter
     private final Set<Admin> activeAdmins = Sets.newHashSet();
     private final Map<String, Admin> nameTable = Maps.newHashMap();
     private final Map<String, Admin> ipTable = Maps.newHashMap();
-    public final List<String> verifiedNoAdmin = new ArrayList<>();
-    public final Map<String, List<String>> verifiedNoAdminIps = Maps.newHashMap();
-    public static final List<String> vanished = new ArrayList<>();
+
+    public static List<String> getVanished()
+    {
+        return vanished;
+    }
 
     @Override
     public void onStart()
@@ -249,14 +251,14 @@ public class AdminList extends FreedomService
         }
 
         Admin admin = getAdmin(player);
-        return admin == null ? false : admin.getName().equalsIgnoreCase(player.getName());
+        return admin != null && admin.getName().equalsIgnoreCase(player.getName());
     }
 
     public boolean addAdmin(Admin admin)
     {
         if (!admin.isValid())
         {
-            logger.warning("Could not add admin: " + admin.getName() + ". Admin is missing details!");
+            FLog.warning("Could not add admin: " + admin.getName() + ". Admin is missing details!");
             return false;
         }
 
@@ -379,5 +381,35 @@ public class AdminList extends FreedomService
     public boolean isVanished(String player)
     {
         return vanished.contains(player);
+    }
+
+    public Set<Admin> getAllAdmins()
+    {
+        return allAdmins;
+    }
+
+    public Set<Admin> getActiveAdmins()
+    {
+        return activeAdmins;
+    }
+
+    public Map<String, Admin> getNameTable()
+    {
+        return nameTable;
+    }
+
+    public Map<String, Admin> getIpTable()
+    {
+        return ipTable;
+    }
+
+    public List<String> getVerifiedNoAdmin()
+    {
+        return verifiedNoAdmin;
+    }
+
+    public Map<String, List<String>> getVerifiedNoAdminIps()
+    {
+        return verifiedNoAdminIps;
     }
 }

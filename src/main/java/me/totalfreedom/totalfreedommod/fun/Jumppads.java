@@ -3,8 +3,7 @@ package me.totalfreedom.totalfreedommod.fun;
 import com.google.common.collect.Maps;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.block.Block;
@@ -21,10 +20,13 @@ public class Jumppads extends FreedomService
     //
     private final Map<Player, Boolean> pushMap = Maps.newHashMap();
     //
-    @Getter
-    @Setter
-    private double strength = 1 + 0.1F;
+    private final double strength = 1 + 0.1F;
     public HashMap<Player, JumpPadMode> players = new HashMap<>();
+
+    public static double getDampingCoefficient()
+    {
+        return DAMPING_COEFFICIENT;
+    }
 
     @Override
     public void onStart()
@@ -56,7 +58,7 @@ public class Jumppads extends FreedomService
         }
 
         final Player player = event.getPlayer();
-        final Block block = event.getTo().getBlock();
+        final Block block = Objects.requireNonNull(event.getTo()).getBlock();
         final Vector velocity = player.getVelocity().clone();
 
         if (players.get(event.getPlayer()) == JumpPadMode.MADGEEK)
@@ -118,7 +120,27 @@ public class Jumppads extends FreedomService
         }
     }
 
-    public static enum JumpPadMode
+    public Map<Player, Boolean> getPushMap()
+    {
+        return pushMap;
+    }
+
+    public double getStrength()
+    {
+        return strength;
+    }
+
+    public HashMap<Player, JumpPadMode> getPlayers()
+    {
+        return players;
+    }
+
+    public void setPlayers(HashMap<Player, JumpPadMode> players)
+    {
+        this.players = players;
+    }
+
+    public enum JumpPadMode
     {
 
         OFF(false), NORMAL_AND_SIDEWAYS(true), MADGEEK(true);

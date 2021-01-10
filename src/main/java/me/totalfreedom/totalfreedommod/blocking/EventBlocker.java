@@ -3,6 +3,7 @@ package me.totalfreedom.totalfreedommod.blocking;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -24,7 +25,6 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -38,6 +38,20 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class EventBlocker extends FreedomService
 {
+    /**
+     * /@EventHandler(priority = EventPriority.HIGH)
+     * /public void onBlockRedstone(BlockRedstoneEvent event)
+     * /{
+     * /    if (!ConfigEntry.ALLOW_REDSTONE.getBoolean())
+     * /    {
+     * /        event.setNewCurrent(0);
+     * /    }
+     * /}
+     **/
+
+    // TODO: Revert back to old redstone block system when (or if) it is fixed in Bukkit, Spigot or Paper.
+    private final ArrayList<Material> redstoneBlocks = new ArrayList<>(Arrays.asList(Material.REDSTONE, Material.DISPENSER, Material.DROPPER, Material.REDSTONE_LAMP));
+
     @Override
     public void onStart()
     {
@@ -120,16 +134,11 @@ public class EventBlocker extends FreedomService
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageEvent event)
     {
-        switch (event.getCause())
+        if ((event.getCause() == EntityDamageEvent.DamageCause.LAVA)
+                && !ConfigEntry.ALLOW_LAVA_DAMAGE.getBoolean())
         {
-            case LAVA:
-            {
-                if (!ConfigEntry.ALLOW_LAVA_DAMAGE.getBoolean())
-                {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
+            event.setCancelled(true);
+            return;
         }
 
         if (ConfigEntry.ENABLE_PET_PROTECT.getBoolean())
@@ -203,18 +212,6 @@ public class EventBlocker extends FreedomService
         }
     }
 
-    //@EventHandler(priority = EventPriority.HIGH)
-    public void onBlockRedstone(BlockRedstoneEvent event)
-    {
-        if (!ConfigEntry.ALLOW_REDSTONE.getBoolean())
-        {
-            event.setNewCurrent(0);
-        }
-    }
-
-    // TODO: Revert back to old redstone block system when (or if) it is fixed in Bukkit, Spigot or Paper.
-    private ArrayList<Material> redstoneBlocks = new ArrayList<>(Arrays.asList(Material.REDSTONE, Material.DISPENSER, Material.DROPPER, Material.REDSTONE_LAMP));
-
     @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event)
     {
@@ -231,12 +228,12 @@ public class EventBlocker extends FreedomService
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerRespawn(PlayerRespawnEvent event)
     {
-        double maxHealth = event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        double maxHealth = Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
         if (maxHealth < 1)
         {
-            for (AttributeModifier attributeModifier : event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getModifiers())
+            for (AttributeModifier attributeModifier : Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getModifiers())
             {
-                event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).removeModifier(attributeModifier);
+                Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).removeModifier(attributeModifier);
             }
         }
     }

@@ -34,7 +34,7 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 {
                     message.append(" ").append(tag);
                 }
-                message.append(" " + ChatColor.RED).append(ChatColor.stripColor(member.getEffectiveName())).append(ChatColor.DARK_GRAY).append(":").append(ChatColor.RESET);
+                message.append(" ").append(ChatColor.RED).append(ChatColor.stripColor(member.getEffectiveName())).append(ChatColor.DARK_GRAY).append(":").append(ChatColor.RESET);
                 ComponentBuilder builder = new ComponentBuilder(message.toString());
                 if (!msg.getContentDisplay().isEmpty())
                 {
@@ -45,10 +45,7 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 {
                     for (Message.Attachment attachment : msg.getAttachments())
                     {
-                        if (attachment.getUrl() == null)
-                        {
-                            continue;
-                        }
+                        attachment.getUrl();
                         builder.append(" ");
                         TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
                         text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
@@ -72,6 +69,7 @@ public class DiscordToMinecraftListener extends ListenerAdapter
     {
         Guild server = Discord.bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         // Server Owner
+        assert server != null;
         if (member.getRoles().contains(server.getRoleById(ConfigEntry.DISCORD_SERVER_OWNER_ROLE_ID.getString())))
         {
             return Title.OWNER.getColoredTag();

@@ -10,7 +10,6 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -131,10 +130,10 @@ public class LogViewer extends FreedomService
         }.runTaskAsynchronously(plugin);
     }
 
-    public static enum LogsRegistrationMode
+    public enum LogsRegistrationMode
     {
 
-        ADD, DELETE, VERIFY;
+        ADD, DELETE, VERIFY
     }
 
     private static class URLBuilder
@@ -157,10 +156,8 @@ public class LogViewer extends FreedomService
         public URL getURL() throws MalformedURLException
         {
             List<String> pairs = new ArrayList<>();
-            Iterator<Map.Entry<String, String>> it = queryStringMap.entrySet().iterator();
-            while (it.hasNext())
+            for (Map.Entry<String, String> pair : queryStringMap.entrySet())
             {
-                Map.Entry<String, String> pair = it.next();
                 try
                 {
                     pairs.add(URLEncoder.encode(pair.getKey(), "UTF-8") + "=" + URLEncoder.encode(pair.getValue(), "UTF-8"));

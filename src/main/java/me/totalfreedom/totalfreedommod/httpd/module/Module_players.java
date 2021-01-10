@@ -1,9 +1,8 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,9 +12,9 @@ import org.json.simple.JSONObject;
 public class Module_players extends HTTPDModule
 {
 
-    public Module_players(TotalFreedomMod plugin, NanoHTTPD.HTTPSession session)
+    public Module_players(NanoHTTPD.HTTPSession session)
     {
-        super(plugin, session);
+        super(session);
     }
 
     @Override
@@ -25,7 +24,7 @@ public class Module_players extends HTTPDModule
         final JSONObject responseObject = new JSONObject();
 
         final JSONArray players = new JSONArray();
-        final JSONArray onlineadmins = new JSONArray();
+        final JSONArray onlineadmins = new JSONArray(); // updated, never queried.
         final JSONArray masterbuilders = new JSONArray();
         final JSONArray admins = new JSONArray();
         final JSONArray senioradmins = new JSONArray();

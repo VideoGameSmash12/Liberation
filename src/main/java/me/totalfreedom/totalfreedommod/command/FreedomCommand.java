@@ -2,17 +2,17 @@ package me.totalfreedom.totalfreedommod.command;
 
 import com.google.common.collect.Lists;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -27,43 +27,33 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import org.spigotmc.SpigotConfig;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 {
     public static final String COMMAND_PREFIX = "Command_";
-
-    @Getter
-    private static CommandMap commandMap;
-    @Getter
-    private final String name;
-    private final String description;
-    private final String usage;
-    @Getter
-    private final String aliases;
-    private final Rank level;
-    private final SourceType source;
-    private final boolean blockHostConsole;
-    private final int cooldown;
-    private final CommandParameters params;
-    @Getter
-    private final CommandPermissions perms;
-
-    protected CommandSender sender;
-
-    protected final TotalFreedomMod plugin = TotalFreedomMod.getPlugin();
-    protected final Server server = plugin.getServer();
-
-    public static final String UNKNOWN_COMMAND = ChatColor.WHITE + SpigotConfig.unknownCommandMessage;
     public static final String YOU_ARE_OP = ChatColor.YELLOW + "You are now op!";
     public static final String YOU_ARE_NOT_OP = ChatColor.YELLOW + "You are no longer op!";
     public static final String PLAYER_NOT_FOUND = ChatColor.GRAY + "Player not found!";
     public static final String ONLY_CONSOLE = ChatColor.RED + "Only console senders may execute this command!";
     public static final String ONLY_IN_GAME = ChatColor.RED + "Only in-game players may execute this command!";
     public static final String NO_PERMISSION = ChatColor.RED + "You do not have permission to execute this command.";
-
     public static final Timer timer = new Timer();
     public static final Map<CommandSender, FreedomCommand> COOLDOWN_TIMERS = new HashMap<>();
+    private static CommandMap commandMap;
+    protected final TotalFreedomMod plugin = TotalFreedomMod.getPlugin();
+    protected final Server server = plugin.getServer();
+    private final String name;
+    private final String description;
+    private final String usage;
+    private final String aliases;
+    private final Rank level;
+    private final SourceType source;
+    private final boolean blockHostConsole;
+    private final int cooldown;
+    private final CommandParameters params;
+    private final CommandPermissions perms;
+    protected CommandSender sender;
 
     FreedomCommand()
     {
@@ -77,25 +67,6 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         this.source = perms.source();
         this.blockHostConsole = perms.blockHostConsole();
         this.cooldown = perms.cooldown();
-    }
-
-    public void register()
-    {
-        FCommand cmd = new FCommand(this.name);
-        if (this.aliases != null)
-        {
-            cmd.setAliases(Arrays.asList(StringUtils.split(this.aliases, ",")));
-        }
-        if (this.description != null)
-        {
-            cmd.setDescription(this.description);
-        }
-        if (this.usage != null)
-        {
-            cmd.setUsage(this.usage);
-        }
-        getCommandMap().register("totalfreedommod", cmd);
-        cmd.setExecutor(this);
     }
 
     public static CommandMap getCommandMap()
@@ -116,82 +87,40 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         return commandMap;
     }
 
-    private final class FCommand extends Command
+    public static FreedomCommand getFrom(Command command)
     {
-        private FreedomCommand cmd = null;
-
-        private FCommand(String command)
+        try
         {
-            super(command);
+            return (FreedomCommand)(((PluginCommand)command).getExecutor());
         }
-
-        public void setExecutor(FreedomCommand cmd)
+        catch (Exception ex)
         {
-            this.cmd = cmd;
-        }
-
-        public boolean execute(CommandSender sender, String commandLabel, String[] args)
-        {
-            if (cmd != null)
-            {
-                cmd.sender = sender;
-
-                if (COOLDOWN_TIMERS.containsKey(sender) && COOLDOWN_TIMERS.containsValue(cmd))
-                {
-                    msg(ChatColor.RED + "You are on cooldown for this command.");
-                    return true;
-                }
-
-                if (perms.blockHostConsole() && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
-                {
-                    msg(ChatColor.RED + "Host console is not allowed to use this command!");
-                    return true;
-                }
-
-                if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
-                {
-                    msg(NO_PERMISSION);
-                    return true;
-                }
-
-                if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
-                {
-                    msg(ONLY_CONSOLE);
-                    return true;
-                }
-
-                if (perms.source() == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
-                {
-                    msg(ONLY_IN_GAME);
-                    return true;
-                }
-
-                if (perms.cooldown() != 0 && !isAdmin(sender))
-                {
-                    COOLDOWN_TIMERS.put(sender, cmd);
-                    timer.schedule(new TimerTask()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            COOLDOWN_TIMERS.remove(sender);
-                        }
-                    }, perms.cooldown() * 1000);
-                }
-                return cmd.onCommand(sender, this, commandLabel, args);
-            }
-            return false;
-        }
-
-        @Override
-        public List<String> tabComplete(CommandSender sender, String alias, String[] args)
-        {
-            if (cmd != null)
-            {
-                return cmd.onTabComplete(sender, this, alias, args);
-            }
             return null;
         }
+    }
+
+    public static String getCommandPrefix()
+    {
+        return COMMAND_PREFIX;
+    }
+
+    public void register()
+    {
+        FCommand cmd = new FCommand(this.name);
+        if (this.aliases != null)
+        {
+            cmd.setAliases(Arrays.asList(StringUtils.split(this.aliases, ",")));
+        }
+        if (this.description != null)
+        {
+            cmd.setDescription(this.description);
+        }
+        if (this.usage != null)
+        {
+            cmd.setUsage(this.usage);
+        }
+        getCommandMap().register("totalfreedommod", cmd);
+        cmd.setExecutor(this);
     }
 
     protected void msg(CommandSender sender, String message)
@@ -258,15 +187,7 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         }
     }
 
-    protected void checkNotHostConsole()
-    {
-        if (isConsole() && FUtil.isFromHostConsole(sender.getName()))
-        {
-            throw new CommandFailException("This command can not be used from the host console.");
-        }
-    }
-
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, @NotNull String[] args)
     {
         try
         {
@@ -284,12 +205,13 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         return false;
     }
 
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
+    @NotNull
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args)
     {
         List<String> options = getTabCompleteOptions(sender, command, alias, args);
         if (options == null)
         {
-            return null;
+            return new ArrayList<>();
         }
         return StringUtil.copyPartialMatches(args[args.length - 1], options, Lists.newArrayList());
     }
@@ -344,15 +266,166 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         throw new CommandFailException(NO_PERMISSION);
     }
 
-    public static FreedomCommand getFrom(Command command)
+    public String getName()
     {
-        try
+        return name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public String getUsage()
+    {
+        return usage;
+    }
+
+    public String getAliases()
+    {
+        return aliases;
+    }
+
+    public Rank getLevel()
+    {
+        return level;
+    }
+
+    public SourceType getSource()
+    {
+        return source;
+    }
+
+    public boolean isBlockHostConsole()
+    {
+        return blockHostConsole;
+    }
+
+    public int getCooldown()
+    {
+        return cooldown;
+    }
+
+    public CommandParameters getParams()
+    {
+        return params;
+    }
+
+    public CommandPermissions getPerms()
+    {
+        return perms;
+    }
+
+    private final class FCommand extends Command
+    {
+        private FreedomCommand cmd = null;
+
+        private FCommand(String command)
         {
-            return (FreedomCommand)(((PluginCommand)command).getExecutor());
+            super(command);
         }
-        catch (Exception ex)
+
+        public void setExecutor(FreedomCommand cmd)
         {
-            return null;
+            this.cmd = cmd;
+        }
+
+        public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args)
+        {
+            if (cmd != null)
+            {
+                cmd.sender = sender;
+
+                if (func4())
+                {
+                    return true;
+                }
+
+                if (func1())
+                {
+                    return true;
+                }
+
+                if (func2())
+                {
+                    return true;
+                }
+
+                func3();
+
+                return cmd.onCommand(sender, this, commandLabel, args);
+            }
+            return false;
+        }
+
+        public boolean func1()
+        {
+            if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
+            {
+                msg(ONLY_CONSOLE);
+                return true;
+            }
+
+            if (perms.source() == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
+            {
+                msg(ONLY_IN_GAME);
+                return true;
+            }
+
+            return false;
+        }
+
+        public boolean func2()
+        {
+            if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
+            {
+                msg(NO_PERMISSION);
+                return true;
+            }
+
+            if (perms.blockHostConsole() && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
+            {
+                msg(ChatColor.RED + "Host console is not allowed to use this command!");
+                return true;
+            }
+            return false;
+        }
+
+        public void func3()
+        {
+            if (perms.cooldown() != 0 && !isAdmin(sender))
+            {
+                COOLDOWN_TIMERS.put(sender, cmd);
+                timer.schedule(new TimerTask()
+                {
+                    @Override
+                    public void run()
+                    {
+                        COOLDOWN_TIMERS.remove(sender);
+                    }
+                }, perms.cooldown() * 1000L);
+            }
+        }
+
+        public boolean func4()
+        {
+            if (COOLDOWN_TIMERS.containsKey(sender) && COOLDOWN_TIMERS.containsValue(cmd))
+            {
+                msg(ChatColor.RED + "You are on cooldown for this command.");
+                return true;
+            }
+            return false;
+        }
+
+        @NotNull
+        @Override
+        public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args)
+        {
+            if (cmd != null)
+            {
+                return cmd.onTabComplete(sender, this, alias, args);
+            }
+            return new ArrayList<>();
         }
     }
 }

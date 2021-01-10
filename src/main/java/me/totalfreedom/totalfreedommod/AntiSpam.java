@@ -20,9 +20,9 @@ public class AntiSpam extends FreedomService
 
     public static final int MSG_PER_CYCLE = 8;
     public static final int TICKS_PER_CYCLE = 2 * 10;
-    List<Player> markedForDeath = new ArrayList<>();
     //
     public BukkitTask cycleTask = null;
+    List<Player> markedForDeath = new ArrayList<>();
 
     @Override
     public void onStart()
@@ -73,7 +73,7 @@ public class AntiSpam extends FreedomService
 
         // Check for spam
         if (playerdata.incrementAndGetMsgCount() > MSG_PER_CYCLE)
-        {   
+        {
             if (!markedForDeath.contains(player))
             {
                 markedForDeath.add(player);
@@ -84,14 +84,13 @@ public class AntiSpam extends FreedomService
 
                 event.setCancelled(true);
             }
-            return;
         }
         else if (playerdata.incrementAndGetMsgCount() > MSG_PER_CYCLE / 2)
         {
             FUtil.playerMsg(player, "Please refrain from spamming chat.", ChatColor.GRAY);
             event.setCancelled(true);
         }
-        
+
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -127,9 +126,6 @@ public class AntiSpam extends FreedomService
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerKick(PlayerKickEvent event)
     {
-        if (markedForDeath.contains(event.getPlayer()))
-        {
-            markedForDeath.remove(event.getPlayer());
-        }
+        markedForDeath.remove(event.getPlayer());
     }
 }

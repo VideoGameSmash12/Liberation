@@ -17,6 +17,16 @@ import org.bukkit.entity.Player;
 public class Command_mobpurge extends FreedomCommand
 {
 
+    public static List<String> getAllMobNames()
+    {
+        List<String> names = new ArrayList<>();
+        for (EntityType entityType : Groups.MOB_TYPES)
+        {
+            names.add(entityType.name());
+        }
+        return names;
+    }
+
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -50,16 +60,6 @@ public class Command_mobpurge extends FreedomCommand
         int count = plugin.ew.purgeMobs(type);
         msg(count + " " + (type != null ? mobName : "mob") + FUtil.showS(count) + " removed.");
         return true;
-    }
-
-    public static List<String> getAllMobNames()
-    {
-        List<String> names = new ArrayList<>();
-        for (EntityType entityType : Groups.MOB_TYPES)
-        {
-            names.add(entityType.name());
-        }
-        return names;
     }
 
     @Override

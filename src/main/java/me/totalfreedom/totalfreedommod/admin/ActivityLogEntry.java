@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.config.IConfig;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.Validate;
@@ -14,21 +12,13 @@ import org.bukkit.entity.Player;
 
 public class ActivityLogEntry implements IConfig
 {
-    @Getter
-    private String configKey;
-    @Getter
-    @Setter
-    private String name;
-    @Getter
-    private final List<String> ips = Lists.newArrayList();
-    @Getter
-    @Setter
-    private List<String> timestamps = Lists.newArrayList();
-    @Getter
-    @Setter
-    private List<String> durations = Lists.newArrayList();
 
     public static final String FILENAME = "activitylog.yml";
+    private final List<String> ips = Lists.newArrayList();
+    private final List<String> timestamps = Lists.newArrayList();
+    private final List<String> durations = Lists.newArrayList();
+    private String configKey;
+    private String name;
 
     public ActivityLogEntry(Player player)
     {
@@ -39,6 +29,11 @@ public class ActivityLogEntry implements IConfig
     public ActivityLogEntry(String configKey)
     {
         this.configKey = configKey;
+    }
+
+    public static String getFILENAME()
+    {
+        return FILENAME;
     }
 
     public void loadFrom(Player player)
@@ -108,10 +103,7 @@ public class ActivityLogEntry implements IConfig
 
     public void removeIp(String ip)
     {
-        if (ips.contains(ip))
-        {
-            ips.remove(ip);
-        }
+        ips.remove(ip);
     }
 
     public void clearIPs()
@@ -137,5 +129,40 @@ public class ActivityLogEntry implements IConfig
     {
         return configKey != null
                 && name != null;
+    }
+
+    public String getConfigKey()
+    {
+        return configKey;
+    }
+
+    public void setConfigKey(String configKey)
+    {
+        this.configKey = configKey;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public List<String> getIps()
+    {
+        return ips;
+    }
+
+    public List<String> getTimestamps()
+    {
+        return timestamps;
+    }
+
+    public List<String> getDurations()
+    {
+        return durations;
     }
 }

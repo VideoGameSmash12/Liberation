@@ -4,15 +4,12 @@ import com.google.common.collect.Lists;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
@@ -22,27 +19,19 @@ import org.bukkit.entity.Player;
 public class Ban
 {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
-
-    @Getter
-    @Setter
-    private String username = null;
-    @Getter
-    @Setter
-    private UUID uuid = null;
-    @Getter
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     private final List<String> ips = Lists.newArrayList();
-    @Getter
-    @Setter
+    private String username = null;
+    private UUID uuid = null;
     private String by = null;
-    @Getter
-    @Setter
+
+
     private Date at = null;
-    @Getter
-    @Setter
+
+
     private String reason = null; // Unformatted, &[0-9,a-f] instead of ChatColor
-    @Getter
-    @Setter
+
+
     private long expiryUnix = -1;
 
     public Ban()
@@ -53,7 +42,7 @@ public class Ban
     {
         this(username,
                 uuid,
-                Arrays.asList(ip),
+                Collections.singletonList(ip),
                 by,
                 at,
                 expire,
@@ -88,7 +77,7 @@ public class Ban
 
     public static Ban forPlayerIp(Player player, CommandSender by, Date expiry, String reason)
     {
-        return new Ban(null, null, Arrays.asList(FUtil.getIp(player)), by.getName(), Date.from(Instant.now()), expiry, reason);
+        return new Ban(null, null, Collections.singletonList(FUtil.getIp(player)), by.getName(), Date.from(Instant.now()), expiry, reason);
     }
 
     public static Ban forPlayerIp(String ip, CommandSender by, Date expiry, String reason)
@@ -141,6 +130,11 @@ public class Ban
                 Date.from(Instant.now()),
                 expiry,
                 reason);
+    }
+
+    public static SimpleDateFormat getDateFormat()
+    {
+        return DATE_FORMAT;
     }
 
     public boolean hasUsername()
@@ -256,16 +250,74 @@ public class Ban
 
     private void dedupeIps()
     {
-
         Set<String> uniqueIps = new HashSet<>();
 
-        Iterator<String> it = ips.iterator();
-        while (it.hasNext())
-        {
-            if (!uniqueIps.add(it.next()))
-            {
-                it.remove();
-            }
-        }
+        //Fancy Collections.removeIf lets you do all that while loop work in one lambda.
+        ips.removeIf(s -> !uniqueIps.add(s));
+    }
+
+    public List<String> getIps()
+    {
+        return ips;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid)
+    {
+        this.uuid = uuid;
+    }
+
+    public String getBy()
+    {
+        return by;
+    }
+
+    public void setBy(String by)
+    {
+        this.by = by;
+    }
+
+    public Date getAt()
+    {
+        return at;
+    }
+
+    public void setAt(Date at)
+    {
+        this.at = at;
+    }
+
+    public String getReason()
+    {
+        return reason;
+    }
+
+    public void setReason(String reason)
+    {
+        this.reason = reason;
+    }
+
+    public long getExpiryUnix()
+    {
+        return expiryUnix;
+    }
+
+    public void setExpiryUnix(long expiryUnix)
+    {
+        this.expiryUnix = expiryUnix;
     }
 }

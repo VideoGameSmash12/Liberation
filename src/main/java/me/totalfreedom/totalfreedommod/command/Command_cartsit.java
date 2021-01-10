@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,7 +39,7 @@ public class Command_cartsit extends FreedomCommand
 
         if (targetPlayer.isInsideVehicle())
         {
-            targetPlayer.getVehicle().eject();
+            Objects.requireNonNull(targetPlayer.getVehicle()).eject();
         }
         else
         {

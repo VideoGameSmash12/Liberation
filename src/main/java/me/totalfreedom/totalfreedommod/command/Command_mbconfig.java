@@ -101,7 +101,7 @@ public class Command_mbconfig extends FreedomCommand
                     return false;
                 }
 
-                if (!plugin.pl.canManageMasterBuilders(sender.getName()))
+                if (plugin.pl.canManageMasterBuilders(sender.getName()))
                 {
                     return noPerms();
                 }
@@ -157,7 +157,7 @@ public class Command_mbconfig extends FreedomCommand
                     return false;
                 }
 
-                if (!plugin.pl.canManageMasterBuilders(sender.getName()))
+                if (plugin.pl.canManageMasterBuilders(sender.getName()))
                 {
                     return noPerms();
                 }

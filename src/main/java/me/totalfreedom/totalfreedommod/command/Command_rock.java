@@ -22,6 +22,7 @@ public class Command_rock extends FreedomCommand
     {
         final ItemStack heldItem = new ItemStack(Material.STONE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
+        assert heldItemMeta != null;
         heldItemMeta.setDisplayName(ChatColor.BLUE + "Rock");
         heldItem.setItemMeta(heldItemMeta);
 

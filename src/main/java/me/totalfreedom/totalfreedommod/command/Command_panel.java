@@ -4,9 +4,9 @@ import com.google.common.base.Strings;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -98,27 +98,6 @@ public class Command_panel extends FreedomCommand
             msg("Successfully deleted your Pterodactyl account.", ChatColor.GREEN);
             return true;
         }
-        /*else if (args[0].equals("resetpassword"))
-        {
-            Admin admin = getAdmin(playerSender);
-
-            if (admin.getAmpUsername() == null)
-            {
-                msg("You do not have a Pterodactyl account.", ChatColor.RED);
-                return true;
-            }
-
-            msg("Resetting your password...", ChatColor.GREEN);
-
-            String id = admin.getPteroID();
-            String password = FUtil.randomString(30);
-            plugin.ptero.setPassword(id, password);
-            plugin.dc.sendPteroInfo(playerData, null, password);
-
-            msg("Successfully reset your AMP account password. Check your DMs from " + plugin.dc.formatBotTag() + " on discord to get your credentials.", ChatColor.GREEN);
-            return true;
-        }*/
-
         return false;
     }
 

@@ -19,7 +19,7 @@ public class Command_eject extends FreedomCommand
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
 
-        List<String> names = new ArrayList();
+        List<String> names = new ArrayList<>();
 
         for (Entity entity : playerSender.getPassengers())
         {

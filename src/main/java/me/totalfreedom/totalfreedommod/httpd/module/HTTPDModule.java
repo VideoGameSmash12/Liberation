@@ -4,7 +4,6 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import me.totalfreedom.totalfreedommod.FreedomService;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.httpd.HTTPDPageBuilder;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.HTTPSession;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Method;
@@ -21,7 +20,7 @@ public abstract class HTTPDModule extends FreedomService
     protected final Socket socket;
     protected final HTTPSession session;
 
-    public HTTPDModule(TotalFreedomMod plugin, HTTPSession session)
+    public HTTPDModule(HTTPSession session)
     {
         this.uri = session.getUri();
         this.method = session.getMethod();

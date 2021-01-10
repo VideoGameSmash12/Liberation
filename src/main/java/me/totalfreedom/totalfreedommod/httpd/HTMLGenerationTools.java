@@ -1,7 +1,6 @@
 package me.totalfreedom.totalfreedommod.httpd;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
@@ -23,10 +22,8 @@ public class HTMLGenerationTools
 
         output.append("<ul>\r\n");
 
-        Iterator<Map.Entry<K, V>> it = map.entrySet().iterator();
-        while (it.hasNext())
+        for (Map.Entry<K, V> entry : map.entrySet())
         {
-            Map.Entry<K, V> entry = it.next();
             output.append("<li>").append(escapeHtml4(entry.getKey().toString() + " = " + entry.getValue().toString())).append("</li>\r\n");
         }
 

@@ -28,15 +28,6 @@ public class Command_cookie extends FreedomCommand
             output.append(FUtil.randomChatColor()).append(word).append(" ");
         }
 
-        final StringBuilder name = new StringBuilder();
-
-        name.append(ChatColor.DARK_RED).append("C")
-                .append(ChatColor.GOLD).append("o")
-                .append(ChatColor.YELLOW).append("o")
-                .append(ChatColor.DARK_GREEN).append("k")
-                .append(ChatColor.DARK_BLUE).append("i")
-                .append(ChatColor.DARK_PURPLE).append("e");
-
         final StringBuilder lore = new StringBuilder();
 
         for (final String word : LORE.split(" "))
@@ -46,7 +37,14 @@ public class Command_cookie extends FreedomCommand
 
         final ItemStack heldItem = new ItemStack(Material.COOKIE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
-        heldItemMeta.setDisplayName(name.toString());
+        String name = ChatColor.DARK_RED + "C" +
+                ChatColor.GOLD + "o" +
+                ChatColor.YELLOW + "o" +
+                ChatColor.DARK_GREEN + "k" +
+                ChatColor.DARK_BLUE + "i" +
+                ChatColor.DARK_PURPLE + "e";
+        assert heldItemMeta != null;
+        heldItemMeta.setDisplayName(name);
         heldItemMeta.setLore(Arrays.asList(lore.toString().split("\n")));
         heldItem.setItemMeta(heldItemMeta);
 

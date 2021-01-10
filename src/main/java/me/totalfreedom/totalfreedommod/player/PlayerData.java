@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.shop.ShopItem;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -19,38 +17,31 @@ import org.bukkit.entity.Player;
 
 public class PlayerData
 {
-    @Getter
-    @Setter
-    private String name;
     private final List<String> ips = Lists.newArrayList();
     private final List<String> notes = Lists.newArrayList();
-    @Getter
-    @Setter
-    private String tag = null;
-    @Getter
-    @Setter
-    private String discordID = null;
     private final List<String> backupCodes = Lists.newArrayList();
-    @Setter
+    private String name;
+    private String tag = null;
+    private String discordID = null;
     private Boolean masterBuilder = false;
-    @Setter
+
     private Boolean verification = false;
-    @Getter
-    @Setter
+
+
     private String rideMode = "ask";
-    @Getter
-    @Setter
+
+
     private int coins;
     private List<String> items = Lists.newArrayList();
-    @Getter
-    @Setter
+
+
     private int totalVotes;
-    @Setter
+
     private boolean displayDiscord = true;
-    @Getter
-    @Setter
+
+
     private String loginMessage;
-    @Setter
+
     private Boolean inspect = false;
 
     public PlayerData(ResultSet resultSet)
@@ -95,30 +86,27 @@ public class PlayerData
         }
     }
 
-    @Override
-    public String toString()
-    {
-        final StringBuilder output = new StringBuilder();
-
-        output.append("Player: ").append(name).append("\n")
-                .append("- IPs: ").append(StringUtils.join(ips, ", ")).append("\n")
-                .append("- Discord ID: ").append(discordID).append("\n")
-                .append("- Master Builder: ").append(masterBuilder).append("\n")
-                .append("- Has Verification: ").append(verification).append("\n")
-                .append("- Coins: ").append(coins).append("\n")
-                .append("- Total Votes: ").append(totalVotes).append("\n")
-                .append("- Display Discord: ").append(displayDiscord).append("\n")
-                .append("- Tag: ").append(FUtil.colorize(tag)).append(ChatColor.GRAY).append("\n")
-                .append("- Ride Mode: ").append(rideMode).append("\n")
-                .append("- Backup Codes: ").append(backupCodes.size()).append("/10").append("\n")
-                .append("- Login Message: ").append(loginMessage);
-
-        return output.toString();
-    }
-
     public PlayerData(Player player)
     {
         this.name = player.getName();
+    }
+
+    @Override
+    public String toString()
+    {
+
+        return "Player: " + name + "\n" +
+                "- IPs: " + StringUtils.join(ips, ", ") + "\n" +
+                "- Discord ID: " + discordID + "\n" +
+                "- Master Builder: " + masterBuilder + "\n" +
+                "- Has Verification: " + verification + "\n" +
+                "- Coins: " + coins + "\n" +
+                "- Total Votes: " + totalVotes + "\n" +
+                "- Display Discord: " + displayDiscord + "\n" +
+                "- Tag: " + FUtil.colorize(tag) + ChatColor.GRAY + "\n" +
+                "- Ride Mode: " + rideMode + "\n" +
+                "- Backup Codes: " + backupCodes.size() + "/10" + "\n" +
+                "- Login Message: " + loginMessage;
     }
 
     public List<String> getIps()
@@ -133,7 +121,12 @@ public class PlayerData
 
     public boolean addIp(String ip)
     {
-        return !ips.contains(ip) && ips.add(ip);
+        if (ips.contains(ip))
+        {
+            return false;
+        }
+        ips.add(ip);
+        return true;
     }
 
     public void removeIp(String ip)
@@ -148,7 +141,7 @@ public class PlayerData
 
     public void addIps(List<String> ips)
     {
-        ips.addAll(ips);
+        this.ips.addAll(ips);
     }
 
     public List<String> getNotes()
@@ -205,13 +198,14 @@ public class PlayerData
         return Collections.unmodifiableList(items);
     }
 
+    public void setItems(List<String> items)
+    {
+        this.items = items;
+    }
+
     public boolean hasItem(ShopItem item)
     {
-        if (items.contains(item.getDataName()))
-        {
-            return true;
-        }
-        return false;
+        return items.contains(item.getDataName());
     }
 
     public void removeItem(ShopItem item)
@@ -236,7 +230,7 @@ public class PlayerData
 
     public Map<String, Object> toSQLStorable()
     {
-        Map<String, Object> map = new HashMap<String, Object>()
+        return new HashMap<String, Object>()
         {{
             put("username", name);
             put("ips", FUtil.listToString(ips));
@@ -254,11 +248,120 @@ public class PlayerData
             put("login_message", loginMessage);
             put("inspect", inspect);
         }};
-        return map;
     }
 
     public boolean doesDisplayDiscord()
     {
         return displayDiscord;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getTag()
+    {
+        return tag;
+    }
+
+    public void setTag(String tag)
+    {
+        this.tag = tag;
+    }
+
+    public String getDiscordID()
+    {
+        return discordID;
+    }
+
+    public void setDiscordID(String discordID)
+    {
+        this.discordID = discordID;
+    }
+
+    public Boolean getMasterBuilder()
+    {
+        return masterBuilder;
+    }
+
+    public void setMasterBuilder(Boolean masterBuilder)
+    {
+        this.masterBuilder = masterBuilder;
+    }
+
+    public Boolean getVerification()
+    {
+        return verification;
+    }
+
+    public void setVerification(Boolean verification)
+    {
+        this.verification = verification;
+    }
+
+    public String getRideMode()
+    {
+        return rideMode;
+    }
+
+    public void setRideMode(String rideMode)
+    {
+        this.rideMode = rideMode;
+    }
+
+    public int getCoins()
+    {
+        return coins;
+    }
+
+    public void setCoins(int coins)
+    {
+        this.coins = coins;
+    }
+
+    public int getTotalVotes()
+    {
+        return totalVotes;
+    }
+
+    public void setTotalVotes(int totalVotes)
+    {
+        this.totalVotes = totalVotes;
+    }
+
+    public boolean isDisplayDiscord()
+    {
+        return displayDiscord;
+    }
+
+    public void setDisplayDiscord(boolean displayDiscord)
+    {
+        this.displayDiscord = displayDiscord;
+    }
+
+    public String getLoginMessage()
+    {
+        return loginMessage;
+    }
+
+    public void setLoginMessage(String loginMessage)
+    {
+        this.loginMessage = loginMessage;
+    }
+
+    public Boolean getInspect()
+    {
+        return inspect;
+    }
+
+    public void setInspect(Boolean inspect)
+    {
+        this.inspect = inspect;
     }
 }

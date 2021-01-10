@@ -47,7 +47,7 @@ public class Command_premium extends FreedomCommand
                     final URL getUrl = new URL("https://api.ashcon.app/mojang/v2/user/" + name);
                     final HttpURLConnection urlConnection = (HttpURLConnection)getUrl.openConnection();
                     urlConnection.setRequestProperty("User-Agent", "");
-                    String message = "";
+                    String message;
                     /*old code
                     BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())))
                     //message = (!"PREMIUM".equalsIgnoreCase(in.readLine()) ? ChatColor.RED + "No" : ChatColor.DARK_GREEN + "Yes");

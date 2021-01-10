@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.shop;
 
-import lombok.Getter;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,18 +26,18 @@ public enum ShopItem
         --------$
     */
 
-    @Getter
+
     private final String name;
-    @Getter
+
     private final Material icon;
-    @Getter
+
     private final int slot;
     private final ConfigEntry cost;
-    @Getter
+
     private final ChatColor color;
-    @Getter
+
     private final String dataName;
-    @Getter
+
     private final String command;
 
     ShopItem(String name, Material icon, int slot, ConfigEntry cost, ChatColor color, String dataName, String command)
@@ -52,16 +51,6 @@ public enum ShopItem
         this.command = command;
     }
 
-    public String getColoredName()
-    {
-        return color + name;
-    }
-
-    public int getCost()
-    {
-        return cost.getInteger();
-    }
-
     public static ShopItem findItem(String string)
     {
         try
@@ -73,5 +62,45 @@ public enum ShopItem
         }
 
         return null;
+    }
+
+    public String getColoredName()
+    {
+        return color + name;
+    }
+
+    public int getCost()
+    {
+        return cost.getInteger();
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public Material getIcon()
+    {
+        return icon;
+    }
+
+    public int getSlot()
+    {
+        return slot;
+    }
+
+    public ChatColor getColor()
+    {
+        return color;
+    }
+
+    public String getDataName()
+    {
+        return dataName;
+    }
+
+    public String getCommand()
+    {
+        return command;
     }
 }

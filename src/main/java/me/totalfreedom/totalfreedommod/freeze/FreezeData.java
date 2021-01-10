@@ -1,6 +1,6 @@
 package me.totalfreedom.totalfreedommod.freeze;
 
-import lombok.Getter;
+import java.util.Objects;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -17,7 +17,6 @@ public class FreezeData
 
     private final FPlayer fPlayer;
     //
-    @Getter
     private Location location = null;
     private BukkitTask unfreeze = null;
 
@@ -36,7 +35,7 @@ public class FreezeData
         final Player player = fPlayer.getPlayer();
         if (player == null)
         {
-            FLog.info("Could not freeze " + player.getName() + ". Player not online!");
+            FLog.info("Could not freeze that player as they are not online!");
             return;
         }
 
@@ -62,13 +61,18 @@ public class FreezeData
             @Override
             public void run()
             {
-                if (!plugin().al.isAdminImpostor(player) && plugin().pl.isPlayerImpostor(player))
+                if (!Objects.requireNonNull(plugin()).al.isAdminImpostor(player) && Objects.requireNonNull(plugin()).pl.isPlayerImpostor(player))
                 {
                     FUtil.adminAction("TotalFreedom", "Unfreezing " + player.getName(), false);
                     setFrozen(false);
                 }
             }
 
-        }.runTaskLater(plugin(), AUTO_PURGE_TICKS);
+        }.runTaskLater(Objects.requireNonNull(plugin()), AUTO_PURGE_TICKS);
+    }
+
+    public Location getLocation()
+    {
+        return location;
     }
 }

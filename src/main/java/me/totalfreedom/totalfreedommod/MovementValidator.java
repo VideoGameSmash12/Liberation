@@ -41,7 +41,7 @@ public class MovementValidator extends FreedomService
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
         // Check absolute value to account for negatives
-        if (Math.abs(event.getTo().getX()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getZ()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getY()) >= MAX_XYZ_COORD)
+        if (Math.abs(Objects.requireNonNull(event.getTo()).getX()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getZ()) >= MAX_XYZ_COORD || Math.abs(event.getTo().getY()) >= MAX_XYZ_COORD)
         {
             event.setCancelled(true); // illegal position, cancel it
         }
@@ -53,6 +53,7 @@ public class MovementValidator extends FreedomService
         final Player player = event.getPlayer();
         Location from = event.getFrom();
         Location to = event.getTo();
+        assert to != null;
         if (to.getX() >= from.getX() + MAX_DISTANCE_TRAVELED || to.getY() >= from.getY() + MAX_DISTANCE_TRAVELED || to.getZ() >= from.getZ() + MAX_DISTANCE_TRAVELED)
         {
             event.setCancelled(true);
@@ -146,8 +147,9 @@ public class MovementValidator extends FreedomService
             {
                 if (Objects.equals(key, "Amount")) //null-safe .equals()
                 {
+                    @SuppressWarnings("rawtypes")
                     List<MojangsonValue> values = compound.get(key);
-                    for (MojangsonValue val : values)
+                    for (MojangsonValue<?> val : values)
                     {
                         if (val.getValue().toString().equals("Infinityd"))
                         {

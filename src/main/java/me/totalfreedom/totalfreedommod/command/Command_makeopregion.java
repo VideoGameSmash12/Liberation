@@ -81,7 +81,7 @@ public class Command_makeopregion extends FreedomCommand
         region.setOwners(owners);
         region.setFlags(flags);
 
-        for (Flag flag : flags.keySet())
+        for (Flag<?> flag : flags.keySet())
         {
             region.setFlag(flag.getRegionGroupFlag(), RegionGroup.MEMBERS);
         }

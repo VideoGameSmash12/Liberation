@@ -30,16 +30,13 @@ public class Command_commandlist extends FreedomCommand
                 PluginDescriptionFile desc = targetPlugin.getDescription();
                 Map<String, Map<String, Object>> map = desc.getCommands();
 
-                if (map != null)
+                for (Entry<String, Map<String, Object>> entry : map.entrySet())
                 {
-                    for (Entry<String, Map<String, Object>> entry : map.entrySet())
-                    {
-                        String command_name = entry.getKey();
-                        commands.add(command_name);
-                    }
+                    String command_name = entry.getKey();
+                    commands.add(command_name);
                 }
             }
-            catch (Throwable ex)
+            catch (Throwable ignored)
             {
             }
         }

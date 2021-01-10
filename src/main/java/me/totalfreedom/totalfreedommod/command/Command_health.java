@@ -70,7 +70,7 @@ public class Command_health extends FreedomCommand
         return true;
     }
 
-    private class TFM_TickMeter
+    private static class TFM_TickMeter
     {
 
         private final AtomicInteger ticks = new AtomicInteger();

@@ -43,11 +43,7 @@ public class AutoEject extends FreedomService
 
         ejects.put(ip, kicks);
 
-        if (kicks <= 1)
-        {
-            method = EjectMethod.STRIKE_ONE;
-        }
-        else if (kicks == 2)
+        if (kicks == 2)
         {
             method = EjectMethod.STRIKE_TWO;
         }
@@ -101,10 +97,9 @@ public class AutoEject extends FreedomService
         }
     }
 
-    public static enum EjectMethod
+    public enum EjectMethod
     {
-
-        STRIKE_ONE, STRIKE_TWO, STRIKE_THREE;
+        STRIKE_ONE, STRIKE_TWO, STRIKE_THREE
     }
 
 }
