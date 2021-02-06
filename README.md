@@ -9,6 +9,8 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) if you are interested in developin
 
 For information on how TotalFreedomMod is licensed, please see [LICENSE.md](LICENSE.md).
 
+For information on our security policy and reporting an issue, please see [SECURITY.md](SECURITY.md)
+
 ### Compiling ###
 
 You need Maven to build. You'd also need to set the JDK version to Java 8 as that is the current standard as of now.
