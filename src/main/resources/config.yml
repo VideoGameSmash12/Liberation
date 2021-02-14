@@ -143,6 +143,7 @@ shop:
     - '%name% is the %rank% who just exists'
     - '%name% based cringe poggers based based %rank%'
     - '%name% thinks that &dWindows Server 2019 &bis the best server OS'
+    - '%name% is %art% %coloredrank% and a &4&lDark Side worshipper.'
 
   # Item prices
   prices:
@@ -196,26 +197,27 @@ social_links:
 
 # Blocking certain events
 allow:
-  fire_place: false
+  fire_place: true
   fire_spread: false
   fluid_spread: false
-  lava_place: false
+  lava_place: true
   lava_damage: false
-  water_place: false
+  water_place: true
   tnt_minecarts: false
   explosions: false
   redstone: true
-  fireworks: false
+  fireworks: true
   frostwalker: false
   unsafe_enchantments: true
   bells: true
   armorstands: true
-  minecarts: false
+  minecarts: true
   clearonjoin: false
+  tpronjoin: false
   structureblocks: false
   jigsaws: false
-  grindstones: false
-  jukeboxes: false
+  grindstones: true
+  jukeboxes: true
   spawners: false
   beehives: false
   respawnanchors: false
@@ -255,73 +257,181 @@ allow:
 #   - 'n:b:/ban:_'
 #
 blocked_commands:
+  # Core Protect Blocked and shows as an unknown command...
+  - 'a:u:/co:_'
+  - 'n:u:/co purge:_'
+  - 'a:u:/coreprotect:_'  
+  - 'n:u:/coreprotect purge:_'  
+  - 'a:u:/core:_' 
+  - 'n:u:/core purge:_' 
   # Disabled commands
+  - 'n:b:/essentials:_'
   - 'n:b:/time:Server-side time changing is disabled. Please use /ptime to set your own personal time.'
-  - 'n:b:/gamemode:Use /creative and /survival to set your gamemode.'
+  - 'n:b:/disguiseradius:_'
+  - 'n:b:/undisguiseradius:_'
+  - 'n:b:/debug:_'
   - 'n:b:/pardon:_'
   - 'n:b:/ban-ip:_'
   - 'n:b:/pardon-ip:_'
   - 'n:b:/toggledownfall:_'
-  - 'n:b:/enderchest:_'
   - 'n:b:/spreadplayers:_'
-  - 'n:b:/execute:_'
   - 'n:b:/blockdata:_'
   - 'n:b:/clearhistory:_'
   - 'n:b:/save-on:_'
   - 'n:b:/save-off:_'
-  - 'n:b:/playsound:_'
-  - 'n:b:/skinrestorer:_'
   - 'n:b:/packet:_'
-  - 'n:b:/thaw:_'
-  - 'n:b:/setjail:_'
+  - 'n:b://eval:_'
+  - 'n:b:/testvote:_'
+  - 'n:b:/nvreload:_'
+  - 'n:b:/bungeeguard:_'
+  - 'n:b:/buycraft:_'
+  - 'n:b:/spigot reload:_'
+#  - 'n:b:/setjail:_'
+  - 'n:b:/mail sendall:Sending mail to all players is not allowed.'
+  - 'n:b:/entitydata:_'
+  - 'n:b:/skins:_'
+  - 'n:b:/advancement:_'
+  - 'n:b:/worldborder:The worldborder does not need to be changed. This command is disabled.'
+  - 'n:b:/defaultgamemode:The default gamemode should not be changed.'
+  - 'n:b:/thread:_'
+  - 'n:b:/stacktrace:_'
   - 'n:b:/function:_'
+  - 'n:b:/forceload:_'
+  - 'n:b:/fill:_'
+  - 'n:b:/paper:_'
+  - 'n:b:/locate:_'
+  - 'n:b:/vvbukkit:_'
+  - 'n:b:/plot area c:_'
+  - 'n:b:/d minecart_command:_'
+  - 'n:b:/loot:_'
+  - 'n:b:/plan:_'
+#  - 'n:b:/explosivearrows:&cDisabled until further notice'
+  - 'n:b://material:_'
+  - 'n:b://mat:_'
+  - 'n:b:/mat:_'
+  - 'n:b:/vpnguard:_'
+  - 'n:b:/pcapi:_'
+  - 'n:b://distr:&cNope.'
   - 'n:b:/data:_'
   - 'n:b:/datapack:_'
-  - 'n:b:/bossbar:_'
-  - 'n:b://forceload:_'
-  - 'n:u:/co purge:_'
-  
+  - 'n:b://regen:_'
+  - 'n:b:/onlinemode:&cThis breaks UUIDs.'
+  - 'n:b:/execute:_'
+  - 'n:b:/killall:_'
+  - 'n:b:/createdisguise:_'
+  - 'n:b:/attribute:_'
+
   # Admin commands
+  - 'a:b:/vive:_'
+  - 'a:b:/vse:_'
+  - 'a:b:/lightning:_'
+  - 'a:b:/playsound:_'
+  - 'a:b:/locatebiome:_'
+  - 'a:b:/delchunks:_'
+  - 'a:b:/exploitfixer:_'
+  - 'a:b:/massivelag:_'
+  - 'a:b:/ml:_'
+  - 'a:b:/createkit:_'
+  - 'a:b:/delkit:_'
+  - 'a:b:/region:_'
+  - 'a:b:/clone:_'
+  - 'a:b:/cap:_'
+  - 'a:b:/gamemode:Use /gmc and /gms to set your gamemode.'
+  - 'a:b:/powernbt:_'
+  - 'a:b:/nbt.:_'
+  - 'a:b:/blockshub:_'
+  - 'a:b:/protocol:_'
+  - 'a:b:/libsdisguises reload:_'
+  - 'a:b://awe:_'
+  - 'a:b:/stopfire:_'
+  - 'a:b:/allowfire'
+  - 'a:b:/stoplag:_'
+  - 'a:b:/worldguard:_'
+  - 'a:b:/slay:_'
   - 'a:b:/save-all:_'
+  - 'a:b:/libsdisguises:_'
+  - 'a:b:/particle:Due to security reasons, the use of /particle has been disabled.'
+  - 'a:b:/rainbowclear:_'
+  - 'a:b:/rainbowspeed:_'
   - 'a:b:/kick:_'
+  - 'a:b:/difficulty:_'
+  - 'a:b:/captchafy:_'
   - 'a:b:/socialspy:_'
+  - 'a:b:/sproxy:_'
   - 'a:b:/replaceitem:_'
   - 'a:b:/kill:_'
-  - 'a:b://generate:_'
-  - 'a:b://:_'
-  - 'a:b:/superpickaxe:_'
-  - 'a:b:/brush:_'
-  - 'a:b:/size:_'
-  - 'a:b://mask:_'
-  - 'a:b:/mat:_'
-  - 'a:b://butcher:_'
+  - 'a:b:/reaction:_'
+  - 'a:b:/setworldspawn:_'
   - 'a:b:/scoreboard:_'
   - 'a:b:/setspawn:_'
-  - 'a:b://snow:_'
-  - 'a:b:/tellraw:_'
   - 'a:b:/forestgen:_'
   - 'a:b:/setidletimeout:_'
-  - 'a:b:/mail sendall:_'
-  - 'a:b:/eco reset:_'
-  - 'a:b:/mask:_'
-  - 'a:b:/gmask:_'
   - 'a:b:/lrbuild:_'
-  - 'a:b:/defaultgamemode:_'
+  - 'a:b:/size:_'
+  - 'a:b:/break:_'  
+  - 'a:b:/disentity:_'
   - 'a:b:/reload:_'
   - 'a:b:/title:_'
-  - 'a:b:/worldborder:_'
   - 'a:b:/weather:_'
   - 'a:b:/tpall:_'
+  - 'a:b:/etpall:_'
   - 'a:b:/setblock:_'
-  - 'a:b:/green:_'
   - 'a:b:/gamerule:_'
   - 'a:b:/togglejail:_'
-  - 'a:b:/fill:_'
-  - 'a:b:/flood:_'
+  - 'a:b:/range:_'
+  - 'a:b:/stop:_'
+  - 'a:b:/restart:_'
+  - 'a:b:/sr:_'
+  - 'a:b:/tpo:_'
+  - 'a:b:/tpohere:_'
+  - 'a:b:/tphere:_'
+  - 'a:b:/rfchairs:_'
+  - 'a:b:/ppo:_'
+  - 'a:b:/vulnerabilitypatcher:_'
+  - 'a:b:/crackshot config:_'
+  - 'a:b:/marry reload:_'
+  - 'a:b:/bh:_'
+  - 'a:b:/tpaall:_'
+  - 'a:b:/paper heap:_'
+  - 'a:u:/burn:_'
+  - 'a:b:/summon:_'
+  - 'a:b:/discord:_'
+  - 'a:b:/bossbar:_'
   - 'a:b:/team:_'
-  - 'a:b:/loot:_'
-  - 'a:b:/schedule:_'
-  - 'a:u:/co:_'
+  - 'a:b:/spawner:_'
+#  - 'a:b:/getpos:_'
+  - 's:b:/istack:_'
+  - 'a:b:/getloc:_'
+  - 'a:b:/holo:_'
+  - 'a:b:/hd:_'
+  - 'a:b:/hologram:_'
+  - 'a:b:/holograms:_'
+#  - 'a:b:/whois:&cpeople like aurulim ruined the usage of this command, stop tp bypassing' # Blocking this is ridiculous. Instead of being lazy and just blocking whois, how about you disable the part where it reveals people's coords, like you did with disabling IPs?
+  - 's:b:/awe toggle:_'
+  - 's:b:/tellraw:_'
+  - 's:b://awe toggle:_'
+  - 'a:b:/openinv:_'
+  - 'a:b:/oi:_'
+  - 'a:b:/open:_'
+  - 'a:b:/openender:_'
+  - 'a:b:/oe:_'
+  - 'a:b:/searchinv:_'
+  - 'a:b:/si:_'
+  - 'a:b:/searchender:_'
+  - 'a:b:/se:_'
+  - 'a:b:/searchenchant:_'
+  - 'a:b:/searchenchants:_'
+  - 'a:b:/anycontainer:_'
+  - 'a:b:/anychest:_'
+  - 'a:b:/sc:_'
+  - 'a:b:/fawe:_'
+  - 'a:b:/wea:_'
+  - 'a:b:/protocolsupport:_'
+  - 'a:b:/ps:_'
+  - 'n:b:/wra:_'
+  - 's:b:/viaver:_'
+  - 's:b:/viaversion:_'
+  - 's:b:/spark:_'
 
 # Automatically wipe dropped objects
 auto_wipe: true
@@ -391,45 +501,50 @@ announcer:
   prefix: '&5[&eTotalFreedom&5] &b'
 
   announcements:
-    - 'Be sure to visit our forums at &6https://forum.totalfreedom.me/'
+    - 'Be sure to visit our forums at &6https://forum.totalfreedom.me'
+    - 'You can always review the server rules here: &6https://forum.totalfreedom.me/d/7-server-conduct-policy'
     - 'If you are not OP, be sure to ask!'
-    - 'Somebody breaking the rules? Report it! /report <user> <reason>'
+    - 'Want to join our SMP server? You can using &6/smp-01'
+    - 'Somebody breaking the rules? Report it! &6/report <user> <reason>'
     - 'Griefing is not allowed!'
     - 'Hacked clients are allowed!'
-    - 'Interested in becoming admin? Type "/ai" for more information!'
-    - 'You may view all online administrators via "/list -a"'
-    - 'Save your buildings via WorldEdit! http://totalfreedom.me for more information!'
-    - 'You may contact TotalFreedom support on Twitter! https://tiny.re/tfsupport'
-    - 'You may download TotalFreedomMod here: https://tiny.re/tfm+'
-    - 'Wild1145 is the owner of TotalFreedom.'
-    - 'markbyron is the founder of TotalFreedom.'
-    - 'Server lagging? Check the lag via "/tps"'
-    - 'You are allowed to record and stream videos on TotalFreedom.'
+    - 'Interested in becoming admin? Do &6/admininfo &b for more information!'
+    - 'You may view all online admins via &6/list -a'
+    - 'Save your buildings via WorldEdit! &6https://totalfreedom.me&b for more information!'
+    - 'Wild1145 / Ryan is the owner of TotalFreedom.'
+    - 'Server lagging? Check the lag via &6/tps'
     - 'Player vs player while in creative or god mode is forbidden!'
     - 'Spawn killing is forbidden!'
     - 'Invisible potions are allowed!'
-    - 'Serial griefing and trolling will result in an indefinite ban!'
-    - 'Racism, nazism, and sexism are strictly forbidden!'
-    - 'Join our Discord server! Link: https://discord.com/invite/PW4savJR9a'
+    - 'Serial griefing and trolling will result in a permanent ban!'
+    - 'All forms of discrimination are strictly forbidden!'
+    - 'Join our Discord server! https://discord.com/invite/PW4savJR9a'
+    - 'Remember to save your hotbar, otherwise you may lose your items!'
+    - 'Link your discord account with &6/linkdiscord for extra features!'
+ #   - 'Check out our reddit at &6https://www.reddit.com/r/TotalFreedom/ &byou can even link your account!'
+    - 'Want to see cool builds? Check out our Master Builder World with &6/mbworld'
+    - 'Be sure to follow our twitter for all the latest updates. &6https://twitter.com/totalfreedommc'
 
 # What to display in the admininfo command.
 admininfo:
-  - '&bHow to apply for admin on the TotalFreedom Server:'
+  - '&bHow to apply for an admin position on the TotalFreedom Server:'
   - ' &6- Do not ask for admin in game'
   - ' &2- Be helpful within the server'
   - ' &6- Report those breaking the rules'
   - ' &2- And apply on our forums at the link:'
-  - '    &9https://forum.totalfreedom.me/'
-
+  - '&9https://forum.totalfreedom.me/d/45-admin-application-template'
+  
 # What to display in the vote command.
 votinginfo:
   - '&bVoting Links:'
-  - ' &6- https://minecraft-mp.com/server/228386/vote/'
-  - ' &2- https://minecraft-server-list.com/server/443272/vote/'
-  - ' &6- https://topg.org/Minecraft/in-518809/'
-  - ' &2- https://minecraftlist.org/vote/18975/'
-  - ' &6- https://minecraftservers.org/vote/595721/'
-  - ' &2- https://topservers.com/server/1275/'
+  - ' &2- https://minecraft-mp.com/server/228386/vote/'
+#  - ' &2- https://minecraft-server-list.com/server/443272/vote/'
+  - ' &6- https://topg.org/Minecraft/in-599712'
+  - ' &2- https://minecraftlist.org/vote/18975'
+  - ' &6- https://minecraftservers.org/vote/595721'
+  - ' &2- https://topservers.com/minecraft/in-1275'
+  - ' &6- https://topmcservers.com/server/681/vote'
+  - ' &2- https://minecraft.buzz/server/1024&tab=vote'
 
 # What to display in the Master Builder info command.
 masterbuilderinfo:
@@ -438,7 +553,7 @@ masterbuilderinfo:
   - ' &2- Screenshot some of your previous builds (be ready to prove that the builds are yours)'
   - ' &6- Copy the template and create a thread on our forums'
   - ' &2- Template:'
-  - '    &9bit.ly/TFMasterBuilderTemplate'
+  - '&9https://forum.totalfreedom.me/d/336-master-builder-application-process'
 
 # Famous players - cannot be banned by username
 famous_players:
@@ -449,8 +564,6 @@ famous_players:
   - kiershar
   - fvdisco
   - sethbling
-  - notch
-  - jeb_
   - gamechap
   - bertiechap
   - vechs
@@ -468,8 +581,6 @@ famous_players:
   - deadlox
   - xxslyxx
   - jeromeasf
-  - dinnerbone
-  - grumm
   - grum
   - evilseph
   - cavemanfilms
@@ -480,6 +591,114 @@ famous_players:
   - dantdm
   - gizzy14gazza
   - furiousdestroyer
+  - pewdie
+  - thecampingrusher
+  - logdotzip
+  - ssundee
+  - mrcrainer
+  - achileis
+  - donibobes
+  - itsjerry
+  - itsharry
+  - bebopvox
+  - clankstar
+  - jollyajax
+  - b0xx3r
+  - vareide
+  - defek7
+  - strutt20
+  - appleg
+  - sterling_
+  - hypixel
+  - huskymudkipz
+  - setosorcerer
+  - slamacow
+  - mrcrayfish
+  - zexyzek
+  - synhd
+  - syndicate
+  - bajancanadian
+  - actennisac
+  - bodil40
+  - trumu
+  - huskymudkipz
+  - dantdm
+  - skeppy
+  - badboyhalo
+  # Mojang staff below this line
+  - aeplh
+  - amir343
+  - angryem
+  - ashrafi
+  - binni
+  - blurpi
+  - bopogamel
+  - boq
+  - c418
+  - carlmanneh
+  - carnalizer
+  - carramel
+  - darngeek
+  - dinnerbone
+  - eldrone
+  - elevenen
+  - el_hefe_
+  - engst
+  - excitedze
+  - frukthamster
+  - fry_
+  - grumm
+  - hampus
+  - helloiammarsh
+  - hey
+  - hoodad
+  - ianna_na_na
+  - jeb_
+  - jonkagstrom
+  - kappe
+  - klumpig
+  - krisjelbring
+  - ladyagnes
+  - lisa
+  - mahuldur
+  - mansolson
+  - marc
+  - marc_irl
+  - masseffect
+  - midnightenforcer
+  - minecraftchick
+  - modhelius
+  - moesh
+  - mojangjonas
+  - mojangsta
+  - mollstam
+  - neonmaster
+  - olle
+  - olofcarlson
+  - phreakholm
+  - poipoichen
+  - pretto
+  - profmobius
+  - razzleberryfox
+  - searge
+  - searge_dp
+  - shoghicp
+  - slicedlime
+  - sockerpappan
+  - themogminer
+  - theopard
+  - theputtman
+  - tom__m
+  - vaktis
+  - volgar
+  - vubui
+  - xlson
+  - xsson
+  - yoloswag4lyfe
+  - zeeraw
+  - _alcatras
+  - _tommo_
+  - ____fox____
 
 # Pet Protect - Prevent tamed pets from being killed.
 petprotect:
