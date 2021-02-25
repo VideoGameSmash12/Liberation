@@ -402,6 +402,11 @@ public class Discord extends FreedomService
         {
             return;
         }
+        
+        if (message.contains("§"))
+        {
+            message = StringUtils.remove(message, "§");
+        }
 
         if (enabled && !chat_channel_id.isEmpty())
         {
@@ -421,6 +426,11 @@ public class Discord extends FreedomService
         if (message.toLowerCase().contains("discord.gg"))
         {
             return;
+        }
+        
+        if (message.contains("§"))
+        {
+            message = StringUtils.remove(message, "§");
         }
 
         if (enabled && !chat_channel_id.isEmpty())

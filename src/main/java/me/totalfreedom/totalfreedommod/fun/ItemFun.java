@@ -13,6 +13,7 @@ import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.shop.ShopItem;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import me.totalfreedom.totalfreedommod.LoginProcess;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -247,6 +248,12 @@ public class ItemFun extends FreedomService
             {
                 final int RADIUS_HIT = 5;
                 final int STRENGTH = 4;
+                
+                if (plugin.lp.CLOWNFISH_TOGGLE.contains(player.getName()))
+                {
+                    player.sendMessage(ChatColor.GRAY + "An admin has disabled your ability to use clownfish.");
+                    break;
+                }
 
                 if (!plugin.sh.isRealItem(plugin.pl.getData(player), ShopItem.CLOWN_FISH, player.getInventory(), plugin.sh.getClownFish()))
                 {
