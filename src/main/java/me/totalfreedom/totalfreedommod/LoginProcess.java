@@ -30,6 +30,7 @@ public class LoginProcess extends FreedomService
     private static boolean lockdownEnabled = false;
     public List<String> TELEPORT_ON_JOIN = new ArrayList<>();
     public List<String> CLEAR_ON_JOIN = new ArrayList<>();
+    public List<String> CLOWNFISH_TOGGLE = new ArrayList<>();
 
     public static boolean isLockdownEnabled()
     {
