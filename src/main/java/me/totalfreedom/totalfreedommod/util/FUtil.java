@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -389,109 +390,72 @@ public class FUtil
         }
     }
 
-    public static Date parseDateOffset(String time)
-    {
-        Pattern timePattern = Pattern.compile(
-                "(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?"
-                        + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
-        Matcher m = timePattern.matcher(time);
-        int years = 0;
-        int months = 0;
-        int weeks = 0;
-        int days = 0;
-        int hours = 0;
-        int minutes = 0;
-        int seconds = 0;
-        boolean found = false;
-        while (m.find())
+    private static final List<String> regxList = new ArrayList<String>(){{
+        add("y");
+        add("mo");
+        add("w");
+        add("d");
+        add("h");
+        add("m");
+        add("s");
+    }};
+
+    private static long a(String parse) {
+        StringBuilder sb = new StringBuilder();
+
+        regxList.forEach(obj -> {
+            if (parse.endsWith(obj)) {
+                sb.append(parse.split(obj)[0]);
+            }
+        });
+
+        return Long.parseLong(sb.toString());
+    }
+
+    private static TimeUnit verify(String arg) {
+        TimeUnit unit = null;
+        for (String c : regxList)
         {
-            if (m.group() == null || m.group().isEmpty())
+            if (arg.endsWith(c))
             {
-                continue;
-            }
-            for (int i = 0; i < m.groupCount(); i++)
-            {
-                if (m.group(i) != null && !m.group(i).isEmpty())
+                switch (c)
                 {
-                    found = true;
-                    break;
-                }
-            }
-            if (found)
-            {
-                if (m.group(1) != null && !m.group(1).isEmpty())
-                {
-                    years = Integer.parseInt(m.group(1));
-                }
-                if (m.group(2) != null && !m.group(2).isEmpty())
-                {
-                    months = Integer.parseInt(m.group(2));
-                }
-                if (m.group(3) != null && !m.group(3).isEmpty())
-                {
-                    weeks = Integer.parseInt(m.group(3));
-                }
-                if (m.group(4) != null && !m.group(4).isEmpty())
-                {
-                    days = Integer.parseInt(m.group(4));
-                }
-                if (m.group(5) != null && !m.group(5).isEmpty())
-                {
-                    hours = Integer.parseInt(m.group(5));
-                }
-                if (m.group(6) != null && !m.group(6).isEmpty())
-                {
-                    minutes = Integer.parseInt(m.group(6));
-                }
-                if (m.group(7) != null && !m.group(7).isEmpty())
-                {
-                    seconds = Integer.parseInt(m.group(7));
+                    case "y":
+                        unit = (TimeUnit.YEAR);
+                        break;
+                    case "mo":
+                        unit = (TimeUnit.MONTH);
+                        break;
+                    case "w":
+                        unit = (TimeUnit.WEEK);
+                        break;
+                    case "d":
+                        unit = (TimeUnit.DAY);
+                        break;
+                    case "h":
+                        unit = (TimeUnit.HOUR);
+                        break;
+                    case "m":
+                        unit = (TimeUnit.MINUTE);
+                        break;
+                    case "s":
+                        unit = (TimeUnit.SECOND);
+                        break;
                 }
                 break;
             }
         }
-        if (!found)
-        {
-            return null;
-        }
+        return (unit != null) ? unit : TimeUnit.DAY;
+    }
 
-        Calendar c = new GregorianCalendar();
-
-        if (years > 0)
+    public static Date parseDateOffset(String... time)
+    {
+        Instant instant = Instant.now();
+        for (String arg : time)
         {
-            c.add(Calendar.YEAR, years);
+            instant = instant.plusSeconds(verify(arg).get() * a(arg));
         }
-        if (months > 0)
-        {
-            c.add(Calendar.MONTH, months);
-        }
-        if (weeks > 0)
-        {
-            c.add(Calendar.WEEK_OF_YEAR, weeks);
-        }
-        if (days > 0)
-        {
-            c.add(Calendar.DAY_OF_MONTH, days);
-        }
-        if (hours > 0)
-        {
-            c.add(Calendar.HOUR_OF_DAY, hours);
-        }
-        if (minutes > 0)
-        {
-            c.add(Calendar.MINUTE, minutes);
-        }
-        if (seconds > 0)
-        {
-            c.add(Calendar.SECOND, seconds);
-        }
-
-        return c.getTime();
+        return Date.from(instant);
     }
 
     public static String playerListToNames(Set<OfflinePlayer> players)
@@ -708,7 +672,7 @@ public class FUtil
             Class.forName("com.destroystokyo.paper.PaperConfig");
             return true;
         }
-        catch (ClassNotFoundException ex)
+        catch (ClassNotFoundException ignored)
         {
             return false;
         }
