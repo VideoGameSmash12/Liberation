@@ -16,8 +16,6 @@ import me.totalfreedom.totalfreedommod.util.FUtil;
 
 public class SQLite extends FreedomService
 {
-    private final String FILE_NAME = "database.db";
-
     private Connection connection;
 
     @Override
@@ -37,6 +35,7 @@ public class SQLite extends FreedomService
     {
         try
         {
+            String FILE_NAME = "database.db";
             connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + "/" + FILE_NAME);
             FLog.info("Successfully connected to the database.");
         }
@@ -111,7 +110,9 @@ public class SQLite extends FreedomService
     {
         try
         {
-            connection.createStatement().execute("DELETE FROM " + table);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM ?");
+            statement.setString(1, table);
+            statement.execute();
         }
         catch (SQLException e)
         {
@@ -134,7 +135,8 @@ public class SQLite extends FreedomService
         try
         {
             Object[] data = {key, admin.getName()};
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE admins SET {0}=? WHERE username=''{1}''", data));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("UPDATE admins SET {0}=? WHERE username=''{1}''", data));
             statement = setUnknownType(statement, 1, value);
             statement.executeUpdate();
 
@@ -151,7 +153,8 @@ public class SQLite extends FreedomService
         try
         {
             Object[] data = {key, player.getName()};
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE players SET {0}=? WHERE username=''{1}''", data));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("UPDATE players SET {0}=? WHERE username=''{1}''", data));
             statement = setUnknownType(statement, 1, value);
             statement.executeUpdate();
 
@@ -166,7 +169,8 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE admins SET username=? WHERE username=''{0}''", oldName));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("UPDATE admins SET username=? WHERE username=''{0}''", oldName));
             statement = setUnknownType(statement, 1, newName);
             statement.executeUpdate();
 
@@ -181,7 +185,8 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement(MessageFormat.format("UPDATE players SET username=? WHERE username=''{0}''", oldName));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("UPDATE players SET username=? WHERE username=''{0}''", oldName));
             statement = setUnknownType(statement, 1, newName);
             statement.executeUpdate();
 
@@ -299,7 +304,9 @@ public class SQLite extends FreedomService
     {
         try
         {
-            ResultSet resultSet = connection.createStatement().executeQuery(MessageFormat.format("SELECT * FROM admins WHERE username=''{0}''", name));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("SELECT * FROM admins WHERE username=''{0}''", name));
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next())
             {
                 return resultSet;
@@ -318,7 +325,9 @@ public class SQLite extends FreedomService
     {
         try
         {
-            ResultSet resultSet = connection.createStatement().executeQuery(MessageFormat.format("SELECT * FROM players WHERE username=''{0}''", name));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("SELECT * FROM players WHERE username=''{0}''", name));
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next())
             {
                 return resultSet;
@@ -352,7 +361,9 @@ public class SQLite extends FreedomService
     {
         try
         {
-            ResultSet resultSet = connection.createStatement().executeQuery(MessageFormat.format("SELECT * FROM players WHERE ips LIKE ''%{0}%''", ip));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("SELECT * FROM players WHERE ips LIKE ''%{0}%''", ip));
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next())
             {
                 return resultSet;
@@ -371,7 +382,9 @@ public class SQLite extends FreedomService
     {
         try
         {
-            connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM admins where name=''{0}''", admin.getName()));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("DELETE FROM admins where name=''{0}''", admin.getName()));
+            statement.executeUpdate();
         }
         catch (SQLException e)
         {
@@ -409,10 +422,14 @@ public class SQLite extends FreedomService
     {
         try
         {
-            connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM bans WHERE name=''{0}''", ban.getUsername()));
+            PreparedStatement statement = connection.prepareStatement("?");
+            statement.setString(1, MessageFormat.format("DELETE FROM bans WHERE name=''{0}''", ban.getUsername()));
+            statement.executeUpdate();
             for (String ip : ban.getIps())
             {
-                connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM bans WHERE ips LIKE ''%{0}%''", ip));
+                PreparedStatement statement1 = connection.prepareStatement("?");
+                statement1.setString(1, MessageFormat.format("DELETE FROM bans WHERE ips LIKE ''%{0}%''", ip));
+                statement1.executeUpdate();
             }
         }
         catch (SQLException e)
