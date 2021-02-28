@@ -241,7 +241,7 @@ public class AdminList extends FreedomService
     public boolean isVerifiedAdmin(Player player)
     {
         // Fix of issue: FS-33
-        if(verifiedNoAdmin.contains(player.getName()) || verifiedNoAdminIps.get(player.getName()).contains(FUtil.getIp(player)))
+        if(verifiedNoAdmin.contains(player.getName()) || verifiedNoAdminIps.containsKey(player.getName()) && verifiedNoAdminIps.get(player.getName()).contains(FUtil.getIp(player)))
         {
             return false;
         }
