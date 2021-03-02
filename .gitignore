@@ -25,6 +25,7 @@ manifest.mf
 /.idea/workspace.xml
 /.idea/uiDesigner.xml
 /.idea/libraries
+/.idea
 *.iml
 
 # Maven excludes
