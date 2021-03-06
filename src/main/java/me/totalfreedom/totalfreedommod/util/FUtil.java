@@ -606,12 +606,12 @@ public class FUtil
 
     public static Date getUnixDate(long unix)
     {
-        return new Date(unix * 1000);
+        return new Date(unix);
     }
 
     public static long getUnixTime()
     {
-        return System.currentTimeMillis() / 1000L;
+        return Instant.now().getEpochSecond();
     }
 
     public static long getUnixTime(Date date)
@@ -621,7 +621,7 @@ public class FUtil
             return 0;
         }
 
-        return date.getTime() / 1000L;
+        return date.getTime();
     }
 
     public static String getNMSVersion()
