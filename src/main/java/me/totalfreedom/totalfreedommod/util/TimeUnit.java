@@ -7,7 +7,7 @@ public enum TimeUnit
     HOUR(MINUTE.get() * 60L),
     DAY(HOUR.get() * 24L),
     WEEK(DAY.get() * 7L),
-    MONTH(WEEK.get() * 4L),
+    MONTH(DAY.get() * 30L),
     YEAR(MONTH.get() * 12L);
 
     private final long time;

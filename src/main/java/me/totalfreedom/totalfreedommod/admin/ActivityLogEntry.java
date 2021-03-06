@@ -72,7 +72,15 @@ public class ActivityLogEntry implements IConfig
 
     public void addLogout()
     {
-        String lastLoginString = timestamps.get(timestamps.size() - 1); // there's a bug with subtracting the -1 here
+        // Fix of Array index out of bonds issue: FS-131
+        String lastLoginString;
+        if(timestamps.size() > 1)
+        {
+            lastLoginString = timestamps.get(timestamps.size() - 1);
+        }else
+        {
+            lastLoginString = timestamps.get(0);
+        }
         Date currentTime = Date.from(Instant.now());
         timestamps.add("Logout: " + FUtil.dateToString(currentTime));
         lastLoginString = lastLoginString.replace("Login: ", "");
