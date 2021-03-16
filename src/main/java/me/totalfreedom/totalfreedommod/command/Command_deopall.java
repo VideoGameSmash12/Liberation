@@ -20,6 +20,7 @@ public class Command_deopall extends FreedomCommand
         {
             player.setOp(false);
             player.sendMessage(FreedomCommand.YOU_ARE_NOT_OP);
+            plugin.rm.updateDisplay(player);
         }
 
         return true;
