@@ -2,20 +2,16 @@
 <!DOCTYPE module PUBLIC
         "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
-
 <module name="Checker">
     <property name="charset" value="UTF-8"/>
     <property name="severity" value="warning"/>
     <property name="fileExtensions" value="java, properties, xml"/>
-
     <module name="SuppressionFilter">
         <property name="file" value="supressions.xml"/>
     </module>
-
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
-
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
@@ -91,7 +87,7 @@
                      value="Local variable name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="ClassTypeParameterName">
-            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9][_]*[T]$)"/>
+            <property name="format" value="(^[A-Z][a-zA-Z0-9]*$)|([A-Z][a-zA-Z0-9]*[_][a-zA-Z0-9]*$)"/>
             <message key="name.invalidPattern"
                      value="Class type name ''{0}'' must match pattern ''{1}''."/>
         </module>
@@ -112,7 +108,8 @@
                      value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
         </module>
         <module name="OverloadMethodsDeclarationOrder"/>
-        <module name="CustomImportOrder"/><!-- http://checkstyle.sourceforge.net/config_imports.html -->
+        <module name="CustomImportOrder"/>
+        <!-- http://checkstyle.sourceforge.net/config_imports.html -->
         <module name="MethodParamPad"/>
         <module name="OperatorWrap">
             <property name="option" value="NL"/>

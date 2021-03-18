@@ -1,4 +1,5 @@
-# TotalFreedom General License #
+# TotalFreedom General License
+
 _Version 2.0, 27th February 2015_
 
 Copyright (c) 2011 Steven Lawson
@@ -7,7 +8,8 @@ Copyright (c) 2012 Jerom van der Sar
 
 All rights reserved.
 
-##### 1. Definitions #####
+##### 1. Definitions
+
 "License" shall mean the terms and conditions for use, reproduction, and distribution as defined by this document.
 
 "Licensor" shall mean the copyright holder or entity authorised by the copyright owner that is granting the License.
@@ -30,12 +32,13 @@ All rights reserved.
 
 "Redistribution" shall mean any partial or complete availability, transfer or publication of the Work from one Legal Entity to another.
 
-##### 2. Grant of Copyright License #####
- Subject to the terms and conditions of this License, You are granted a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to prepare Derivative Works of, publicly display, publicly perform, inspect and redistribute the Work and such Derivative Works as long as the following conditions are met:
+##### 2. Grant of Copyright License
+
+Subject to the terms and conditions of this License, You are granted a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to prepare Derivative Works of, publicly display, publicly perform, inspect and redistribute the Work and such Derivative Works as long as the following conditions are met:
 
 1. Redistributions of This Software must solely occur in Source form. Redistribution in Object form is prohibited without prior written permission from the Licensor.
 
-2. Neither the names of the copyright holders nor the names this software's contributors may be removed from This Software's source code. 
+2. Neither the names of the copyright holders nor the names this software's contributors may be removed from This Software's source code.
 
 3. Neither the names of the copyright holders nor the names of its contributors may be used to endorse or promote products derived from This Software without specific prior written permission.
 
@@ -47,8 +50,10 @@ All rights reserved.
 
 7. Sub licensing of This Software is prohibited without prior written permission from the Licensor.
 
-##### 3. Submission of Contributions #####
+##### 3. Submission of Contributions
+
 Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
 
-##### 4. Disclaimer of Warranty #####
+##### 4. Disclaimer of Warranty
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
