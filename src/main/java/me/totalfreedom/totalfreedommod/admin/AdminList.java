@@ -22,8 +22,7 @@ import org.bukkit.entity.Player;
 public class AdminList extends FreedomService
 {
     public static final List<String> vanished = new ArrayList<>();
-    public final List<String> verifiedNoAdmin = new ArrayList<>();
-    public final Map<String, List<String>> verifiedNoAdminIps = Maps.newHashMap();
+    public final Map<String, List<String>> verifiedNoAdmin = Maps.newHashMap();
     private final Set<Admin> allAdmins = Sets.newHashSet(); // Includes disabled admins
     // Only active admins below
     private final Set<Admin> activeAdmins = Sets.newHashSet();
@@ -240,8 +239,7 @@ public class AdminList extends FreedomService
 
     public boolean isVerifiedAdmin(Player player)
     {
-        // Fix of issue FS-33
-        return !verifiedNoAdmin.contains(player.getName()) || verifiedNoAdminIps.containsKey(player.getName()) && !verifiedNoAdminIps.get(player.getName()).contains(FUtil.getIp(player));
+        return verifiedNoAdmin.containsKey(player.getName()) && verifiedNoAdmin.get(player.getName()).contains(FUtil.getIp(player));
     }
 
     public boolean isIdentityMatched(Player player)
@@ -404,13 +402,8 @@ public class AdminList extends FreedomService
         return ipTable;
     }
 
-    public List<String> getVerifiedNoAdmin()
+    public Map<String, List<String>> getVerifiedNoAdmin()
     {
         return verifiedNoAdmin;
-    }
-
-    public Map<String, List<String>> getVerifiedNoAdminIps()
-    {
-        return verifiedNoAdminIps;
     }
 }

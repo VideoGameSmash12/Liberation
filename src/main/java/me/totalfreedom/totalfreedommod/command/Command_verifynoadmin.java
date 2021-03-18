@@ -34,25 +34,21 @@ public class Command_verifynoadmin extends FreedomCommand
 
         if (plugin.al.isAdminImpostor(player))
         {
-            if (!plugin.al.verifiedNoAdmin.contains(player.getName()))
-            {
-                plugin.al.verifiedNoAdmin.add(player.getName());
-            }
             String ip = FUtil.getIp(player);
-            if (!plugin.al.verifiedNoAdminIps.containsKey(player.getName()))
+            if (!plugin.al.verifiedNoAdmin.containsKey(player.getName()))
             {
                 List<String> ips = new ArrayList<>();
                 ips.add(ip);
-                plugin.al.verifiedNoAdminIps.put(player.getName(), ips);
+                plugin.al.verifiedNoAdmin.put(player.getName(), ips);
             }
             else
             {
-                List<String> ips = plugin.al.verifiedNoAdminIps.get(player.getName());
+                List<String> ips = plugin.al.verifiedNoAdmin.get(player.getName());
                 if (!ips.contains(ip))
                 {
                     ips.add(ip);
                     plugin.al.verifiedNoAdmin.remove(player.getName());
-                    plugin.al.verifiedNoAdminIps.put(player.getName(), ips);
+                    plugin.al.verifiedNoAdmin.put(player.getName(), ips);
                 }
             }
             plugin.rm.updateDisplay(player);
