@@ -220,7 +220,6 @@ public class Command_saconfig extends FreedomCommand
                     if (plugin.al.isVerifiedAdmin(player))
                     {
                         plugin.al.verifiedNoAdmin.remove(player.getName());
-                        plugin.al.verifiedNoAdminIps.remove(player.getName());
                     }
 
                     plugin.al.save(admin);
