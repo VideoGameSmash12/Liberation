@@ -117,10 +117,4 @@ public class PermissionManager extends FreedomService
             setPermissions(player);
         }
     }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        setPermissions(event.getPlayer());
-    }
 }
