@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
-@CommandParameters(description = "Someone being a little bitch? Smite them down...", usage = "/<command> <player> [reason] [-q]")
+@CommandParameters(description = "Someone being a little bitch? Smite them down...", usage = "/<command> <player> [reason] [-nc | -q]")
 public class Command_smite extends FreedomCommand
 {
 
@@ -54,7 +54,10 @@ public class Command_smite extends FreedomCommand
         player.setGameMode(GameMode.SURVIVAL);
 
         // Clear inventory
-        player.getInventory().clear();
+        if (!args[args.length - 1].equalsIgnoreCase("-nc"))
+        {
+            player.getInventory().clear();
+        }
 
         // Strike with lightning effect
         final Location targetPos = player.getLocation();
