@@ -612,7 +612,7 @@ public class FUtil
 
     public static long getUnixTime()
     {
-        return Instant.now().getEpochSecond();
+        return Instant.now().toEpochMilli();
     }
 
     public static long getUnixTime(Date date)
