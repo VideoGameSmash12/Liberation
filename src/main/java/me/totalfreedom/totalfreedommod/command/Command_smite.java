@@ -108,11 +108,11 @@ public class Command_smite extends FreedomCommand
             }
             else
             {
-                if
+                if (args[args.length - 1].equalsIgnoreCase("-c"))
                 {
-                    if args[args.length - 1].equalsIgnoreCase("-c")
+                    if (args[args.length - 1].equalsIgnoreCase("-c"))
                     {
-                        clearinv = true
+                        clearinv = true;
                     }
                     
                     if (args.length >= 3)
