@@ -56,10 +56,12 @@ public class DiscordToAdminChatListener extends ListenerAdapter
 
             FLog.info(message.toString());
 
-            Bukkit.getOnlinePlayers().stream().filter(player -> TotalFreedomMod.getPlugin().al.isAdmin(player)).forEach(player -> {
+            Bukkit.getOnlinePlayers().stream().filter(player -> TotalFreedomMod.getPlugin().al.isAdmin(player)).forEach(player ->
+            {
                 Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
                 String format = admin.getAcFormat();
-                if (!Strings.isNullOrEmpty(format)) {
+                if (!Strings.isNullOrEmpty(format))
+                {
                     Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
                     net.md_5.bungee.api.ChatColor color = getColor(display);
                     String m = format.replace("%name%", member.getEffectiveName())
@@ -67,7 +69,9 @@ public class DiscordToAdminChatListener extends ListenerAdapter
                             .replace("%rankcolor%", color.toString())
                             .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
                     builder.append(FUtil.colorize(m));
-                } else {
+                }
+                else
+                {
                     String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
                             + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
                             + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
