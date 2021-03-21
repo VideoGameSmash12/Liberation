@@ -21,12 +21,12 @@ public class Command_smite extends FreedomCommand
 
     public static void smite(CommandSender sender, Player player)
     {
-        smite(sender, player, null, false);
+        smite(sender, player, null, false, false);
     }
 
     public static void smite(CommandSender sender, Player player, String reason)
     {
-        smite(sender, player, reason, false);
+        smite(sender, player, reason, false, false);
     }
 
     public static void smite(CommandSender sender, Player player, String reason, Boolean silent, Boolean clearinv)
@@ -106,19 +106,16 @@ public class Command_smite extends FreedomCommand
                     reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length - 1), " ");
                 }
             }
-            else
+            else if (args[args.length - 1].equalsIgnoreCase("-c"))
             {
                 if (args[args.length - 1].equalsIgnoreCase("-c"))
                 {
-                    if (args[args.length - 1].equalsIgnoreCase("-c"))
-                    {
-                        clearinv = true;
-                    }
-                    
-                    if (args.length >= 3)
-                    {
-                        reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length - 1), " ");
-                    }
+                    clearinv = true;
+                }
+
+                if (args.length >= 3)
+                {
+                    reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length - 1), " ");
                 }
             }
             else
