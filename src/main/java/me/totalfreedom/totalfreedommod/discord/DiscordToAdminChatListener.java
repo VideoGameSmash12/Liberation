@@ -43,16 +43,6 @@ public class DiscordToAdminChatListener extends ListenerAdapter
             message.append(msg.getContentDisplay());
 
             ComponentBuilder builder = new ComponentBuilder(msg.toString());
-            if (!msg.getAttachments().isEmpty())
-            {
-                for (Message.Attachment attachment : msg.getAttachments())
-                {
-                    TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
-                    text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                    builder.append(text);
-                    message.append("[Media]"); // for logging
-                }
-            }
 
             FLog.info(message.toString());
 
@@ -77,6 +67,18 @@ public class DiscordToAdminChatListener extends ListenerAdapter
                             + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
                     builder.append(m);
                 }
+
+                if (!msg.getAttachments().isEmpty())
+                {
+                    for (Message.Attachment attachment : msg.getAttachments())
+                    {
+                        TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
+                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                        builder.append(text);
+                        message.append("[Media]"); // for logging
+                    }
+                }
+
                 player.spigot().sendMessage(builder.create());
             });
         }
