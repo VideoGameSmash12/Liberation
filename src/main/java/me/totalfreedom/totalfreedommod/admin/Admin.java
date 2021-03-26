@@ -25,17 +25,9 @@ public class Admin
     private boolean active = true;
     private Rank rank = Rank.ADMIN;
     private Date lastLogin = new Date();
-
-
     private Boolean commandSpy = false;
-
-
     private Boolean potionSpy = false;
-
-
     private String acFormat = null;
-
-
     private String pteroID = null;
 
     public Admin(Player player)

@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.discord;
 
+import com.google.common.base.Strings;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -38,57 +39,48 @@ public class DiscordToAdminChatListener extends ListenerAdapter
             String tag = dtml.getDisplay(member);
             StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
             Message msg = event.getMessage();
-            for (Player player : Bukkit.getOnlinePlayers())
-            {
-                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
-                {
-                    Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
-                    String format = admin.getAcFormat();
-                    if (format != null)
-                    {
-                        Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
-                        net.md_5.bungee.api.ChatColor color = getColor(display);
-                        String m = format.replace("%name%", member.getEffectiveName())
-                                .replace("%rank%", getDisplay(member))
-                                .replace("%rankcolor%", color.toString())
-                                .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
-                        message.append(FUtil.colorize(m));
-                    }
-                    else
-                    {
-                        String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
-                                + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
-                                + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
-                        message.append(m);
-                    }
-                }
-            }
 
-            ComponentBuilder builder = new ComponentBuilder(message.toString());
-            if (!msg.getAttachments().isEmpty())
-            {
-                for (Message.Attachment attachment : msg.getAttachments())
-                {
-                    if (attachment.getUrl() == null)
-                    {
-                        continue;
-                    }
+            message.append(msg.getContentDisplay());
 
-                    TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
-                    text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                    builder.append(text);
-                    message.append("[Media]"); // for logging
-                }
-            }
+            ComponentBuilder builder = new ComponentBuilder(msg.toString());
 
-            for (Player player : Bukkit.getOnlinePlayers())
-            {
-                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
-                {
-                    player.spigot().sendMessage(builder.create());
-                }
-            }
             FLog.info(message.toString());
+
+            Bukkit.getOnlinePlayers().stream().filter(player -> TotalFreedomMod.getPlugin().al.isAdmin(player)).forEach(player ->
+            {
+                Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
+                String format = admin.getAcFormat();
+                if (!Strings.isNullOrEmpty(format))
+                {
+                    Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
+                    net.md_5.bungee.api.ChatColor color = getColor(display);
+                    String m = format.replace("%name%", member.getEffectiveName())
+                            .replace("%rank%", getDisplay(member))
+                            .replace("%rankcolor%", color.toString())
+                            .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
+                    builder.append(FUtil.colorize(m));
+                }
+                else
+                {
+                    String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
+                            + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
+                            + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
+                    builder.append(m);
+                }
+
+                if (!msg.getAttachments().isEmpty())
+                {
+                    for (Message.Attachment attachment : msg.getAttachments())
+                    {
+                        TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
+                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                        builder.append(text);
+                        message.append("[Media]"); // for logging
+                    }
+                }
+
+                player.spigot().sendMessage(builder.create());
+            });
         }
     }
 
