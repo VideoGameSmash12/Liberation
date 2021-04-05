@@ -81,7 +81,7 @@ public class Command_nickfilter extends FreedomCommand
 
                         if (player == null || !plugin.al.isVanished(player.getName()) && !plugin.al.isAdmin(sender))
                         {
-                            sender.sendMessage(ChatColor.GRAY + "Can't find player by nickname: " + displayName);
+                            msg("Can't find player by nickname: " + displayName);
                             return true;
                         }
                     }
@@ -101,7 +101,7 @@ public class Command_nickfilter extends FreedomCommand
 
         if (!nickMatched)
         {
-            sender.sendMessage("No nicknames replaced in command.");
+            msg("No nicknames replaced in command.");
             return true;
         }
 
@@ -113,7 +113,7 @@ public class Command_nickfilter extends FreedomCommand
             return true;
         }
 
-        sender.sendMessage("Sending command: \"" + newCommand + "\".");
+        msg("Sending command: \"" + newCommand + "\".");
         server.dispatchCommand(sender, newCommand);
 
         return true;
