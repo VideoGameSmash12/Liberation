@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.command;
 
 import java.util.List;
 
-import me.totalfreedom.totalfreedommod.MovementValidator;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.bukkit.Location;
 import org.bukkit.Material;
