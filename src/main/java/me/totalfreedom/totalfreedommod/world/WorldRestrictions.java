@@ -139,7 +139,7 @@ public class WorldRestrictions extends FreedomService
                 event.setCancelled(true);
             }
 
-            if (command.equals("coreprotect") || command.equals("core") || command.equals("co"))
+            if (command.equalsIgnoreCase("coreprotect") || command.equalsIgnoreCase("core") || command.equalsIgnoreCase("co"))
             {
                 player.sendMessage(ChatColor.RED + "Only " + allowed + " are allowed to use CoreProtect here.");
                 event.setCancelled(true);

@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.discord;
 
+import com.google.common.base.Strings;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -22,6 +23,7 @@ import org.bukkit.entity.Player;
 
 public class DiscordToAdminChatListener extends ListenerAdapter
 {
+
     DiscordToMinecraftListener dtml = new DiscordToMinecraftListener();
 
     public static net.md_5.bungee.api.ChatColor getColor(Displayable display)
@@ -36,59 +38,62 @@ public class DiscordToAdminChatListener extends ListenerAdapter
         {
             Member member = event.getMember();
             String tag = dtml.getDisplay(member);
-            StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
             Message msg = event.getMessage();
-            for (Player player : Bukkit.getOnlinePlayers())
-            {
-                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
-                {
-                    Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
-                    String format = admin.getAcFormat();
-                    if (format != null)
-                    {
-                        Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
-                        net.md_5.bungee.api.ChatColor color = getColor(display);
-                        String m = format.replace("%name%", member.getEffectiveName())
-                                .replace("%rank%", getDisplay(member))
-                                .replace("%rankcolor%", color.toString())
-                                .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
-                        message.append(FUtil.colorize(m));
-                    }
-                    else
-                    {
-                        String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
-                                + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
-                                + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
-                        message.append(m);
-                    }
-                }
-            }
+            String mediamessage = ChatColor.YELLOW + " [Media]";
 
-            ComponentBuilder builder = new ComponentBuilder(message.toString());
+            StringBuilder logmessage = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
+            String lm = ChatColor.DARK_RED + member.getEffectiveName() + " "
+                    + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
+                    + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
+            logmessage.append(lm);
+
             if (!msg.getAttachments().isEmpty())
             {
-                for (Message.Attachment attachment : msg.getAttachments())
-                {
-                    if (attachment.getUrl() == null)
-                    {
-                        continue;
-                    }
+                
+                logmessage.append(mediamessage); // Actually for logging...
 
-                    TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
-                    text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                    builder.append(text);
-                    message.append("[Media]"); // for logging
-                }
             }
+            FLog.info(logmessage.toString());
 
-            for (Player player : Bukkit.getOnlinePlayers())
+            Bukkit.getOnlinePlayers().stream().filter(player -> TotalFreedomMod.getPlugin().al.isAdmin(player)).forEach(player ->
             {
-                if (TotalFreedomMod.getPlugin().al.isAdmin(player))
+                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
+
+                ComponentBuilder builder = new ComponentBuilder(message.toString());
+
+                Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
+                String format = admin.getAcFormat();
+                if (!Strings.isNullOrEmpty(format))
                 {
-                    player.spigot().sendMessage(builder.create());
+                    Displayable display = TotalFreedomMod.getPlugin().rm.getDisplay(player);
+                    net.md_5.bungee.api.ChatColor color = getColor(display);
+                    String m = format.replace("%name%", member.getEffectiveName())
+                            .replace("%rank%", getDisplay(member))
+                            .replace("%rankcolor%", color.toString())
+                            .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
+                    builder.append(FUtil.colorize(m));
+
                 }
-            }
-            FLog.info(message.toString());
+                else
+                {
+                    String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
+                            + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
+                            + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
+                    builder.append(m);
+                }
+
+                if (!msg.getAttachments().isEmpty())
+                {
+                    for (Message.Attachment attachment : msg.getAttachments())
+                    {
+                        TextComponent text = new TextComponent(mediamessage);
+                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                        builder.append(text);
+                    }
+                }
+                player.spigot().sendMessage(builder.create());
+
+            });
         }
     }
 
