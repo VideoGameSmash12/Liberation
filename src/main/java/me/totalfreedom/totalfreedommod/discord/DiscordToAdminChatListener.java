@@ -85,7 +85,7 @@ public class DiscordToAdminChatListener extends ListenerAdapter
                 {
                     for (Message.Attachment attachment : msg.getAttachments())
                     {
-                        TextComponent text = new TextComponent((msg.getContentDisplay().isEmpty() ? "" : " ") + mediamessage);
+                        TextComponent text = new TextComponent(mediamessage);
                         text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
                         if (!msg.getContentDisplay().isEmpty())
                         {
