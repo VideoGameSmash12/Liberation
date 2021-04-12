@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.security.auth.login.LoginException;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.admin.Admin;
@@ -60,6 +62,7 @@ public class Discord extends FreedomService
     public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
     public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
     public Boolean enabled = false;
+    private final Pattern discord_mention_pattern = Pattern.compile("(<@!?([0-9]{16,20})>)");
 
     public static String getMD5(String string)
     {
@@ -407,6 +410,15 @@ public class Discord extends FreedomService
         {
             message = StringUtils.remove(message, "§");
         }
+
+        // Patch FS-191 start
+        Matcher mention_matcher = this.discord_mention_pattern.matcher(message);
+
+        while (mention_matcher.find()) {
+            String mention = mention_matcher.group(1);
+            message = message.replace(mention, "[UserMention-redacted]");
+        }
+        // Patch FS-191 end
 
         if (enabled && !chat_channel_id.isEmpty())
         {
