@@ -411,14 +411,13 @@ public class Discord extends FreedomService
             message = StringUtils.remove(message, "§");
         }
 
-        // Patch FS-191 start
+        
         Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
 
         while (DISCORD_MENTION_MATCHER.find()) {
             String mention = DISCORD_MENTION_MATCHER.group(1);
             message = message.replace(mention, mention.replace('@',' '));
         }
-        // Patch FS-191 end
 
         if (enabled && !chat_channel_id.isEmpty())
         {
@@ -445,15 +444,14 @@ public class Discord extends FreedomService
             message = StringUtils.remove(message, "§");
         }
 
-        // Patch FS-191 start
+
         Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
 
         while (DISCORD_MENTION_MATCHER.find()) {
             String mention = DISCORD_MENTION_MATCHER.group(1);
             message = message.replace(mention, mention.replace('@',' '));
         }
-        // Patch FS-191 end
-        
+
         if (enabled && !chat_channel_id.isEmpty())
         {
             CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(deformat(message)).submit(true);
