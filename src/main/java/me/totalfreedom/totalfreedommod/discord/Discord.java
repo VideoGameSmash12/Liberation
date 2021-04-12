@@ -412,12 +412,12 @@ public class Discord extends FreedomService
         }
 
 
-        Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
+        Matcher DISCORD_MENTION_MATCHER = DISCORD_MENTION_PATTERN.matcher(message);
 
         while (DISCORD_MENTION_MATCHER.find())
         {
             String mention = DISCORD_MENTION_MATCHER.group(1);
-            message = message.replace(mention, mention.replace('@',''));
+            message = message.replace(mention, mention.replace("@",""));
         }
 
         if (enabled && !chat_channel_id.isEmpty())
@@ -446,12 +446,12 @@ public class Discord extends FreedomService
         }
 
 
-        Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
+        Matcher DISCORD_MENTION_MATCHER = DISCORD_MENTION_PATTERN.matcher(message);
 
         while (DISCORD_MENTION_MATCHER.find())
         {
             String mention = DISCORD_MENTION_MATCHER.group(1);
-            message = message.replace(mention, mention.replace('@',''));
+            message = message.replace(mention, mention.replace("@",""));
         }
 
         if (enabled && !chat_channel_id.isEmpty())
