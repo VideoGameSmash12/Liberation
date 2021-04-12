@@ -62,7 +62,7 @@ public class Discord extends FreedomService
     public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
     public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
     public Boolean enabled = false;
-    private final Pattern discord_mention_pattern = Pattern.compile("(<@!?([0-9]{16,20})>)");
+    private final Pattern DISCORD_MENTION_PATTERN = Pattern.compile("(<@!?([0-9]{16,20})>)");
 
     public static String getMD5(String string)
     {
@@ -412,11 +412,11 @@ public class Discord extends FreedomService
         }
 
         // Patch FS-191 start
-        Matcher mention_matcher = this.discord_mention_pattern.matcher(message);
+        Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
 
-        while (mention_matcher.find()) {
-            String mention = mention_matcher.group(1);
-            message = message.replace(mention, "[UserMention-redacted]");
+        while (DISCORD_MENTION_MATCHER.find()) {
+            String mention = DISCORD_MENTION_MATCHER.group(1);
+            message = message.replace(mention, mention.replace('@',' '));
         }
         // Patch FS-191 end
 
@@ -445,6 +445,15 @@ public class Discord extends FreedomService
             message = StringUtils.remove(message, "§");
         }
 
+        // Patch FS-191 start
+        Matcher DISCORD_MENTION_MATCHER = this.DISCORD_MENTION_PATTERN.matcher(message);
+
+        while (DISCORD_MENTION_MATCHER.find()) {
+            String mention = DISCORD_MENTION_MATCHER.group(1);
+            message = message.replace(mention, mention.replace('@',' '));
+        }
+        // Patch FS-191 end
+        
         if (enabled && !chat_channel_id.isEmpty())
         {
             CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(deformat(message)).submit(true);
