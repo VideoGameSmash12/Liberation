@@ -1,7 +1,5 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -14,10 +12,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CommandPermissions(level = Rank.IMPOSTOR, source = SourceType.BOTH)
 @CommandParameters(description = "Lists the real names of all online players.", usage = "/<command> [-s | -i | -f | -v]", aliases = "who,lsit")
 public class Command_list extends FreedomCommand
 {
+
     public boolean run(final CommandSender sender, final Player playerSender, final Command cmd, final String commandLabel, final String[] args, final boolean senderIsConsole)
     {
         if (args.length > 1)
@@ -29,7 +31,10 @@ public class Command_list extends FreedomCommand
             List<String> names = new ArrayList<>();
             for (Player player : server.getOnlinePlayers())
             {
-                names.add(player.getName());
+                if (!plugin.al.isVanished(player.getName()))
+                {
+                    names.add(player.getName());
+                }
             }
             msg("There are " + names.size() + "/" + server.getMaxPlayers() + " players online:\n" + StringUtils.join(names, ", "), ChatColor.WHITE);
             return true;

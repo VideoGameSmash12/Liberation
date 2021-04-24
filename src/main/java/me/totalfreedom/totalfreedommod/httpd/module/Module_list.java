@@ -1,7 +1,7 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
-import java.util.Collection;
 import me.totalfreedom.totalfreedommod.admin.Admin;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.Collection;
 
 public class Module_list extends HTTPDModule
 {
@@ -95,7 +97,7 @@ public class Module_list extends HTTPDModule
             responseObject.put("master_builders", masterbuilders);
             responseObject.put("operators", operators);
             responseObject.put("imposters", imposters);
-            responseObject.put("online", server.getOnlinePlayers().size());
+            responseObject.put("online", server.getOnlinePlayers().size() - AdminList.vanished.size());
             responseObject.put("max", server.getMaxPlayers());
 
             final NanoHTTPD.Response response = new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_JSON, responseObject.toString());
@@ -108,7 +110,8 @@ public class Module_list extends HTTPDModule
 
             final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 
-            body.append("<p>There are ").append(onlinePlayers.size()).append("/").append(Bukkit.getMaxPlayers()).append(" players online:</p>\r\n");
+            body.append("<p>There are ").append(onlinePlayers.size() - AdminList.vanished.size()).append("/")
+                    .append(Bukkit.getMaxPlayers()).append(" players online:</p>\r\n");
 
             body.append("<ul>\r\n");
 
