@@ -128,7 +128,7 @@ public class ItemFun extends FreedomService
 
             LivingEntity livingEntity = (LivingEntity)event.getRightClicked();
             EntityType entityType = livingEntity.getType();
-            if (!(entityType == fPlayer.mobThrowerCreature()))
+            if (entityType != fPlayer.mobThrowerCreature())
             {
                 return;
             }
