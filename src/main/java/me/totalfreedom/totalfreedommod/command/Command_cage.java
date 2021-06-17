@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
+import me.totalfreedom.totalfreedommod.punishments.Punishment;
+import me.totalfreedom.totalfreedommod.punishments.PunishmentType;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
@@ -111,6 +113,8 @@ public class Command_cage extends FreedomCommand
         {
             FUtil.adminAction(sender.getName(), "Caging " + player.getName(), true);
         }
+
+        plugin.pul.logPunishment(new Punishment(player.getName(), FUtil.getIp(player), sender.getName(), PunishmentType.CAGE, null));
         return true;
     }
 
