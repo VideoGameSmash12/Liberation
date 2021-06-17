@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 @CommandParameters(description = "Toggles TotalFreedomMod settings", usage = "/<command> [option] [value] [value]")
 public class Command_toggle extends FreedomCommand
 {
-    List<String> toggles = Arrays.asList(
+    private final List<String> toggles = Arrays.asList(
             "waterplace", "fireplace", "lavaplace", "fluidspread", "lavadmg", "firespread", "frostwalk",
             "firework", "prelog", "lockdown", "petprotect", "entitywipe", "nonuke [range] [count]",
             "explosives [radius]", "unsafeenchs", "bells", "armorstands", "structureblocks", "jigsaws", "grindstones",
