@@ -304,6 +304,11 @@ public class ItemFun extends FreedomService
                 }
                 break;
             }
+            default:
+            {
+                // Do nothing
+                break;
+            }
         }
     }
 
