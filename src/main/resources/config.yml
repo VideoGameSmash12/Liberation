@@ -206,7 +206,7 @@ allow:
   fire_spread: false
   fluid_spread: false
   lava_place: true
-  lava_damage: false
+  lava_damage: true
   water_place: true
   tnt_minecarts: false
   explosions: false
