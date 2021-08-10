@@ -592,9 +592,11 @@ masterbuilderinfo:
 
 # What new players will see upon joining for the first time.
 first_join_info:
-  - "&6Welcome to TotalFreedom -- the original Free-OP server!"
-  - "&eThe server's name doesn't mean we have no rules. Do &6/rules &efor a list of them."
-  - "&aNeed help getting started? Do &2/help &aor a list of commands!"
+  enabled: true
+  text:
+    - "&6Welcome to TotalFreedom -- the original Free-OP server!"
+    - "&eThe server's name doesn't mean we have no rules. Do &6/rules &efor a list of them."
+    - "&aNeed help getting started? Do &2/help &aor a list of commands!"
 
 # Famous players - cannot be banned by username
 famous_players:
