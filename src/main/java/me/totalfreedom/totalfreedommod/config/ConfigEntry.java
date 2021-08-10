@@ -165,6 +165,8 @@ public enum ConfigEntry
     ADMIN_INFO(List.class, "admininfo"),
     VOTING_INFO(List.class, "votinginfo"),
     MASTER_BUILDER_INFO(List.class, "masterbuilderinfo"),
+    FIRST_JOIN_INFO(List.class, "first_join_info.text"),
+    FIRST_JOIN_INFO_ENABLED(Boolean.class, "first_join_info.enabled"),
     AUTO_ENTITY_WIPE(Boolean.class, "auto_wipe"),
     TOGGLE_CHAT(Boolean.class, "toggle_chat"),
     DEVELOPER_MODE(Boolean.class, "developer_mode"),
