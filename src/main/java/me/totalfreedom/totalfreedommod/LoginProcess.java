@@ -194,7 +194,7 @@ public class LoginProcess extends FreedomService
         // Sends a message to the player if they have never joined before (or simply lack player data).
         if (!event.getPlayer().hasPlayedBefore() && ConfigEntry.FIRST_JOIN_INFO_ENABLED.getBoolean())
         {
-            final BukkitTask runnable = new BukkitRunnable()
+            new BukkitRunnable()
             {
                 @Override
                 public void run()
