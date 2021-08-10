@@ -19,6 +19,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class LoginProcess extends FreedomService
 {
@@ -189,6 +190,22 @@ public class LoginProcess extends FreedomService
         final Player player = event.getPlayer();
         final FPlayer fPlayer = plugin.pl.getPlayer(player);
         final PlayerData playerData = plugin.pl.getData(player);
+
+        // Sends a message to the player if they have never joined before (or simply lack player data).
+        if (!event.getPlayer().hasPlayedBefore() && ConfigEntry.FIRST_JOIN_INFO_ENABLED.getBoolean())
+        {
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    for (String line : ConfigEntry.FIRST_JOIN_INFO.getStringList())
+                    {
+                        player.sendMessage(FUtil.colorize(line));
+                    }
+                }
+            }.runTaskLater(plugin, 20);
+        }
 
         player.sendTitle(FUtil.colorize(ConfigEntry.SERVER_LOGIN_TITLE.getString()), FUtil.colorize(ConfigEntry.SERVER_LOGIN_SUBTITLE.getString()), 20, 100, 60);
         player.setOp(true);
