@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
+import me.totalfreedom.totalfreedommod.punishments.Punishment;
+import me.totalfreedom.totalfreedommod.punishments.PunishmentType;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.ChatColor;
@@ -75,15 +77,41 @@ public class Command_cage extends FreedomCommand
                 }
                 case "block":
                 {
-                    if (Material.matchMaterial(args[2]) != null)
+                    if (args.length >= 3)
                     {
-                        outerMaterial = Material.matchMaterial(args[2]);
-                        break;
+                        // Checks the validity of the Material and checks if it's a block.
+                        // This is incredibly inefficient, as Spigot's isBlock() method in Material is an actual
+                        // nightmare of switch-cases.
+                        if (Material.matchMaterial(args[2]) != null && Material.matchMaterial(args[2]).isBlock())
+                        {
+                            outerMaterial = Material.matchMaterial(args[2]);
+                            break;
+                        }
+                        else
+                        {
+                            msg("Invalid block!", ChatColor.RED);
+                            return true;
+                        }
                     }
-                    msg("Invalid block!", ChatColor.RED);
-                    break;
+                    else
+                    {
+                        return false;
+                    }
+                }
+                default:
+                {
+                    return false;
                 }
             }
+        }
+
+        if (outerMaterial == Material.PLAYER_HEAD)
+        {
+            FUtil.adminAction(sender.getName(), "Caging " + player.getName() + " in " + skullName, true);
+        }
+        else
+        {
+            FUtil.adminAction(sender.getName(), "Caging " + player.getName(), true);
         }
 
         Location location = player.getLocation().clone().add(0.0, 1.0, 0.0);
@@ -96,17 +124,9 @@ public class Command_cage extends FreedomCommand
         {
             fPlayer.getCageData().cage(location, outerMaterial, innerMaterial);
         }
-
         player.setGameMode(GameMode.SURVIVAL);
 
-        if (outerMaterial == Material.PLAYER_HEAD)
-        {
-            FUtil.adminAction(sender.getName(), "Caging " + player.getName() + " in " + skullName, true);
-        }
-        else
-        {
-            FUtil.adminAction(sender.getName(), "Caging " + player.getName(), true);
-        }
+        plugin.pul.logPunishment(new Punishment(player.getName(), FUtil.getIp(player), sender.getName(), PunishmentType.CAGE, null));
         return true;
     }
 
