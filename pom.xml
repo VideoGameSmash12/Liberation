@@ -109,6 +109,11 @@
             <id>ess-repo</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
+        
+        <repository>
+            <id>total-freedom-libs-snapshot-local</id>
+            <url>https://atlasmedia.jfrog.io/artifactory/total-freedom-libs-snapshot-local/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -135,10 +140,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.speedxx</groupId>
-            <artifactId>Mojangson</artifactId>
-            <version>1957eef8d6</version>
-            <scope>compile</scope>
+            <groupId>ca.momoperes</groupId>
+            <artifactId>mojangson</artifactId>
+            <version>1.0-20210821.193420-1</version>
         </dependency>
 
         <dependency>
