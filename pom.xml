@@ -5,7 +5,7 @@
 
     <groupId>me.totalfreedom</groupId>
     <artifactId>TotalFreedomMod</artifactId>
-    <version>2021.05</version>
+    <version>2021.06</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -109,6 +109,11 @@
             <id>ess-repo</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
+        
+        <repository>
+            <id>total-freedom-libs-snapshot-local</id>
+            <url>https://atlasmedia.jfrog.io/artifactory/total-freedom-libs-snapshot-local/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -135,10 +140,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.speedxx</groupId>
-            <artifactId>Mojangson</artifactId>
-            <version>1957eef8d6</version>
-            <scope>compile</scope>
+            <groupId>ca.momoperes</groupId>
+            <artifactId>mojangson</artifactId>
+            <version>1.0-20210821.193420-1</version>
         </dependency>
 
         <dependency>
@@ -193,7 +197,7 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>19.3</version>
+            <version>19.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -256,7 +260,7 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -462,7 +466,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.1.2</version>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                     <failOnViolation>true</failOnViolation>
