@@ -3,7 +3,7 @@ name: Java11-Maven-Build
 on: [push]
 
 jobs:
-  build:
+  build-java-11:
 
     runs-on: ubuntu-latest
 

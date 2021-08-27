@@ -3,7 +3,7 @@ name: Java16-Maven-Build
 on: [push]
 
 jobs:
-  build:
+  build-java-16:
 
     runs-on: ubuntu-latest
 
