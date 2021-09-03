@@ -159,6 +159,7 @@ shop:
     stacking_potato: 300
     clown_fish: 1500
     login_messages: 5000
+    rainbow_trail: 1500
 
 # Admin list
 adminlist:

@@ -10,19 +10,29 @@ public enum ShopItem
     LIGHTNING_ROD("Lightning Rod", Material.BLAZE_ROD, 12, ConfigEntry.SHOP_PRICES_LIGHTNING_ROD, ChatColor.LIGHT_PURPLE, "lightningRod", "/lightningrod"),
     FIRE_BALL("Fire Ball", Material.FIRE_CHARGE, 14, ConfigEntry.SHOP_PRICES_FIRE_BALL, ChatColor.RED, "fireBall", "/fireball"),
     RIDEABLE_PEARL("Rideable Ender Pearl", Material.ENDER_PEARL, 16, ConfigEntry.SHOP_PRICES_RIDEABLE_PEARL, ChatColor.DARK_PURPLE, "rideablePearl", "/rideablepearl"),
-    STACKING_POTATO("Stacking Potato", Material.POTATO, 20, ConfigEntry.SHOP_PRICES_STACKING_POTATO, ChatColor.YELLOW, "stackingPotato", "/stackingpotato"),
-    CLOWN_FISH("Clown Fish", Material.TROPICAL_FISH, 22, ConfigEntry.SHOP_PRICES_CLOWN_FISH, ChatColor.GOLD, "clownFish", "/clownfish"),
-    LOGIN_MESSAGES("Login Messages", Material.NAME_TAG, 24, ConfigEntry.SHOP_PRICES_LOGIN_MESSAGES, ChatColor.DARK_GREEN, "loginMessages", "/loginmessage");
+    STACKING_POTATO("Stacking Potato", Material.POTATO, 19, ConfigEntry.SHOP_PRICES_STACKING_POTATO, ChatColor.YELLOW, "stackingPotato", "/stackingpotato"),
+    CLOWN_FISH("Clown Fish", Material.TROPICAL_FISH, 21, ConfigEntry.SHOP_PRICES_CLOWN_FISH, ChatColor.GOLD, "clownFish", "/clownfish"),
+    LOGIN_MESSAGES("Login Messages", Material.NAME_TAG, 23, ConfigEntry.SHOP_PRICES_LOGIN_MESSAGES, ChatColor.DARK_GREEN, "loginMessages", "/loginmessage"),
+    RAINBOW_TRAIL("Rainbow Trail", Material.RED_WOOL, 25, ConfigEntry.SHOP_PRICES_RAINBOW_TRAIL, ChatColor.DARK_RED, "rainbowTrail", "/trail");
 
     /*
         Shop GUI Layout:
 
         Dimensions: 9x4 = 36
-        Key: g = Grappling Hook, l = Lightning Rod, f = Fire Ball, r = Rideable Ender Pearl, s = Stacking Potato, c = Clown Fish, x = Login Messages $ = Coins}
+        Key:
+        g = Grappling Hook,
+        l = Lightning Rod
+        f = Fire Ball
+        r = Rideable Ender Pearl
+        s = Stacking Potato
+        c = Clown Fish
+        x = Login Messages
+        t = Rainbow Trail
+        $ = Coins
 
         ---------
         -g-l-f-r-
-        --s-c-x--
+        -s-c-x-t-
         --------$
     */
 

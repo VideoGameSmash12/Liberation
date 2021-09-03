@@ -1,10 +1,9 @@
 package me.totalfreedom.totalfreedommod.fun;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.SplittableRandom;
+import java.util.*;
+
 import me.totalfreedom.totalfreedommod.FreedomService;
+import me.totalfreedom.totalfreedommod.shop.ShopItem;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +17,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Trailer extends FreedomService
 {
     private final SplittableRandom random = new SplittableRandom();
-    private final Set<String> trailPlayers = new HashSet<>(); // player name
+    private final Set<UUID> trailPlayers = new HashSet<>(); // player name
 
     @Override
     public void onStart()
@@ -38,7 +37,12 @@ public class Trailer extends FreedomService
             return;
         }
 
-        if (!trailPlayers.contains(event.getPlayer().getName()))
+        if (!trailPlayers.contains(event.getPlayer().getUniqueId()))
+        {
+            return;
+        }
+
+        if (!plugin.pl.getData(event.getPlayer()).hasItem(ShopItem.RAINBOW_TRAIL))
         {
             return;
         }
@@ -69,7 +73,7 @@ public class Trailer extends FreedomService
             {
                 final Location trail_pos;
                 trail_pos = new Location(event.getPlayer().getWorld(), fromBlock.getX() + x, fromBlock.getY(), fromBlock.getZ() + z);
-                if (trailPlayers.contains(event.getPlayer().getName()) && plugin.cpb.isEnabled())
+                if (trailPlayers.contains(event.getPlayer().getUniqueId()) && plugin.cpb.isEnabled())
                 {
                     plugin.cpb.getCoreProtectAPI().logPlacement(event.getPlayer().getName(), trail_pos, material, data);
                 }
@@ -79,16 +83,16 @@ public class Trailer extends FreedomService
 
     public void remove(Player player)
     {
-        trailPlayers.remove(player.getName());
+        trailPlayers.remove(player.getUniqueId());
     }
 
     public void add(Player player)
     {
-        trailPlayers.add(player.getName());
+        trailPlayers.add(player.getUniqueId());
     }
 
     public boolean contains(Player player)
     {
-        return trailPlayers.contains(player.getName());
+        return trailPlayers.contains(player.getUniqueId());
     }
 }

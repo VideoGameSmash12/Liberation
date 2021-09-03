@@ -110,6 +110,7 @@ public enum ConfigEntry
     SHOP_PRICES_STACKING_POTATO(Integer.class, "shop.prices.stacking_potato"),
     SHOP_PRICES_CLOWN_FISH(Integer.class, "shop.prices.clown_fish"),
     SHOP_PRICES_LOGIN_MESSAGES(Integer.class, "shop.prices.login_messages"),
+    SHOP_PRICES_RAINBOW_TRAIL(Integer.class, "shop.prices.rainbow_trail"),
     //
     ADMINLIST_CLEAN_THESHOLD_HOURS(Integer.class, "adminlist.clean_threshold_hours"),
     ADMINLIST_CONSOLE_IS_ADMIN(Boolean.class, "adminlist.console_is_admin"),
