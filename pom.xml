@@ -39,9 +39,10 @@
     </scm>
 
     <repositories>
+        
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>totalfreedom-development</id>
+            <url>https://atlasmedia.jfrog.io/artifactory/totalfreedom-development/</url>
         </repository>
 
         <repository>
@@ -101,19 +102,11 @@
         </repository>
 
         <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-
-        <repository>
-            <id>ess-repo</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+            <id>esentialsx-repo</id>
+            <url>https://repo.essentialsx.net/releases/</url>
         </repository>
         
-        <repository>
-            <id>total-freedom-libs-snapshot-local</id>
-            <url>https://atlasmedia.jfrog.io/artifactory/total-freedom-libs-snapshot-local/</url>
-        </repository>
+        
     </repositories>
 
     <dependencies>
@@ -176,14 +169,7 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.ess3</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.18.2</version>
+            <version>7.2.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -221,12 +207,12 @@
             <version>v1.9</version>
             <scope>provided</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>net.goldtreeservers</groupId>
-            <artifactId>worldguardextraflags</artifactId>
-            <version>4.0.0</version>
-            <scope>provided</scope>
+            <groupId>net.ess3</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.18.2</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -263,12 +249,14 @@
             <version>3.1.2</version>
             <scope>compile</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.4.2</version>
             <scope>compile</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.eclipse.sisu</groupId>
             <artifactId>org.eclipse.sisu.inject</artifactId>
