@@ -133,12 +133,6 @@
         </dependency>
 
         <dependency>
-            <groupId>ca.momoperes</groupId>
-            <artifactId>mojangson</artifactId>
-            <version>1.0-20210821.193420-1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.8</version>
