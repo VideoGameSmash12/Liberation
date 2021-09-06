@@ -1,6 +1,10 @@
 package me.totalfreedom.totalfreedommod.fun;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SplittableRandom;
+import java.util.UUID;
 
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.shop.ShopItem;
@@ -17,7 +21,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Trailer extends FreedomService
 {
     private final SplittableRandom random = new SplittableRandom();
-    private final Set<UUID> trailPlayers = new HashSet<>(); // player name
+    private final Set<UUID> trailPlayers = new HashSet<>(); // player UUID
 
     @Override
     public void onStart()
