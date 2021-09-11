@@ -41,8 +41,8 @@
     <repositories>
         
         <repository>
-            <id>totalfreedom-development</id>
-            <url>https://atlasmedia.jfrog.io/artifactory/totalfreedom-development/</url>
+            <id>atlas-nexus-01-totalfreedom-development</id>
+            <url>https://nexus-01.core.atlas-media.co.uk/repository/totalfreedom-development/</url>
         </repository>
 
         <repository>
@@ -224,10 +224,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.AtlasMediaGroup</groupId>
-            <artifactId>TFGuilds</artifactId>
-            <version>master-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>me.totalfreedom</groupId>
+            <artifactId>tfguilds</artifactId>
+            <version>2021.06-RC2</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
