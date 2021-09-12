@@ -133,12 +133,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.speedxx</groupId>
-            <artifactId>Mojangson</artifactId>
-            <version>1957eef8d6</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>2.2.1</version>
