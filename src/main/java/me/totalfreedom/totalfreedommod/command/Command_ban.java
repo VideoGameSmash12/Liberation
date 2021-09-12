@@ -1,8 +1,8 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+
+import com.earth2me.essentials.User;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
@@ -60,28 +60,39 @@ public class Command_ban extends FreedomCommand
         }
 
         final String username;
-        final List<String> ips = new ArrayList<>();
+        final String ip;
 
         final Player player = getPlayer(args[0]);
         if (player == null)
         {
-            final PlayerData entry = plugin.pl.getData(args[0]);
-
-            if (entry == null)
+            // Gets the IP using Essentials data if available
+            if (plugin.esb.isEnabled() && plugin.esb.getEssentialsUser(args[0]) != null)
             {
-                msg("Can't find that user. If target is not logged in, make sure that you spelled the name exactly.");
-                return true;
+                User essUser = plugin.esb.getEssentialsUser(args[0]);
+                //
+                username = essUser.getName();
+                ip = essUser.getLastLoginAddress();
             }
-
-            username = entry.getName();
-            ips.addAll(entry.getIps());
+            // Last resort - Getting the first result from the username itself
+            else
+            {
+                PlayerData entry = plugin.pl.getData(args[0]);
+                if (entry == null)
+                {
+                    msg(PLAYER_NOT_FOUND);
+                    return true;
+                }
+                else
+                {
+                    username = entry.getName();
+                    ip = entry.getIps().get(0);
+                }
+            }
         }
         else
         {
-            final PlayerData entry = plugin.pl.getData(player);
             username = player.getName();
-            //ips.addAll(entry.getIps());/
-            ips.add(FUtil.getIp(player));
+            ip = FUtil.getIp(player);
 
             // Deop
             player.setOp(false);
@@ -126,7 +137,6 @@ public class Command_ban extends FreedomCommand
 
         // Ban player
         Ban ban;
-
         if (player != null)
         {
             ban = Ban.forPlayer(player, sender, null, reason);
@@ -135,12 +145,8 @@ public class Command_ban extends FreedomCommand
         {
             ban = Ban.forPlayerName(username, sender, null, reason);
         }
+        ban.addIp(ip);
 
-        for (String ip : ips)
-        {
-            ban.addIp(ip);
-            ban.addIp(FUtil.getFuzzyIp(ip));
-        }
         plugin.bm.addBan(ban);
 
 
@@ -154,7 +160,7 @@ public class Command_ban extends FreedomCommand
             {
                 bcast.append(" - Reason: ").append(ChatColor.YELLOW).append(reason);
             }
-            msg(sender, ChatColor.GRAY + username + " has been banned and IP is: " + StringUtils.join(ips, ", "));
+            msg(sender, ChatColor.GRAY + username + " has been banned and IP is: " + ip);
             FUtil.adminAction(sender.getName(), bcast.toString(), true);
         }
 
@@ -172,7 +178,7 @@ public class Command_ban extends FreedomCommand
         }
 
         // Log ban
-        plugin.pul.logPunishment(new Punishment(username, ips.get(0), sender.getName(), PunishmentType.BAN, reason));
+        plugin.pul.logPunishment(new Punishment(username, ip, sender.getName(), PunishmentType.BAN, reason));
 
         return true;
     }
