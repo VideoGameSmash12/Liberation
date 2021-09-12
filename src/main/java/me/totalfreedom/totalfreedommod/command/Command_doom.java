@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import java.util.Objects;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -43,7 +42,7 @@ public class Command_doom extends FreedomCommand
         FUtil.adminAction(sender.getName(), "Casting oblivion over " + player.getName(), true);
         FUtil.bcastMsg(player.getName() + " will be completely obliviated!", ChatColor.RED);
 
-        final String ip = Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress().trim();
+        final String ip = FUtil.getIp(player);
 
         // Remove from admin
         Admin admin = getAdmin(player);
@@ -76,10 +75,7 @@ public class Command_doom extends FreedomCommand
         // Ban player
         Ban ban = Ban.forPlayer(player, sender);
         ban.setReason((reason == null ? "FUCKOFF" : reason));
-        for (String playerIp : plugin.pl.getData(player).getIps())
-        {
-            ban.addIp(playerIp);
-        }
+        ban.addIp(ip);
         plugin.bm.addBan(ban);
 
         // Set gamemode to survival
