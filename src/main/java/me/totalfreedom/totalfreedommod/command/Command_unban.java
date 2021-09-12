@@ -1,12 +1,9 @@
 package me.totalfreedom.totalfreedommod.command;
 
-import java.util.ArrayList;
-import java.util.List;
-import me.totalfreedom.totalfreedommod.banning.Ban;
+import com.earth2me.essentials.User;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,20 +19,33 @@ public class Command_unban extends FreedomCommand
         if (args.length > 0)
         {
             String username;
-            final PlayerData entry = plugin.pl.getData(args[0]);
+            String ip;
 
-            if (entry == null)
+            // Gets the IP using Essentials data if available
+            if (plugin.esb.isEnabled() && plugin.esb.getEssentialsUser(args[0]) != null)
             {
-                msg("Can't find that user. If target is not logged in, make sure that you spelled the name exactly.");
-                return true;
+                User essUser = plugin.esb.getEssentialsUser(args[0]);
+                //
+                username = essUser.getName();
+                ip = essUser.getLastLoginAddress();
+            }
+            // Secondary method - using Essentials if available
+            else
+            {
+                final PlayerData entry = plugin.pl.getData(args[0]);
+                if (entry == null)
+                {
+                    msg(PLAYER_NOT_FOUND);
+                    return true;
+                }
+                username = entry.getName();
+                ip = entry.getIps().get(0);
             }
 
-            username = entry.getName();
-            final List<String> ips = new ArrayList<>(entry.getIps());
-
             FUtil.adminAction(sender.getName(), "Unbanning " + username, true);
-            msg(username + " has been unbanned along with the following IPs: " + StringUtils.join(ips, ", "));
             plugin.bm.removeBan(plugin.bm.getByUsername(username));
+            plugin.bm.removeBan(plugin.bm.getByIp(ip));
+            msg(username + " has been unbanned along with the IP: " + ip);
 
             if (args.length >= 2)
             {
@@ -43,20 +53,6 @@ public class Command_unban extends FreedomCommand
                 {
                     plugin.cpb.restore(username);
                     msg("Restored edits for: " + username);
-                }
-            }
-
-            for (String ip : ips)
-            {
-                Ban ban = plugin.bm.getByIp(ip);
-                if (ban != null)
-                {
-                    plugin.bm.removeBan(ban);
-                }
-                ban = plugin.bm.getByIp(FUtil.getFuzzyIp(ip));
-                if (ban != null)
-                {
-                    plugin.bm.removeBan(ban);
                 }
             }
             return true;
