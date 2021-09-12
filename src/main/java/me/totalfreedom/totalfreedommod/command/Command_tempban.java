@@ -1,10 +1,10 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+
+import com.earth2me.essentials.User;
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
@@ -21,7 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.BOTH)
-@CommandParameters(description = "Temporarily ban someone.", usage = "/<command> [-q] <username> [duration] [reason]")
+@CommandParameters(description = "Temporarily ban someone.", usage = "/<command> [-q] <username> [duration] [reason]", aliases = "tban,noob")
 public class Command_tempban extends FreedomCommand
 {
 
@@ -47,49 +47,72 @@ public class Command_tempban extends FreedomCommand
         }
 
         final String username;
-        final List<String> ips = new ArrayList<>();
+        final String ip;
 
         final Player player = getPlayer(args[0]);
-        final PlayerData entry;
+        PlayerData entry;
         if (player == null)
         {
-            entry = plugin.pl.getData(args[0]);
-
-            if (entry == null)
+            // Gets the IP using Essentials data if available
+            if (plugin.esb.isEnabled() && plugin.esb.getEssentialsUser(args[0]) != null)
             {
-                msg("Can't find that user. If target is not logged in, make sure that you spelled the name exactly.");
-                return true;
+                User essUser = plugin.esb.getEssentialsUser(args[0]);
+                //
+                username = essUser.getName();
+                ip = essUser.getLastLoginAddress();
             }
-
-            username = entry.getName();
-            ips.addAll(entry.getIps());
+            // Last resort - Getting the first result from the username itself
+            else
+            {
+                entry = plugin.pl.getData(args[0]);
+                if (entry == null)
+                {
+                    msg(PLAYER_NOT_FOUND);
+                    return true;
+                }
+                else
+                {
+                    username = entry.getName();
+                    ip = entry.getIps().get(0);
+                }
+            }
         }
         else
         {
-            entry = plugin.pl.getData(player);
             username = player.getName();
-            ips.add(FUtil.getIp(player));
+            ip = FUtil.getIp(player);
         }
 
         final StringBuilder message = new StringBuilder("Temporarily banned " + username);
 
-        Date expires = FUtil.parseDateOffset("30m");
+        // Default expiration date is 5 minutes
+        Date expires = FUtil.parseDateOffset("5m");
+
+        // Parses what comes after as a duration
+        if (args.length > 1)
+        {
+            try
+            {
+                expires = FUtil.parseDateOffset(args[1]);
+            }
+            catch (NumberFormatException error)
+            {
+                msg("Invalid duration: " + args[1], ChatColor.RED);
+                return true;
+            }
+        }
+
         message.append(" until ").append(date_format.format(expires));
 
+        // If a reason appears to exist, set it.
         String reason = null;
-        if (args.length >= 2)
+        if (args.length > 2)
         {
-            Date parsed_offset = FUtil.parseDateOffset(args[1]);
-            reason = StringUtils.join(ArrayUtils.subarray(args, parsed_offset == null ? 1 : 2, args.length), " ") + " (" + sender.getName() + ")";
-            if (parsed_offset != null)
-            {
-                expires = parsed_offset;
-            }
+            reason = StringUtils.join(ArrayUtils.subarray(args, 2, args.length), " ") + " (" + sender.getName() + ")";
             message.append(", Reason: \"").append(reason).append("\"");
         }
 
         Ban ban;
-
         if (player != null)
         {
             ban = Ban.forPlayer(player, sender, expires, reason);
@@ -98,11 +121,8 @@ public class Command_tempban extends FreedomCommand
         {
             ban = Ban.forPlayerName(username, sender, expires, reason);
         }
+        ban.addIp(ip);
 
-        for (String ip : ips)
-        {
-            ban.addIp(ip);
-        }
         plugin.bm.addBan(ban);
 
         if (!quiet)
@@ -119,6 +139,8 @@ public class Command_tempban extends FreedomCommand
                         Objects.requireNonNull(targetPos.getWorld()).strikeLightningEffect(strike_pos);
                     }
                 }
+
+                player.kickPlayer(ban.bakeKickMessage());
             }
 
             FUtil.adminAction(sender.getName(), message.toString(), true);
@@ -128,19 +150,15 @@ public class Command_tempban extends FreedomCommand
             msg("Quietly temporarily banned " + username + ".");
         }
 
-        if (player != null)
+        for (Player p : Bukkit.getOnlinePlayers())
         {
-            player.kickPlayer(ban.bakeKickMessage());
-            for (Player p : Bukkit.getOnlinePlayers())
+            if (FUtil.getIp(p).equals(ip))
             {
-                if (FUtil.getIp(p).equals(FUtil.getIp(player)))
-                {
-                    p.kickPlayer(ChatColor.RED + "You've been kicked because someone on your IP has been banned.");
-                }
+                p.kickPlayer(ChatColor.RED + "You've been kicked because someone on your IP has been banned.");
             }
         }
 
-        plugin.pul.logPunishment(new Punishment(username, ips.get(0), sender.getName(), PunishmentType.TEMPBAN, reason));
+        plugin.pul.logPunishment(new Punishment(username, ip, sender.getName(), PunishmentType.TEMPBAN, reason));
         return true;
     }
 }
