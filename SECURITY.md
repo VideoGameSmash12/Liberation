@@ -11,20 +11,23 @@ These versions are currently actively supported by our team, and you should expe
 
 | Version             | Supported          | Support End:                   |
 | ------------------- | ------------------ | ------------------------------ |
-| 2021.05             | :white_check_mark: | No Earlier than August 2021    |
+| 2021.09             | :white_check_mark: | No Earlier than December 2021    |
 
 ### Legacy Supported
 These versions are no longer under active development, however we will look to release critical secuirty patches where appropriate. 
 
 | Version             | Supported          | Support End: |
 | ------------------- | ------------------ | ------------ |
-| 2021.04             | :white_check_mark: | July 2021    |
+| 2021.06             | :white_check_mark: | October 2021 |
+
 
 ### No Longer Supported
 These versions are no longer supported at all. It is strongly advised to update if you are running any of these versions. 
 
 | Version             | Supported          | Support Ended:      |
 | ------------------- | ------------------ | ------------------- |
+| 2021.05             | :white_check_mark: | September 2021      |
+| 2021.04             | :white_check_mark: | July 2021           |
 | 2021.02             | :x:                | 6 June 2021         |
 | 2020.11             | :x:                | 3 May 2021          |
 | 6.0.x (Pre-Release) | :x:                | December 2020       |
