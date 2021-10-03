@@ -429,8 +429,8 @@
                                     <include>org.reflections:reflections</include>
                                     <include>org.javassist:javassist</include>
                                     <include>io.papermc:paperlib</include>
-                                    <include>com.github.speedxx:Mojangson</include>
                                     <include>org.bstats:bstats-bukkit</include>
+                                    <include>org.bstats:bstats-base</include>
                                     <include>org.jetbrains:annotations</include>
                                 </includes>
                             </artifactSet>
