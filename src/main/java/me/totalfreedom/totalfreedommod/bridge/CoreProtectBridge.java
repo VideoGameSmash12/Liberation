@@ -283,7 +283,6 @@ public class CoreProtectBridge extends FreedomService
                 if (block != null)
                 {
                     event.setCancelled(true);
-                    List<String[]> lookup = coreProtect.blockLookup(block, -1);
 
                     int cooldownTime = 3;
 
@@ -297,6 +296,8 @@ public class CoreProtectBridge extends FreedomService
                             return;
                         }
                     }
+
+                    List<String[]> lookup = coreProtect.blockLookup(block, -1);
 
                     if (!plugin.al.isAdmin(player))
                     {
