@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CommandPermissions(level = Rank.OP, source = SourceType.BOTH)
-@CommandParameters(description = "Shows the amount of coins you or another player has. ", usage = "/<command> [player] | pay <player> <amount>")
+@CommandParameters(description = "Shows the amount of coins you or another player has. Also allows you to give coins to other players.", usage = "/<command> [player] | pay <player> <amount>")
 public class Command_coins extends FreedomCommand
 {
     @Override
