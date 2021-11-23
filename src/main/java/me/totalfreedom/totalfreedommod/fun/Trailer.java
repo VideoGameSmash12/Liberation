@@ -36,22 +36,17 @@ public class Trailer extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        if (trailPlayers.isEmpty())
-        {
-            return;
-        }
-
-        if (!trailPlayers.contains(event.getPlayer().getUniqueId()))
-        {
-            return;
-        }
-
-        if (!plugin.pl.getData(event.getPlayer()).hasItem(ShopItem.RAINBOW_TRAIL))
-        {
-            return;
-        }
-
-        if (event.getPlayer().getWorld().equals(plugin.wm.masterBuilderWorld.getWorld()))
+        /* Doesn't continue any further if...
+         * - The trail list is empty
+         * - The player doesn't have their trail enabled in the first place
+         * - The player doesn't have the trail item in the shop at all
+         * - The player doesn't have permission to modify blocks in their current world
+         */
+        if (trailPlayers.isEmpty()
+                || !trailPlayers.contains(event.getPlayer().getUniqueId())
+                || !plugin.pl.getData(event.getPlayer()).hasItem(ShopItem.RAINBOW_TRAIL)
+                || plugin.wr.doRestrict(event.getPlayer())
+                || !plugin.wgb.canEditCurrentWorld(event.getPlayer()))
         {
             return;
         }
