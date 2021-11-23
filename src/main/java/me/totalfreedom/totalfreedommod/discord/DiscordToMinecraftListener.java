@@ -10,9 +10,12 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,39 +31,66 @@ public class DiscordToMinecraftListener extends ListenerAdapter
             {
                 Member member = event.getMember();
                 String tag = getDisplay(member);
-                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "]");
                 Message msg = event.getMessage();
+
+                ComponentBuilder emsg = new ComponentBuilder();
+
+                // Prefix
+                emsg.append(ChatColor.DARK_GRAY + "[");
+                TextComponent inviteLink = new TextComponent("Discord");
+                inviteLink.setColor(ChatColor.DARK_AQUA.asBungee());
+                inviteLink.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new Text("Click here to get the invite link!")));
+                inviteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                        ConfigEntry.DISCORD_INVITE_LINK.getString()));
+                emsg.append(inviteLink);
+                emsg.append(ChatColor.DARK_GRAY + "] ", ComponentBuilder.FormatRetention.NONE);
+
+                // Tag (if they have one)
                 if (tag != null)
                 {
-                    message.append(" ").append(tag);
+                    emsg.append(tag);
                 }
-                message.append(" ").append(ChatColor.RED).append(ChatColor.stripColor(member.getEffectiveName())).append(ChatColor.DARK_GRAY).append(":").append(ChatColor.RESET);
-                ComponentBuilder builder = new ComponentBuilder(message.toString());
-                if (!msg.getContentDisplay().isEmpty())
-                {
-                    builder.append(" ").append(ChatColor.stripColor(msg.getContentDisplay()));
-                    message.append(" ").append(ChatColor.stripColor(msg.getContentDisplay())); // for logging
-                }
+
+                emsg.append(" ");
+
+                // User
+                TextComponent user = new TextComponent(ChatColor.stripColor(member.getEffectiveName()));
+                user.setColor(ChatColor.RED.asBungee());
+                emsg.append(user);
+
+                // Message
+                emsg.append(ChatColor.DARK_GRAY + ": " + ChatColor.RESET
+                        + ChatColor.stripColor(msg.getContentDisplay()), ComponentBuilder.FormatRetention.NONE);
+
+                // Attachments
                 if (!msg.getAttachments().isEmpty())
                 {
+                    if (!msg.getContentDisplay().isEmpty())
+                        emsg.append(" ");
+
                     for (Message.Attachment attachment : msg.getAttachments())
                     {
-                        attachment.getUrl();
-                        builder.append(" ");
-                        TextComponent text = new TextComponent(ChatColor.YELLOW + "[Media]");
-                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                        builder.append(text);
-                        message.append(" [Media]"); // for logging
+                        TextComponent media = new TextComponent("[Media] ");
+                        media.setColor(ChatColor.YELLOW.asBungee());
+                        media.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                        media.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(attachment.getUrl())));
+
+                        emsg.append(media, ComponentBuilder.FormatRetention.NONE);
                     }
                 }
+
+                BaseComponent[] components = emsg.create();
+
                 for (Player player : Bukkit.getOnlinePlayers())
                 {
                     if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
                     {
-                        player.spigot().sendMessage(builder.create());
+                        player.spigot().sendMessage(components);
                     }
                 }
-                FLog.info(message.toString());
+
+                FLog.info(TextComponent.toLegacyText(components), true);
             }
         }
     }
