@@ -86,6 +86,7 @@ public enum ConfigEntry
     DISCORD_ASSISTANT_EXECUTIVE_ROLE_ID(String.class, "discord.assistant_executive_role_id"),
     DISCORD_EXECUTIVE_ROLE_ID(String.class, "discord.executive_role_id"),
     DISCORD_SERVER_OWNER_ROLE_ID(String.class, "discord.server_owner_role_id"),
+    DISCORD_INVITE_LINK(String.class, "discord.invite_link"),
     //
     PTERO_URL(String.class, "ptero.url"),
     PTERO_DEFAULT_EMAIL_DOMAIN(String.class, "ptero.default_email_domain"),

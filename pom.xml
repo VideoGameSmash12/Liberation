@@ -5,7 +5,7 @@
 
     <groupId>me.totalfreedom</groupId>
     <artifactId>TotalFreedomMod</artifactId>
-    <version>2021.06</version>
+    <version>2021.09</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -247,7 +247,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.7.2</version>
+            <version>5.8.0</version>
             <scope>compile</scope>
         </dependency>
         
@@ -429,8 +429,8 @@
                                     <include>org.reflections:reflections</include>
                                     <include>org.javassist:javassist</include>
                                     <include>io.papermc:paperlib</include>
-                                    <include>com.github.speedxx:Mojangson</include>
                                     <include>org.bstats:bstats-bukkit</include>
+                                    <include>org.bstats:bstats-base</include>
                                     <include>org.jetbrains:annotations</include>
                                 </includes>
                             </artifactSet>
