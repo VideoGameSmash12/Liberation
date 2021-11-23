@@ -142,7 +142,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -177,7 +177,7 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>19.5</version>
+            <version>20.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -275,9 +275,9 @@
                 <version>3.8.1</version>
                 <configuration>
                     <outputFileName>TotalFreedomMod.jar</outputFileName>
-                    <compilerVersion>11</compilerVersion>
-                    <source>11</source>
-                    <target>11</target>
+                    <compilerVersion>17</compilerVersion>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
 
@@ -401,7 +401,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
