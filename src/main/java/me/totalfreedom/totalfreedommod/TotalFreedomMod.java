@@ -186,7 +186,6 @@ public class TotalFreedomMod extends JavaPlugin
         fsh = new FreedomServiceHandler();
 
         config = new MainConfig();
-        config.load();
 
         if (FUtil.inDeveloperMode())
         {
