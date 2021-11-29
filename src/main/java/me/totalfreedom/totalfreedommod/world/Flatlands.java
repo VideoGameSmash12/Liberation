@@ -1,9 +1,6 @@
 package me.totalfreedom.totalfreedommod.world;
 
-import java.io.File;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.util.FLog;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,8 +28,6 @@ public class Flatlands extends CustomWorld
         {
             return null;
         }
-
-        wipeFlatlandsIfFlagged();
 
         final WorldCreator worldCreator = new WorldCreator(getName());
         worldCreator.generateStructures(false);
@@ -63,32 +58,4 @@ public class Flatlands extends CustomWorld
 
         return world;
     }
-
-
-    public void wipeFlatlandsIfFlagged()
-    {
-        boolean doFlatlandsWipe = false;
-        try
-        {
-            doFlatlandsWipe = plugin.sf.getSavedFlag("do_wipe_flatlands");
-        }
-        catch (Exception ignored)
-        {
-        }
-
-        if (doFlatlandsWipe)
-        {
-            if (Bukkit.getServer().getWorld("flatlands") == null)
-            {
-                FLog.info("Wiping flatlands.");
-                plugin.sf.setSavedFlag("do_wipe_flatlands", false);
-                FileUtils.deleteQuietly(new File("./flatlands"));
-            }
-            else
-            {
-                FLog.severe("Can't wipe flatlands, it is already loaded.");
-            }
-        }
-    }
-
 }
