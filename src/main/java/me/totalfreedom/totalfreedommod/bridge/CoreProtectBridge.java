@@ -192,7 +192,6 @@ public class CoreProtectBridge extends FreedomService
         return (megabytes / 1024);
     }
 
-    // Wipes DB for the specified world
     public void clearDatabase(World world)
     {
         clearDatabase(world, false);
@@ -259,12 +258,6 @@ public class CoreProtectBridge extends FreedomService
         catch (SQLException e)
         {
             FLog.warning("Failed to delete the CoreProtect data for the " + world.getName());
-        }
-
-        // This exits for flatlands wipes
-        if (shutdown)
-        {
-            server.shutdown();
         }
     }
 
