@@ -282,9 +282,9 @@
                 <version>3.8.1</version>
                 <configuration>
                     <outputFileName>TotalFreedomMod.jar</outputFileName>
-                    <compilerVersion>11</compilerVersion>
-                    <source>11</source>
-                    <target>11</target>
+                    <compilerVersion>17</compilerVersion>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
 
