@@ -752,7 +752,7 @@ public class FUtil
 
     public static String getIp(Player player)
     {
-        return Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress().trim();
+        return player.getAddress().getAddress().getHostAddress().trim();
     }
 
     public static String getIp(PlayerLoginEvent event)
