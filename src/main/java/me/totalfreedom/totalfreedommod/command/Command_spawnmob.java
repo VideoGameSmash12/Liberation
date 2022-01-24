@@ -1,6 +1,8 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import java.util.List;
+
+import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.EnumUtils;
@@ -55,6 +57,7 @@ public class Command_spawnmob extends FreedomCommand
             return true;
         }
 
+        int max = ConfigEntry.SPAWNMOB_MAX.getInteger();
         int amount = 1;
         if (args.length > 1)
         {
@@ -69,9 +72,9 @@ public class Command_spawnmob extends FreedomCommand
             }
         }
 
-        if (amount > 10 || amount < 1)
+        if (amount > max || amount < 1)
         {
-            msg("Invalid amount: " + args[1] + ". Must be 1-10.", ChatColor.RED);
+            msg("Invalid amount: " + args[1] + ". Must be 1-" + max + ".", ChatColor.RED);
             return true;
         }
 

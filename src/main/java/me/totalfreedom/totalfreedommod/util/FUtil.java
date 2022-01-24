@@ -36,8 +36,6 @@ import static org.bukkit.Bukkit.getServer;
 
 public class FUtil
 {
-
-    public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
     /* See https://github.com/TotalFreedom/License - None of the listed names may be removed.
     Leaving this list here for anyone running TFM on a cracked server:
     public static final List<String> DEVELOPERS = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "Telesphoreo", "CoolJWB");

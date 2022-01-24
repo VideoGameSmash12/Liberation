@@ -4,7 +4,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SplittableRandom;
+import java.util.UUID;
+
 import me.totalfreedom.totalfreedommod.FreedomService;
+import me.totalfreedom.totalfreedommod.shop.ShopItem;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +21,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Trailer extends FreedomService
 {
     private final SplittableRandom random = new SplittableRandom();
-    private final Set<String> trailPlayers = new HashSet<>(); // player name
+    private final Set<UUID> trailPlayers = new HashSet<>(); // player UUID
 
     @Override
     public void onStart()
@@ -33,17 +36,17 @@ public class Trailer extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        if (trailPlayers.isEmpty())
-        {
-            return;
-        }
-
-        if (!trailPlayers.contains(event.getPlayer().getName()))
-        {
-            return;
-        }
-
-        if (event.getPlayer().getWorld().equals(plugin.wm.masterBuilderWorld.getWorld()))
+        /* Doesn't continue any further if...
+         * - The trail list is empty
+         * - The player doesn't have their trail enabled in the first place
+         * - The player doesn't have the trail item in the shop at all
+         * - The player doesn't have permission to modify blocks in their current world
+         */
+        if (trailPlayers.isEmpty()
+                || !trailPlayers.contains(event.getPlayer().getUniqueId())
+                || !plugin.pl.getData(event.getPlayer()).hasItem(ShopItem.RAINBOW_TRAIL)
+                || plugin.wr.doRestrict(event.getPlayer())
+                || !plugin.wgb.canEditCurrentWorld(event.getPlayer()))
         {
             return;
         }
@@ -69,7 +72,7 @@ public class Trailer extends FreedomService
             {
                 final Location trail_pos;
                 trail_pos = new Location(event.getPlayer().getWorld(), fromBlock.getX() + x, fromBlock.getY(), fromBlock.getZ() + z);
-                if (trailPlayers.contains(event.getPlayer().getName()) && plugin.cpb.isEnabled())
+                if (trailPlayers.contains(event.getPlayer().getUniqueId()) && plugin.cpb.isEnabled())
                 {
                     plugin.cpb.getCoreProtectAPI().logPlacement(event.getPlayer().getName(), trail_pos, material, data);
                 }
@@ -79,16 +82,16 @@ public class Trailer extends FreedomService
 
     public void remove(Player player)
     {
-        trailPlayers.remove(player.getName());
+        trailPlayers.remove(player.getUniqueId());
     }
 
     public void add(Player player)
     {
-        trailPlayers.add(player.getName());
+        trailPlayers.add(player.getUniqueId());
     }
 
     public boolean contains(Player player)
     {
-        return trailPlayers.contains(player.getName());
+        return trailPlayers.contains(player.getUniqueId());
     }
 }

@@ -24,6 +24,10 @@ public class Command_opall extends FreedomCommand
                 msg(player, YOU_ARE_OP);
                 plugin.rm.updateDisplay(player);
             }
+            else
+            {
+                player.recalculatePermissions();
+            }
         }
 
         return true;
