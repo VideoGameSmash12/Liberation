@@ -136,7 +136,7 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>2.2.1</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -203,10 +203,10 @@
         </dependency>
         
         <dependency>
-            <groupId>net.ess3</groupId>
+            <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.19.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -227,7 +227,7 @@
             <groupId>me.totalfreedom</groupId>
             <artifactId>tfguilds</artifactId>
             <version>2021.06-RC2</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
