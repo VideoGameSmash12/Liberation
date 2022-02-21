@@ -509,6 +509,10 @@ moblimiter:
     slime: true
     giant: true
 
+# Spawnmob
+spawnmob:
+  max: 25
+
 # Flatlands
 flatlands:
   generate: true

@@ -45,6 +45,8 @@ public enum ConfigEntry
     MOB_LIMITER_DISABLE_GIANT(Boolean.class, "moblimiter.disable.giant"),
     MOB_LIMITER_DISABLE_SLIME(Boolean.class, "moblimiter.disable.slime"),
     //
+    SPAWNMOB_MAX(Integer.class, "spawnmob.max"),
+    //
     HTTPD_ENABLED(Boolean.class, "httpd.enabled"),
     HTTPD_HOST(String.class, "httpd.host"),
     HTTPD_PORT(Integer.class, "httpd.port"),

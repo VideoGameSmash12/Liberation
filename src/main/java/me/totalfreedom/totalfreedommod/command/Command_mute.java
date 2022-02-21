@@ -130,17 +130,19 @@ public class Command_mute extends FreedomCommand
         {
             playerdata.setMuted(true);
             player.sendTitle(ChatColor.RED + "You've been muted.", ChatColor.YELLOW + "Be sure to follow the rules!", 20, 100, 60);
+            
+            if (quiet)
+            {
+                msg("Muted " + player.getName() + " quietly");
+                return true;  // doesn't announce reason
+            }
+
+            FUtil.adminAction(sender.getName(), "Muting " + player.getName(), true);
+            
             if (reason != null)
             {
                 msg(player, ChatColor.RED + "Reason: " + ChatColor.YELLOW + reason);
             }
-            if (quiet)
-            {
-                msg("Muted " + player.getName() + " quietly");
-                return true;
-            }
-
-            FUtil.adminAction(sender.getName(), "Muting " + player.getName(), true);
 
             if (smite)
             {
