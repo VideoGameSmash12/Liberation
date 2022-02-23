@@ -136,7 +136,7 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>2.2.1</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -163,7 +163,7 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.2.4</version>
+            <version>7.2.8</version>
             <scope>provided</scope>
         </dependency>
 
@@ -177,14 +177,14 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>20.1</version>
+            <version>20.4</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.4</version>
+            <version>7.0.6</version>
             <scope>provided</scope>
         </dependency>
 
@@ -203,10 +203,10 @@
         </dependency>
         
         <dependency>
-            <groupId>net.ess3</groupId>
+            <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.18.2</version>
-            <scope>compile</scope>
+            <version>2.19.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -227,7 +227,7 @@
             <groupId>me.totalfreedom</groupId>
             <artifactId>tfguilds</artifactId>
             <version>2021.06-RC2</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
