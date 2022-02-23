@@ -4,14 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
-import net.minecraft.server.v1_16_R3.EntityPlayer;
-import net.minecraft.server.v1_16_R3.MinecraftServer;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
 
 public class ServerInterface extends FreedomService
 {
-    public static final String COMPILE_NMS_VERSION = "v1_16_R3";
+    public static final String COMPILE_NMS_VERSION = "v1_17_R1";
 
     public static void warnVersion()
     {
@@ -34,16 +34,11 @@ public class ServerInterface extends FreedomService
     {
     }
 
-    public void setOnlineMode(boolean mode)
-    {
-        getServer().setOnlineMode(mode);
-    }
-
     public int purgeWhitelist()
     {
         String[] whitelisted = getServer().getPlayerList().getWhitelisted();
         int size = whitelisted.length;
-        for (EntityPlayer player : getServer().getPlayerList().players)
+        for (EntityPlayer player : getServer().getPlayerList().getPlayers())
         {
             getServer().getPlayerList().getWhitelist().remove(player.getProfile());
         }
