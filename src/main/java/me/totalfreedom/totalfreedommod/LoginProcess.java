@@ -175,9 +175,9 @@ public class LoginProcess extends FreedomService
         }
 
         // Whitelist
-        if (plugin.si.isWhitelisted())
+        if (server.isWhitelistEnforced())
         {
-            if (!plugin.si.getWhitelisted().contains(username.toLowerCase()))
+            if (!player.isWhitelisted())
             {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
             }

@@ -158,7 +158,7 @@ public class Command_whitelist extends FreedomCommand
         if (args[0].equalsIgnoreCase("purge"))
         {
             FUtil.adminAction(sender.getName(), "Removing all players from the whitelist", false);
-            msg("Removed " + plugin.si.purgeWhitelist() + " players from the whitelist.");
+            msg("Removed " + purge() + " players from the whitelist.");
             return true;
         }
         return false;
@@ -198,10 +198,21 @@ public class Command_whitelist extends FreedomCommand
     public List<String> getWhitelistedNames()
     {
         List<String> names = new ArrayList<>();
-        for (Object name : plugin.si.getWhitelisted())
+        for (OfflinePlayer player : server.getWhitelistedPlayers())
         {
-            names.add(String.valueOf(name));
+            names.add(player.getName());
         }
         return names;
+    }
+
+    public int purge()
+    {
+        int removed = 0;
+        for (OfflinePlayer player : server.getWhitelistedPlayers())
+        {
+            player.setWhitelisted(false);
+            removed++;
+        }
+        return removed;
     }
 }
