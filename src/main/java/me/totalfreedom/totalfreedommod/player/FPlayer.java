@@ -54,9 +54,6 @@ public class FPlayer
     private String lastMessage = "";
     private boolean inAdminchat = false;
     private boolean allCommandsBlocked = false;
-
-
-    private boolean superadminIdVerified = false;
     private String lastCommand = "";
     private boolean cmdspyEnabled = false;
     private String tag = null;
@@ -646,16 +643,6 @@ public class FPlayer
     public void setAllCommandsBlocked(boolean allCommandsBlocked)
     {
         this.allCommandsBlocked = allCommandsBlocked;
-    }
-
-    public boolean isSuperadminIdVerified()
-    {
-        return superadminIdVerified;
-    }
-
-    public void setSuperadminIdVerified(boolean superadminIdVerified)
-    {
-        this.superadminIdVerified = superadminIdVerified;
     }
 
     public boolean isCmdspyEnabled()

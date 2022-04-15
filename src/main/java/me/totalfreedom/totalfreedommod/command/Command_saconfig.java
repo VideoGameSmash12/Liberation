@@ -187,12 +187,6 @@ public class Command_saconfig extends FreedomCommand
                     }
                 }
 
-                if (plugin.pl.isPlayerImpostor(player))
-                {
-                    msg("This player was labeled as a Player impostor and is not an admin, therefore they cannot be added to the admin list.", ChatColor.RED);
-                    return true;
-                }
-
                 if (admin == null) // New admin
                 {
 
@@ -208,11 +202,6 @@ public class Command_saconfig extends FreedomCommand
                     admin.addIp(FUtil.getIp(player));
                     admin.setActive(true);
                     admin.setLastLogin(new Date());
-
-                    if (plugin.al.isVerifiedAdmin(player))
-                    {
-                        plugin.al.verifiedNoAdmin.remove(player.getName());
-                    }
 
                     plugin.al.save(admin);
                     plugin.al.updateTables();

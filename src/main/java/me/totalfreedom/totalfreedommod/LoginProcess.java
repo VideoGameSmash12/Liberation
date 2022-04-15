@@ -179,12 +179,9 @@ public class LoginProcess extends FreedomService
         }
 
         // Whitelist
-        if (server.isWhitelistEnforced())
+        if (server.isWhitelistEnforced() && !player.isWhitelisted())
         {
-            if (!player.isWhitelisted())
-            {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
-            }
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
         }
     }
 
@@ -225,7 +222,7 @@ public class LoginProcess extends FreedomService
             return;
         }
 
-        if (!playerData.hasVerification() && !playerData.getIps().contains(FUtil.getIp(player)))
+        if (!playerData.getIps().contains(FUtil.getIp(player)))
         {
             playerData.addIp(FUtil.getIp(player));
             plugin.pl.save(playerData);

@@ -138,43 +138,6 @@ public class PlayerList extends FreedomService
         return new PlayerData(resultSet);
     }
 
-    public Boolean isPlayerImpostor(Player player)
-    {
-        PlayerData playerData = getData(player);
-        return plugin.dc.enabled
-                && !plugin.al.isAdmin(player)
-                && (playerData.hasVerification())
-                && !playerData.getIps().contains(FUtil.getIp(player));
-    }
-
-    public boolean IsImpostor(Player player)
-    {
-        return isPlayerImpostor(player) || plugin.al.isAdminImpostor(player);
-    }
-
-    public void verify(Player player, String backupCode)
-    {
-        PlayerData playerData = getData(player);
-        if (backupCode != null)
-        {
-            playerData.removeBackupCode(backupCode);
-        }
-
-        playerData.addIp(FUtil.getIp(player));
-        save(playerData);
-
-        if (plugin.al.isAdminImpostor(player))
-        {
-            Admin admin = plugin.al.getEntryByUuid(player.getUniqueId());
-            admin.setLastLogin(new Date());
-            admin.addIp(FUtil.getIp(player));
-            plugin.al.updateTables();
-            plugin.al.save(admin);
-        }
-
-        plugin.rm.updateDisplay(player);
-    }
-
     public void syncIps(Admin admin)
     {
         PlayerData playerData = getData(admin.getName());
@@ -182,20 +145,6 @@ public class PlayerList extends FreedomService
         playerData.addIps(admin.getIps());
         plugin.pl.save(playerData);
     }
-
-    public void syncIps(PlayerData playerData)
-    {
-        Admin admin = plugin.al.getEntryByUuid(playerData.getUuid());
-
-        if (admin != null && admin.isActive())
-        {
-            admin.clearIPs();
-            admin.addIps(playerData.getIps());
-            plugin.al.updateTables();
-            plugin.al.save(admin);
-        }
-    }
-
 
     public void save(PlayerData player)
     {
