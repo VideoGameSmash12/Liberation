@@ -13,19 +13,15 @@ import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
+import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +36,6 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
     public static final String NO_PERMISSION = ChatColor.RED + "You do not have permission to execute this command.";
     public static final Timer timer = new Timer();
     public static final Map<CommandSender, FreedomCommand> COOLDOWN_TIMERS = new HashMap<>();
-    private static CommandMap commandMap;
     protected final TotalFreedomMod plugin = TotalFreedomMod.getPlugin();
     protected final Server server = plugin.getServer();
     private final String name;
@@ -69,34 +64,22 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         this.cooldown = perms.cooldown();
     }
 
-    public static CommandMap getCommandMap()
-    {
-        if (commandMap == null)
-        {
-            try
-            {
-                final Field f = Bukkit.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
-                f.setAccessible(true);
-                commandMap = (CommandMap)f.get(Bukkit.getServer().getPluginManager());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return commandMap;
-    }
-
     public static FreedomCommand getFrom(Command command)
     {
         try
         {
-            return (FreedomCommand)(((PluginCommand)command).getExecutor());
+            if (command instanceof FCommand)
+            {
+                return ((FCommand) command).getExecutor();
+            }
         }
         catch (Exception ex)
         {
+            FLog.severe(ex);
             return null;
         }
+
+        return null;
     }
 
     public static String getCommandPrefix()
@@ -119,7 +102,7 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         {
             cmd.setUsage(this.usage);
         }
-        getCommandMap().register("totalfreedommod", cmd);
+        server.getCommandMap().register("totalfreedommod", cmd);
         cmd.setExecutor(this);
     }
 
@@ -316,13 +299,18 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         return perms;
     }
 
-    private final class FCommand extends Command
+    public final class FCommand extends Command implements PluginIdentifiableCommand
     {
         private FreedomCommand cmd = null;
 
         private FCommand(String command)
         {
             super(command);
+        }
+
+        public final FreedomCommand getExecutor()
+        {
+            return cmd;
         }
 
         public void setExecutor(FreedomCommand cmd)
@@ -426,6 +414,12 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
                 return cmd.onTabComplete(sender, this, alias, args);
             }
             return new ArrayList<>();
+        }
+
+        @Override
+        public @NotNull Plugin getPlugin()
+        {
+            return plugin;
         }
     }
 }
