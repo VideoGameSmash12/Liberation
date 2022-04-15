@@ -100,7 +100,7 @@ public class PlayerList extends FreedomService
 
     public boolean isTelnetMasterBuilder(PlayerData playerData)
     {
-        Admin admin = plugin.al.getEntryByName(playerData.getName());
+        Admin admin = plugin.al.getEntryByUuid(playerData.getUuid());
         return admin != null && admin.getRank().isAtLeast(Rank.ADMIN) && playerData.isMasterBuilder();
     }
 
@@ -165,7 +165,7 @@ public class PlayerList extends FreedomService
 
         if (plugin.al.isAdminImpostor(player))
         {
-            Admin admin = plugin.al.getEntryByName(player.getName());
+            Admin admin = plugin.al.getEntryByUuid(player.getUniqueId());
             admin.setLastLogin(new Date());
             admin.addIp(FUtil.getIp(player));
             plugin.al.updateTables();
@@ -185,7 +185,7 @@ public class PlayerList extends FreedomService
 
     public void syncIps(PlayerData playerData)
     {
-        Admin admin = plugin.al.getEntryByName(playerData.getName());
+        Admin admin = plugin.al.getEntryByUuid(playerData.getUuid());
 
         if (admin != null && admin.isActive())
         {
