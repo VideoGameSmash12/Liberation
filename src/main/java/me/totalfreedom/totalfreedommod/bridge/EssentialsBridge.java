@@ -114,8 +114,7 @@ public class EssentialsBridge extends FreedomService
             User user = getEssentialsUser(username);
             if (user != null)
             {
-                Long l = FUtil.getField(user, "lastActivity");
-                return (l != null) ? l : 0L;
+                return user.getLastOnlineActivity();
             }
         }
         catch (Exception ex)

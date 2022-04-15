@@ -225,33 +225,6 @@ public class FUtil
         return names;
     }
 
-    @SuppressWarnings("unchecked")
-    public static UUID nameToUUID(String name)
-    {
-        try
-        {
-            JSONArray json = new JSONArray();
-            json.add(name);
-            List<String> headers = new ArrayList<>();
-            headers.add("Accept:application/json");
-            headers.add("Content-Type:application/json");
-            Response response = sendRequest("https://api.mojang.com/profiles/minecraft", "POST", headers, json.toString());
-            // Don't care how stupid this looks, couldn't find anything to parse a json string to something readable in java with something not horrendously huge, maybe im just retarded
-            Pattern pattern = Pattern.compile("(?<=\"id\":\")[a-f0-9].{31}");
-            Matcher matcher = pattern.matcher(response.getMessage());
-            if (matcher.find())
-            {
-                String rawUUID = matcher.group(0).replaceFirst("([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]+)", "$1-$2-$3-$4-$5");
-                return UUID.fromString(rawUUID);
-            }
-        }
-        catch (Exception e)
-        {
-            FLog.severe("Failed to convert name to UUID:\n" + e.toString());
-        }
-        return null;
-    }
-
     public static Response sendRequest(String endpoint, String method, List<String> headers, String body) throws IOException
     {
         URL url = new URL(endpoint);
@@ -535,30 +508,6 @@ public class FUtil
         }
 
         return ip;
-    }
-
-    //getField: Borrowed from WorldEdit
-    @SuppressWarnings("unchecked")
-    public static <T> T getField(Object from, String name)
-    {
-        Class<?> checkClass = from.getClass();
-        do
-        {
-            try
-            {
-                Field field = checkClass.getDeclaredField(name);
-                field.setAccessible(true);
-                return (T) field.get(from);
-
-            }
-            catch (NoSuchFieldException | IllegalAccessException ignored)
-            {
-            }
-        }
-        while (checkClass.getSuperclass() != Object.class
-                && ((checkClass = checkClass.getSuperclass()) != null));
-
-        return null;
     }
 
     public static ChatColor randomChatColor()

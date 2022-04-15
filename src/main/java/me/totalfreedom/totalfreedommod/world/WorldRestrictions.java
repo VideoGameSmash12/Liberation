@@ -32,14 +32,6 @@ public class WorldRestrictions extends FreedomService
     private final List<String> BLOCKED_ESSENTIALS_COMMANDS = Arrays.asList(
             "bigtree", "ebigtree", "largetree", "elargetree");
 
-    private final Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>()
-    {{
-        put(Flags.PLACE_VEHICLE, StateFlag.State.DENY);
-        put(Flags.DESTROY_VEHICLE, StateFlag.State.DENY);
-        put(Flags.ENTITY_ITEM_FRAME_DESTROY, StateFlag.State.DENY);
-        put(Flags.ENTITY_PAINTING_DESTROY, StateFlag.State.DENY);
-    }};
-
     @Override
     public void onStart()
     {
@@ -154,21 +146,5 @@ public class WorldRestrictions extends FreedomService
                 event.setCancelled(true);
             }
         }
-    }
-
-    public void protectWorld(World world)
-    {
-        if (!plugin.wgb.isEnabled())
-        {
-            return;
-        }
-
-        RegionManager regionManager = plugin.wgb.getRegionManager(world);
-
-        GlobalProtectedRegion region = new GlobalProtectedRegion("__global__");
-
-        region.setFlags(flags);
-
-        regionManager.addRegion(region);
     }
 }

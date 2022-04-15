@@ -48,52 +48,6 @@ public class WorldEditBridge extends FreedomService
         return worldeditPlugin;
     }
 
-    public void undo(Player player, int count)
-    {
-        try
-        {
-            LocalSession session = getPlayerSession(player);
-            if (session != null)
-            {
-                final BukkitPlayer bukkitPlayer = getBukkitPlayer(player);
-                if (bukkitPlayer != null)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        session.undo(session.getBlockBag(bukkitPlayer), bukkitPlayer);
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-        }
-    }
-
-    public void redo(Player player, int count)
-    {
-        try
-        {
-            LocalSession session = getPlayerSession(player);
-            if (session != null)
-            {
-                final BukkitPlayer bukkitPlayer = getBukkitPlayer(player);
-                if (bukkitPlayer != null)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        session.redo(session.getBlockBag(bukkitPlayer), bukkitPlayer);
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-        }
-    }
-
     public void setLimit(Player player, int limit)
     {
         try
@@ -146,25 +100,6 @@ public class WorldEditBridge extends FreedomService
         try
         {
             return wep.getSession(player);
-        }
-        catch (Exception ex)
-        {
-            FLog.severe(ex);
-            return null;
-        }
-    }
-
-    private BukkitPlayer getBukkitPlayer(Player player)
-    {
-        final WorldEditPlugin wep = getWorldEditPlugin();
-        if (wep == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            return wep.wrapPlayer(player);
         }
         catch (Exception ex)
         {
