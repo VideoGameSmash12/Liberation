@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod;
 
+import com.google.gson.Gson;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.Bukkit;
@@ -7,8 +8,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.ServerListPingEvent;
 
+import java.io.InputStreamReader;
+
 public class ServerPing extends FreedomService
 {
+    private final Gson gson = new Gson();
+    private final VersionMeta meta = gson.fromJson(new InputStreamReader(Bukkit.class.getClassLoader().getResourceAsStream("version.json")),VersionMeta.class);
+
     @Override
     public void onStart()
     {
@@ -54,7 +60,7 @@ public class ServerPing extends FreedomService
             return;
         }
 
-        String baseMotd = ConfigEntry.SERVER_MOTD.getString().replace("%mcversion%", plugin.si.getVersion());
+        String baseMotd = ConfigEntry.SERVER_MOTD.getString().replace("%mcversion%", meta.id);
         baseMotd = baseMotd.replace("\\n", "\n");
         baseMotd = FUtil.colorize(baseMotd);
 
@@ -72,5 +78,10 @@ public class ServerPing extends FreedomService
         }
 
         event.setMotd(motd.toString().trim());
+    }
+
+    private static class VersionMeta
+    {
+        private String id;
     }
 }

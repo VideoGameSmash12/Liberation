@@ -14,7 +14,6 @@ import me.totalfreedom.totalfreedommod.blocking.InteractBlocker;
 import me.totalfreedom.totalfreedommod.blocking.MobBlocker;
 import me.totalfreedom.totalfreedommod.blocking.PVPBlocker;
 import me.totalfreedom.totalfreedommod.blocking.PotionBlocker;
-import me.totalfreedom.totalfreedommod.blocking.SignBlocker;
 import me.totalfreedom.totalfreedommod.blocking.command.CommandBlocker;
 import me.totalfreedom.totalfreedommod.bridge.BukkitTelnetBridge;
 import me.totalfreedom.totalfreedommod.bridge.CoreProtectBridge;
@@ -54,7 +53,6 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.spigotmc.SpigotConfig;
 
 public class TotalFreedomMod extends JavaPlugin
 {
@@ -74,7 +72,6 @@ public class TotalFreedomMod extends JavaPlugin
     // Command Loader
     public CommandLoader cl;
     // Services
-    public ServerInterface si;
     public WorldManager wm;
     public LogViewer lv;
     public AdminList al;
@@ -121,7 +118,6 @@ public class TotalFreedomMod extends JavaPlugin
     public Trailer tr;
     public HTTPDaemon hd;
     public WorldRestrictions wr;
-    public SignBlocker snp;
     public EntityWiper ew;
     public Sitter st;
     public VanishHandler vh;
@@ -176,9 +172,6 @@ public class TotalFreedomMod extends JavaPlugin
         final MethodTimer timer = new MethodTimer();
         timer.start();
 
-        // Warn if we're running on a wrong version
-        ServerInterface.warnVersion();
-
         // Delete unused files
         FUtil.deleteCoreDumps();
         FUtil.deleteFolder(new File("./_deleteme"));
@@ -211,13 +204,10 @@ public class TotalFreedomMod extends JavaPlugin
         FLog.info("Started " + fsh.getServiceAmount() + " services.");
 
         timer.update();
-        FLog.info("Version " + pluginVersion + " for " + ServerInterface.COMPILE_NMS_VERSION + " enabled in " + timer.getTotal() + "ms");
+        FLog.info("Version " + pluginVersion + " enabled in " + timer.getTotal() + "ms");
 
         // Metrics @ https://bstats.org/plugin/bukkit/TotalFreedomMod/2966
         new Metrics(this, 2966);
-
-        // little workaround to stop spigot from autorestarting - causing AMP to detach from process.
-        SpigotConfig.config.set("settings.restart-on-crash", false);
     }
 
     @Override
@@ -296,7 +286,6 @@ public class TotalFreedomMod extends JavaPlugin
         private void initServices()
         {
             // Start services
-            si = new ServerInterface();
             wm = new WorldManager();
             lv = new LogViewer();
             sql = new SQLite();
@@ -324,7 +313,6 @@ public class TotalFreedomMod extends JavaPlugin
             im = new IndefiniteBanList();
             pem = new PermissionManager();
             gr = new GameRuleHandler();
-            snp = new SignBlocker();
             ew = new EntityWiper();
             st = new Sitter();
             vh = new VanishHandler();

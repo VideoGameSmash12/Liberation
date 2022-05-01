@@ -73,7 +73,6 @@ public enum ConfigEntry
     SERVER_WHITELIST_MOTD(String.class, "server.motds.whitelist"),
     SERVER_FULL_MOTD(String.class, "server.motds.full"),
     //
-    DISCORD_VERIFICATION(Boolean.class, "discord.verification"),
     DISCORD_TOKEN(String.class, "discord.token"),
     DISCORD_REPORT_CHANNEL_ID(String.class, "discord.report_channel_id"),
     DISCORD_CHAT_CHANNEL_ID(String.class, "discord.chat_channel_id"),

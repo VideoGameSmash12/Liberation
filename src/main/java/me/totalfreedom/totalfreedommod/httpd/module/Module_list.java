@@ -34,18 +34,12 @@ public class Module_list extends HTTPDModule
             final JSONArray admins = new JSONArray();
             final JSONArray masterbuilders = new JSONArray();
             final JSONArray operators = new JSONArray();
-            final JSONArray imposters = new JSONArray();
 
             for (Player player : Bukkit.getOnlinePlayers())
             {
                 if (plugin.al.isVanished(player.getName()))
                 {
                     continue;
-                }
-
-                if (isImposter(player))
-                {
-                    imposters.add(player.getName());
                 }
 
                 if (plugin.pl.getData(player).isMasterBuilder())
@@ -105,7 +99,6 @@ public class Module_list extends HTTPDModule
             responseObject.put("admins", admins);
             responseObject.put("master_builders", masterbuilders);
             responseObject.put("operators", operators);
-            responseObject.put("imposters", imposters);
             responseObject.put("online", FUtil.getFakePlayerCount());
             responseObject.put("max", server.getMaxPlayers());
 
@@ -139,11 +132,6 @@ public class Module_list extends HTTPDModule
 
             return new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_HTML, body.toString());
         }
-    }
-
-    public boolean isImposter(Player player)
-    {
-        return plugin.al.isAdminImpostor(player) || plugin.pl.isPlayerImpostor(player);
     }
 
     public boolean hasSpecialTitle(Player player)

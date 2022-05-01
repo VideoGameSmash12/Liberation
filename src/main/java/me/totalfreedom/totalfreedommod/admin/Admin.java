@@ -2,11 +2,8 @@ package me.totalfreedom.totalfreedommod.admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import me.totalfreedom.totalfreedommod.LogViewer.LogsRegistrationMode;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -18,10 +15,8 @@ import org.bukkit.entity.Player;
 
 public class Admin
 {
-
-
     private final List<String> ips = new ArrayList<>();
-    private String name;
+    private UUID uuid;
     private boolean active = true;
     private Rank rank = Rank.ADMIN;
     private Date lastLogin = new Date();
@@ -32,7 +27,7 @@ public class Admin
 
     public Admin(Player player)
     {
-        this.name = player.getName();
+        uuid = player.getUniqueId();
         this.ips.add(FUtil.getIp(player));
     }
 
@@ -40,7 +35,7 @@ public class Admin
     {
         try
         {
-            this.name = resultSet.getString("username");
+            this.uuid = UUID.fromString(resultSet.getString("uuid"));
             this.active = resultSet.getBoolean("active");
             this.rank = Rank.findRank(resultSet.getString("rank"));
             this.ips.clear();
@@ -62,7 +57,7 @@ public class Admin
     {
         final StringBuilder output = new StringBuilder();
 
-        output.append("Admin: ").append(name).append("\n")
+        output.append("Admin: ").append(getName()).append("\n")
                 .append("- IPs: ").append(StringUtils.join(ips, ", ")).append("\n")
                 .append("- Last Login: ").append(FUtil.dateToString(lastLogin)).append("\n")
                 .append("- Rank: ").append(rank.getName()).append("\n")
@@ -78,7 +73,7 @@ public class Admin
     {
         Map<String, Object> map = new HashMap<String, Object>()
         {{
-            put("username", name);
+            put("uuid", uuid.toString());
             put("active", active);
             put("rank", rank.toString());
             put("ips", FUtil.listToString(ips));
@@ -120,20 +115,20 @@ public class Admin
 
     public boolean isValid()
     {
-        return name != null
+        return uuid != null
                 && rank != null
                 && !ips.isEmpty()
                 && lastLogin != null;
     }
 
-    public String getName()
+    public UUID getUuid()
     {
-        return name;
+        return uuid;
     }
 
-    public void setName(String name)
+    public String getName()
     {
-        this.name = name;
+        return Bukkit.getOfflinePlayer(uuid).getName();
     }
 
     public boolean isActive()

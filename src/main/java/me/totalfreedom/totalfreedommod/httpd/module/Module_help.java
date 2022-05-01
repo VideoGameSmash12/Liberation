@@ -1,52 +1,67 @@
 package me.totalfreedom.totalfreedommod.httpd.module;
 
 import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.command.FreedomCommand;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD;
-import me.totalfreedom.totalfreedommod.rank.Displayable;
+import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginIdentifiableCommand;
-import org.bukkit.command.SimpleCommandMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import static me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools.heading;
 import static me.totalfreedom.totalfreedommod.httpd.HTMLGenerationTools.paragraph;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 public class Module_help extends HTTPDModule
 {
-
     public Module_help(NanoHTTPD.HTTPSession session)
     {
         super(session);
     }
 
-    private static String buildDescription(Command command)
+    private static String buildDescription(@NotNull Command command)
+    {
+        return buildDescription(command.getName(), command.getDescription(), command.getUsage(), StringUtils.join(command.getAliases(), ", "));
+    }
+
+    private static String buildDescription(@NotNull FreedomCommand command)
+    {
+        return buildDescription(command.getName(), command.getDescription(), command.getUsage(), command.getAliases());
+    }
+
+    private static String buildDescription(@NotNull String name, @Nullable String description, @NotNull String usage, @NotNull String aliases)
     {
         StringBuilder sb = new StringBuilder();
 
         sb.append(
                 "<li><span class=\"commandName\">{$CMD_NAME}</span> - Usage: <span class=\"commandUsage\">{$CMD_USAGE}</span>"
-                        .replace("{$CMD_NAME}", escapeHtml4(command.getName().trim()))
-                        .replace("{$CMD_USAGE}", escapeHtml4(command.getUsage().trim())));
+                        .replace("{$CMD_NAME}", escapeHtml4(name.trim()))
+                        .replace("{$CMD_USAGE}", escapeHtml4(usage.trim())));
 
-        if (!command.getAliases().isEmpty())
+        if (!aliases.isEmpty())
         {
             sb.append(
                     " - Aliases: <span class=\"commandAliases\">{$CMD_ALIASES}</span>"
-                            .replace("{$CMD_ALIASES}", escapeHtml4(StringUtils.join(command.getAliases(), ", "))));
+                            .replace("{$CMD_ALIASES}", escapeHtml4(aliases.trim())));
         }
 
-        sb.append(
-                "<br><span class=\"commandDescription\">{$CMD_DESC}</span></li>\r\n"
-                        .replace("{$CMD_DESC}", escapeHtml4(command.getDescription().trim())));
+        if (description != null)
+        {
+            sb.append(
+                    "<br><span class=\"commandDescription\">{$CMD_DESC}</span></li>\r\n"
+                            .replace("{$CMD_DESC}", escapeHtml4(description.trim())));
+        }
 
         return sb.toString();
     }
@@ -54,11 +69,7 @@ public class Module_help extends HTTPDModule
     @Override
     public String getBody()
     {
-        final CommandMap map = FreedomCommand.getCommandMap();
-        if (!(map instanceof SimpleCommandMap))
-        {
-            return paragraph("Error loading commands.");
-        }
+        final CommandMap map = Bukkit.getCommandMap();
 
         final StringBuilder responseBody = new StringBuilder()
                 .append(heading("Command Help", 1))
@@ -66,7 +77,7 @@ public class Module_help extends HTTPDModule
                         "This page is an automatically generated listing of all plugin commands that are currently live on the server. "
                                 + "Please note that it does not include vanilla server commands."));
 
-        final Collection<Command> knownCommands = ((SimpleCommandMap)map).getCommands();
+        final Collection<Command> knownCommands = map.getKnownCommands().values();
         final Map<String, List<Command>> commandsByPlugin = new HashMap<>();
 
         for (Command command : knownCommands)
@@ -79,34 +90,47 @@ public class Module_help extends HTTPDModule
 
             List<Command> pluginCommands = commandsByPlugin.computeIfAbsent(pluginName, k -> Lists.newArrayList());
 
-            pluginCommands.add(command);
+            if (!pluginCommands.contains(command))
+            {
+                pluginCommands.add(command);
+            }
         }
 
+        final CommandComparator comparator = new CommandComparator();
+
+        // For every plugin...
         for (Map.Entry<String, List<Command>> entry : commandsByPlugin.entrySet())
         {
             final String pluginName = entry.getKey();
             final List<Command> commands = entry.getValue();
 
-            commands.sort(new CommandComparator());
+            // Sort them alphabetically
+            commands.sort(comparator);
 
-            responseBody.append(heading(pluginName, 2)).append("<ul>\r\n");
+            responseBody.append(heading(pluginName, pluginName, 2)).append("<ul>\r\n");
 
-            Displayable lastTfmCommandLevel = null;
-            for (Command command : commands)
+            if (!plugin.getName().equals(pluginName))
             {
-                if (!TotalFreedomMod.pluginName.equals(pluginName))
-                {
-                    responseBody.append(buildDescription(command));
-                    continue;
-                }
+                commands.forEach((command) -> responseBody.append(buildDescription(command)));
+            }
+            else
+            {
+                Map<Rank, List<FreedomCommand>> freedomCommands = new HashMap<>();
 
-                Displayable tfmCommandLevel = Objects.requireNonNull(FreedomCommand.getFrom(command)).getPerms().level();
-                if (lastTfmCommandLevel == null || lastTfmCommandLevel != tfmCommandLevel)
-                {
-                    responseBody.append("</ul>\r\n").append(heading(tfmCommandLevel.getName(), 3)).append("<ul>\r\n");
-                }
-                lastTfmCommandLevel = tfmCommandLevel;
-                responseBody.append(buildDescription(command));
+                // Filters out non-TFM commands
+                commands.stream().filter((cmd) -> cmd instanceof FreedomCommand.FCommand).forEach((tfmCmd) -> {
+                    Rank rank = FreedomCommand.getFrom(tfmCmd).getLevel();
+                    if (!freedomCommands.containsKey(rank))
+                        freedomCommands.put(rank, new ArrayList<>());
+                    freedomCommands.get(rank).add(FreedomCommand.getFrom(tfmCmd));
+                });
+
+                // Finally dumps them to HTML
+                Arrays.stream(Rank.values()).filter(freedomCommands::containsKey)
+                        .sorted(comparator::compare).forEach((rank -> {
+                    responseBody.append("</ul>\r\n").append(heading(rank.getName(), 3)).append("<ul>\r\n");
+                    freedomCommands.get(rank).stream().sorted(comparator::compare).forEach((command) -> responseBody.append(buildDescription(command)));
+                }));
             }
 
             responseBody.append("</ul>\r\n");
@@ -118,7 +142,7 @@ public class Module_help extends HTTPDModule
     @Override
     public String getTitle()
     {
-        return "TotalFreedomMod :: Command Help";
+        return plugin.getName() + " :: Command Help";
     }
 
     @Override
@@ -129,23 +153,23 @@ public class Module_help extends HTTPDModule
 
     public static class CommandComparator implements Comparator<Command>
     {
-
         @Override
         public int compare(Command a, Command b)
         {
-            FreedomCommand ca = FreedomCommand.getFrom(a);
-            FreedomCommand cb = FreedomCommand.getFrom(b);
+            return a.getName().compareTo(b.getName());
+        }
 
-            if (ca == null
-                    || cb == null
-                    || ca.getPerms() == null
-                    || cb.getPerms() == null)
-            {
-                return a.getName().compareTo(b.getName());
-            }
+        public int compare(FreedomCommand a, FreedomCommand b)
+        {
+            return a.getName().compareTo(b.getName());
+        }
 
-            return ca.getPerms().level().getName().compareTo(cb.getPerms().level().getName());
+        public int compare(Rank a, Rank b)
+        {
+            Integer levelA = a.getLevel();
+            Integer levelB = b.getLevel();
+
+            return levelB.compareTo(levelA);
         }
     }
-
 }

@@ -22,9 +22,8 @@ public class PrivateMessageListener extends ListenerAdapter
                     PlayerData player = Discord.LINK_CODES.get(code);
                     name = player.getName();
                     player.setDiscordID(event.getMessage().getAuthor().getId());
-                    player.setVerification(true);
 
-                    Admin admin = TotalFreedomMod.getPlugin().al.getEntryByName(name);
+                    Admin admin = TotalFreedomMod.getPlugin().al.getEntryByUuid(player.getUuid());
                     if (admin != null)
                     {
                         Discord.syncRoles(admin, player.getDiscordID());
@@ -37,8 +36,7 @@ public class PrivateMessageListener extends ListenerAdapter
                 {
                     return;
                 }
-                event.getChannel().sendMessage("Link successful. Now this Discord account is linked with your Minecraft account **" + name + "**.\n"
-                        + "Now when you are an impostor on the server, you may use `/verify` to verify.").complete();
+                event.getChannel().sendMessage("Link successful. Now this Discord account is linked with your Minecraft account **" + name + "**.").complete();
             }
         }
     }

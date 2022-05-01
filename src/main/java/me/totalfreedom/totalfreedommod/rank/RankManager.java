@@ -39,12 +39,6 @@ public class RankManager extends FreedomService
 
         final Player player = (Player)sender;
 
-        // Display impostors
-        if (plugin.al.isAdminImpostor(player))
-        {
-            return Rank.IMPOSTOR;
-        }
-
         // If the player's an owner, display that
         if (ConfigEntry.SERVER_OWNERS.getList().contains(player.getName()))
         {
@@ -65,11 +59,6 @@ public class RankManager extends FreedomService
         if (ConfigEntry.SERVER_ASSISTANT_EXECUTIVES.getList().contains(player.getName()) && plugin.al.isAdmin(player))
         {
             return Title.ASSTEXEC;
-        }
-
-        if (plugin.al.isVerifiedAdmin(player))
-        {
-            return Title.VERIFIED_ADMIN;
         }
 
         // Master builders show up if they are not an admin
@@ -137,11 +126,6 @@ public class RankManager extends FreedomService
 
     public Rank getRank(Player player)
     {
-        if (plugin.al.isAdminImpostor(player) || plugin.pl.isPlayerImpostor(player))
-        {
-            return Rank.IMPOSTOR;
-        }
-
         final Admin entry = plugin.al.getAdmin(player);
         if (entry != null)
         {
@@ -193,52 +177,14 @@ public class RankManager extends FreedomService
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
-        final FPlayer fPlayer = plugin.pl.getPlayer(player);
         PlayerData target = plugin.pl.getData(player);
 
-        // Unban admins
         boolean isAdmin = plugin.al.isAdmin(player);
+
+        // Updates last login time
         if (isAdmin)
         {
-            // Verify strict IP match
-            if (!plugin.al.isIdentityMatched(player))
-            {
-                FUtil.bcastMsg("Warning: " + player.getName() + " is an admin, but is using an account not registered to one of their ip-list.", ChatColor.RED);
-                fPlayer.setSuperadminIdVerified(false);
-            }
-            else
-            {
-                fPlayer.setSuperadminIdVerified(true);
-                plugin.al.updateLastLogin(player);
-            }
-        }
-
-        if (plugin.al.isVerifiedAdmin(player))
-        {
-            FUtil.bcastMsg("Warning: " + player.getName() + " is an admin, but does not have any admin permissions.", ChatColor.RED);
-        }
-
-        // Handle impostors
-        boolean isImpostor = plugin.al.isAdminImpostor(player) || plugin.pl.isPlayerImpostor(player);
-        if (isImpostor)
-        {
-            FUtil.bcastMsg(ChatColor.AQUA + player.getName() + " is " + Rank.IMPOSTOR.getColoredLoginMessage());
-            if (plugin.al.isAdminImpostor(player))
-            {
-                FUtil.bcastMsg("Warning: " + player.getName() + " has been flagged as an admin impostor and has been frozen!", ChatColor.RED);
-            }
-            else if (plugin.pl.isPlayerImpostor(player))
-            {
-                FUtil.bcastMsg("Warning: " + player.getName() + " has been flagged as a player impostor and has been frozen!", ChatColor.RED);
-            }
-            String displayName = Rank.IMPOSTOR.getColor() + player.getName();
-            player.setPlayerListName(StringUtils.substring(displayName, 0, 16));
-            player.getInventory().clear();
-            player.setOp(false);
-            player.setGameMode(GameMode.SURVIVAL);
-            plugin.pl.getPlayer(player).getFreezeData().setFrozen(true);
-            player.sendMessage(ChatColor.RED + "You are marked as an impostor, please verify yourself!");
-            return;
+            plugin.al.updateLastLogin(player);
         }
 
         // Broadcast login message
@@ -253,12 +199,9 @@ public class RankManager extends FreedomService
         // Set display
         updateDisplay(player);
 
-        if (!plugin.pl.isPlayerImpostor(player) && target.hasVerification())
+        if (target.getTag() != null)
         {
-            if (target.getTag() != null)
-            {
-                plugin.pl.getData(player).setTag(FUtil.colorize(target.getTag()));
-            }
+            plugin.pl.getData(player).setTag(FUtil.colorize(target.getTag()));
         }
     }
 

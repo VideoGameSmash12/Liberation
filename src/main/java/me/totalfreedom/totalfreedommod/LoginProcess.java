@@ -3,7 +3,10 @@ package me.totalfreedom.totalfreedommod;
 import io.papermc.lib.PaperLib;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
+
+import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
@@ -58,13 +61,13 @@ public class LoginProcess extends FreedomService
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event)
     {
-        final String ip = event.getAddress().getHostAddress().trim();
-        final boolean isAdmin = plugin.al.getEntryByIp(ip) != null;
+        final Admin entry = plugin.al.getEntryByUuid(event.getUniqueId());
+        final boolean isAdmin = entry != null && entry.isActive();
 
         // Check if the player is already online
         for (Player onlinePlayer : server.getOnlinePlayers())
         {
-            if (!onlinePlayer.getName().equalsIgnoreCase(event.getName()))
+            if (!onlinePlayer.getUniqueId().equals(event.getUniqueId()))
             {
                 continue;
             }
@@ -86,7 +89,7 @@ public class LoginProcess extends FreedomService
     {
         final Player player = event.getPlayer();
         final String username = player.getName();
-        final String ip = event.getAddress().getHostAddress().trim();
+        final UUID uuid = player.getUniqueId();
 
         // Check username length
         if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH)
@@ -120,7 +123,8 @@ public class LoginProcess extends FreedomService
         }
 
         // Validation below this point
-        if (plugin.al.getEntryByIp(ip) != null) // Check if player is admin
+        final Admin entry = plugin.al.getEntryByUuid(uuid);
+        if (entry != null && entry.isActive()) // Check if player is admin
         {
             // Force-allow log in
             event.allow();
@@ -175,12 +179,9 @@ public class LoginProcess extends FreedomService
         }
 
         // Whitelist
-        if (plugin.si.isWhitelisted())
+        if (server.isWhitelistEnforced() && !player.isWhitelisted())
         {
-            if (!plugin.si.getWhitelisted().contains(username.toLowerCase()))
-            {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
-            }
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You are not whitelisted on this server.");
         }
     }
 
@@ -221,7 +222,7 @@ public class LoginProcess extends FreedomService
             return;
         }
 
-        if (!playerData.hasVerification() && !playerData.getIps().contains(FUtil.getIp(player)))
+        if (!playerData.getIps().contains(FUtil.getIp(player)))
         {
             playerData.addIp(FUtil.getIp(player));
             plugin.pl.save(playerData);

@@ -3,11 +3,8 @@ package me.totalfreedom.totalfreedommod.player;
 import com.google.common.collect.Maps;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -21,7 +18,7 @@ public class PlayerList extends FreedomService
 {
 
     public final Map<String, FPlayer> playerMap = Maps.newHashMap(); // ip,dataMap
-    public final Map<String, PlayerData> dataMap = Maps.newHashMap(); // username, data
+    public final Map<UUID, PlayerData> dataMap = Maps.newHashMap(); // uuid, data
 
     @Override
     public void onStart()
@@ -57,7 +54,7 @@ public class PlayerList extends FreedomService
             while (resultSet.next())
             {
                 PlayerData playerData = load(resultSet);
-                dataMap.put(playerData.getName(), playerData);
+                dataMap.put(playerData.getUuid(), playerData);
             }
         }
         catch (SQLException e)
@@ -103,7 +100,7 @@ public class PlayerList extends FreedomService
 
     public boolean isTelnetMasterBuilder(PlayerData playerData)
     {
-        Admin admin = plugin.al.getEntryByName(playerData.getName());
+        Admin admin = plugin.al.getEntryByUuid(playerData.getUuid());
         return admin != null && admin.getRank().isAtLeast(Rank.ADMIN) && playerData.isMasterBuilder();
     }
 
@@ -122,9 +119,9 @@ public class PlayerList extends FreedomService
         return tPlayer;
     }
 
-    public PlayerData loadByName(String name)
+    public PlayerData loadByUuid(UUID uuid)
     {
-        return load(plugin.sql.getPlayerByName(name));
+        return load(plugin.sql.getPlayerByUuid(uuid));
     }
 
     public PlayerData loadByIp(String ip)
@@ -141,43 +138,6 @@ public class PlayerList extends FreedomService
         return new PlayerData(resultSet);
     }
 
-    public Boolean isPlayerImpostor(Player player)
-    {
-        PlayerData playerData = getData(player);
-        return plugin.dc.enabled
-                && !plugin.al.isAdmin(player)
-                && (playerData.hasVerification())
-                && !playerData.getIps().contains(FUtil.getIp(player));
-    }
-
-    public boolean IsImpostor(Player player)
-    {
-        return isPlayerImpostor(player) || plugin.al.isAdminImpostor(player);
-    }
-
-    public void verify(Player player, String backupCode)
-    {
-        PlayerData playerData = getData(player);
-        if (backupCode != null)
-        {
-            playerData.removeBackupCode(backupCode);
-        }
-
-        playerData.addIp(FUtil.getIp(player));
-        save(playerData);
-
-        if (plugin.al.isAdminImpostor(player))
-        {
-            Admin admin = plugin.al.getEntryByName(player.getName());
-            admin.setLastLogin(new Date());
-            admin.addIp(FUtil.getIp(player));
-            plugin.al.updateTables();
-            plugin.al.save(admin);
-        }
-
-        plugin.rm.updateDisplay(player);
-    }
-
     public void syncIps(Admin admin)
     {
         PlayerData playerData = getData(admin.getName());
@@ -186,25 +146,11 @@ public class PlayerList extends FreedomService
         plugin.pl.save(playerData);
     }
 
-    public void syncIps(PlayerData playerData)
-    {
-        Admin admin = plugin.al.getEntryByName(playerData.getName());
-
-        if (admin != null && admin.isActive())
-        {
-            admin.clearIPs();
-            admin.addIps(playerData.getIps());
-            plugin.al.updateTables();
-            plugin.al.save(admin);
-        }
-    }
-
-
     public void save(PlayerData player)
     {
         try
         {
-            ResultSet currentSave = plugin.sql.getPlayerByName(player.getName());
+            ResultSet currentSave = plugin.sql.getPlayerByUuid(player.getUuid());
             for (Map.Entry<String, Object> entry : player.toSQLStorable().entrySet())
             {
                 Object storedValue = plugin.sql.getValue(currentSave, entry.getKey(), entry.getValue());
@@ -223,69 +169,56 @@ public class PlayerList extends FreedomService
     public PlayerData getData(Player player)
     {
         // Check for existing data
-        PlayerData playerData = dataMap.get(player.getName());
+        PlayerData playerData = dataMap.get(player.getUniqueId());
         if (playerData != null)
         {
             return playerData;
         }
 
         // Load data
-        playerData = loadByName(player.getName());
+        playerData = loadByUuid(player.getUniqueId());
 
+        // Oh you don't have any data? Well now you do
         if (playerData == null)
         {
-            playerData = loadByIp(FUtil.getIp(player));
-            if (playerData != null)
-            {
-                plugin.sql.updatePlayerName(playerData.getName(), player.getName());
-                playerData.setName(player.getName());
-                dataMap.put(player.getName(), playerData);
-                return playerData;
-            }
-        }
-        else
-        {
-            dataMap.put(player.getName(), playerData);
-            return playerData;
+            FLog.info("Creating new player data entry for " + player.getName());
+
+            playerData = new PlayerData(player);
+            playerData.addIp(FUtil.getIp(player));
         }
 
-        // Create new data if nonexistent
-        FLog.info("Creating new player verification entry for " + player.getName());
+        // Store it in memory.
+        dataMap.put(player.getUniqueId(), playerData);
 
-        // Create new player
-        playerData = new PlayerData(player);
-        playerData.addIp(FUtil.getIp(player));
-
-        // Store player
-        dataMap.put(player.getName(), playerData);
-
-        // Save player
+        // Send it to the SQL database.
         plugin.sql.addPlayer(playerData);
-        return playerData;
 
+        // Returns it
+        return playerData;
+    }
+
+    public PlayerData getData(UUID uuid)
+    {
+        PlayerData data = dataMap.get(uuid);
+
+        if (data == null)
+        {
+            data = loadByUuid(uuid);
+        }
+
+        return data;
     }
 
     public PlayerData getData(String username)
     {
-        // Check for existing data
-        PlayerData playerData = dataMap.get(username);
-        if (playerData != null)
+        OfflinePlayer player = server.getPlayer(username);
+
+        if (player == null)
         {
-            return playerData;
+            player = server.getOfflinePlayer(username);
         }
 
-        playerData = loadByName(username);
-
-        if (playerData != null)
-        {
-            dataMap.put(username, playerData);
-        }
-        else
-        {
-            return null;
-        }
-
-        return playerData;
+        return getData(player.getUniqueId());
     }
 
     public PlayerData getDataByIp(String ip)
@@ -294,7 +227,7 @@ public class PlayerList extends FreedomService
 
         if (player != null)
         {
-            dataMap.put(player.getName(), player);
+            dataMap.put(player.getUuid(), player);
         }
 
         return player;
@@ -305,7 +238,7 @@ public class PlayerList extends FreedomService
         return playerMap;
     }
 
-    public Map<String, PlayerData> getDataMap()
+    public Map<UUID, PlayerData> getDataMap()
     {
         return dataMap;
     }

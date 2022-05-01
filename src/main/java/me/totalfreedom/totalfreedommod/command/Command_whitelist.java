@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import me.totalfreedom.totalfreedommod.util.DepreciationAggregator;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -95,7 +94,7 @@ public class Command_whitelist extends FreedomCommand
 
             if (player == null)
             {
-                player = DepreciationAggregator.getOfflinePlayer(server, search_name);
+                player = server.getOfflinePlayer(search_name);
             }
 
             FUtil.adminAction(sender.getName(), "Adding " + player.getName() + " to the whitelist", false);
@@ -117,7 +116,7 @@ public class Command_whitelist extends FreedomCommand
 
             if (player == null)
             {
-                player = DepreciationAggregator.getOfflinePlayer(server, search_name);
+                player = server.getOfflinePlayer(search_name);
             }
 
             if (player.isWhitelisted())
@@ -158,7 +157,7 @@ public class Command_whitelist extends FreedomCommand
         if (args[0].equalsIgnoreCase("purge"))
         {
             FUtil.adminAction(sender.getName(), "Removing all players from the whitelist", false);
-            msg("Removed " + plugin.si.purgeWhitelist() + " players from the whitelist.");
+            msg("Removed " + purge() + " players from the whitelist.");
             return true;
         }
         return false;
@@ -198,10 +197,21 @@ public class Command_whitelist extends FreedomCommand
     public List<String> getWhitelistedNames()
     {
         List<String> names = new ArrayList<>();
-        for (Object name : plugin.si.getWhitelisted())
+        for (OfflinePlayer player : server.getWhitelistedPlayers())
         {
-            names.add(String.valueOf(name));
+            names.add(player.getName());
         }
         return names;
+    }
+
+    public int purge()
+    {
+        int removed = 0;
+        for (OfflinePlayer player : server.getWhitelistedPlayers())
+        {
+            player.setWhitelisted(false);
+            removed++;
+        }
+        return removed;
     }
 }

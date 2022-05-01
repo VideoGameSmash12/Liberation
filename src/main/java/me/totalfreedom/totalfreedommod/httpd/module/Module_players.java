@@ -37,7 +37,7 @@ public class Module_players extends HTTPDModule
             if (!plugin.al.isVanished(player.getName()))
             {
                 players.add(player.getName());
-                if (plugin.al.isAdmin(player) && !plugin.al.isAdminImpostor(player))
+                if (plugin.al.isAdmin(player))
                 {
                     onlineadmins.add(player.getName());
                 }

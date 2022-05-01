@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import io.papermc.paper.event.player.PlayerSignCommandPreprocessEvent;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -264,5 +266,11 @@ public class EventBlocker extends FreedomService
     {
         FUtil.fixCommandVoid(event.getEntity());
         event.setDeathMessage(event.getDeathMessage());
+    }
+
+    @EventHandler
+    public void onSignInteract(PlayerSignCommandPreprocessEvent event)
+    {
+        event.setCancelled(true);
     }
 }
