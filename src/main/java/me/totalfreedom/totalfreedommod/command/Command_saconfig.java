@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.admin.Admin;
+import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
@@ -240,7 +241,9 @@ public class Command_saconfig extends FreedomCommand
                 checkRank(Rank.ADMIN);
 
                 Player player = getPlayer(args[1]);
+                FPlayer freedomPlayer = plugin.pl.getPlayer(player);
                 Admin admin = player != null ? plugin.al.getAdmin(player) : plugin.al.getEntryByName(args[1]);
+                String adminName = admin.getName();
 
                 if (admin == null)
                 {
@@ -255,13 +258,27 @@ public class Command_saconfig extends FreedomCommand
                 plugin.al.updateTables();
                 if (player != null)
                 {
+                    // Update tab name
                     plugin.rm.updateDisplay(player);
-                    plugin.pl.getPlayer(player).setAdminChat(false);
+
+                    // Ensure admins don't have admin functionality when removed (FS-222)
+                    freedomPlayer.setAdminChat(false);
+                    freedomPlayer.setCommandSpy(false);
+                    freedomPlayer.setFuckoffRadius(0);
+
+                    // Disable vanish
+                    plugin.esb.setVanished(adminName, false);
+                    AdminList.vanished.remove(adminName);
+
+                    for (Player player1 : server.getOnlinePlayers())
+                    {
+                        player1.showPlayer(plugin, player);
+                    }
                 }
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
                 {
-                    Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
+                    Discord.syncRoles(admin, plugin.pl.getData(adminName).getDiscordID());
                 }
 
                 plugin.ptero.updateAccountStatus(admin);
