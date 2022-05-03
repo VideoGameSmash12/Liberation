@@ -241,7 +241,8 @@ public class Command_saconfig extends FreedomCommand
                 checkRank(Rank.ADMIN);
 
                 Player player = getPlayer(args[1]);
-                FPlayer freedomPlayer = plugin.pl.getPlayer(player);
+
+                FPlayer freedomPlayer = player != null ? plugin.pl.getPlayer(player) : null;
                 Admin admin = player != null ? plugin.al.getAdmin(player) : plugin.al.getEntryByName(args[1]);
                 String adminName = admin.getName();
 
@@ -256,6 +257,10 @@ public class Command_saconfig extends FreedomCommand
 
                 plugin.al.save(admin);
                 plugin.al.updateTables();
+
+                AdminList.vanished.remove(adminName);
+                plugin.esb.setVanished(adminName, false);
+
                 if (player != null)
                 {
                     // Update tab name
@@ -267,9 +272,6 @@ public class Command_saconfig extends FreedomCommand
                     freedomPlayer.setFuckoffRadius(0);
 
                     // Disable vanish
-                    plugin.esb.setVanished(adminName, false);
-                    AdminList.vanished.remove(adminName);
-
                     for (Player player1 : server.getOnlinePlayers())
                     {
                         player1.showPlayer(plugin, player);
