@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.admin.Admin;
-import me.totalfreedom.totalfreedommod.admin.AdminList;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
@@ -242,7 +241,6 @@ public class Command_saconfig extends FreedomCommand
 
                 Player player = getPlayer(args[1]);
 
-                FPlayer freedomPlayer = player != null ? plugin.pl.getPlayer(player) : null;
                 Admin admin = player != null ? plugin.al.getAdmin(player) : plugin.al.getEntryByName(args[1]);
                 String adminName = admin.getName();
 
@@ -258,24 +256,9 @@ public class Command_saconfig extends FreedomCommand
                 plugin.al.save(admin);
                 plugin.al.updateTables();
 
-                AdminList.vanished.remove(adminName);
-                plugin.esb.setVanished(adminName, false);
-
                 if (player != null)
                 {
-                    // Update tab name
                     plugin.rm.updateDisplay(player);
-
-                    // Ensure admins don't have admin functionality when removed (FS-222)
-                    freedomPlayer.setAdminChat(false);
-                    freedomPlayer.setCommandSpy(false);
-                    freedomPlayer.setFuckoffRadius(0);
-
-                    // Disable vanish
-                    for (Player player1 : server.getOnlinePlayers())
-                    {
-                        player1.showPlayer(plugin, player);
-                    }
                 }
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())

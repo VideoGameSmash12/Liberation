@@ -9,7 +9,6 @@ import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -185,6 +184,12 @@ public class RankManager extends FreedomService
         if (isAdmin)
         {
             plugin.al.updateLastLogin(player);
+        } else
+        {
+            // Ensure admins don't have admin functionality when removed (FS-222)
+            FPlayer freedomPlayer = plugin.pl.getPlayer(player);
+
+            freedomPlayer.removeAdminFunctionality();
         }
 
         // Broadcast login message

@@ -6,11 +6,13 @@ import java.util.*;
 
 import me.totalfreedom.totalfreedommod.LogViewer.LogsRegistrationMode;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 public class Admin
@@ -157,6 +159,34 @@ public class Admin
                 {
                     plugin.btb.killTelnetSessions(getName());
                 }
+
+                // Ensure admins don't have admin functionality when removed (FS-222)
+                AdminList.vanished.remove(getName());
+
+                if (plugin.esb != null)
+                {
+                    plugin.esb.setVanished(getName(), false);
+                }
+
+                setCommandSpy(false);
+                setPotionSpy(false);
+
+                Server server = Bukkit.getServer();
+                Player player = server.getPlayer(getName());
+
+                if (player != null)
+                {
+                    // Update chats
+                    FPlayer freedomPlayer = plugin.pl.getPlayer(player);
+                    freedomPlayer.removeAdminFunctionality();
+
+                    // Disable vanish
+                    for (Player player1 : server.getOnlinePlayers())
+                    {
+                        player1.showPlayer(plugin, player);
+                    }
+                }
+
             }
 
             plugin.lv.updateLogsRegistration(null, getName(), LogsRegistrationMode.DELETE);
