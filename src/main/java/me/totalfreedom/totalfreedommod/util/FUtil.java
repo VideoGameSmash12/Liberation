@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.util;
 
+import com.earth2me.essentials.utils.DateUtil;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.apache.commons.io.FileUtils;
@@ -16,6 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -827,6 +829,26 @@ public class FUtil
         }
 
         return total / longs.length;
+    }
+
+    public static String getUptime()
+    {
+        return DateUtil.formatDateDiff(ManagementFactory.getRuntimeMXBean().getStartTime());
+    }
+
+    public static double getMaxMem()
+    {
+        return Runtime.getRuntime().maxMemory() / 1024f / 1024f;
+    }
+
+    public static double getTotalMem()
+    {
+        return Runtime.getRuntime().totalMemory() / 1024f / 1024f;
+    }
+
+    public static double getFreeMem()
+    {
+        return Runtime.getRuntime().freeMemory() / 1024f / 1024f;
     }
 
     public static class PaginationList<T> extends ArrayList<T>
