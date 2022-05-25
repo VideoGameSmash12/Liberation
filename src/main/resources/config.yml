@@ -58,6 +58,8 @@ server:
 discord:
   # If you do not have a token, make a bot account and get one at https://discordapp.com/developers/applications/me
   token: ''
+  # The prefix for the integrated bot commands
+  prefix: 'tf!'
   # The official discord server's ID for this server
   server_id: ''
   # Channel to send /report messages to

@@ -2,13 +2,12 @@ package me.totalfreedom.totalfreedommod.discord;
 
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.command.DiscordCommandManager;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -25,7 +24,9 @@ public class DiscordToMinecraftListener extends ListenerAdapter
 {
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
+        final String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
+        final MessageChannel genericChannel = event.getChannel();
+
         if (event.getMember() == null)
         {
             return;
@@ -41,14 +42,28 @@ public class DiscordToMinecraftListener extends ListenerAdapter
             return;
         }
 
-        if (!event.getChannel().getId().equals(chat_channel_id))
+        if (!genericChannel.getId().equals(chat_channel_id))
         {
             return;
         }
 
-        Member member = event.getMember();
-        String tag = getDisplay(member);
-        Message msg = event.getMessage();
+        if (!(genericChannel instanceof TextChannel))
+        {
+            return;
+        }
+
+        final TextChannel textChannel = (TextChannel) genericChannel;
+
+        final Member member = event.getMember();
+        final String tag = getDisplay(member);
+        final Message msg = event.getMessage();
+        final String content = msg.getContentStripped();
+
+        if (content.startsWith(ConfigEntry.DISCORD_PREFIX.getString()))
+        {
+            Discord.DISCORD_COMMAND_MANAGER.parse(content, member, textChannel);
+            return;
+        }
 
         ComponentBuilder emsg = new ComponentBuilder();
 

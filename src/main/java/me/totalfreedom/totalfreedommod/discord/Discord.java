@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableList;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.command.DiscordCommandManager;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FLog;
@@ -59,6 +60,7 @@ public class Discord extends FreedomService
 
     public static HashMap<String, PlayerData> LINK_CODES = new HashMap<>();
     public static JDA bot = null;
+    public static DiscordCommandManager DISCORD_COMMAND_MANAGER;
     public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
     public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
     public Boolean enabled = false;
@@ -153,6 +155,9 @@ public class Discord extends FreedomService
 
     public void startBot()
     {
+        DISCORD_COMMAND_MANAGER = new DiscordCommandManager();
+        DISCORD_COMMAND_MANAGER.init(this);
+
         enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
         if (!enabled)
         {
