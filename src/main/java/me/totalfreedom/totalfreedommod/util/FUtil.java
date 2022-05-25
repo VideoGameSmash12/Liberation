@@ -550,6 +550,11 @@ public class FUtil
         return string;
     }
 
+    public static String stripColors(String string)
+    {
+        return string.replaceAll("§", "");
+    }
+
     public static Date getUnixDate(long unix)
     {
         return new Date(unix);

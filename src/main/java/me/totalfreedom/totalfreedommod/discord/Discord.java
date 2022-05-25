@@ -13,6 +13,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.security.auth.login.LoginException;
+
+import com.google.common.collect.ImmutableList;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
@@ -37,8 +39,12 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.internal.utils.concurrent.CountingThreadFactory;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,6 +62,7 @@ public class Discord extends FreedomService
     public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
     public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
     public Boolean enabled = false;
+    private final ImmutableList<String> DISCORD_SUBDOMAINS = ImmutableList.of("discordapp.com", "discord.com", "discord.gg");
     private final Pattern DISCORD_MENTION_PATTERN = Pattern.compile("(<@!?([0-9]{16,20})>)");
 
     public static String getCode(PlayerData playerData)
@@ -215,7 +222,7 @@ public class Discord extends FreedomService
             }
         }
         sentMessages.clear();
-        messageChatChannel("**Message queue cleared**");
+        messageChatChannel("**Message queue cleared**", true);
     }
 
     public void sendPteroInfo(PlayerData playerData, String username, String password)
@@ -246,13 +253,7 @@ public class Discord extends FreedomService
 
     public String generateCode(int size)
     {
-        StringBuilder code = new StringBuilder();
-        SplittableRandom random = new SplittableRandom();
-        for (int i = 0; i < size; i++)
-        {
-            code.append(random.nextInt(10));
-        }
-        return code.toString();
+        return RandomStringUtils.randomNumeric(size);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -265,9 +266,11 @@ public class Discord extends FreedomService
             return;
         }
 
-        if (event.getDeathMessage() != null)
+        Component deathMessage = event.deathMessage();
+
+        if (deathMessage != null)
         {
-            messageChatChannel("**" + event.getDeathMessage() + "**");
+            messageChatChannel("**" + PlainTextComponentSerializer.plainText().serialize(deathMessage) + "**", true);
         }
     }
 
@@ -282,7 +285,7 @@ public class Discord extends FreedomService
     {
         if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
-            messageChatChannel("**" + event.getPlayer().getName() + " joined the server" + "**");
+            messageChatChannel("**" + event.getPlayer().getName() + " joined the server" + "**", true);
         }
     }
 
@@ -291,69 +294,78 @@ public class Discord extends FreedomService
     {
         if (!plugin.al.isVanished(event.getPlayer().getName()))
         {
-            messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**");
+            messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**", true);
         }
+    }
+
+    public String sanitizeChatMessage(String message)
+    {
+        String newMessage = message;
+
+        if (message.contains("@"))
+        {
+            // \u200B is Zero Width Space, invisible on Discord
+            newMessage = message.replaceAll("@", "@\u200B");
+        }
+
+        if (message.toLowerCase().contains("discord.gg")) // discord.gg/invite works as an invite
+        {
+            return "";
+        }
+
+        for (String subdomain : DISCORD_SUBDOMAINS)
+        {
+            if (message.toLowerCase().contains(subdomain + "/invite"))
+            {
+                return "";
+            }
+        }
+
+        if (message.contains("§"))
+        {
+            newMessage = message.replaceAll("§", "");
+        }
+
+        return deformat(newMessage);
     }
 
     public void messageChatChannel(String message)
     {
+        messageChatChannel(message, false);
+    }
+
+    public void messageChatChannel(String message, boolean system)
+    {
         String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
-        if (message.contains("@everyone") || message.contains("@here"))
-        {
-            message = StringUtils.remove(message, "@");
-        }
 
-        if (message.toLowerCase().contains("discord.gg"))
-        {
-            return;
-        }
-        
-        if (message.contains("§"))
-        {
-            message = StringUtils.remove(message, "§");
-        }
+        String sanitizedMessage = (system) ? message : sanitizeChatMessage(message);
 
-
-        Matcher DISCORD_MENTION_MATCHER = DISCORD_MENTION_PATTERN.matcher(message);
-
-        while (DISCORD_MENTION_MATCHER.find())
-        {
-            String mention = DISCORD_MENTION_MATCHER.group(1);
-            message = message.replace(mention, mention.replace("@",""));
-        }
+        if (sanitizedMessage.isBlank()) return;
 
         if (enabled && !chat_channel_id.isEmpty())
         {
-            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(deformat(message)).submit(true);
+            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(sanitizedMessage).submit(true);
             sentMessages.add(sentMessage);
         }
     }
 
     public void messageAdminChatChannel(String message)
     {
+        messageAdminChatChannel(message, false);
+    }
+
+    public void messageAdminChatChannel(String message, boolean system)
+    {
         String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
-        if (message.contains("@everyone") || message.contains("@here"))
-        {
-            message = StringUtils.remove(message, "@");
-        }
 
-        if (message.toLowerCase().contains("discord.gg"))
-        {
-            return;
-        }
-        
-        if (message.contains("§"))
-        {
-            message = StringUtils.remove(message, "§");
-        }
+        String sanitizedMessage = sanitizeChatMessage(message);
 
+        if (sanitizedMessage.isBlank()) return;
 
-        Matcher DISCORD_MENTION_MATCHER = DISCORD_MENTION_PATTERN.matcher(message);
-
-        while (DISCORD_MENTION_MATCHER.find())
+        if (enabled && !chat_channel_id.isEmpty())
         {
-            String mention = DISCORD_MENTION_MATCHER.group(1);
-            message = message.replace(mention, mention.replace("@",""));
+            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(sanitizedMessage).submit(true);
+            sentMessages.add(sentMessage);
         }
 
         if (enabled && !chat_channel_id.isEmpty())
@@ -366,7 +378,7 @@ public class Discord extends FreedomService
     public String formatBotTag()
     {
         SelfUser user = bot.getSelfUser();
-        return user.getName() + "#" + user.getDiscriminator();
+        return user.getAsTag();
     }
 
     @Override
@@ -374,7 +386,7 @@ public class Discord extends FreedomService
     {
         if (bot != null)
         {
-            messageChatChannel("**Server has stopped**");
+            messageChatChannel("**Server has stopped**", true);
         }
 
         FLog.info("Discord integration has successfully shutdown.");
@@ -382,7 +394,7 @@ public class Discord extends FreedomService
 
     public String deformat(String input)
     {
-        return input.replace("_", "\\_");
+        return input.replaceAll("([_\\\\`*>|])", "\\\\$1");
     }
 
     public boolean sendReport(Player reporter, Player reported, String reason)
@@ -400,6 +412,7 @@ public class Discord extends FreedomService
 
         Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         if (server == null)
+
         {
             FLog.severe("The Discord server ID specified is invalid, or the bot is not on the server.");
             return false;
@@ -436,7 +449,7 @@ public class Discord extends FreedomService
     {
         public void start()
         {
-            messageChatChannel("**Server has started**");
+            messageChatChannel("**Server has started**", true);
         }
     }
 }

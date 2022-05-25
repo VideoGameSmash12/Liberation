@@ -5,6 +5,7 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
+import me.totalfreedom.totalfreedommod.util.FUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -55,13 +56,13 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 emsg.append(" ");
 
                 // User
-                TextComponent user = new TextComponent(ChatColor.stripColor(member.getEffectiveName()));
+                TextComponent user = new TextComponent(FUtil.stripColors(member.getEffectiveName()));
                 user.setColor(ChatColor.RED.asBungee());
                 emsg.append(user);
 
                 // Message
                 emsg.append(ChatColor.DARK_GRAY + ": " + ChatColor.RESET
-                        + ChatColor.stripColor(msg.getContentDisplay()), ComponentBuilder.FormatRetention.NONE);
+                        + FUtil.stripColors(msg.getContentDisplay()), ComponentBuilder.FormatRetention.NONE);
 
                 // Attachments
                 if (!msg.getAttachments().isEmpty())
@@ -86,7 +87,7 @@ public class DiscordToMinecraftListener extends ListenerAdapter
                 {
                     if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
                     {
-                        player.spigot().sendMessage(components);
+                        player.sendMessage(components);
                     }
                 }
 
