@@ -23,7 +23,7 @@ public class UptimeCommand extends DiscordCommandImpl
     @Override
     public String getDescription()
     {
-        return "Returns the uptime of the VPS.";
+        return "Returns the uptime of the host.";
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UptimeCommand extends DiscordCommandImpl
 
             if (line != null)
             {
-                embedBuilder.setTitle("VPS Uptime Information");
+                embedBuilder.setTitle("Host Uptime Information");
                 embedBuilder.setDescription(line.trim());
             }
             else
