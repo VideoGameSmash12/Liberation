@@ -2,8 +2,6 @@ package me.totalfreedom.totalfreedommod.discord.command;
 
 import net.dv8tion.jda.api.entities.Member;
 
-import java.util.stream.Collectors;
-
 public abstract class DiscordCommandImpl implements DiscordCommand
 {
     @Override
