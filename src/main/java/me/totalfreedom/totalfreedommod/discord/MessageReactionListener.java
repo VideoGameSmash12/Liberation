@@ -58,7 +58,7 @@ public class MessageReactionListener extends ListenerAdapter
         // We don't need other embeds... yet?
         final MessageEmbed embed = message.getEmbeds().get(0);
         final MessageBuilder archiveMessageBuilder = new MessageBuilder();
-        archiveMessageBuilder.setContent("Report completed by " + Discord.deformat(completer.getUser().getAsTag()));
+        archiveMessageBuilder.setContent("Report completed by  " + completer.getUser().getAsMention() + " (" + Discord.deformat(completer.getUser().getAsTag() + ")"));
         archiveMessageBuilder.setEmbed(embed);
         final Message archiveMessage = archiveMessageBuilder.build();
 
