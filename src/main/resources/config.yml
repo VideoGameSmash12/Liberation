@@ -64,6 +64,8 @@ discord:
   server_id: ''
   # Channel to send /report messages to
   report_channel_id: ''
+  # Channel to send archived reports to
+  report_archive_channel_id: ''
   # Channel for Discord to Minecraft and vice-versa
   chat_channel_id: ''
   # Channel for Discord to AdminChat and vice-versa

@@ -175,15 +175,15 @@ public class ChatManager extends FreedomService
         });
     }
 
-    public void reportAction(Player reporter, Player reported, String report)
+    public void reportAction(Player reporter, String reportedName, String report)
     {
         for (Player player : server.getOnlinePlayers())
         {
             if (plugin.al.isAdmin(player))
             {
-                playerMsg(player, ChatColor.RED + "[REPORTS] " + ChatColor.GOLD + reporter.getName() + " has reported " + reported.getName() + " for " + report);
+                playerMsg(player, ChatColor.RED + "[REPORTS] " + ChatColor.GOLD + reporter.getName() + " has reported " + reportedName + " for " + report);
             }
         }
-        FLog.info("[REPORTS] " + reporter.getName() + " has reported " + reported.getName() + " for " + report);
+        FLog.info("[REPORTS] " + reporter.getName() + " has reported " + reportedName + " for " + report);
     }
 }

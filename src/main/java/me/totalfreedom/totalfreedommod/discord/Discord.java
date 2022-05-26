@@ -47,6 +47,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.GameRule;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -64,7 +65,7 @@ public class Discord extends FreedomService
     public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
     public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
     public Boolean enabled = false;
-    private final ImmutableList<String> DISCORD_SUBDOMAINS = ImmutableList.of("discordapp.com", "discord.com", "discord.gg");
+    private static final ImmutableList<String> DISCORD_SUBDOMAINS = ImmutableList.of("discordapp.com", "discord.com", "discord.gg");
     private final Pattern DISCORD_MENTION_PATTERN = Pattern.compile("(<@!?([0-9]{16,20})>)");
 
     public static String getCode(PlayerData playerData)
@@ -180,6 +181,7 @@ public class Discord extends FreedomService
                     .addEventListeners(new PrivateMessageListener(),
                             new DiscordToMinecraftListener(),
                             new DiscordToAdminChatListener(),
+                            new MessageReactionListener(),
                             new ListenerAdapter()
                             {
                                 @Override
@@ -303,7 +305,7 @@ public class Discord extends FreedomService
         }
     }
 
-    public String sanitizeChatMessage(String message)
+    public static String sanitizeChatMessage(String message)
     {
         String newMessage = message;
 
@@ -397,12 +399,12 @@ public class Discord extends FreedomService
         FLog.info("Discord integration has successfully shutdown.");
     }
 
-    public String deformat(String input)
+    public static String deformat(String input)
     {
         return input.replaceAll("([_\\\\`*>|])", "\\\\$1");
     }
 
-    public boolean sendReport(Player reporter, Player reported, String reason)
+    public boolean shouldISendReport()
     {
         if (ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString().isEmpty())
         {
@@ -430,7 +432,54 @@ public class Discord extends FreedomService
             return false;
         }
 
-        EmbedBuilder embedBuilder = new EmbedBuilder();
+        return true;
+    }
+
+    public boolean sendReportOffline(Player reporter, OfflinePlayer reported, String reason)
+    {
+        if (!shouldISendReport())
+        {
+            return false;
+        }
+
+        final Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        final TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
+
+        final EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Report for " + reported.getName() + " (offline)");
+        embedBuilder.setDescription(reason);
+        embedBuilder.setFooter("Reported by " + reporter.getName(), "https://minotar.net/helm/" + reporter.getName() + ".png");
+        embedBuilder.setTimestamp(Instant.from(ZonedDateTime.now()));
+        com.earth2me.essentials.User user = plugin.esb.getEssentialsUser(reported.getName());
+        String location = "World: " + Objects.requireNonNull(user.getLastLocation().getWorld()).getName() + ", X: " + user.getLastLocation().getBlockX() + ", Y: " + user.getLastLocation().getBlockY() + ", Z: " + user.getLastLocation().getBlockZ();
+        embedBuilder.addField("Location", location, true);
+        embedBuilder.addField("God Mode", WordUtils.capitalizeFully(String.valueOf(user.isGodModeEnabled())), true);
+        if (user.getNickname() != null)
+        {
+            embedBuilder.addField("Nickname", user.getNickname(), true);
+        }
+        MessageEmbed embed = embedBuilder.build();
+        Message message = channel.sendMessage(embed).complete();
+
+        if (!ConfigEntry.DISCORD_REPORT_ARCHIVE_CHANNEL_ID.getString().isEmpty())
+        {
+            message.addReaction("\uD83D\uDCCB").complete();
+        }
+
+        return true;
+    }
+
+    public boolean sendReport(Player reporter, Player reported, String reason)
+    {
+        if (!shouldISendReport())
+        {
+            return false;
+        }
+
+        final Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        final TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
+
+        final EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Report for " + reported.getName());
         embedBuilder.setDescription(reason);
         embedBuilder.setFooter("Reported by " + reporter.getName(), "https://minotar.net/helm/" + reporter.getName() + ".png");
@@ -445,7 +494,13 @@ public class Discord extends FreedomService
             embedBuilder.addField("Nickname", user.getNickname(), true);
         }
         MessageEmbed embed = embedBuilder.build();
-        channel.sendMessage(embed).complete();
+        Message message = channel.sendMessage(embed).complete();
+
+        if (!ConfigEntry.DISCORD_REPORT_ARCHIVE_CHANNEL_ID.getString().isEmpty())
+        {
+            message.addReaction("\uD83D\uDCCB").complete();
+        }
+
         return true;
     }
 
