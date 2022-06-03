@@ -337,12 +337,12 @@ public abstract class NanoHTTPD
      */
     protected String decodePercent(String str)
     {
-        String decoded = null;
+        String decoded = str;
         try
         {
             decoded = URLDecoder.decode(str, "UTF8");
         }
-        catch (UnsupportedEncodingException ignored)
+        catch (UnsupportedEncodingException | IllegalArgumentException ignored)
         {
         }
         return decoded;
