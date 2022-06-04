@@ -75,7 +75,6 @@ public class TotalFreedomMod extends JavaPlugin
     public CommandLoader cl;
     // Services
     public ServerInterface si;
-    public SavedFlags sf;
     public WorldManager wm;
     public LogViewer lv;
     public AdminList al;
@@ -187,7 +186,6 @@ public class TotalFreedomMod extends JavaPlugin
         fsh = new FreedomServiceHandler();
 
         config = new MainConfig();
-        config.load();
 
         if (FUtil.inDeveloperMode())
         {
@@ -299,7 +297,6 @@ public class TotalFreedomMod extends JavaPlugin
         {
             // Start services
             si = new ServerInterface();
-            sf = new SavedFlags();
             wm = new WorldManager();
             lv = new LogViewer();
             sql = new SQLite();

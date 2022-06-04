@@ -45,6 +45,8 @@ public enum ConfigEntry
     MOB_LIMITER_DISABLE_GIANT(Boolean.class, "moblimiter.disable.giant"),
     MOB_LIMITER_DISABLE_SLIME(Boolean.class, "moblimiter.disable.slime"),
     //
+    SPAWNMOB_MAX(Integer.class, "spawnmob.max"),
+    //
     HTTPD_ENABLED(Boolean.class, "httpd.enabled"),
     HTTPD_HOST(String.class, "httpd.host"),
     HTTPD_PORT(Integer.class, "httpd.port"),
@@ -86,6 +88,7 @@ public enum ConfigEntry
     DISCORD_ASSISTANT_EXECUTIVE_ROLE_ID(String.class, "discord.assistant_executive_role_id"),
     DISCORD_EXECUTIVE_ROLE_ID(String.class, "discord.executive_role_id"),
     DISCORD_SERVER_OWNER_ROLE_ID(String.class, "discord.server_owner_role_id"),
+    DISCORD_INVITE_LINK(String.class, "discord.invite_link"),
     //
     PTERO_URL(String.class, "ptero.url"),
     PTERO_DEFAULT_EMAIL_DOMAIN(String.class, "ptero.default_email_domain"),
@@ -110,6 +113,7 @@ public enum ConfigEntry
     SHOP_PRICES_STACKING_POTATO(Integer.class, "shop.prices.stacking_potato"),
     SHOP_PRICES_CLOWN_FISH(Integer.class, "shop.prices.clown_fish"),
     SHOP_PRICES_LOGIN_MESSAGES(Integer.class, "shop.prices.login_messages"),
+    SHOP_PRICES_RAINBOW_TRAIL(Integer.class, "shop.prices.rainbow_trail"),
     //
     ADMINLIST_CLEAN_THESHOLD_HOURS(Integer.class, "adminlist.clean_threshold_hours"),
     ADMINLIST_CONSOLE_IS_ADMIN(Boolean.class, "adminlist.console_is_admin"),

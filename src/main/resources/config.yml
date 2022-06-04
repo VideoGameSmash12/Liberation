@@ -84,6 +84,8 @@ discord:
   executive_role_id: ''
   # Owner role ID
   server_owner_role_id: ''
+  # Invite link for your Discord server
+  invite_link: 'https://discord.com/invite/PW4savJR9a'
 
 # Pterodactyl
 ptero:
@@ -159,6 +161,7 @@ shop:
     stacking_potato: 300
     clown_fish: 1500
     login_messages: 5000
+    rainbow_trail: 1500
 
 # Admin list
 adminlist:
@@ -505,6 +508,10 @@ moblimiter:
     ghast: true
     slime: true
     giant: true
+
+# Spawnmob
+spawnmob:
+  max: 25
 
 # Flatlands
 flatlands:
