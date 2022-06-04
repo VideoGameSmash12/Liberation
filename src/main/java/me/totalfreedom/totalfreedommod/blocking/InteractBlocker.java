@@ -5,6 +5,8 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -79,9 +81,33 @@ public class InteractBlocker extends FreedomService
 
         if (Groups.SPAWN_EGGS.contains(event.getMaterial()))
         {
-            player.getInventory().clear(player.getInventory().getHeldItemSlot());
-            player.sendMessage(ChatColor.GRAY + "Spawn eggs are currently disabled.");
             event.setCancelled(true);
+            Block clickedBlock = event.getClickedBlock();
+            if (clickedBlock == null)
+            {
+                return;
+            }
+            EntityType eggType = null;
+            try
+            {
+                Material mat = event.getMaterial();
+                if (mat == Material.MOOSHROOM_SPAWN_EGG)
+                {
+                    eggType = EntityType.MUSHROOM_COW;
+                }
+                else
+                {
+                    eggType = EntityType.valueOf(mat.name().substring(0, mat.name().length() - 10));
+                }
+            }
+            catch (IllegalArgumentException ignored)
+            {
+                //
+            }
+            if (eggType != null)
+            {
+                clickedBlock.getWorld().spawnEntity(clickedBlock.getLocation().add(event.getBlockFace().getDirection()).add(0.5, 0.5, 0.5), eggType);
+            }
             return;
         }
 
