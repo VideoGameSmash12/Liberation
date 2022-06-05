@@ -4,6 +4,7 @@ import me.totalfreedom.totalfreedommod.rank.Rank;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,36 +23,40 @@ public class Command_report extends FreedomCommand
         }
 
         Player player = getPlayer(args[0], true);
+        OfflinePlayer offlinePlayer = getOfflinePlayer(args[0]);
 
-        if (player == null)
+        if (player == null && offlinePlayer == null)
         {
             msg(PLAYER_NOT_FOUND);
             return true;
         }
-
-        if (sender instanceof Player)
+        else if (player != null)
         {
-            if (player.equals(playerSender))
+            if (sender instanceof Player)
             {
-                msg(ChatColor.RED + "Please, don't try to report yourself.");
+                if (player.equals(playerSender))
+                {
+                    msg(ChatColor.RED + "Please, don't try to report yourself.");
+                    return true;
+                }
+            }
+
+            if (plugin.al.isAdmin(player))
+            {
+                msg(ChatColor.RED + "You can not report admins.");
                 return true;
             }
-        }
 
-        if (plugin.al.isAdmin(player))
-        {
-            msg(ChatColor.RED + "You can not report admins.");
-            return true;
         }
 
         String report = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
-        plugin.cm.reportAction(playerSender, player, report);
+        plugin.cm.reportAction(playerSender, (player == null) ? offlinePlayer.getName() : player.getName(), report);
 
         boolean logged = false;
 
         if (plugin.dc.enabled)
         {
-            logged = plugin.dc.sendReport(playerSender, player, report);
+            logged = (player == null) ? plugin.dc.sendReportOffline(playerSender, offlinePlayer, report) : plugin.dc.sendReport(playerSender, player, report);
         }
 
         msg(ChatColor.GREEN + "Thank you, your report has been successfully logged."

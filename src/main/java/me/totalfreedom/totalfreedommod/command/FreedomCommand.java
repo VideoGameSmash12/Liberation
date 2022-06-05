@@ -1,14 +1,10 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import com.google.common.collect.Lists;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
@@ -18,12 +14,14 @@ import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 {
@@ -227,6 +225,16 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
             }
         }
         return player;
+    }
+
+    @Nullable
+    protected OfflinePlayer getOfflinePlayer(String name)
+    {
+        return Arrays.stream(Bukkit.getOfflinePlayers())
+                .filter(player -> player.getName() != null)
+                .filter(player -> player.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 
     protected Admin getAdmin(CommandSender sender)
