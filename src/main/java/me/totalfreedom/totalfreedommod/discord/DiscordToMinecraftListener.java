@@ -2,12 +2,12 @@ package me.totalfreedom.totalfreedommod.discord;
 
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import me.totalfreedom.totalfreedommod.discord.command.DiscordCommandManager;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
+import me.totalfreedom.totalfreedommod.util.FUtil;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -24,76 +24,107 @@ public class DiscordToMinecraftListener extends ListenerAdapter
 {
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
-        if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id))
+        final String chat_channel_id = ConfigEntry.DISCORD_CHAT_CHANNEL_ID.getString();
+        final MessageChannel genericChannel = event.getChannel();
+
+        if (event.getMember() == null)
         {
-            if (!event.getAuthor().getId().equals(Discord.bot.getSelfUser().getId()))
-            {
-                Member member = event.getMember();
-                String tag = getDisplay(member);
-                Message msg = event.getMessage();
+            return;
+        }
 
-                ComponentBuilder emsg = new ComponentBuilder();
+        if (chat_channel_id.isEmpty())
+        {
+            return;
+        }
 
-                // Prefix
-                emsg.append(ChatColor.DARK_GRAY + "[");
-                TextComponent inviteLink = new TextComponent("Discord");
-                inviteLink.setColor(ChatColor.DARK_AQUA.asBungee());
-                inviteLink.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        new Text("Click here to get the invite link!")));
-                inviteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                        ConfigEntry.DISCORD_INVITE_LINK.getString()));
-                emsg.append(inviteLink);
-                emsg.append(ChatColor.DARK_GRAY + "] ", ComponentBuilder.FormatRetention.NONE);
+        if (event.getAuthor().getId().equals(Discord.bot.getSelfUser().getId()))
+        {
+            return;
+        }
 
-                // Tag (if they have one)
-                if (tag != null)
-                {
-                    emsg.append(tag);
-                }
+        if (!genericChannel.getId().equals(chat_channel_id))
+        {
+            return;
+        }
 
+        if (!(genericChannel instanceof TextChannel))
+        {
+            return;
+        }
+
+        final TextChannel textChannel = (TextChannel) genericChannel;
+
+        final Member member = event.getMember();
+        final String tag = getDisplay(member);
+        final Message msg = event.getMessage();
+        final String content = msg.getContentStripped();
+
+        if (content.startsWith(ConfigEntry.DISCORD_PREFIX.getString()))
+        {
+            Discord.DISCORD_COMMAND_MANAGER.parse(content, member, textChannel);
+            return;
+        }
+
+        ComponentBuilder emsg = new ComponentBuilder();
+
+        // Prefix
+        emsg.append(ChatColor.DARK_GRAY + "[");
+        TextComponent inviteLink = new TextComponent("Discord");
+        inviteLink.setColor(ChatColor.DARK_AQUA.asBungee());
+        inviteLink.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text("Click here to get the invite link!")));
+        inviteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                ConfigEntry.DISCORD_INVITE_LINK.getString()));
+        emsg.append(inviteLink);
+        emsg.append(ChatColor.DARK_GRAY + "] ", ComponentBuilder.FormatRetention.NONE);
+
+        // Tag (if they have one)
+        if (tag != null)
+        {
+            emsg.append(tag);
+        }
+
+        emsg.append(" ");
+
+        // User
+        TextComponent user = new TextComponent(FUtil.stripColors(member.getEffectiveName()));
+        user.setColor(ChatColor.RED.asBungee());
+        emsg.append(user);
+
+        // Message
+        emsg.append(ChatColor.DARK_GRAY + ": " + ChatColor.RESET
+                + FUtil.stripColors(msg.getContentDisplay()), ComponentBuilder.FormatRetention.NONE);
+
+        // Attachments
+        if (!msg.getAttachments().isEmpty())
+        {
+            if (!msg.getContentDisplay().isEmpty())
                 emsg.append(" ");
 
-                // User
-                TextComponent user = new TextComponent(ChatColor.stripColor(member.getEffectiveName()));
-                user.setColor(ChatColor.RED.asBungee());
-                emsg.append(user);
+            for (Message.Attachment attachment : msg.getAttachments())
+            {
+                TextComponent media = new TextComponent("[Media] ");
+                media.setColor(ChatColor.YELLOW.asBungee());
+                media.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
+                media.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(attachment.getUrl())));
 
-                // Message
-                emsg.append(ChatColor.DARK_GRAY + ": " + ChatColor.RESET
-                        + ChatColor.stripColor(msg.getContentDisplay()), ComponentBuilder.FormatRetention.NONE);
-
-                // Attachments
-                if (!msg.getAttachments().isEmpty())
-                {
-                    if (!msg.getContentDisplay().isEmpty())
-                        emsg.append(" ");
-
-                    for (Message.Attachment attachment : msg.getAttachments())
-                    {
-                        TextComponent media = new TextComponent("[Media] ");
-                        media.setColor(ChatColor.YELLOW.asBungee());
-                        media.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                        media.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(attachment.getUrl())));
-
-                        emsg.append(media, ComponentBuilder.FormatRetention.NONE);
-                    }
-                }
-
-                BaseComponent[] components = emsg.create();
-
-                for (Player player : Bukkit.getOnlinePlayers())
-                {
-                    if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
-                    {
-                        player.spigot().sendMessage(components);
-                    }
-                }
-
-                FLog.info(TextComponent.toLegacyText(components), true);
+                emsg.append(media, ComponentBuilder.FormatRetention.NONE);
             }
         }
+
+        BaseComponent[] components = emsg.create();
+
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (TotalFreedomMod.getPlugin().pl.getData(player).doesDisplayDiscord())
+            {
+                player.sendMessage(components);
+            }
+        }
+
+        FLog.info(TextComponent.toLegacyText(components), true);
     }
+
 
     public String getDisplay(Member member)
     {

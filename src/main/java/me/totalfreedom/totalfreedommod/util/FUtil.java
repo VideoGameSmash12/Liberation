@@ -1,16 +1,12 @@
 package me.totalfreedom.totalfreedommod.util;
 
+import com.earth2me.essentials.utils.DateUtil;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -19,10 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.json.simple.JSONArray;
 
 import java.io.*;
-import java.lang.reflect.Field;
+import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -550,6 +545,11 @@ public class FUtil
         return string;
     }
 
+    public static String stripColors(String string)
+    {
+        return string.replaceAll("§", "");
+    }
+
     public static Date getUnixDate(long unix)
     {
         return new Date(unix);
@@ -793,6 +793,62 @@ public class FUtil
             }
         }
         return getServer().getOnlinePlayers().size() - i;
+    }
+
+    public static double getMeanAverageDouble(double[] doubles)
+    {
+        double total = 0;
+
+        for (double aDouble : doubles)
+        {
+            total += aDouble;
+        }
+
+        return total / doubles.length;
+    }
+
+    public static int getMeanAverageInt(int[] ints)
+    {
+        int total = 0;
+
+        for (int anInt : ints)
+        {
+            total += anInt;
+        }
+
+        return total / ints.length;
+    }
+
+    public static long getMeanAverageLong(long[] longs)
+    {
+        long total = 0;
+
+        for (long aLong : longs)
+        {
+            total += aLong;
+        }
+
+        return total / longs.length;
+    }
+
+    public static String getUptime()
+    {
+        return DateUtil.formatDateDiff(ManagementFactory.getRuntimeMXBean().getStartTime());
+    }
+
+    public static double getMaxMem()
+    {
+        return Runtime.getRuntime().maxMemory() / 1024f / 1024f;
+    }
+
+    public static double getTotalMem()
+    {
+        return Runtime.getRuntime().totalMemory() / 1024f / 1024f;
+    }
+
+    public static double getFreeMem()
+    {
+        return Runtime.getRuntime().freeMemory() / 1024f / 1024f;
     }
 
     public static class PaginationList<T> extends ArrayList<T>

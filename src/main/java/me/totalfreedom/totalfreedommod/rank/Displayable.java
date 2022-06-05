@@ -13,6 +13,8 @@ public interface Displayable
 
     String getAbbr();
 
+    String getPlural();
+
     ChatColor getColor();
 
     org.bukkit.ChatColor getTeamColor();
