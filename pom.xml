@@ -123,7 +123,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.2.1</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -151,14 +151,14 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.2.8</version>
+            <version>7.2.10</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.1_255</version>
+            <version>4.4.0_352</version>
             <scope>provided</scope>
         </dependency>
 
@@ -179,7 +179,7 @@
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
 
@@ -193,21 +193,21 @@
         <dependency>
             <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.19.0</version>
+            <version>2.19.4</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.12</version>
+            <version>0.10.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.28.0-GA</version>
+            <version>3.29.0-GA</version>
             <scope>compile</scope>
         </dependency>
 
@@ -221,7 +221,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>22.0.0</version>
+            <version>23.0.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -235,14 +235,14 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.2</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.eclipse.sisu</groupId>
             <artifactId>org.eclipse.sisu.inject</artifactId>
-            <version>0.3.4</version>
+            <version>0.3.5</version>
         </dependency>
     </dependencies>
 
@@ -267,7 +267,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
                     <outputFileName>TotalFreedomMod.jar</outputFileName>
                     <compilerVersion>17</compilerVersion>
@@ -371,7 +371,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
