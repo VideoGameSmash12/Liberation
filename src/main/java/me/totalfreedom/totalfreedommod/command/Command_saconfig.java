@@ -240,7 +240,9 @@ public class Command_saconfig extends FreedomCommand
                 checkRank(Rank.ADMIN);
 
                 Player player = getPlayer(args[1]);
+
                 Admin admin = player != null ? plugin.al.getAdmin(player) : plugin.al.getEntryByName(args[1]);
+                String adminName = admin.getName();
 
                 if (admin == null)
                 {
@@ -253,15 +255,15 @@ public class Command_saconfig extends FreedomCommand
 
                 plugin.al.save(admin);
                 plugin.al.updateTables();
+
                 if (player != null)
                 {
                     plugin.rm.updateDisplay(player);
-                    plugin.pl.getPlayer(player).setAdminChat(false);
                 }
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
                 {
-                    Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
+                    Discord.syncRoles(admin, plugin.pl.getData(adminName).getDiscordID());
                 }
 
                 plugin.ptero.updateAccountStatus(admin);
