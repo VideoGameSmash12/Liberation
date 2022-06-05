@@ -5,11 +5,11 @@ import net.md_5.bungee.api.ChatColor;
 public enum Title implements Displayable
 {
 
-    MASTER_BUILDER("a", "Master Builder", ChatColor.DARK_AQUA, org.bukkit.ChatColor.DARK_AQUA, "MB", true, true),
-    EXECUTIVE("an", "Executive", ChatColor.RED, org.bukkit.ChatColor.RED, "Exec", true, true),
-    ASSTEXEC("an", "Assistant Executive", ChatColor.RED, org.bukkit.ChatColor.RED, "Asst Exec", true, true),
-    DEVELOPER("a", "Developer", ChatColor.DARK_PURPLE, org.bukkit.ChatColor.DARK_PURPLE, "Dev", true, true),
-    OWNER("the", "Owner", ChatColor.DARK_RED, org.bukkit.ChatColor.DARK_RED, "Owner", true, true);
+    MASTER_BUILDER("a", "Master Builder", "Master Builders", ChatColor.DARK_AQUA, org.bukkit.ChatColor.DARK_AQUA, "MB", true, true),
+    EXECUTIVE("an", "Executive", "Executives", ChatColor.RED, org.bukkit.ChatColor.RED, "Exec", true, true),
+    ASSTEXEC("an", "Assistant Executive", "Assistant Executives", ChatColor.RED, org.bukkit.ChatColor.RED, "Asst Exec", true, true),
+    DEVELOPER("a", "Developer", "Developers", ChatColor.DARK_PURPLE, org.bukkit.ChatColor.DARK_PURPLE, "Dev", true, true),
+    OWNER("the", "Owner", "Owners", ChatColor.DARK_RED, org.bukkit.ChatColor.DARK_RED, "Owner", true, true);
 
 
     private final String article;
@@ -17,6 +17,7 @@ public enum Title implements Displayable
     private final String name;
 
     private final String abbr;
+    private final String plural;
 
     private final String tag;
 
@@ -29,10 +30,11 @@ public enum Title implements Displayable
     private final boolean hasTeam;
     private final boolean hasDefaultLoginMessage;
 
-    Title(String article, String name, ChatColor color, org.bukkit.ChatColor teamColor, String tag, Boolean hasTeam, Boolean hasDefaultLoginMessage)
+    Title(String article, String name, String plural, ChatColor color, org.bukkit.ChatColor teamColor, String tag, Boolean hasTeam, Boolean hasDefaultLoginMessage)
     {
         this.article = article;
         this.name = name;
+        this.plural = plural;
         this.coloredTag = ChatColor.DARK_GRAY + "[" + color + tag + ChatColor.DARK_GRAY + "]" + color;
         this.abbr = tag;
         this.tag = "[" + tag + "]";
@@ -82,6 +84,12 @@ public enum Title implements Displayable
     public String getAbbr()
     {
         return abbr;
+    }
+
+    @Override
+    public String getPlural()
+    {
+        return plural;
     }
 
     @Override

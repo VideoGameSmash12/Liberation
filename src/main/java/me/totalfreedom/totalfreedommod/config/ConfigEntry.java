@@ -74,7 +74,9 @@ public enum ConfigEntry
     SERVER_FULL_MOTD(String.class, "server.motds.full"),
     //
     DISCORD_TOKEN(String.class, "discord.token"),
+    DISCORD_PREFIX(String.class, "discord.prefix"),
     DISCORD_REPORT_CHANNEL_ID(String.class, "discord.report_channel_id"),
+    DISCORD_REPORT_ARCHIVE_CHANNEL_ID(String.class, "discord.report_archive_channel_id"),
     DISCORD_CHAT_CHANNEL_ID(String.class, "discord.chat_channel_id"),
     DISCORD_ADMINCHAT_CHANNEL_ID(String.class, "discord.adminchat_channel_id"),
 

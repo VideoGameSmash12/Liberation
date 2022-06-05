@@ -4,19 +4,19 @@ import net.md_5.bungee.api.ChatColor;
 
 public enum Rank implements Displayable
 {
-    NON_OP("a", "Non-Op", Type.PLAYER, "", ChatColor.WHITE, null, false, false),
-    OP("an", "Operator", Type.PLAYER, "OP", ChatColor.GREEN, null, false, false),
-    ADMIN("an", "Admin", Type.ADMIN, "Admin", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true, true),
-    SENIOR_ADMIN("a", "Senior Admin", Type.ADMIN, "SrA", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
-    ADMIN_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false),
-    SENIOR_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", ChatColor.DARK_PURPLE, null, false, false);
+    NON_OP("a", "Non-Op", Type.PLAYER, "", "Non-Ops", ChatColor.WHITE, null, false, false),
+    OP("an", "Operator", Type.PLAYER, "OP", "Operators", ChatColor.GREEN, null, false, false),
+    ADMIN("an", "Admin", Type.ADMIN, "Admin", "Administrators", ChatColor.DARK_GREEN, org.bukkit.ChatColor.DARK_GREEN, true, true),
+    SENIOR_ADMIN("a", "Senior Admin", Type.ADMIN, "SrA", "Senior Administrators", ChatColor.GOLD, org.bukkit.ChatColor.GOLD, true, true),
+    ADMIN_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", "Administrator Consoles", ChatColor.DARK_PURPLE, null, false, false),
+    SENIOR_CONSOLE("the", "Console", Type.ADMIN_CONSOLE, "Console", "Senior Consoles", ChatColor.DARK_PURPLE, null, false, false);
 
     private final Type type;
 
     private final String name;
 
     private final String abbr;
-
+    private final String plural;
     private final String article;
 
     private final String tag;
@@ -31,11 +31,12 @@ public enum Rank implements Displayable
 
     private final boolean hasDefaultLoginMessage;
 
-    Rank(String article, String name, Type type, String abbr, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
+    Rank(String article, String name, Type type, String abbr, String plural, ChatColor color, org.bukkit.ChatColor teamColor, Boolean hasTeam, Boolean hasDefaultLoginMessage)
     {
         this.type = type;
         this.name = name;
         this.abbr = abbr;
+        this.plural = plural;
         this.article = article;
         this.tag = abbr.isEmpty() ? "" : "[" + abbr + "]";
         this.coloredTag = abbr.isEmpty() ? "" : ChatColor.DARK_GRAY + "[" + color + abbr + ChatColor.DARK_GRAY + "]" + color;
@@ -86,6 +87,11 @@ public enum Rank implements Displayable
     public String getAbbr()
     {
         return abbr;
+    }
+
+    public String getPlural()
+    {
+        return plural;
     }
 
     public boolean isConsole()
