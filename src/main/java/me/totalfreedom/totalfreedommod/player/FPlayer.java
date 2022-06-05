@@ -112,6 +112,14 @@ public class FPlayer
         this.player = player;
     }
 
+    // Ensure admins don't have admin functionality when removed (FS-222)
+    public void removeAdminFunctionality()
+    {
+        this.setCommandSpy(false);
+        this.setAdminChat(false);
+        this.setFuckoffRadius(0);
+    }
+
     public boolean isOrbiting()
     {
         return isOrbiting;
