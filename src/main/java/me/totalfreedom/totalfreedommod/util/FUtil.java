@@ -50,9 +50,32 @@ public class FUtil
             "ba5aafba-9012-418f-9819-a7020d591068",  // TFTWPhoenix
             "d6dd9740-40db-45f5-ab16-4ee16a633009", // Abhi
             "2e06e049-24c8-42e4-8bcf-d35372af31e6", // NotInSync
-            "f97c0d7b-6413-4558-a409-88f09a8f9adb" // videogamesm12
+            "f97c0d7b-6413-4558-a409-88f09a8f9adb", // videogamesm12
+            "78408086-1991-4c33-a571-d8fa325465b2", // Telesphoreo
+            "f5cd54c4-3a24-4213-9a56-c06c49594dff", // Taahh
+            "a52f1f08-a398-400a-bca4-2b74b81feae6", // G6_
+            "ca83b658-c03b-4106-9edc-72f70a80656d" // ayunami2000
     );
-    public static final List<String> DEVELOPER_NAMES = Arrays.asList("Madgeek1450", "Prozza", "WickedGamingUK", "Wild1145", "aggelosQQ", "scripthead", "CoolJWB", "elmon_", "speednt", "SupItsDillon", "Paldiu", "TFTWPhoenix", "abhithedev", "NotInSync", "videogamesm12");
+    public static final List<String> DEVELOPER_NAMES = Arrays.asList(
+            "Madgeek1450",
+            "Prozza",
+            "WickedGamingUK",
+            "Wild1145",
+            "aggelosQQ",
+            "scripthead",
+            "Telesphoreo",
+            "CoolJWB",
+            "elmon_",
+            "speednt",
+            "SupItsDillon",
+            "Paldiu",
+            "TFTWPhoenix",
+            "abhithedev",
+            "NotInSync",
+            "videogamesm12",
+            "Taahh",
+            "G6_",
+            "ayunami2000");
     public static final Map<String, ChatColor> CHAT_COLOR_NAMES = new HashMap<>();
     public static final List<ChatColor> CHAT_COLOR_POOL = Arrays.asList(
             ChatColor.DARK_RED,
