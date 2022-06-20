@@ -20,15 +20,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDispenseEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -115,6 +107,16 @@ public class EventBlocker extends FreedomService
         }
 
         event.setRadius(ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue());
+    }
+    
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockExplode(BlockExplodeEvent event) {
+        if(!ConfigEntry.ALLOW_EXPLOSIONS.getBoolean()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        event.setYield(ConfigEntry.EXPLOSIVE_RADIUS.getDouble().floatValue());
     }
 
     @EventHandler(priority = EventPriority.HIGH)
