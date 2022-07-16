@@ -224,8 +224,6 @@ allow:
   minecarts: true
   clearonjoin: false
   tpronjoin: false
-  structureblocks: false
-  jigsaws: false
   grindstones: true
   jukeboxes: true
   spawners: false
@@ -234,6 +232,7 @@ allow:
   auto_tp: false
   auto_clear: false
   gravity: false
+  masterblocks: false
 
 blocked_commands:
   #

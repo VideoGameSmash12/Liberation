@@ -71,7 +71,7 @@ public class BlockBlocker extends FreedomService
             }
             case STRUCTURE_BLOCK:
             {
-                if (!ConfigEntry.ALLOW_STRUCTURE_BLOCKS.getBoolean())
+                if (!ConfigEntry.ALLOW_MASTERBLOCKS.getBoolean())
                 {
                     player.sendMessage(ChatColor.GRAY + "Structure blocks are disabled.");
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
@@ -81,7 +81,7 @@ public class BlockBlocker extends FreedomService
             }
             case JIGSAW:
             {
-                if (!ConfigEntry.ALLOW_JIGSAWS.getBoolean())
+                if (!ConfigEntry.ALLOW_MASTERBLOCKS.getBoolean())
                 {
                     player.sendMessage(ChatColor.GRAY + "Jigsaws are disabled.");
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
@@ -89,6 +89,16 @@ public class BlockBlocker extends FreedomService
                 }
                 break;
             }
+            case REPEATING_COMMAND_BLOCK:
+            case CHAIN_COMMAND_BLOCK:
+            case COMMAND_BLOCK:
+                if (!ConfigEntry.ALLOW_MASTERBLOCKS.getBoolean())
+                {
+                    player.sendMessage(ChatColor.GRAY + "Command blocks are disabled.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
             case GRINDSTONE:
             {
                 if (!ConfigEntry.ALLOW_GRINDSTONES.getBoolean())
