@@ -118,13 +118,6 @@ public enum ConfigEntry
     ADMINLIST_CLEAN_THESHOLD_HOURS(Integer.class, "adminlist.clean_threshold_hours"),
     ADMINLIST_CONSOLE_IS_ADMIN(Boolean.class, "adminlist.console_is_admin"),
     //
-    COREPROTECT_MYSQL_ENABLED(Boolean.class, "coreprotect.enabled"),
-    COREPROTECT_MYSQL_HOST(String.class, "coreprotect.host"),
-    COREPROTECT_MYSQL_PORT(String.class, "coreprotect.port"),
-    COREPROTECT_MYSQL_USERNAME(String.class, "coreprotect.username"),
-    COREPROTECT_MYSQL_PASSWORD(String.class, "coreprotect.password"),
-    COREPROTECT_MYSQL_DATABASE(String.class, "coreprotect.database"),
-    //
     DISABLE_NIGHT(Boolean.class, "disable.night"),
     DISABLE_WEATHER(Boolean.class, "disable.weather"),
     //
