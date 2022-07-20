@@ -21,7 +21,9 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.discord.command.DiscordCommandManager;
 import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
+import me.totalfreedom.totalfreedommod.rank.Title;
 import me.totalfreedom.totalfreedommod.util.FLog;
+import me.videogamesm12.liberation.event.AdminChatEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -303,6 +305,13 @@ public class Discord extends FreedomService
         {
             messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**", true);
         }
+    }
+
+    @EventHandler
+    public void onAdminChat(AdminChatEvent event)
+    {
+        if (bot != null && event.getDisplayable() != Title.DISCORD)
+            messageAdminChatChannel(event.getName() + " \u00BB " + event.getMessage());
     }
 
     public static String sanitizeChatMessage(String message)

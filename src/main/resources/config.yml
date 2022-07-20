@@ -788,3 +788,6 @@ developer_mode: false
 
 # AntiSpam Time (minutes)
 antispam_minutes: 2
+
+# The admin chat format to use as default
+default_adminchat_format: "&8[&bADMIN&8] &4%name% &8[%rankcolor%%rank%&8]&f: &6%msg%"

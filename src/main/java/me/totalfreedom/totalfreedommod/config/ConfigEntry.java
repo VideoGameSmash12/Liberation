@@ -174,7 +174,8 @@ public enum ConfigEntry
     AUTO_ENTITY_WIPE(Boolean.class, "auto_wipe"),
     TOGGLE_CHAT(Boolean.class, "toggle_chat"),
     DEVELOPER_MODE(Boolean.class, "developer_mode"),
-    ANTISPAM_MINUTES(Integer.class, "antispam_minutes");
+    ANTISPAM_MINUTES(Integer.class, "antispam_minutes"),
+    DEFAULT_ADMINCHAT_FORMAT(String.class, "default_adminchat_format");
     //
     private final Class<?> type;
     private final String configName;

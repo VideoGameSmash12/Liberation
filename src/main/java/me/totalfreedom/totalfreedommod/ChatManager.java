@@ -9,7 +9,14 @@ import me.totalfreedom.totalfreedommod.rank.Displayable;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FSync;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import me.videogamesm12.liberation.event.AdminChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -18,6 +25,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static me.totalfreedom.totalfreedommod.util.FUtil.playerMsg;
 
 public class ChatManager extends FreedomService
@@ -30,6 +41,48 @@ public class ChatManager extends FreedomService
     @Override
     public void onStop()
     {
+    }
+
+    @EventHandler
+    public void onAdminChat(AdminChatEvent event)
+    {
+        Displayable displayable = event.getDisplayable();
+        String sender = event.getName();
+        String message = event.getMessage();
+        List<String> attachments = event.getAttachments();
+
+        FLog.info(FUtil.colorize(ConfigEntry.DEFAULT_ADMINCHAT_FORMAT.getString()
+                .replace("%name%", sender)
+                .replace("%rankcolor%", getColor(displayable).toString())
+                .replace("%rank%", displayable.getAbbr())
+                .replace("%msg%", message)
+        ), true);
+
+        server.getOnlinePlayers().stream().filter(player -> plugin.al.isAdmin(player)).forEach(
+                player -> {
+                    Admin admin = plugin.al.getAdmin(player);
+                    String format = Strings.isNullOrEmpty(admin.getAcFormat()) ? ConfigEntry.DEFAULT_ADMINCHAT_FORMAT.getString() : admin.getAcFormat();
+
+                    Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(
+                            format.replace("%name%", sender)
+                            .replace("%rankcolor%", getColor(displayable).toString())
+                            .replace("%rank%", displayable.getAbbr())
+                            .replace("%msg%", message)
+                    );
+
+                    for (String attachment : attachments)
+                    {
+                        component = component.append(Component.text(" "));
+                        //
+                        Component attach = Component.text("[Media]", TextColor.color(254, 254, 63))
+                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, attachment));
+                        //
+                        component = component.append(attach);
+                    }
+
+                    player.sendMessage(component);
+                }
+        );
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -155,24 +208,7 @@ public class ChatManager extends FreedomService
 
     public void adminChat(CommandSender sender, String message)
     {
-        Displayable display = plugin.rm.getDisplay(sender);
-        FLog.info("[ADMIN] " + sender.getName() + " " + display.getTag() + ": " + message, true);
-        plugin.dc.messageAdminChatChannel(sender.getName() + " \u00BB " + message);
-
-        server.getOnlinePlayers().stream().filter(player -> plugin.al.isAdmin(player)).forEach(player ->
-        {
-            Admin admin = plugin.al.getAdmin(player);
-            if (!Strings.isNullOrEmpty(admin.getAcFormat())) {
-                String format = admin.getAcFormat();
-                ChatColor color = getColor(display);
-                String msg = format.replace("%name%", sender.getName()).replace("%rank%", display.getAbbr()).replace("%rankcolor%", color.toString()).replace("%msg%", message);
-                player.sendMessage(FUtil.colorize(msg));
-            }
-            else
-            {
-                player.sendMessage("[" + ChatColor.AQUA + "ADMIN" + ChatColor.WHITE + "] " + ChatColor.DARK_RED + sender.getName() + ChatColor.DARK_GRAY + " [" + getColoredTag(display) + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(message));
-            }
-        });
+        new AdminChatEvent(sender.getName(), plugin.rm.getDisplay(sender), message, new ArrayList<>()).callEvent();
     }
 
     public void reportAction(Player reporter, String reportedName, String report)

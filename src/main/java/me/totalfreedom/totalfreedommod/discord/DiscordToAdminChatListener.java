@@ -1,102 +1,36 @@
 package me.totalfreedom.totalfreedommod.discord;
 
-import com.google.common.base.Strings;
-import me.totalfreedom.totalfreedommod.TotalFreedomMod;
-import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Displayable;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.rank.Title;
-import me.totalfreedom.totalfreedommod.util.FLog;
-import me.totalfreedom.totalfreedommod.util.FUtil;
+import me.videogamesm12.liberation.event.AdminChatEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiscordToAdminChatListener extends ListenerAdapter
 {
-
-    DiscordToMinecraftListener dtml = new DiscordToMinecraftListener();
-
-    public static net.md_5.bungee.api.ChatColor getColor(Displayable display)
-    {
-        return display.getColor();
-    }
-
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String chat_channel_id = ConfigEntry.DISCORD_ADMINCHAT_CHANNEL_ID.getString();
         if (event.getMember() != null && !chat_channel_id.isEmpty() && event.getChannel().getId().equals(chat_channel_id) && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId()))
         {
             Member member = event.getMember();
-            String tag = dtml.getDisplay(member);
             Message msg = event.getMessage();
-            String mediamessage = ChatColor.YELLOW + "[Media]";
+            List<String> attachments = new ArrayList<>();
 
-            StringBuilder logmessage = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
-            String lm = ChatColor.DARK_RED + member.getEffectiveName() + " "
-                    + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
-                    + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
-            logmessage.append(lm);
-
-            if (!msg.getAttachments().isEmpty())
+            msg.getAttachments().forEach(attachment ->
             {
-                
-                logmessage.append(mediamessage); // Actually for logging...
-
-            }
-            FLog.info(logmessage.toString());
-
-            Bukkit.getOnlinePlayers().stream().filter(player -> TotalFreedomMod.getPlugin().al.isAdmin(player)).forEach(player ->
-            {
-                StringBuilder message = new StringBuilder(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "Discord" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET);
-
-                ComponentBuilder builder = new ComponentBuilder(message.toString());
-
-                Admin admin = TotalFreedomMod.getPlugin().al.getAdmin(player);
-                String format = admin.getAcFormat();
-                if (!Strings.isNullOrEmpty(format))
-                {
-                    Displayable display = getDisplay(member);
-                    net.md_5.bungee.api.ChatColor color = getColor(display);
-                    String m = format.replace("%name%", member.getEffectiveName())
-                            .replace("%rank%", display.getAbbr())
-                            .replace("%rankcolor%", color.toString())
-                            .replace("%msg%", FUtil.colorize(msg.getContentDisplay()));
-                    builder.append(FUtil.colorize(m));
-
-                }
-                else
-                {
-                    String m = ChatColor.DARK_RED + member.getEffectiveName() + " "
-                            + ChatColor.DARK_GRAY + tag + ChatColor.DARK_GRAY
-                            + ChatColor.WHITE + ": " + ChatColor.GOLD + FUtil.colorize(msg.getContentDisplay());
-                    builder.append(m);
-                }
-
-                if (!msg.getAttachments().isEmpty())
-                {
-                    for (Message.Attachment attachment : msg.getAttachments())
-                    {
-                        TextComponent text = new TextComponent(mediamessage);
-                        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()));
-                        if (!msg.getContentDisplay().isEmpty())
-                        {
-                            builder.append(" ");
-                        }
-                        builder.append(text);
-                    }
-                }
-                player.spigot().sendMessage(builder.create());
-
+                attachments.add(attachment.getUrl());
             });
+
+            new AdminChatEvent(member.getUser().getName() + "#" + member.getUser().getDiscriminator(), Title.DISCORD, msg.getContentDisplay(), attachments, true).callEvent();
         }
     }
 
