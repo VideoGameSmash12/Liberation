@@ -15,8 +15,6 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -74,7 +72,7 @@ public class ChatManager extends FreedomService
                     {
                         component = component.append(Component.text(" "));
                         //
-                        Component attach = Component.text("[Media]", TextColor.color(254, 254, 63))
+                        Component attach = Component.text("[Media]", TextColor.color(255, 255, 85))
                                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, attachment));
                         //
                         component = component.append(attach);
