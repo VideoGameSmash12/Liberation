@@ -33,11 +33,8 @@ import org.bukkit.scheduler.BukkitTask;
 public class CoreProtectBridge extends FreedomService
 {
     public static Map<Player, FUtil.PaginationList<String>> HISTORY_MAP = new HashMap<>();
-    private final List<String> tables = Arrays.asList("co_sign", "co_session", "co_container", "co_block");
-
     private final HashMap<String, Long> cooldown = new HashMap<>();
     private CoreProtectAPI coreProtectAPI = null;
-    private BukkitTask wiper;
 
     public static Long getSecondsLeft(long prevTime, int timeAdd)
     {
@@ -172,16 +169,6 @@ public class CoreProtectBridge extends FreedomService
                 coreProtect.performRestore(86400, Collections.singletonList(name), null, null, null, null, 0, null);
             }
         }.runTaskAsynchronously(plugin);
-    }
-
-    public File getDatabase()
-    {
-        if (!isEnabled())
-        {
-            return null;
-        }
-
-        return (new File(getCoreProtect().getDataFolder(), "database.db"));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
