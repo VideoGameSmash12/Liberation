@@ -593,12 +593,6 @@ public class FUtil
         return date.getTime();
     }
 
-    public static String getNMSVersion()
-    {
-        String packageName = getServer().getClass().getPackage().getName();
-        return packageName.substring(packageName.lastIndexOf('.') + 1);
-    }
-
     public static int randomInteger(int min, int max)
     {
         int range = max - min + 1;
@@ -660,66 +654,6 @@ public class FUtil
                 }
             }
         }
-    }
-
-    public static char getRandomCharacter()
-    {
-        return CHARACTER_STRING.charAt(new SplittableRandom().nextInt(CHARACTER_STRING.length()));
-    }
-
-    public static void give(Player player, Material material, String coloredName, int amount, String... lore)
-    {
-        ItemStack stack = new ItemStack(material, amount);
-        ItemMeta meta = stack.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(FUtil.colorize(coloredName));
-        List<String> loreList = new ArrayList<>();
-        for (String entry : lore)
-        {
-            loreList.add(FUtil.colorize(entry));
-        }
-        meta.setLore(loreList);
-        stack.setItemMeta(meta);
-        player.getInventory().setItem(player.getInventory().firstEmpty(), stack);
-    }
-
-    public static Player getRandomPlayer()
-    {
-        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-        return players.get(randomInteger(0, players.size() - 1));
-    }
-
-    // convert the current time
-    public static int getTimeInTicks(int tz)
-    {
-        if (timeZoneOutOfBounds(tz))
-        {
-            return -1;
-        }
-        Calendar date = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE_LOOKUP.get(tz)));
-        int res = 0;
-        for (int i = 0; i < date.get(Calendar.HOUR_OF_DAY) - 6; i++) // oh yeah i don't know why this is 6 hours ahead
-        {
-            res += 1000;
-        }
-        int addExtra = 0; // we're adding extra to account for repeating decimals
-        for (int i = 0; i < date.get(Calendar.MINUTE); i++)
-        {
-            res += 16;
-            addExtra++;
-            if (addExtra == 3)
-            {
-                res += 1;
-                addExtra = 0;
-            }
-        }
-        // this is the best it can be. trust me.
-        return res;
-    }
-
-    public static boolean timeZoneOutOfBounds(int tz)
-    {
-        return tz < -12 || tz > 12;
     }
 
     public static String getIp(Player player)
