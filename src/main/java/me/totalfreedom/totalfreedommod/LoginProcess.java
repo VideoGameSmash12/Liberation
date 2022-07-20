@@ -27,9 +27,6 @@ import org.bukkit.scheduler.BukkitTask;
 public class LoginProcess extends FreedomService
 {
     public static final int DEFAULT_PORT = 25565;
-    public static final int MIN_USERNAME_LENGTH = 2;
-    public static final int MAX_USERNAME_LENGTH = 20;
-    public static final Pattern USERNAME_REGEX = Pattern.compile("^[\\w\\d_]{3,20}$");
     private static boolean lockdownEnabled = false;
     public List<String> TELEPORT_ON_JOIN = new ArrayList<>();
     public List<String> CLEAR_ON_JOIN = new ArrayList<>();
@@ -88,22 +85,7 @@ public class LoginProcess extends FreedomService
     public void onPlayerLogin(PlayerLoginEvent event)
     {
         final Player player = event.getPlayer();
-        final String username = player.getName();
         final UUID uuid = player.getUniqueId();
-
-        // Check username length
-        if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH)
-        {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Your username is an invalid length (must be between 3 and 20 characters long).");
-            return;
-        }
-
-        // Check username characters
-        if (!USERNAME_REGEX.matcher(username).find())
-        {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Your username contains invalid characters.");
-            return;
-        }
 
         // Check force-IP match
         if (ConfigEntry.FORCE_IP_ENABLED.getBoolean())

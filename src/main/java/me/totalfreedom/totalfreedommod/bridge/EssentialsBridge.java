@@ -204,13 +204,6 @@ public class EssentialsBridge extends FreedomService
         }
     }
 
-    // TODO: Actually use this for something or remove it.
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
-        Player player = event.getPlayer();
-    }
-
     public boolean isEnabled()
     {
         final Essentials ess = getEssentialsPlugin();
