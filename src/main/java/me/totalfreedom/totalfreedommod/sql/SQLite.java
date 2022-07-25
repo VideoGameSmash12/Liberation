@@ -18,8 +18,6 @@ import me.totalfreedom.totalfreedommod.util.FUtil;
 
 public class SQLite extends FreedomService
 {
-    private final String FILE_NAME = "database.db";
-
     private Connection connection;
 
     @Override
@@ -39,6 +37,7 @@ public class SQLite extends FreedomService
     {
         try
         {
+            String FILE_NAME = "database.db";
             connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + "/" + FILE_NAME);
             FLog.info("Successfully connected to the database.");
         }

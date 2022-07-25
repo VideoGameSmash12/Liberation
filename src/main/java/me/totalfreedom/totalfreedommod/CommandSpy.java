@@ -1,6 +1,10 @@
 package me.totalfreedom.totalfreedommod;
 
-import me.totalfreedom.totalfreedommod.util.FUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,15 +15,18 @@ public class CommandSpy extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
-        for (Player player : server.getOnlinePlayers())
-        {
-            if (plugin.al.isAdmin(player) && plugin.al.getAdmin(player).getCommandSpy())
-            {
-                if (player != event.getPlayer())
-                {
-                    FUtil.playerMsg(player, event.getPlayer().getName() + ": " + event.getMessage());
-                }
-            }
-        }
+        Player from = event.getPlayer();
+
+        TextComponent.Builder component = Component.text();
+        component.append(
+                Component.text(from.getName())
+                        .clickEvent(ClickEvent.copyToClipboard(from.getName()))
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard"))),
+                Component.text(": "),
+                Component.text(event.getMessage())
+        );
+        component.color(TextColor.color(0xAAAAAA));
+
+        server.getOnlinePlayers().stream().filter(player -> plugin.al.isAdmin(player) && plugin.al.getAdmin(player).getCommandSpy() && player != from).forEach(player -> player.sendMessage(component));
     }
 }
