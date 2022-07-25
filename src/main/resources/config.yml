@@ -89,19 +89,6 @@ discord:
   # Invite link for your Discord server
   invite_link: 'https://discord.com/invite/PW4savJR9a'
 
-# Pterodactyl
-ptero:
-  # URL - do not leave a trailing forward slash
-  url: ''
-  # The default email domain used to set email addresses for new users - do not include the @
-  default_email_domain: 'example.com'
-  # Server UUID
-  server_uuid: ''
-  # Admin panel API key
-  admin_key: ''
-  # Server API key
-  server_key: ''
-
 # The shop
 shop:
   # Enable the shop

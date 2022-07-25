@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.SplittableRandom;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.security.auth.login.LoginException;
 
@@ -31,11 +29,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -43,9 +39,7 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.internal.utils.concurrent.CountingThreadFactory;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.GameRule;
@@ -232,24 +226,6 @@ public class Discord extends FreedomService
         }
         sentMessages.clear();
         messageChatChannel("**Message queue cleared**", true);
-    }
-
-    public User getUser(String id)
-    {
-        Guild guild = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
-        if (guild == null)
-        {
-            FLog.severe("Either the bot is not in the Discord server or it doesn't exist. Check the server ID.");
-            return null;
-        }
-
-        Member member = guild.getMemberById(id);
-        if (member == null)
-        {
-            return null;
-        }
-
-        return member.getUser();
     }
 
     public String generateCode(int size)
