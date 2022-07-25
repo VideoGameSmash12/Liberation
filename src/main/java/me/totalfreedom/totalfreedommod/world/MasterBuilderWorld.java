@@ -1,6 +1,8 @@
 package me.totalfreedom.totalfreedommod.world;
 
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -8,6 +10,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Sign;
 import org.bukkit.entity.Player;
 
 public final class MasterBuilderWorld extends CustomWorld
@@ -29,8 +32,6 @@ public final class MasterBuilderWorld extends CustomWorld
         super.sendToWorld(player);
     }
 
-    // TODO: Replace org.bukkit.Sign with a non deprecated version. This may require extra boilerplate.
-    @SuppressWarnings("deprecation")
     @Override
     protected World generateWorld()
     {
@@ -48,15 +49,13 @@ public final class MasterBuilderWorld extends CustomWorld
 
         final Block welcomeSignBlock = world.getBlockAt(0, 50, 0);
         welcomeSignBlock.setType(Material.OAK_SIGN);
-        org.bukkit.block.Sign welcomeSign = (org.bukkit.block.Sign)welcomeSignBlock.getState();
+        org.bukkit.block.Sign welcomeSign = (org.bukkit.block.Sign) welcomeSignBlock.getState();
+        ((Sign) welcomeSign.getBlockData()).setRotation(BlockFace.NORTH);
 
-        org.bukkit.material.Sign signData = (org.bukkit.material.Sign)welcomeSign.getData();
-        signData.setFacingDirection(BlockFace.NORTH);
-
-        welcomeSign.setLine(0, ChatColor.GREEN + "MB World");
-        welcomeSign.setLine(1, ChatColor.DARK_GRAY + "---");
-        welcomeSign.setLine(2, ChatColor.YELLOW + "Spawn Point");
-        welcomeSign.setLine(3, ChatColor.DARK_GRAY + "---");
+        welcomeSign.line(0, Component.text("MB World", TextColor.color(0x55FF55)));
+        welcomeSign.line(1, Component.text("---", TextColor.color(0x555555)));
+        welcomeSign.line(2, Component.text("Spawn Point", TextColor.color(0xFFFF55)));
+        welcomeSign.line(3, Component.text("---", TextColor.color(0x555555)));
         welcomeSign.update();
 
         plugin.gr.commitGameRules();
@@ -98,5 +97,4 @@ public final class MasterBuilderWorld extends CustomWorld
         {
         }
     }
-
 }

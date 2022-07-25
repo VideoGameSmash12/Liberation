@@ -5,21 +5,21 @@ import java.util.Map;
 import java.util.Objects;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FLog;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public final class AdminWorld extends CustomWorld
 {
-
-    private static final long CACHE_CLEAR_FREQUENCY = 30L * 1000L; //30 seconds, milliseconds
     private static final long TP_COOLDOWN_TIME = 500L; //0.5 seconds, milliseconds
     private static final String GENERATION_PARAMETERS = ConfigEntry.FLATLANDS_GENERATE_PARAMS.getString();
     //
@@ -39,7 +39,6 @@ public final class AdminWorld extends CustomWorld
         super.sendToWorld(player);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected World generateWorld()
     {
@@ -58,49 +57,16 @@ public final class AdminWorld extends CustomWorld
         final Block welcomeSignBlock = world.getBlockAt(0, 50, 0);
         welcomeSignBlock.setType(Material.OAK_SIGN);
         org.bukkit.block.Sign welcomeSign = (org.bukkit.block.Sign)welcomeSignBlock.getState();
+        ((Sign) welcomeSign.getBlockData()).setRotation(BlockFace.NORTH);
 
-        org.bukkit.material.Sign signData = (org.bukkit.material.Sign)welcomeSign.getData();
-        signData.setFacingDirection(BlockFace.NORTH);
-
-        welcomeSign.setLine(0, ChatColor.GREEN + "AdminWorld");
-        welcomeSign.setLine(1, ChatColor.DARK_GRAY + "---");
-        welcomeSign.setLine(2, ChatColor.YELLOW + "Spawn Point");
-        welcomeSign.setLine(3, ChatColor.DARK_GRAY + "---");
+        welcomeSign.line(0, Component.text("AdminWorld", TextColor.color(0x55FF55)));
+        welcomeSign.line(1, Component.text("---", TextColor.color(0x555555)));
+        welcomeSign.line(2, Component.text("Spawn Point", TextColor.color(0xFFFF55)));
+        welcomeSign.line(3, Component.text("---", TextColor.color(0x555555)));
         welcomeSign.update();
 
         plugin.gr.commitGameRules();
         return world;
-    }
-
-    public boolean validateMovement(PlayerMoveEvent event)
-    {
-        World world;
-        try
-        {
-            world = getWorld();
-        }
-        catch (Exception ex)
-        {
-            return true;
-        }
-
-        if (world == null || !Objects.equals(Objects.requireNonNull(event.getTo()).getWorld(), world))
-        {
-            return true;
-        }
-
-        final Player player = event.getPlayer();
-
-        Long lastTP = teleportCooldown.get(player);
-
-        long currentTimeMillis = System.currentTimeMillis();
-        if (lastTP == null || lastTP + TP_COOLDOWN_TIME <= currentTimeMillis)
-        {
-            teleportCooldown.put(player, currentTimeMillis);
-            FLog.info(player.getName() + " attempted to access the AdminWorld.");
-            event.setTo(Bukkit.getWorlds().get(0).getSpawnLocation());
-        }
-        return false;
     }
 
     public WorldWeather getWeatherMode()
