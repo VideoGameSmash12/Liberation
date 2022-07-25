@@ -219,7 +219,7 @@ public class SQLite extends FreedomService
     {
         try
         {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, admin.getUuid().toString());
             statement.setString(2, FUtil.listToString(admin.getIps()));
             statement.setString(3, admin.getRank().toString());

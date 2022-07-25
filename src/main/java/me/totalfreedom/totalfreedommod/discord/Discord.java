@@ -32,8 +32,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -50,19 +48,125 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class Discord extends FreedomService
 {
-
-    public static HashMap<String, PlayerData> LINK_CODES = new HashMap<>();
-    public static JDA bot = null;
-    public static DiscordCommandManager DISCORD_COMMAND_MANAGER;
-    public ScheduledThreadPoolExecutor RATELIMIT_EXECUTOR;
-    public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
-    public Boolean enabled = false;
     private static final ImmutableList<String> DISCORD_SUBDOMAINS = ImmutableList.of("discordapp.com", "discord.com", "discord.gg");
-    private final Pattern DISCORD_MENTION_PATTERN = Pattern.compile("(<@!?([0-9]{16,20})>)");
+    public static HashMap<String, PlayerData> LINK_CODES = new HashMap<>();
+    public static JDA BOT = null;
+    public static DiscordCommandManager DISCORD_COMMAND_MANAGER;
+    //--
+    public boolean enabled = false;
+    public ScheduledThreadPoolExecutor ratelimitExecutor;
+    public List<CompletableFuture<Message>> sentMessages = new ArrayList<>();
+
+    @Override
+    public void onStart()
+    {
+        startBot();
+    }
+
+    @Override
+    public void onStop()
+    {
+        if (BOT != null)
+        {
+            messageChatChannel("**Server has stopped**", true);
+            BOT.shutdown();
+        }
+
+        FLog.info("Discord integration has successfully shutdown.");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDeath(PlayerDeathEvent event)
+    {
+        //Avoiding NPE Unboxing Warnings
+        Boolean b = event.getEntity().getWorld().getGameRuleValue(GameRule.SHOW_DEATH_MESSAGES);
+        if (b == null || !b)
+        {
+            return;
+        }
+
+        Component deathMessage = event.deathMessage();
+
+        if (deathMessage != null)
+        {
+            messageChatChannel("**" + PlainTextComponentSerializer.plainText().serialize(deathMessage) + "**", true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent event)
+    {
+        if (!plugin.al.isVanished(event.getPlayer().getName()))
+            messageChatChannel("**" + event.getPlayer().getName() + " joined the server" + "**", true);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerLeave(PlayerQuitEvent event)
+    {
+        if (!plugin.al.isVanished(event.getPlayer().getName()))
+            messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**", true);
+    }
+
+    @EventHandler
+    public void onAdminChat(AdminChatEvent event)
+    {
+        if (BOT != null && event.getDisplayable() != Title.DISCORD)
+            messageAdminChatChannel(event.getName() + " \u00BB " + event.getMessage());
+    }
+
+    public void startBot()
+    {
+        DISCORD_COMMAND_MANAGER = new DiscordCommandManager();
+        DISCORD_COMMAND_MANAGER.init(this);
+
+        enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
+        if (!enabled)
+        {
+            return;
+        }
+
+        if (BOT != null)
+        {
+            ratelimitExecutor = new ScheduledThreadPoolExecutor(5, new CountingThreadFactory(this::poolIdentifier, "RateLimit"));
+            ratelimitExecutor.setRemoveOnCancelPolicy(true);
+            for (Object object : BOT.getRegisteredListeners())
+            {
+                BOT.removeEventListener(object);
+            }
+        }
+
+        try
+        {
+            BOT = JDABuilder.createDefault(ConfigEntry.DISCORD_TOKEN.getString())
+                    .addEventListeners(new DiscordEventHandler())
+                    .setAutoReconnect(true)
+                    .setRateLimitPool(ratelimitExecutor)
+                    .setChunkingFilter(ChunkingFilter.ALL)
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                    .build();
+            FLog.info("Discord integration has successfully enabled!");
+        }
+        catch (LoginException e)
+        {
+            FLog.warning("An invalid token for Discord integration was provided, the bot will not enable.");
+            enabled = false;
+        }
+        catch (IllegalArgumentException e)
+        {
+            FLog.warning("Discord integration failed to start.");
+            enabled = false;
+        }
+        catch (NoClassDefFoundError e)
+        {
+            FLog.warning("The JDA plugin is not installed, therefore the discord bot cannot start.");
+            FLog.warning("To resolve this error, please download the latest JDA from: https://github.com/TFPatches/Minecraft-JDA/releases");
+            enabled = false;
+        }
+    }
 
     public static String getCode(PlayerData playerData)
     {
@@ -83,7 +187,7 @@ public class Discord extends FreedomService
             return false;
         }
 
-        Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        Guild server = BOT.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         if (server == null)
         {
             FLog.severe("The Discord server ID specified is invalid, or the bot is not on the server.");
@@ -150,66 +254,6 @@ public class Discord extends FreedomService
         return false;
     }
 
-    public void startBot()
-    {
-        DISCORD_COMMAND_MANAGER = new DiscordCommandManager();
-        DISCORD_COMMAND_MANAGER.init(this);
-
-        enabled = !Strings.isNullOrEmpty(ConfigEntry.DISCORD_TOKEN.getString());
-        if (!enabled)
-        {
-            return;
-        }
-
-        if (bot != null)
-        {
-            RATELIMIT_EXECUTOR = new ScheduledThreadPoolExecutor(5, new CountingThreadFactory(this::poolIdentifier, "RateLimit"));
-            RATELIMIT_EXECUTOR.setRemoveOnCancelPolicy(true);
-            for (Object object : bot.getRegisteredListeners())
-            {
-                bot.removeEventListener(object);
-            }
-        }
-
-        try
-        {
-            bot = JDABuilder.createDefault(ConfigEntry.DISCORD_TOKEN.getString())
-                    .addEventListeners(new PrivateMessageListener(),
-                            new DiscordToMinecraftListener(),
-                            new DiscordToAdminChatListener(),
-                            new MessageReactionListener(),
-                            new ListenerAdapter()
-                            {
-                                @Override
-                                public void onReady(@NotNull ReadyEvent event)
-                                {
-                                    new StartEvent().start();
-                                }
-                            })
-                    .setAutoReconnect(true)
-                    .setRateLimitPool(RATELIMIT_EXECUTOR)
-                    .setChunkingFilter(ChunkingFilter.ALL)
-                    .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                    .build();
-            FLog.info("Discord integration has successfully enabled!");
-        }
-        catch (LoginException e)
-        {
-            FLog.warning("An invalid token for Discord integration was provided, the bot will not enable.");
-        }
-        catch (IllegalArgumentException e)
-        {
-            FLog.warning("Discord integration failed to start.");
-        }
-        catch (NoClassDefFoundError e)
-        {
-            FLog.warning("The JDA plugin is not installed, therefore the discord bot cannot start.");
-            FLog.warning("To resolve this error, please download the latest JDA from: https://github.com/TFPatches/Minecraft-JDA/releases");
-        }
-
-    }
-
     public String poolIdentifier()
     {
         return "JDA";
@@ -233,82 +277,25 @@ public class Discord extends FreedomService
         return RandomStringUtils.randomNumeric(size);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDeath(PlayerDeathEvent event)
-    {
-        //Avoiding NPE Unboxing Warnings
-        Boolean b = event.getEntity().getWorld().getGameRuleValue(GameRule.SHOW_DEATH_MESSAGES);
-        if (b == null || !b)
-        {
-            return;
-        }
-
-        Component deathMessage = event.deathMessage();
-
-        if (deathMessage != null)
-        {
-            messageChatChannel("**" + PlainTextComponentSerializer.plainText().serialize(deathMessage) + "**", true);
-        }
-    }
-
-    @Override
-    public void onStart()
-    {
-        startBot();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        if (!plugin.al.isVanished(event.getPlayer().getName()))
-        {
-            messageChatChannel("**" + event.getPlayer().getName() + " joined the server" + "**", true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerLeave(PlayerQuitEvent event)
-    {
-        if (!plugin.al.isVanished(event.getPlayer().getName()))
-        {
-            messageChatChannel("**" + event.getPlayer().getName() + " left the server" + "**", true);
-        }
-    }
-
-    @EventHandler
-    public void onAdminChat(AdminChatEvent event)
-    {
-        if (bot != null && event.getDisplayable() != Title.DISCORD)
-            messageAdminChatChannel(event.getName() + " \u00BB " + event.getMessage());
-    }
-
     public static String sanitizeChatMessage(String message)
     {
         String newMessage = message;
 
         if (message.contains("@"))
-        {
             // \u200B is Zero Width Space, invisible on Discord
             newMessage = message.replaceAll("@", "@\u200B");
-        }
 
         if (message.toLowerCase().contains("discord.gg")) // discord.gg/invite works as an invite
-        {
             return "";
-        }
 
         for (String subdomain : DISCORD_SUBDOMAINS)
         {
             if (message.toLowerCase().contains(subdomain + "/invite"))
-            {
                 return "";
-            }
         }
 
         if (message.contains("§"))
-        {
             newMessage = message.replaceAll("§", "");
-        }
 
         return deformat(newMessage);
     }
@@ -328,7 +315,7 @@ public class Discord extends FreedomService
 
         if (enabled && !chat_channel_id.isEmpty())
         {
-            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(sanitizedMessage).submit(true);
+            CompletableFuture<Message> sentMessage = Objects.requireNonNull(BOT.getTextChannelById(chat_channel_id)).sendMessage(sanitizedMessage).submit(true);
             sentMessages.add(sentMessage);
         }
     }
@@ -348,32 +335,15 @@ public class Discord extends FreedomService
 
         if (enabled && !chat_channel_id.isEmpty())
         {
-            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(sanitizedMessage).submit(true);
-            sentMessages.add(sentMessage);
-        }
-
-        if (enabled && !chat_channel_id.isEmpty())
-        {
-            CompletableFuture<Message> sentMessage = Objects.requireNonNull(bot.getTextChannelById(chat_channel_id)).sendMessage(deformat(message)).submit(true);
+            CompletableFuture<Message> sentMessage = Objects.requireNonNull(BOT.getTextChannelById(chat_channel_id)).sendMessage(deformat(message)).submit(true);
             sentMessages.add(sentMessage);
         }
     }
 
     public String formatBotTag()
     {
-        SelfUser user = bot.getSelfUser();
+        SelfUser user = BOT.getSelfUser();
         return user.getAsTag();
-    }
-
-    @Override
-    public void onStop()
-    {
-        if (bot != null)
-        {
-            messageChatChannel("**Server has stopped**", true);
-        }
-
-        FLog.info("Discord integration has successfully shutdown.");
     }
 
     public static String deformat(String input)
@@ -394,7 +364,7 @@ public class Discord extends FreedomService
             return false;
         }
 
-        Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        Guild server = BOT.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         if (server == null)
 
         {
@@ -419,7 +389,7 @@ public class Discord extends FreedomService
             return false;
         }
 
-        final Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        final Guild server = BOT.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         final TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
 
         final EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -453,7 +423,7 @@ public class Discord extends FreedomService
             return false;
         }
 
-        final Guild server = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
+        final Guild server = BOT.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
         final TextChannel channel = server.getTextChannelById(ConfigEntry.DISCORD_REPORT_CHANNEL_ID.getString());
 
         final EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -479,14 +449,5 @@ public class Discord extends FreedomService
         }
 
         return true;
-    }
-
-    // Do no ask why this is here. I spent two hours trying to make a simple thing work
-    public class StartEvent
-    {
-        public void start()
-        {
-            messageChatChannel("**Server has started**", true);
-        }
     }
 }
