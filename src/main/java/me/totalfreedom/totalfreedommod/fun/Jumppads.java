@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.util.Groups;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,7 +69,7 @@ public class Jumppads extends FreedomService
             {
                 canPush = true;
             }
-            if (Groups.WOOL_COLORS.contains(block.getRelative(0, -1, 0).getType()))
+            if (Tag.WOOL.getValues().contains(block.getRelative(0, -1, 0).getType()))
             {
                 if (canPush)
                 {
@@ -84,29 +85,29 @@ public class Jumppads extends FreedomService
         }
         else
         {
-            if (Groups.WOOL_COLORS.contains(block.getRelative(0, -1, 0).getType()))
+            if (Tag.WOOL.getValues().contains(block.getRelative(0, -1, 0).getType()))
             {
                 velocity.add(new Vector(0.0, strength, 0.0));
             }
 
             if (players.get(event.getPlayer()) == JumpPadMode.NORMAL_AND_SIDEWAYS)
             {
-                if (Groups.WOOL_COLORS.contains(block.getRelative(1, 0, 0).getType()))
+                if (Tag.WOOL.getValues().contains(block.getRelative(1, 0, 0).getType()))
                 {
                     velocity.add(new Vector(-DAMPING_COEFFICIENT * strength, 0.0, 0.0));
                 }
 
-                if (Groups.WOOL_COLORS.contains(block.getRelative(-1, 0, 0).getType()))
+                if (Tag.WOOL.getValues().contains(block.getRelative(-1, 0, 0).getType()))
                 {
                     velocity.add(new Vector(DAMPING_COEFFICIENT * strength, 0.0, 0.0));
                 }
 
-                if (Groups.WOOL_COLORS.contains(block.getRelative(0, 0, 1).getType()))
+                if (Tag.WOOL.getValues().contains(block.getRelative(0, 0, 1).getType()))
                 {
                     velocity.add(new Vector(0.0, 0.0, -DAMPING_COEFFICIENT * strength));
                 }
 
-                if (Groups.WOOL_COLORS.contains(block.getRelative(0, 0, -1).getType()))
+                if (Tag.WOOL.getValues().contains(block.getRelative(0, 0, -1).getType()))
                 {
                     velocity.add(new Vector(0.0, 0.0, DAMPING_COEFFICIENT * strength));
                 }

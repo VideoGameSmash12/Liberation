@@ -10,7 +10,6 @@ softdepend:
   - WorldEdit
   - WorldGuard
   - WorldGuardExtraFlags
-  - TFGuilds
   - JDA
   - Votifier
 authors: [Madgeek1450, Prozza]

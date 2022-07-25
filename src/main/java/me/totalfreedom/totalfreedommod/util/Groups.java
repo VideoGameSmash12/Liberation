@@ -8,11 +8,8 @@ import org.bukkit.entity.EntityType;
 
 public class Groups
 {
-    public static final List<Material> WOOL_COLORS = Arrays.stream(Material.values()).filter((m) -> m.name().endsWith("_WOOL")).toList();
-    public static final List<Material> SHULKER_BOXES = Arrays.stream(Material.values()).filter((m) -> m.name().endsWith("SHULKER_BOX")).toList();
     public static final List<EntityType> MOB_TYPES = Arrays.stream(EntityType.values()).filter(EntityType::isAlive).filter(EntityType::isSpawnable).toList();
     public static final List<Material> SPAWN_EGGS = Arrays.stream(Material.values()).filter((mat) -> mat.name().endsWith("_SPAWN_EGG")).toList();
-    public static final List<Material> BANNERS = Arrays.stream(Material.values()).filter((m) -> m.name().endsWith("_BANNER")).toList();
     public static final List<Biome> EXPLOSIVE_BED_BIOMES = Arrays.asList(
             Biome.NETHER_WASTES,
             Biome.CRIMSON_FOREST,

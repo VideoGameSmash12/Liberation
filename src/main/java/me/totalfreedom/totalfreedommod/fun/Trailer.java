@@ -11,6 +11,7 @@ import me.totalfreedom.totalfreedommod.shop.ShopItem;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -63,9 +64,9 @@ public class Trailer extends FreedomService
             return;
         }
 
-        fromBlock.setType(Groups.WOOL_COLORS.get(random.nextInt(Groups.WOOL_COLORS.size())));
+        fromBlock.setType(Tag.WOOL.getValues().stream().toList().get(random.nextInt(Tag.WOOL.getValues().size())));
         BlockData data = fromBlock.getBlockData();
-        Material material = Material.getMaterial(String.valueOf(fromBlock.getType()));
+        Material material = fromBlock.getType();
         for (int x = -1; x <= 1; x++)
         {
             for (int z = -1; z <= 1; z++)

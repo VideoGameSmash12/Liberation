@@ -6,10 +6,7 @@ import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.Groups;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
@@ -74,12 +71,12 @@ public class Command_ro extends FreedomCommand
         String names = null;
         if (args[0].equalsIgnoreCase("shulker_boxes") || args[0].equalsIgnoreCase("shulkers"))
         {
-            materials.addAll(Groups.SHULKER_BOXES);
+            materials.addAll(Tag.SHULKER_BOXES.getValues());
             names = "shulker boxes";
         }
         else if (args[0].equalsIgnoreCase("banners") || args[0].equalsIgnoreCase("banner"))
         {
-            materials.addAll(Groups.BANNERS);
+            materials.addAll(Tag.BANNERS.getValues());
             names = "banners";
         }
         else
