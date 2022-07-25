@@ -19,7 +19,6 @@ import me.totalfreedom.totalfreedommod.bridge.BukkitTelnetBridge;
 import me.totalfreedom.totalfreedommod.bridge.CoreProtectBridge;
 import me.totalfreedom.totalfreedommod.bridge.EssentialsBridge;
 import me.totalfreedom.totalfreedommod.bridge.LibsDisguisesBridge;
-import me.totalfreedom.totalfreedommod.bridge.TFGuildsBridge;
 import me.totalfreedom.totalfreedommod.bridge.WorldEditBridge;
 import me.totalfreedom.totalfreedommod.bridge.WorldGuardBridge;
 import me.totalfreedom.totalfreedommod.caging.Cager;
@@ -127,7 +126,6 @@ public class TotalFreedomMod extends JavaPlugin
     public EssentialsBridge esb;
     public LibsDisguisesBridge ldb;
     public CoreProtectBridge cpb;
-    public TFGuildsBridge tfg;
     public WorldEditBridge web;
     public WorldGuardBridge wgb;
 
@@ -340,7 +338,6 @@ public class TotalFreedomMod extends JavaPlugin
             cpb = new CoreProtectBridge();
             esb = new EssentialsBridge();
             ldb = new LibsDisguisesBridge();
-            tfg = new TFGuildsBridge();
             web = new WorldEditBridge();
             wgb = new WorldGuardBridge();
         }
