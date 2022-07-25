@@ -9,7 +9,7 @@ import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.world.CleanroomChunkGenerator;
-import me.videogamesm12.liberation.services.CustomWorldManager;
+import me.videogamesm12.liberation.services.WorldManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -181,7 +181,7 @@ public class CustomWorld implements Listener
     {
         String[] cmdString = event.getMessage().substring(1).toLowerCase().split(" ");
 
-        if (world.equals(event.getPlayer().getWorld()) && doRestrict(event.getPlayer()) && CustomWorldManager.BLOCKED_WORLD_COMMANDS.contains(cmdString[0]))
+        if (world.equals(event.getPlayer().getWorld()) && doRestrict(event.getPlayer()) && WorldManager.BLOCKED_WORLD_COMMANDS.contains(cmdString[0]))
         {
             event.getPlayer().sendMessage(Component.text("That command is blocked while you are in this world.", TextColor.color(0xff5555)));
             event.setCancelled(true);
@@ -240,21 +240,24 @@ public class CustomWorld implements Listener
         private int cooldown = 0;
     }
 
+    @Getter
     public static class Flags
     {
         private boolean allowAnimals;
         private boolean allowMonsters;
     }
 
+    @Getter
     public static class Generation
     {
         private World.Environment environment = World.Environment.NORMAL;
         private boolean generateStructures = true;
         private WorldType type = WorldType.NORMAL;
         private boolean useCleanroomGeneration = false;
-        private String cleanroomParameters = CustomWorldManager.FALLBACK_CLEANROOM_PARAMETERS;
+        private String cleanroomParameters = WorldManager.FALLBACK_CLEANROOM_PARAMETERS;
     }
 
+    @Getter
     public static class Permissions
     {
         private Rank minModifyRank;

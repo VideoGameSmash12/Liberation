@@ -17,7 +17,7 @@ import java.util.*;
  * <h1>CustomWorldManager</h1>
  * <p>Implements an easy to use world system that can be customized without needing to recompile the plugin.</p>
  */
-public class CustomWorldManager extends FreedomService
+public class WorldManager extends FreedomService
 {
     public static final String FALLBACK_CLEANROOM_PARAMETERS = "16,stone,32,dirt,1,grass_block";
 
@@ -26,8 +26,8 @@ public class CustomWorldManager extends FreedomService
             "green", "fixlava", "fixwater", "br", "brush", "tool", "mat", "range", "cs", "up", "fill", "setblock",
             "tree", "replacenear", "ebigtree");
 
-    private static final String CONFIG_FILENAME = "worlds.json";
     // TODO: I AM DEAD FUCKING SERIOUS MOTHERFUCKER
+    private static final String CONFIG_FILENAME = "worlds.json";
 
     private static final Gson GSON = new Gson();
 

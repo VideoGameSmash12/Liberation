@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class WorldCommand extends FreedomCommand
 {
-    private CustomWorld world;
+    private final CustomWorld world;
 
     public WorldCommand(CustomWorld world)
     {

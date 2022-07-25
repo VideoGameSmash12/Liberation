@@ -44,8 +44,7 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
 import me.totalfreedom.totalfreedommod.world.CleanroomChunkGenerator;
-import me.videogamesm12.liberation.services.CustomWorldManager;
-import me.totalfreedom.totalfreedommod.world.WorldManager;
+import me.videogamesm12.liberation.services.WorldManager;
 import me.totalfreedom.totalfreedommod.world.WorldRestrictions;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -72,7 +71,7 @@ public class TotalFreedomMod extends JavaPlugin
     // Command Loader
     public CommandLoader cl;
     // Services
-    public WorldManager wm;
+    public me.totalfreedom.totalfreedommod.world.WorldManager wm;
     public LogViewer lv;
     public AdminList al;
     public ActivityLog acl;
@@ -122,7 +121,7 @@ public class TotalFreedomMod extends JavaPlugin
     public VanishHandler vh;
     public Pterodactyl ptero;
     //
-    public CustomWorldManager cwm;
+    public WorldManager cwm;
     //
     // Bridges
     public BukkitTelnetBridge btb;
@@ -286,8 +285,8 @@ public class TotalFreedomMod extends JavaPlugin
         private void initServices()
         {
             // Start services
-            cwm = new CustomWorldManager();
-            wm = new WorldManager();
+            cwm = new WorldManager();
+            wm = new me.totalfreedom.totalfreedommod.world.WorldManager();
             lv = new LogViewer();
             sql = new SQLite();
             al = new AdminList();

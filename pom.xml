@@ -211,13 +211,6 @@
         </dependency>
 
         <dependency>
-            <groupId>me.totalfreedom</groupId>
-            <artifactId>tfguilds</artifactId>
-            <version>2021.06-RC2</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>23.0.0</version>

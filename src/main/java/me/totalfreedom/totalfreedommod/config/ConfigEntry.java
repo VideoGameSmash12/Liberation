@@ -141,9 +141,6 @@ public enum ConfigEntry
     LOGS_SECRET(String.class, "logs.secret"),
     LOGS_URL(String.class, "logs.url"),
     //
-    FLATLANDS_GENERATE(Boolean.class, "flatlands.generate"),
-    FLATLANDS_GENERATE_PARAMS(String.class, "flatlands.generate_params"),
-    //
     ANNOUNCER_ENABLED(Boolean.class, "announcer.enabled"),
     ANNOUNCER_INTERVAL(Integer.class, "announcer.interval"),
     ANNOUNCER_PREFIX(String.class, "announcer.prefix"),
