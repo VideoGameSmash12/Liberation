@@ -1,10 +1,7 @@
 package me.totalfreedom.totalfreedommod;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 import me.totalfreedom.totalfreedommod.banning.Ban;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -16,7 +13,7 @@ import org.bukkit.entity.Player;
 public class AutoEject extends FreedomService
 {
 
-    private final Map<String, Integer> ejects = new HashMap<>(); // ip -> amount
+    private final Map<UUID, Integer> ejects = new HashMap<>(); // uuid -> amount
 
     @Override
     public void onStart()
@@ -31,17 +28,16 @@ public class AutoEject extends FreedomService
     public void autoEject(Player player, String kickMessage)
     {
         EjectMethod method = EjectMethod.STRIKE_ONE;
-        final String ip = FUtil.getIp(player);
 
-        if (!ejects.containsKey(ip))
+        if (!ejects.containsKey(player.getUniqueId()))
         {
-            ejects.put(ip, 0);
+            ejects.put(player.getUniqueId(), 0);
         }
 
-        int kicks = ejects.get(ip);
+        int kicks = ejects.get(player.getUniqueId());
         kicks += 1;
 
-        ejects.put(ip, kicks);
+        ejects.put(player.getUniqueId(), kicks);
 
         if (kicks == 2)
         {
@@ -52,7 +48,7 @@ public class AutoEject extends FreedomService
             method = EjectMethod.STRIKE_THREE;
         }
 
-        FLog.info("AutoEject -> name: " + player.getName() + " - player ip: " + ip + " - method: " + method.toString());
+        FLog.info("AutoEject -> name: " + player.getName() + " - player ip: " + player.getUniqueId() + " - method: " + method.name());
 
         player.setOp(false);
         player.setGameMode(GameMode.SURVIVAL);
