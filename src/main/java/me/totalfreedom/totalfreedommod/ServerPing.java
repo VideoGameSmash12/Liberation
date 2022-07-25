@@ -15,16 +15,6 @@ public class ServerPing extends FreedomService
     private final Gson gson = new Gson();
     private final VersionMeta meta = gson.fromJson(new InputStreamReader(Bukkit.class.getClassLoader().getResourceAsStream("version.json")),VersionMeta.class);
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerPing(ServerListPingEvent event)
     {

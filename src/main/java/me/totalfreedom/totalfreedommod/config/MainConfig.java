@@ -57,18 +57,6 @@ public class MainConfig extends FreedomService
         defaults = tempDefaults;
     }
 
-    @Override
-    public void onStart()
-    {
-
-    }
-
-    @Override
-    public void onStop()
-    {
-
-    }
-
     public void load()
     {
         try

@@ -49,16 +49,6 @@ public class EventBlocker extends FreedomService
     // TODO: Revert back to old redstone block system when (or if) it is fixed in Bukkit, Spigot or Paper.
     private final ArrayList<Material> redstoneBlocks = new ArrayList<>(Arrays.asList(Material.REDSTONE, Material.DISPENSER, Material.DROPPER, Material.REDSTONE_LAMP));
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBurn(BlockBurnEvent event)
     {

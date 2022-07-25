@@ -13,16 +13,6 @@ import org.bukkit.event.EventPriority;
 
 public class Votifier extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerVote(VotifierEvent event)
     {

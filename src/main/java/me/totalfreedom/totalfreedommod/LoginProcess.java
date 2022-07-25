@@ -42,16 +42,6 @@ public class LoginProcess extends FreedomService
         LoginProcess.lockdownEnabled = lockdownEnabled;
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     /*
      * Banning and Permban checks are their respective services
      */

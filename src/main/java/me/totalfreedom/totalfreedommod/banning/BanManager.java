@@ -77,11 +77,6 @@ public class BanManager extends FreedomService
         FLog.info("Loaded " + unbannableUsernames.size() + " unbannable usernames.");
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public Set<Ban> getAllBans()
     {
         return Collections.unmodifiableSet(bans);

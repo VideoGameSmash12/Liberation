@@ -52,16 +52,6 @@ public class PermissionConfig extends FreedomService
         }
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public void load()
     {
         try

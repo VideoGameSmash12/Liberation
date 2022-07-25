@@ -37,11 +37,6 @@ public class GameRuleHandler extends FreedomService
         commitGameRules();
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public void setGameRule(GameRule gameRule, boolean value)
     {
         setGameRule(gameRule, value, true);

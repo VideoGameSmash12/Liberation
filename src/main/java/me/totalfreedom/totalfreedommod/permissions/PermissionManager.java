@@ -27,11 +27,6 @@ public class PermissionManager extends FreedomService
         loadPermissionNodes();
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public void loadPermissionNodes()
     {
         FLog.info("Loading permission nodes...");

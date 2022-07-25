@@ -24,16 +24,6 @@ public class Trailer extends FreedomService
     private final SplittableRandom random = new SplittableRandom();
     private final Set<UUID> trailPlayers = new HashSet<>(); // player UUID
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {

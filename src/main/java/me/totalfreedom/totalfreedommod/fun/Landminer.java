@@ -25,11 +25,6 @@ public class Landminer extends FreedomService
         landmines.clear();
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public void add(Landmine landmine)
     {
         landmines.add(landmine);

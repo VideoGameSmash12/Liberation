@@ -18,16 +18,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Cager extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreakBlock(BlockBreakEvent event)
     {

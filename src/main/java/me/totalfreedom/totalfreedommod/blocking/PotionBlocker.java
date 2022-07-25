@@ -15,19 +15,6 @@ import org.bukkit.projectiles.ProjectileSource;
 
 public class PotionBlocker extends FreedomService
 {
-
-    public static final int POTION_BLOCK_RADIUS_SQUARED = 20 * 20;
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onThrowPotion(PotionSplashEvent event)
     {

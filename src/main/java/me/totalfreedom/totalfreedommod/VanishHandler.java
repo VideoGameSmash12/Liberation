@@ -13,17 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class VanishHandler extends FreedomService
 {
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event)
     {

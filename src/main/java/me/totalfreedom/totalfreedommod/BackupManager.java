@@ -12,17 +12,6 @@ import java.io.File;
 
 public class BackupManager extends FreedomService
 {
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public void createBackups(String file)
     {
         createBackups(file, false);

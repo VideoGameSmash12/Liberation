@@ -27,11 +27,6 @@ public class PlayerList extends FreedomService
         loadMasterBuilders();
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public FPlayer getPlayerSync(Player player)
     {
         synchronized (playerMap)

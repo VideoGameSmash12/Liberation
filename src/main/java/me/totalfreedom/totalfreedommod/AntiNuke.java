@@ -12,16 +12,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class AntiNuke extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {

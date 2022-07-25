@@ -14,16 +14,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class PVPBlocker extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {

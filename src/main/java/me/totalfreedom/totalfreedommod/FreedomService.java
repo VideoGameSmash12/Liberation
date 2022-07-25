@@ -20,7 +20,11 @@ public abstract class FreedomService implements Listener
         plugin.fsh.add(this);
     }
 
-    public abstract void onStart();
+    public void onStart()
+    {
+    }
 
-    public abstract void onStop();
+    public void onStop()
+    {
+    }
 }

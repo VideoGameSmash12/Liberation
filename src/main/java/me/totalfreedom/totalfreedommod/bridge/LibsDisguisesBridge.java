@@ -12,16 +12,6 @@ public class LibsDisguisesBridge extends FreedomService
 {
     private LibsDisguises libsDisguisesPlugin = null;
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public LibsDisguises getLibsDisguisesPlugin()
     {
         if (libsDisguisesPlugin == null)

@@ -12,16 +12,6 @@ import org.bukkit.plugin.Plugin;
 
 public class WorldGuardBridge extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public boolean canEditCurrentWorld(Player player)
     {
         // If WorldGuard integration is enabled, do a check with it.

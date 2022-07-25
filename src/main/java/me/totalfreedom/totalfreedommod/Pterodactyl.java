@@ -24,14 +24,6 @@ public class Pterodactyl extends FreedomService
 
     private boolean enabled = !Strings.isNullOrEmpty(URL);
 
-    public void onStart()
-    {
-    }
-
-    public void onStop()
-    {
-    }
-
     public void updateAccountStatus(Admin admin)
     {
         String id = admin.getPteroID();

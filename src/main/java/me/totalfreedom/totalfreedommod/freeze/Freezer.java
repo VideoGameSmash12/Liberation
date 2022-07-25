@@ -19,11 +19,6 @@ public class Freezer extends FreedomService
         globalFreeze = false;
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public void purge()
     {
         this.globalFreeze = false;

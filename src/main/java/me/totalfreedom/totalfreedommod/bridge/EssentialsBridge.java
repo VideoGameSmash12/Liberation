@@ -22,18 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class EssentialsBridge extends FreedomService
 {
-
     private Essentials essentialsPlugin = null;
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
 
     public Essentials getEssentialsPlugin()
     {

@@ -37,11 +37,6 @@ public class AdminList extends FreedomService
         deactivateOldEntries(false);
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     public void load()
     {
         allAdmins.clear();

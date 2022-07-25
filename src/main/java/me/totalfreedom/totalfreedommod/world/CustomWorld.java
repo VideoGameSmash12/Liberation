@@ -18,16 +18,6 @@ public abstract class CustomWorld extends FreedomService
         this.name = name;
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public final World getWorld()
     {
         if (world == null || !Bukkit.getWorlds().contains(world))

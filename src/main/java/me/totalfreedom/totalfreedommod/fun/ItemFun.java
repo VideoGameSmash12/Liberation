@@ -85,16 +85,6 @@ public class ItemFun extends FreedomService
         return cooldownTracker.get(player.getName()).contains(item.getDataName());
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler
     public void onPlayerEntityInteract(PlayerInteractEntityEvent event)
     {

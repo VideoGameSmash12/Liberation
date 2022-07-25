@@ -21,16 +21,6 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 
 public class MobBlocker extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     //fixes crash mobs, credit to Mafrans
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntitySpawn(EntitySpawnEvent e)

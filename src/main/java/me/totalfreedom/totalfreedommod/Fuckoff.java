@@ -9,16 +9,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class Fuckoff extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event)
     {

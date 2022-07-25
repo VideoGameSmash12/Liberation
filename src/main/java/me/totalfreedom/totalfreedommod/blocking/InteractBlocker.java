@@ -16,16 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class InteractBlocker extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteract(PlayerInteractEvent event)
     {

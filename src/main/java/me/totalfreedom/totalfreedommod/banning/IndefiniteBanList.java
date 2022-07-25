@@ -72,11 +72,6 @@ public class IndefiniteBanList extends FreedomService
         FLog.info("Loaded " + nameBanCount + " indefinite name bans, " + uuidBanCount + " UUID bans, and " + ipBanCount + " ip bans");
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent event)
     {

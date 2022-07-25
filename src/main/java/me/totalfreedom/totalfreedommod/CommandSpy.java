@@ -8,16 +8,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandSpy extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {

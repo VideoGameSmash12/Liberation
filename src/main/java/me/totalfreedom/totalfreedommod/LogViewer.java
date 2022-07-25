@@ -22,16 +22,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class LogViewer extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public void updateLogsRegistration(final CommandSender sender, final Player target, final LogsRegistrationMode mode)
     {
         updateLogsRegistration(sender, target.getName(), mode);

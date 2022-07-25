@@ -23,19 +23,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class MovementValidator extends FreedomService
 {
-
     public static final int MAX_XYZ_COORD = 29999998;
     public static final int MAX_DISTANCE_TRAVELED = 100;
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerTeleport(PlayerTeleportEvent event)

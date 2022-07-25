@@ -52,11 +52,6 @@ public class Monitors extends FreedomService
         }, 0L, 40L);
     }
 
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLingeringPotionSplash(LingeringPotionSplashEvent event)
     {

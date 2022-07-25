@@ -12,18 +12,7 @@ import org.bukkit.entity.Player;
 
 public class AutoEject extends FreedomService
 {
-
     private final Map<UUID, Integer> ejects = new HashMap<>(); // uuid -> amount
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
 
     public void autoEject(Player player, String kickMessage)
     {

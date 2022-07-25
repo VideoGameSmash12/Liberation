@@ -19,18 +19,7 @@ import org.bukkit.plugin.Plugin;
 
 public class BukkitTelnetBridge extends FreedomService
 {
-
     private BukkitTelnet bukkitTelnetPlugin = null;
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onTelnetPreLogin(TelnetPreLoginEvent event)

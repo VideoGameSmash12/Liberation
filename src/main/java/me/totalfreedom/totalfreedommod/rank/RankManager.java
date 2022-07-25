@@ -19,16 +19,6 @@ import org.bukkit.scoreboard.Team;
 
 public class RankManager extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public Displayable getDisplay(CommandSender sender)
     {
         if (!(sender instanceof Player))

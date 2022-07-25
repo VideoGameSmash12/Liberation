@@ -32,16 +32,6 @@ public class WorldRestrictions extends FreedomService
     private final List<String> BLOCKED_ESSENTIALS_COMMANDS = Arrays.asList(
             "bigtree", "ebigtree", "largetree", "elargetree");
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public boolean doRestrict(Player player)
     {
         if (!plugin.pl.getData(player).isMasterBuilder() && plugin.pl.canManageMasterBuilders(player.getName()))

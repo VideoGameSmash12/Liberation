@@ -29,18 +29,6 @@ public class Jumppads extends FreedomService
         return DAMPING_COEFFICIENT;
     }
 
-    @Override
-    public void onStart()
-    {
-
-    }
-
-    @Override
-    public void onStop()
-    {
-
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {

@@ -11,16 +11,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class EditBlocker extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockPlace(BlockPlaceEvent event)
     {

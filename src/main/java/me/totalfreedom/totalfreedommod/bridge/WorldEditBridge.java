@@ -10,19 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 public class WorldEditBridge extends FreedomService
 {
-
-    //
     private WorldEditPlugin worldeditPlugin = null;
-
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
 
     public WorldEditPlugin getWorldEditPlugin()
     {

@@ -70,16 +70,6 @@ public class CoreProtectBridge extends FreedomService
         return message.toString();
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public CoreProtect getCoreProtect()
     {
         CoreProtect coreProtect = null;

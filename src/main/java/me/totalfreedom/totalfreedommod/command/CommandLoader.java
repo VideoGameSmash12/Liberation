@@ -17,16 +17,6 @@ public class CommandLoader extends FreedomService
         commands = new ArrayList<>();
     }
 
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     public void add(FreedomCommand command)
     {
         commands.add(command);

@@ -7,16 +7,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class MP44 extends FreedomService
 {
-    @Override
-    public void onStart()
-    {
-    }
-
-    @Override
-    public void onStop()
-    {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
