@@ -1,8 +1,11 @@
 package me.totalfreedom.totalfreedommod.util;
 
 import com.earth2me.essentials.utils.DateUtil;
+import io.papermc.lib.PaperLib;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -15,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -806,6 +810,21 @@ public class FUtil
     public static double getFreeMem()
     {
         return Runtime.getRuntime().freeMemory() / 1024f / 1024f;
+    }
+
+    public static void gotoWorld(@NotNull Player player, @NotNull String name)
+    {
+        fixCommandVoid(player);
+
+        if (Bukkit.getWorld(name) != null)
+        {
+            player.sendMessage(Component.text("Teleporting to " + name + "...", TextColor.color(0x555555)));
+            PaperLib.teleportAsync(player, Objects.requireNonNull(Bukkit.getWorld(name)).getSpawnLocation());
+        }
+        else
+        {
+            player.sendMessage(Component.text("World '" + name + "' not found.", TextColor.color(0x555555)));
+        }
     }
 
     public static class PaginationList<T> extends ArrayList<T>

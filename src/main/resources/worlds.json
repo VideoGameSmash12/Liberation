@@ -1,0 +1,101 @@
+{
+  "settings": {
+    "enabled": true
+  },
+  "worlds": {
+    "flatlands": {
+      "name": "flatlands",
+      "command": {
+        "enabled": true,
+        "description": "Teleports you to the Flatlands.",
+        "usage": "/<command>",
+        "rank": "NON_OP",
+        "sourceType": "ONLY_IN_GAME",
+        "blockHostConsole": true
+      },
+      "generation": {
+        "environment": "NORMAL",
+        "generateStructures": false,
+        "type": "NORMAL",
+        "useCleanroomGeneration": true,
+        "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
+      },
+      "flags": {
+        "allowAnimals": false,
+        "allowMonsters": false
+      },
+      "permissions": {
+        "minModifyRank": "OP",
+        "mbsBypass": false,
+        "mbRequired": false
+      },
+      "settings": {
+        "weatherDisabled": true
+      }
+    },
+    "masterrbuilderworld": {
+      "name": "masterbuilderworld",
+      "command": {
+        "enabled": true,
+        "description": "Teleports you to the Master Builder World.",
+        "usage": "/<command>",
+        "aliases": "mbw",
+        "rank": "NON_OP",
+        "sourceType": "ONLY_IN_GAME",
+        "blockHostConsole": true
+      },
+      "generation": {
+        "environment": "NORMAL",
+        "generateStructures": false,
+        "type": "NORMAL",
+        "useCleanroomGeneration": true,
+        "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
+      },
+      "flags": {
+        "allowAnimals": false,
+        "allowMonsters": false
+      },
+      "permissions": {
+        "minModifyRank": "OP",
+        "mbsBypass": false,
+        "mbRequired": true
+      },
+      "settings": {
+        "weatherDisabled": true,
+        "protectedFromRO": true
+      }
+    },
+    "adminworld": {
+      "name": "adminworld",
+      "command": {
+        "enabled": true,
+        "description": "Teleports you to the Adminworld.",
+        "usage": "/<command>",
+        "aliases": "aw,sw,staffworld",
+        "rank": "NON_OP",
+        "sourceType": "ONLY_IN_GAME",
+        "blockHostConsole": true
+      },
+      "generation": {
+        "environment": "NORMAL",
+        "generateStructures": false,
+        "type": "NORMAL",
+        "useCleanroomGeneration": true,
+        "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
+      },
+      "flags": {
+        "allowAnimals": false,
+        "allowMonsters": false
+      },
+      "permissions": {
+        "minModifyRank": "ADMIN",
+        "mbsBypass": false,
+        "mbRequired": false
+      },
+      "settings": {
+        "weatherDisabled": true,
+        "protectedFromRO": true
+      }
+    }
+  }
+}

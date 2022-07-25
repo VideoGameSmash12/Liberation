@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
-import me.totalfreedom.totalfreedommod.util.Groups;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -129,15 +128,6 @@ public class Command_ro extends FreedomCommand
             names = StringUtils.join(materials, ", ");
         }
 
-        World adminWorld = null;
-        try
-        {
-            adminWorld = plugin.wm.adminworld.getWorld();
-        }
-        catch (Exception ignored)
-        {
-        }
-
         int affected = 0;
         if (targetPlayer == null)
         {
@@ -145,20 +135,16 @@ public class Command_ro extends FreedomCommand
 
             for (final Player player : server.getOnlinePlayers())
             {
-                if (player.getWorld() == adminWorld)
-                {
+                if (plugin.cwm.getWorld(player.getWorld()) == null || !plugin.cwm.getWorld(player.getWorld()).getSettings().isProtectedFromRO())
                     continue;
-                }
 
                 for (final Material material : materials)
-                {
                     affected += replaceBlocks(player.getLocation(), material, Material.AIR, radius);
-                }
             }
         }
         else
         {
-            if (targetPlayer.getWorld() != adminWorld)
+            if (plugin.cwm.getWorld(targetPlayer.getWorld()) == null || !plugin.cwm.getWorld(targetPlayer.getWorld()).getSettings().isProtectedFromRO())
             {
                 FUtil.adminAction(sender.getName(), "Removing all " + names + " within " + radius + " blocks of " + targetPlayer.getName(), false);
                 for (Material material : materials)

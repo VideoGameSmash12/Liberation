@@ -44,6 +44,7 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
 import me.totalfreedom.totalfreedommod.world.CleanroomChunkGenerator;
+import me.videogamesm12.liberation.services.CustomWorldManager;
 import me.totalfreedom.totalfreedommod.world.WorldManager;
 import me.totalfreedom.totalfreedommod.world.WorldRestrictions;
 import org.bstats.bukkit.Metrics;
@@ -120,6 +121,8 @@ public class TotalFreedomMod extends JavaPlugin
     public EntityWiper ew;
     public VanishHandler vh;
     public Pterodactyl ptero;
+    //
+    public CustomWorldManager cwm;
     //
     // Bridges
     public BukkitTelnetBridge btb;
@@ -283,6 +286,7 @@ public class TotalFreedomMod extends JavaPlugin
         private void initServices()
         {
             // Start services
+            cwm = new CustomWorldManager();
             wm = new WorldManager();
             lv = new LogViewer();
             sql = new SQLite();

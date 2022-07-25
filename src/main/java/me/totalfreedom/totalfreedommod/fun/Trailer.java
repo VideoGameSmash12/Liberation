@@ -36,7 +36,7 @@ public class Trailer extends FreedomService
         if (trailPlayers.isEmpty()
                 || !trailPlayers.contains(event.getPlayer().getUniqueId())
                 || !plugin.pl.getData(event.getPlayer()).hasItem(ShopItem.RAINBOW_TRAIL)
-                || plugin.wr.doRestrict(event.getPlayer())
+                || plugin.cwm.doRestrict(event.getPlayer())
                 || !plugin.wgb.canEditCurrentWorld(event.getPlayer()))
         {
             return;

@@ -62,6 +62,21 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
         this.cooldown = perms.cooldown();
     }
 
+    public FreedomCommand(String name, String description, String usage, String aliases, Rank level,
+                          SourceType source, boolean blockHostConsole, int cooldown)
+    {
+        this.params = null;
+        this.perms = null;
+        this.name = name;
+        this.description = description;
+        this.usage = usage;
+        this.aliases = aliases;
+        this.level = level;
+        this.source = source;
+        this.blockHostConsole = blockHostConsole;
+        this.cooldown = cooldown;
+    }
+
     public static FreedomCommand getFrom(Command command)
     {
         try
@@ -356,13 +371,13 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 
         public boolean func1()
         {
-            if (perms.source() == SourceType.ONLY_CONSOLE && sender instanceof Player)
+            if (source == SourceType.ONLY_CONSOLE && sender instanceof Player)
             {
                 msg(ONLY_CONSOLE);
                 return true;
             }
 
-            if (perms.source() == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
+            if (source == SourceType.ONLY_IN_GAME && sender instanceof ConsoleCommandSender)
             {
                 msg(ONLY_IN_GAME);
                 return true;
@@ -373,13 +388,13 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 
         public boolean func2()
         {
-            if (!plugin.rm.getRank(sender).isAtLeast(perms.level()))
+            if (!plugin.rm.getRank(sender).isAtLeast(level))
             {
                 msg(NO_PERMISSION);
                 return true;
             }
 
-            if (perms.blockHostConsole() && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
+            if (blockHostConsole && FUtil.isFromHostConsole(sender.getName()) && !FUtil.inDeveloperMode())
             {
                 msg(ChatColor.RED + "Host console is not allowed to use this command!");
                 return true;
@@ -389,7 +404,7 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
 
         public void func3()
         {
-            if (perms.cooldown() != 0 && !isAdmin(sender))
+            if (cooldown != 0 && !isAdmin(sender))
             {
                 COOLDOWN_TIMERS.put(sender, cmd);
                 timer.schedule(new TimerTask()
@@ -399,7 +414,7 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
                     {
                         COOLDOWN_TIMERS.remove(sender);
                     }
-                }, perms.cooldown() * 1000L);
+                }, cooldown * 1000L);
             }
         }
 
