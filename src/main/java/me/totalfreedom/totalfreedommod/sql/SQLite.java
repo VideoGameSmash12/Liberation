@@ -68,7 +68,7 @@ public class SQLite extends FreedomService
         try
         {
             DatabaseMetaData meta = connection.getMetaData();
-            if (tableExists(meta, "bans"))
+            if (!tableExists(meta, "bans"))
             {
                 try
                 {
@@ -80,7 +80,7 @@ public class SQLite extends FreedomService
                 }
             }
 
-            if (tableExists(meta, "admins"))
+            if (!tableExists(meta, "admins"))
             {
                 try
                 {
@@ -91,7 +91,7 @@ public class SQLite extends FreedomService
                     FLog.severe("Failed to create the admins table: " + e.getMessage());
                 }
             }
-            if (tableExists(meta, "players"))
+            if (!tableExists(meta, "players"))
             {
                 try
                 {
@@ -336,19 +336,6 @@ public class SQLite extends FreedomService
         return null;
     }
 
-    public void removeAdmin(Admin admin)
-    {
-        try
-        {
-            connection.createStatement().executeUpdate(MessageFormat.format("DELETE FROM admins where name=''{0}''", admin.getName()));
-        }
-        catch (SQLException e)
-        {
-            FLog.severe("Failed to remove admin:");
-            FLog.severe(e);
-        }
-    }
-
     public void addBan(Ban ban)
     {
         try
@@ -392,6 +379,6 @@ public class SQLite extends FreedomService
 
     public boolean tableExists(DatabaseMetaData meta, String name) throws SQLException
     {
-        return !meta.getTables(null, null, name, null).next();
+        return meta.getTables(null, null, name, null).next();
     }
 }

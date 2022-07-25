@@ -40,14 +40,23 @@ public class AdminList extends FreedomService
     public void load()
     {
         allAdmins.clear();
+        int fuckUps = 0;
+
         try
         {
             ResultSet adminSet = plugin.sql.getAdminList();
+
+            while (adminSet.next())
             {
-                while (adminSet.next())
+                try
                 {
                     Admin admin = new Admin(adminSet);
                     allAdmins.add(admin);
+                }
+                catch (Exception ex)
+                {
+                    FLog.warning(ex);
+                    fuckUps++;
                 }
             }
         }
@@ -58,6 +67,8 @@ public class AdminList extends FreedomService
 
         updateTables();
         FLog.info("Loaded " + allAdmins.size() + " admins (" + uuidTable.size() + " active, " + ipTable.size() + " IPs)");
+        if (fuckUps > 0)
+            FLog.warning(fuckUps + " entries could not be loaded. Please check the logs for more information.");
     }
 
     public void messageAllAdmins(String message)
@@ -86,16 +97,6 @@ public class AdminList extends FreedomService
     public synchronized boolean isAdminSync(CommandSender sender)
     {
         return isAdmin(sender);
-    }
-
-    public List<String> getActiveAdminNames()
-    {
-        List<String> names = new ArrayList();
-        for (Admin admin : activeAdmins)
-        {
-            names.add(admin.getName());
-        }
-        return names;
     }
 
     public boolean isAdmin(CommandSender sender)
@@ -201,29 +202,6 @@ public class AdminList extends FreedomService
         return true;
     }
 
-    public boolean removeAdmin(Admin admin)
-    {
-        if (admin.getRank().isAtLeast(Rank.ADMIN))
-        {
-            if (plugin.btb != null)
-            {
-                plugin.btb.killTelnetSessions(admin.getName());
-            }
-        }
-
-        // Remove admin, update views
-        if (!allAdmins.remove(admin))
-        {
-            return false;
-        }
-        updateTables();
-
-        // Unsave admin
-        plugin.sql.removeAdmin(admin);
-
-        return true;
-    }
-
     public void updateTables()
     {
         activeAdmins.clear();
@@ -231,32 +209,30 @@ public class AdminList extends FreedomService
         nameTable.clear();
         ipTable.clear();
 
-        for (Admin admin : allAdmins)
-        {
-            if (!admin.isActive())
+        allAdmins.forEach(admin -> {
+            try
             {
-                continue;
+                if (!admin.isActive())
+                {
+                    return;
+                }
+
+                activeAdmins.add(admin);
+                uuidTable.put(admin.getUuid(), admin);
+                admin.getIps().forEach(ip -> ipTable.put(ip, admin));
+                nameTable.put(admin.getName().toLowerCase(), admin);
             }
-
-            activeAdmins.add(admin);
-            uuidTable.put(admin.getUuid(), admin);
-            nameTable.put(admin.getName().toLowerCase(), admin);
-
-            for (String ip : admin.getIps())
+            catch (Exception ex)
             {
-                ipTable.put(ip, admin);
+                FLog.warning("An error occurred whilst updating the admin tables");
+                FLog.warning(ex);
             }
-        }
+        });
     }
 
     public Set<String> getAdminNames()
     {
         return nameTable.keySet();
-    }
-
-    public Set<String> getAdminIps()
-    {
-        return ipTable.keySet();
     }
 
     public void save(Admin admin)
@@ -266,7 +242,8 @@ public class AdminList extends FreedomService
             ResultSet currentSave = plugin.sql.getAdminByUuid(admin.getUuid());
             for (Map.Entry<String, Object> entry : admin.toSQLStorable().entrySet())
             {
-                Object storedValue = plugin.sql.getValue(currentSave, entry.getKey(), entry.getValue());                if (storedValue != null && !storedValue.equals(entry.getValue()) || storedValue == null && entry.getValue() != null || entry.getValue() == null)
+                Object storedValue = plugin.sql.getValue(currentSave, entry.getKey(), entry.getValue());
+                if (storedValue != null && !storedValue.equals(entry.getValue()) || storedValue == null && entry.getValue() != null || entry.getValue() == null)
                 {
                     plugin.sql.setAdminValue(admin, entry.getKey(), entry.getValue());
                 }
