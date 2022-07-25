@@ -119,7 +119,6 @@ public class TotalFreedomMod extends JavaPlugin
     public WorldRestrictions wr;
     public EntityWiper ew;
     public VanishHandler vh;
-    public Pterodactyl ptero;
     //
     public WorldManager cwm;
     //
@@ -315,7 +314,6 @@ public class TotalFreedomMod extends JavaPlugin
             gr = new GameRuleHandler();
             ew = new EntityWiper();
             vh = new VanishHandler();
-            ptero = new Pterodactyl();
         }
 
         private void initAdminUtils()

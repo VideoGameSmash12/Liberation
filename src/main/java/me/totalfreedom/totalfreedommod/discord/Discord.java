@@ -234,14 +234,6 @@ public class Discord extends FreedomService
         messageChatChannel("**Message queue cleared**", true);
     }
 
-    public void sendPteroInfo(PlayerData playerData, String username, String password)
-    {
-        User user = getUser(playerData.getDiscordID());
-        String message = "The following are your Pterodactyl details:\n\nUsername: " + username + "\nPassword: " + password + "\n\nYou can connect to the panel at " + plugin.ptero.URL;
-        PrivateChannel privateChannel = user.openPrivateChannel().complete();
-        privateChannel.sendMessage(message).complete();
-    }
-
     public User getUser(String id)
     {
         Guild guild = bot.getGuildById(ConfigEntry.DISCORD_SERVER_ID.getString());
