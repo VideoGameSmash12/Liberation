@@ -23,7 +23,7 @@ public class Command_blockcmd extends FreedomCommand
             return false;
         }
 
-        if (args[0].equals("purge"))
+        if (args[0].equalsIgnoreCase("purge"))
         {
             FUtil.adminAction(sender.getName(), "Unblocking commands for all players", true);
             int counter = 0;
@@ -39,8 +39,7 @@ public class Command_blockcmd extends FreedomCommand
             msg("Unblocked commands for " + counter + " players.");
             return true;
         }
-
-        if (args[0].equals("-a"))
+        else if (args[0].equalsIgnoreCase("-a"))
         {
             FUtil.adminAction(sender.getName(), "Blocking commands for all non-admins", true);
             int counter = 0;
@@ -64,7 +63,7 @@ public class Command_blockcmd extends FreedomCommand
 
         if (player == null)
         {
-            msg(FreedomCommand.PLAYER_NOT_FOUND);
+            msg(PLAYER_NOT_FOUND);
             return true;
         }
 
