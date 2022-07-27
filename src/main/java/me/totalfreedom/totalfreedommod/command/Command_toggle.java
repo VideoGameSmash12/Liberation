@@ -21,7 +21,7 @@ public class Command_toggle extends FreedomCommand
             "firework", "prelog", "lockdown", "petprotect", "entitywipe", "nonuke [range] [count]",
             "explosives [radius]", "unsafeenchs", "bells", "armorstands", "masterblocks", "grindstones",
             "jukeboxes", "spawners", "4chan", "beehives", "respawnanchors", "autotp", "autoclear", "minecarts", "mp44",
-            "landmines", "tossmob", "gravity");
+            "landmines", "tossmob", "gravity", "chat");
 
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
@@ -38,82 +38,28 @@ public class Command_toggle extends FreedomCommand
 
         switch (args[0].toLowerCase())
         {
-            case "waterplace":
-            {
-                toggle("Water placement is", ConfigEntry.ALLOW_WATER_PLACE);
-                break;
-            }
-
-            case "frostwalk":
-            {
-                toggle("Frost walker enchantment is", ConfigEntry.ALLOW_FROSTWALKER);
-                break;
-            }
-
-            case "fireplace":
-            {
-                toggle("Fire placement is", ConfigEntry.ALLOW_FIRE_PLACE);
-                break;
-            }
-
-            case "lavaplace":
-            {
-                toggle("Lava placement is", ConfigEntry.ALLOW_LAVA_PLACE);
-                break;
-            }
-
-            case "fluidspread":
-            {
-                toggle("Fluid spread is", ConfigEntry.ALLOW_FLUID_SPREAD);
-                break;
-            }
-
-            case "lavadmg":
-            {
-                toggle("Lava damage is", ConfigEntry.ALLOW_LAVA_DAMAGE);
-                break;
-            }
-
-            case "firespread":
+            case "waterplace" -> toggle("Water placement is", ConfigEntry.ALLOW_WATER_PLACE);
+            case "frostwalk" -> toggle("Frost walker enchantment is", ConfigEntry.ALLOW_FROSTWALKER);
+            case "fireplace" -> toggle("Fire placement is", ConfigEntry.ALLOW_FIRE_PLACE);
+            case "lavaplace" -> toggle("Lava placement is", ConfigEntry.ALLOW_LAVA_PLACE);
+            case "fluidspread" -> toggle("Fluid spread is", ConfigEntry.ALLOW_FLUID_SPREAD);
+            case "lavadmg" -> toggle("Lava damage is", ConfigEntry.ALLOW_LAVA_DAMAGE);
+            case "firespread" ->
             {
                 toggle("Fire spread is", ConfigEntry.ALLOW_FIRE_SPREAD);
                 plugin.gr.setGameRule(GameRuleHandler.GameRule.DO_FIRE_TICK, ConfigEntry.ALLOW_FIRE_SPREAD.getBoolean());
-                break;
             }
-
-            case "prelog":
-            {
-                toggle("Command prelogging is", ConfigEntry.ENABLE_PREPROCESS_LOG);
-                break;
-            }
-
-            case "lockdown":
+            case "prelog" -> toggle("Command prelogging is", ConfigEntry.ENABLE_PREPROCESS_LOG);
+            case "lockdown" ->
             {
                 boolean active = !LoginProcess.isLockdownEnabled();
                 LoginProcess.setLockdownEnabled(active);
                 FUtil.adminAction(sender.getName(), (active ? "A" : "De-a") + "ctivating server lockdown", true);
-                break;
             }
-
-            case "petprotect":
-            {
-                toggle("Tamed pet protection is", ConfigEntry.ENABLE_PET_PROTECT);
-                break;
-            }
-
-            case "entitywipe":
-            {
-                toggle("Automatic entity wiping is", ConfigEntry.AUTO_ENTITY_WIPE);
-                break;
-            }
-
-            case "firework":
-            {
-                toggle("Firework explosion is", ConfigEntry.ALLOW_FIREWORK_EXPLOSION);
-                break;
-            }
-
-            case "nonuke":
+            case "petprotect" -> toggle("Tamed pet protection is", ConfigEntry.ENABLE_PET_PROTECT);
+            case "entitywipe" -> toggle("Automatic entity wiping is", ConfigEntry.AUTO_ENTITY_WIPE);
+            case "firework" -> toggle("Firework explosion is", ConfigEntry.ALLOW_FIREWORK_EXPLOSION);
+            case "nonuke" ->
             {
                 if (args.length >= 2)
                 {
@@ -148,10 +94,8 @@ public class Command_toggle extends FreedomCommand
                     msg("Anti-freecam range is set to " + ConfigEntry.NUKE_MONITOR_RANGE.getDouble() + " blocks.");
                     msg("Block throttle rate is set to " + ConfigEntry.NUKE_MONITOR_COUNT_BREAK.getInteger() + " blocks destroyed per 5 seconds.");
                 }
-                break;
             }
-
-            case "explosives":
+            case "explosives" ->
             {
                 if (args.length == 2)
                 {
@@ -172,112 +116,30 @@ public class Command_toggle extends FreedomCommand
                 {
                     msg("Radius set to " + ConfigEntry.EXPLOSIVE_RADIUS.getDouble());
                 }
-                break;
             }
-
-            case "unsafeenchs":
+            case "unsafeenchs" -> toggle("Unsafe enchantments are", ConfigEntry.ALLOW_UNSAFE_ENCHANTMENTS);
+            case "bells" -> toggle("The ringing of bells is", ConfigEntry.ALLOW_BELLS);
+            case "armorstands" -> toggle("The placement of armor stands is", ConfigEntry.ALLOW_ARMOR_STANDS);
+            case "masterblocks" -> toggle("Master blocks are", ConfigEntry.ALLOW_MASTERBLOCKS);
+            case "grindstones" -> toggle("Grindstones are", ConfigEntry.ALLOW_GRINDSTONES);
+            case "jukeboxes" -> toggle("Jukeboxes are", ConfigEntry.ALLOW_JUKEBOXES);
+            case "spawners" -> toggle("Spawners are", ConfigEntry.ALLOW_SPAWNERS);
+            case "4chan" -> toggle("4chan mode is", ConfigEntry.FOURCHAN_ENABLED);
+            case "beehives" -> toggle("Beehives are", ConfigEntry.ALLOW_BEEHIVES);
+            case "respawnanchors" -> toggle("Respawn anchors are", ConfigEntry.ALLOW_RESPAWN_ANCHORS);
+            case "autotp" -> toggle("Teleportation on join is", ConfigEntry.AUTO_TP);
+            case "autoclear" -> toggle("Clearing inventories on join is", ConfigEntry.AUTO_CLEAR);
+            case "minecarts" -> toggle("Minecarts are", ConfigEntry.ALLOW_MINECARTS);
+            case "landmines" -> toggle("Landmines are", ConfigEntry.LANDMINES_ENABLED);
+            case "mp44" -> toggle("MP44 is", ConfigEntry.MP44_ENABLED);
+            case "tossmob" -> toggle("Tossmob is", ConfigEntry.TOSSMOB_ENABLED);
+            case "gravity" -> toggle("Block gravity is", ConfigEntry.ALLOW_GRAVITY);
+            case "chat" ->
             {
-                toggle("Unsafe enchantments are", ConfigEntry.ALLOW_UNSAFE_ENCHANTMENTS);
-                break;
+                FUtil.adminAction(sender.getName(), (ConfigEntry.TOGGLE_CHAT.getBoolean() ? "Dis" : "En") + "abling global chat for all non-admins", true);
+                toggle("The global chat is", ConfigEntry.TOGGLE_CHAT);
             }
-
-            case "bells":
-            {
-                toggle("The ringing of bells is", ConfigEntry.ALLOW_BELLS);
-                break;
-            }
-
-            case "armorstands":
-            {
-                toggle("The placement of armor stands is", ConfigEntry.ALLOW_ARMOR_STANDS);
-                break;
-            }
-
-            case "masterblocks":
-            {
-                toggle("Master blocks are", ConfigEntry.ALLOW_MASTERBLOCKS);
-                break;
-            }
-
-            case "grindstones":
-            {
-                toggle("Grindstones are", ConfigEntry.ALLOW_GRINDSTONES);
-                break;
-            }
-
-            case "jukeboxes":
-            {
-                toggle("Jukeboxes are", ConfigEntry.ALLOW_JUKEBOXES);
-                break;
-            }
-
-            case "spawners":
-            {
-                toggle("Spawners are", ConfigEntry.ALLOW_SPAWNERS);
-                break;
-            }
-
-            case "4chan":
-            {
-                toggle("4chan mode is", ConfigEntry.FOURCHAN_ENABLED);
-                break;
-            }
-
-            case "beehives":
-            {
-                toggle("Beehives are", ConfigEntry.ALLOW_BEEHIVES);
-                break;
-            }
-
-            case "respawnanchors":
-            {
-                toggle("Respawn anchors are", ConfigEntry.ALLOW_RESPAWN_ANCHORS);
-                break;
-            }
-
-            case "autotp":
-            {
-                toggle("Teleportation on join is", ConfigEntry.AUTO_TP);
-                break;
-            }
-
-            case "autoclear":
-            {
-                toggle("Clearing inventories on join is", ConfigEntry.AUTO_CLEAR);
-                break;
-            }
-
-            case "minecarts":
-            {
-                toggle("Minecarts are", ConfigEntry.ALLOW_MINECARTS);
-                break;
-            }
-
-            case "landmines":
-            {
-                toggle("Landmines are", ConfigEntry.LANDMINES_ENABLED);
-                break;
-            }
-
-            case "mp44":
-            {
-                toggle("MP44 is", ConfigEntry.MP44_ENABLED);
-                break;
-            }
-
-            case "tossmob":
-            {
-                toggle("Tossmob is", ConfigEntry.TOSSMOB_ENABLED);
-                break;
-            }
-
-            case "gravity":
-            {
-                toggle("Block gravity is", ConfigEntry.ALLOW_GRAVITY);
-                break;
-            }
-
-            default:
+            default ->
             {
                 msg("Available toggles: ");
                 for (String toggle : toggles)

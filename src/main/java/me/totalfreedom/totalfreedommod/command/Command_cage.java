@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 @CommandParameters(description = "Place a cage around someone with certain blocks, or someone's player head.", usage = "/<command> <purge | <partialname> [head | block] [playername | blockname]")
 public class Command_cage extends FreedomCommand
 {
-
+    @Override
     public boolean run(final CommandSender sender, final Player playerSender, final Command cmd, final String commandLabel, final String[] args, final boolean senderIsConsole)
     {
         if (args.length == 0)
