@@ -35,18 +35,10 @@ public class Command_setlimit extends FreedomCommand
             }
         }
 
-        for (final Player player : server.getOnlinePlayers())
-        {
-            plugin.web.setLimit(player, amount);
-        }
+        server.getOnlinePlayers().forEach(player ->
+                plugin.web.setLimit(player, amount));
 
         FUtil.adminAction(sender.getName(), "Setting everyone's WorldEdit block modification limit to " + amount + ".", true);
         return true;
-    }
-
-    private void setLimitForAll(int limit)
-    {
-        server.getOnlinePlayers().forEach(player ->
-                plugin.web.setLimit(player, limit));
     }
 }
