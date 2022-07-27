@@ -1,8 +1,6 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.admin.Admin;
-import me.totalfreedom.totalfreedommod.admin.AdminList;
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.rank.Displayable;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -63,11 +61,6 @@ public class Command_list extends FreedomCommand
                     listFilter = ListFilter.TELNET_SESSIONS;
                     break;
                 }
-                case "-f":
-                {
-                    listFilter = ListFilter.FAMOUS_PLAYERS;
-                    break;
-                }
                 default:
                 {
                     return false;
@@ -117,10 +110,6 @@ public class Command_list extends FreedomCommand
                 {
                     continue;
                 }
-                if (listFilter == ListFilter.FAMOUS_PLAYERS && !ConfigEntry.FAMOUS_PLAYERS.getList().contains(p.getName().toLowerCase()))
-                {
-                    continue;
-                }
                 if (listFilter == ListFilter.PLAYERS && plugin.al.isVanished(p.getName()))
                 {
                     continue;
@@ -154,7 +143,6 @@ public class Command_list extends FreedomCommand
         PLAYERS,
         ADMINS,
         VANISHED_ADMINS,
-        TELNET_SESSIONS,
-        FAMOUS_PLAYERS
+        TELNET_SESSIONS
     }
 }

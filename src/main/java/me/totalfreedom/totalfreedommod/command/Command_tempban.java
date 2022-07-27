@@ -140,7 +140,7 @@ public class Command_tempban extends FreedomCommand
                     }
                 }
 
-                player.kickPlayer(ban.bakeKickMessage());
+                player.kick(ban.bakeKickMessage());
             }
 
             FUtil.adminAction(sender.getName(), message.toString(), true);

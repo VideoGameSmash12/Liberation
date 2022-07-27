@@ -61,7 +61,7 @@ public class Command_banname extends FreedomCommand
         Player player = getPlayer(name);
         if (player != null)
         {
-            player.kickPlayer(ban.bakeKickMessage());
+            player.kick(ban.bakeKickMessage());
         }
         return true;
     }

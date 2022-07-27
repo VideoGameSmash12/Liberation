@@ -1,6 +1,5 @@
 package me.totalfreedom.totalfreedommod.banning;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.sql.ResultSet;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.FreedomService;
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.bukkit.entity.Player;
@@ -30,8 +28,6 @@ public class BanManager extends FreedomService
     private final Map<String, Ban> nameBans = Maps.newHashMap();
     private final Map<UUID, Ban> uuidBans = Maps.newHashMap();
     private final Map<String, Ban> ipBans = Maps.newHashMap();
-    private final List<String> unbannableUsernames = Lists.newArrayList();
-
     //
 
     @Override
@@ -70,11 +66,6 @@ public class BanManager extends FreedomService
         updateViews();
 
         FLog.info("Loaded " + ipBans.size() + " IP bans and " + nameBans.size() + " username bans.");
-
-        // Load unbannable usernames
-        unbannableUsernames.clear();
-        unbannableUsernames.addAll(ConfigEntry.FAMOUS_PLAYERS.getStringList());
-        FLog.info("Loaded " + unbannableUsernames.size() + " unbannable usernames.");
     }
 
     public Set<Ban> getAllBans()

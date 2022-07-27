@@ -167,7 +167,7 @@ public class Command_ban extends FreedomCommand
         // Kick player and handle others on IP
         if (player != null)
         {
-            player.kickPlayer(ban.bakeKickMessage());
+            player.kick(ban.bakeKickMessage());
             for (Player p : Bukkit.getOnlinePlayers())
             {
                 if (FUtil.getIp(p).equals(FUtil.getIp(player)))

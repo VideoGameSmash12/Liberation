@@ -65,7 +65,7 @@ public class Command_banip extends FreedomCommand
         {
             if (FUtil.getIp(player).equals(ip))
             {
-                player.kickPlayer(ban.bakeKickMessage());
+                player.kick(ban.bakeKickMessage());
             }
 
             if (!silent)

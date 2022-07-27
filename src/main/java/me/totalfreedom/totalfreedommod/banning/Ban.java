@@ -1,5 +1,6 @@
 package me.totalfreedom.totalfreedommod.banning;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -12,6 +13,10 @@ import java.util.Set;
 import java.util.UUID;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -172,52 +177,54 @@ public class Ban
         return hasExpiry() && FUtil.getUnixDate(expiryUnix).before(new Date(FUtil.getUnixTime()));
     }
 
-    public String bakeKickMessage()
+    public Component bakeKickMessage()
     {
-        final StringBuilder message = new StringBuilder(ChatColor.GOLD + "You");
+        final TextComponent.Builder message = Component.text();
+        message.append(Component.text("You"));
 
         if (!hasUsername())
-        {
-            message.append("r IP address is");
-        }
+            message.append(Component.text("r IP address is"));
         else if (!hasIps())
-        {
-            message.append("r username is");
-        }
+            message.append(Component.text("r username is"));
         else
-        {
-            message.append(" are");
-        }
+            message.append(Component.text(" are"));
 
-        message.append(" temporarily banned from this server.");
-        message.append("\nAppeal at ").append(ChatColor.BLUE)
-                .append(ConfigEntry.SERVER_BAN_URL.getString());
+        message.append(Component.text(" temporarily banned from this server."));
+        if (!Strings.isNullOrEmpty(ConfigEntry.SERVER_BAN_URL.getString()))
+        {
+            message.append(Component.text("\nAppeal at "));
+            message.append(Component.text(ConfigEntry.SERVER_BAN_URL.getString(), TextColor.color(0x5555FF)));
+        }
 
         if (reason != null)
         {
-            message.append("\n").append(ChatColor.RED).append("Reason: ").append(ChatColor.GOLD)
-                    .append(ChatColor.translateAlternateColorCodes('&', reason));
+            message.append(Component.text("\n"));
+            message.append(Component.text("Reason: ", TextColor.color(0xFF5555)));
+            message.append(LegacyComponentSerializer.legacyAmpersand().deserialize(reason).colorIfAbsent(TextColor.color(0xFFAA00)));
         }
 
         if (by != null)
         {
-            message.append("\n").append(ChatColor.RED).append("Banned by: ").append(ChatColor.GOLD)
-                    .append(by);
+            message.append(Component.text("\n"));
+            message.append(Component.text("Banned by: ", TextColor.color(0xFF5555)));
+            message.append(Component.text(by));
         }
 
         if (at != null)
         {
-            message.append("\n").append(ChatColor.RED).append("Issued: ").append(ChatColor.GOLD)
-                    .append(DATE_FORMAT.format(at));
+            message.append(Component.text("\n"));
+            message.append(Component.text("Issued: ", TextColor.color(0xFF5555)));
+            message.append(Component.text(DATE_FORMAT.format(at)));
         }
 
         if (getExpiryUnix() != 0)
         {
-            message.append("\n").append(ChatColor.RED).append("Expires: ").append(ChatColor.GOLD)
-                    .append(DATE_FORMAT.format(FUtil.getUnixDate(expiryUnix)));
+            message.append(Component.text("\n"));
+            message.append(Component.text("Expires: ", TextColor.color(0xFF5555)));
+            message.append(Component.text(DATE_FORMAT.format(FUtil.getUnixDate(expiryUnix))));
         }
 
-        return message.toString();
+        return message.colorIfAbsent(TextColor.color(0xFFAA00)).build();
     }
 
     @Override
