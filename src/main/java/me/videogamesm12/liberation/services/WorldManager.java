@@ -14,7 +14,7 @@ import java.io.FileReader;
 import java.util.*;
 
 /**
- * <h1>CustomWorldManager</h1>
+ * <h1>WorldManager</h1>
  * <p>Implements an easy to use world system that can be customized without needing to recompile the plugin.</p>
  */
 public class WorldManager extends FreedomService
