@@ -34,6 +34,7 @@ public class Command_ban extends FreedomCommand
         String reason = null;
         boolean silent = false;
         boolean cancelRollback = false;
+
         if (args.length >= 2)
         {
             if (args[args.length - 1].equalsIgnoreCase("-nrb") || args[args.length - 1].equalsIgnoreCase("-q"))

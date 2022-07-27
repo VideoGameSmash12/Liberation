@@ -181,7 +181,7 @@ public class CustomWorld implements Listener
     {
         String[] cmdString = event.getMessage().substring(1).toLowerCase().split(" ");
 
-        if (world.equals(event.getPlayer().getWorld()) && doRestrict(event.getPlayer()) && WorldManager.BLOCKED_WORLD_COMMANDS.contains(cmdString[0]))
+        if (world.equals(event.getPlayer().getWorld()) && doRestrict(event.getPlayer()) && WorldManager.BLOCKED_WORLD_COMMANDS.contains(cmdString[0].replaceAll("/", "")))
         {
             event.getPlayer().sendMessage(Component.text("That command is blocked while you are in this world.", TextColor.color(0xff5555)));
             event.setCancelled(true);
