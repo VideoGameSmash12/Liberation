@@ -44,6 +44,7 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import me.totalfreedom.totalfreedommod.util.MethodTimer;
 import me.totalfreedom.totalfreedommod.world.CleanroomChunkGenerator;
+import me.videogamesm12.liberation.services.ReportSystem;
 import me.videogamesm12.liberation.services.WorldManager;
 import me.totalfreedom.totalfreedommod.world.WorldRestrictions;
 import org.bstats.bukkit.Metrics;
@@ -76,6 +77,7 @@ public class TotalFreedomMod extends JavaPlugin
     public AdminList al;
     public ActivityLog acl;
     public RankManager rm;
+    public ReportSystem rs;
     public CommandBlocker cb;
     public EventBlocker eb;
     public BlockBlocker bb;
@@ -291,6 +293,7 @@ public class TotalFreedomMod extends JavaPlugin
             al = new AdminList();
             acl = new ActivityLog();
             rm = new RankManager();
+            rs = new ReportSystem();
             cb = new CommandBlocker();
             eb = new EventBlocker();
             bb = new BlockBlocker();
