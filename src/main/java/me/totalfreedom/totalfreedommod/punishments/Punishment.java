@@ -43,6 +43,23 @@ public class Punishment implements IConfig
         this.issued_on = new Date();
     }
 
+    public Punishment(ConfigurationSection section)
+    {
+        this.username = section.getString("username", null);
+        this.ip = section.getString("ip", null);
+        this.by = section.getString("by", null);
+        this.type = PunishmentType.valueOf(Objects.requireNonNull(section.getString("type", null)).toUpperCase());
+        this.reason = section.getString("reason", null);
+        try
+        {
+            this.issued_on = DATE_FORMAT.parse(section.getString("issued_on", null));
+        }
+        catch (ParseException e)
+        {
+            this.issued_on = null;
+        }
+    }
+
     public static SimpleDateFormat getDateFormat()
     {
         return DATE_FORMAT;
@@ -51,19 +68,7 @@ public class Punishment implements IConfig
     @Override
     public void loadFrom(ConfigurationSection cs)
     {
-        this.username = cs.getString("username", null);
-        this.ip = cs.getString("ip", null);
-        this.by = cs.getString("by", null);
-        this.type = PunishmentType.valueOf(Objects.requireNonNull(cs.getString("type", null)).toUpperCase());
-        this.reason = cs.getString("reason", null);
-        try
-        {
-            this.issued_on = DATE_FORMAT.parse(cs.getString("issued_on", null));
-        }
-        catch (ParseException e)
-        {
-            this.issued_on = null;
-        }
+
     }
 
     @Override

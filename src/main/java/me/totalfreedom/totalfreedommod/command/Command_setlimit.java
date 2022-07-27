@@ -14,7 +14,14 @@ public class Command_setlimit extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
+        if (!plugin.web.isEnabled())
+        {
+            msg("WorldEdit is not enabled on this server.");
+            return true;
+        }
+
         int amount = plugin.web.getDefaultLimit();
+
         if (args.length > 0)
         {
             try
@@ -27,24 +34,19 @@ public class Command_setlimit extends FreedomCommand
                 return true;
             }
         }
-        boolean success = false;
+
         for (final Player player : server.getOnlinePlayers())
         {
-            try
-            {
-                plugin.web.setLimit(player, amount);
-                success = true;
-            }
-            catch (NoClassDefFoundError | NullPointerException ex)
-            {
-                msg("WorldEdit is not enabled on this server.");
-                success = false;
-            }
+            plugin.web.setLimit(player, amount);
         }
-        if (success)
-        {
-            FUtil.adminAction(sender.getName(), "Setting everyone's WorldEdit block modification limit to " + amount + ".", true);
-        }
+
+        FUtil.adminAction(sender.getName(), "Setting everyone's WorldEdit block modification limit to " + amount + ".", true);
         return true;
+    }
+
+    private void setLimitForAll(int limit)
+    {
+        server.getOnlinePlayers().forEach(player ->
+                plugin.web.setLimit(player, limit));
     }
 }

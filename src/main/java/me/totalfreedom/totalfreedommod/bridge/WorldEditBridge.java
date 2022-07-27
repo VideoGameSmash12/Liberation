@@ -12,8 +12,18 @@ public class WorldEditBridge extends FreedomService
 {
     private WorldEditPlugin worldeditPlugin = null;
 
+    public boolean isEnabled()
+    {
+        return server.getPluginManager().isPluginEnabled("WorldEdit");
+    }
+
     public WorldEditPlugin getWorldEditPlugin()
     {
+        if (!isEnabled())
+        {
+            return null;
+        }
+
         if (worldeditPlugin == null)
         {
             try

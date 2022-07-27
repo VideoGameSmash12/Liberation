@@ -30,22 +30,26 @@ public class PunishmentList extends FreedomService
         punishments.clear();
         for (String id : config.getKeys(false))
         {
-            if (!config.isConfigurationSection(id))
+            try
             {
-                FLog.warning("Failed to load punishment number " + id + "!");
-                continue;
+                if (!config.isConfigurationSection(id))
+                    throw new IllegalArgumentException(id + " is not a valid configuration section");
+
+                Punishment punishment = new Punishment(Objects.requireNonNull(config.getConfigurationSection(id)));
+
+                if (!punishment.isValid())
+                {
+                    FLog.warning("Not adding punishment number " + id + ". Missing information.");
+                    continue;
+                }
+
+                punishments.add(punishment);
             }
-
-            Punishment punishment = new Punishment();
-            punishment.loadFrom(Objects.requireNonNull(config.getConfigurationSection(id)));
-
-            if (!punishment.isValid())
+            catch (Exception ex)
             {
-                FLog.warning("Not adding punishment number " + id + ". Missing information.");
-                continue;
+                FLog.warning("Failed to load punishment #" + id);
+                FLog.warning(ex);
             }
-
-            punishments.add(punishment);
         }
 
         FLog.info("Loaded " + punishments.size() + " punishments.");
@@ -55,7 +59,7 @@ public class PunishmentList extends FreedomService
     public void onStop()
     {
         saveAll();
-        FLog.info("Saved " + punishments.size() + " player bans");
+        FLog.info("Saved " + punishments.size() + " punishments.");
     }
 
     public void saveAll()
