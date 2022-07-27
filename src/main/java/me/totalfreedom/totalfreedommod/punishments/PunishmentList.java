@@ -11,7 +11,6 @@ import me.totalfreedom.totalfreedommod.util.FLog;
 
 public class PunishmentList extends FreedomService
 {
-
     public static final String CONFIG_FILENAME = "punishments.yml";
     private final Set<Punishment> punishments = Sets.newHashSet();
     //
@@ -105,18 +104,6 @@ public class PunishmentList extends FreedomService
         return removed.size();
     }
 
-    public int getLastPunishmentID()
-    {
-        int size = punishments.size();
-
-        if (size == 0)
-        {
-            return 1;
-        }
-
-        return size;
-    }
-
     public void logPunishment(Punishment punishment)
     {
         if (punishments.add(punishment))
@@ -126,4 +113,8 @@ public class PunishmentList extends FreedomService
 
     }
 
+    public Set<Punishment> getPunishments()
+    {
+        return punishments;
+    }
 }
