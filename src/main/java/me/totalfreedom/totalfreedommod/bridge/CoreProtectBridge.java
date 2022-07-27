@@ -116,20 +116,16 @@ public class CoreProtectBridge extends FreedomService
 
     public boolean isEnabled()
     {
-        final CoreProtect coreProtect = getCoreProtect();
-
-        return coreProtect != null && coreProtect.isEnabled();
+        return server.getPluginManager().isPluginEnabled("CoreProtect");
     }
 
     // Rollback the specified player's edits that were in the last 24 hours.
     public void rollback(final String name)
     {
-        final CoreProtectAPI coreProtect = getCoreProtectAPI();
-
         if (!isEnabled())
-        {
             return;
-        }
+
+        final CoreProtectAPI coreProtect = getCoreProtectAPI();
 
         new BukkitRunnable()
         {
@@ -144,12 +140,10 @@ public class CoreProtectBridge extends FreedomService
     // Reverts a rollback for the specified player's edits that were in the last 24 hours.
     public void restore(final String name)
     {
-        final CoreProtectAPI coreProtect = getCoreProtectAPI();
-
         if (!isEnabled())
-        {
             return;
-        }
+
+        final CoreProtectAPI coreProtect = getCoreProtectAPI();
 
         new BukkitRunnable()
         {
@@ -164,6 +158,9 @@ public class CoreProtectBridge extends FreedomService
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
+        if (!isEnabled())
+            return;
+
         Player player = event.getPlayer();
         PlayerData data = plugin.pl.getData(player);
         Block block = event.getClickedBlock();
