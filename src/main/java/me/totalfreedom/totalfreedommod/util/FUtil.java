@@ -14,8 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +93,6 @@ public class FUtil
             ChatColor.DARK_PURPLE,
             ChatColor.LIGHT_PURPLE);
     private static final SplittableRandom RANDOM = new SplittableRandom();
-    private static final String CHARACTER_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final Map<Integer, String> TIMEZONE_LOOKUP = new HashMap<>();
     public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
 
@@ -245,48 +242,6 @@ public class FUtil
             names.add(material.name());
         }
         return names;
-    }
-
-    public static Response sendRequest(String endpoint, String method, List<String> headers, String body) throws IOException
-    {
-        URL url = new URL(endpoint);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod(method);
-
-        if (headers != null)
-        {
-
-            for (String header : headers)
-            {
-                String[] kv = header.split(":");
-                connection.setRequestProperty(kv[0], kv[1]);
-            }
-        }
-
-        FLog.info(connection.getRequestMethod());
-
-        if (body != null)
-        {
-            connection.setDoOutput(true);
-            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(body);
-            outputStream.flush();
-            outputStream.close();
-        }
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null)
-        {
-            response.append(inputLine);
-        }
-
-        in.close();
-
-        return new Response(connection.getResponseCode(), response.toString());
     }
 
     public static void bcastMsg(String message, ChatColor color)

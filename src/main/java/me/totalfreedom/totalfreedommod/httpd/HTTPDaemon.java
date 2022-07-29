@@ -11,7 +11,6 @@ import me.totalfreedom.totalfreedommod.FreedomService;
 import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.httpd.NanoHTTPD.Response;
 import me.totalfreedom.totalfreedommod.httpd.module.HTTPDModule;
-import me.totalfreedom.totalfreedommod.httpd.module.Module_activitylog;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_admins;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_bans;
 import me.totalfreedom.totalfreedommod.httpd.module.Module_file;
@@ -90,7 +89,6 @@ public class HTTPDaemon extends FreedomService
 
         // Modules
         modules.clear();
-        module("activitylog", Module_activitylog.class, true);
         module("admins", Module_admins.class, true);
         module("bans", Module_bans.class, true);
         module("help", Module_help.class, false);
