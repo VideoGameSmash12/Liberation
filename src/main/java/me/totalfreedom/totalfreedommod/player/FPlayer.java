@@ -19,14 +19,10 @@ import java.util.List;
 
 public class FPlayer
 {
-
     public static final long AUTO_PURGE_TICKS = 5L * 60L * 20L;
-
-
+    //
     private final TotalFreedomMod plugin;
-
     private final String name;
-
     private final String ip;
     //
     private final FreezeData freezeData = new FreezeData(this);
@@ -39,8 +35,6 @@ public class FPlayer
     private int messageCount = 0;
     private int totalBlockDestroy = 0;
     private int totalBlockPlace = 0;
-    private int freecamDestroyCount = 0;
-    private int freecamPlaceCount = 0;
     private boolean isOrbiting = false;
     private double orbitStrength = 10.0;
     private boolean mobThrowerEnabled = false;
@@ -51,21 +45,13 @@ public class FPlayer
     private boolean mp44Firing = false;
     private BukkitTask lockupScheduleTask = null;
     private boolean lockedUp = false;
-    private String lastMessage = "";
     private boolean inAdminchat = false;
     private boolean allCommandsBlocked = false;
     private String lastCommand = "";
-    private boolean cmdspyEnabled = false;
     private String tag = null;
     private int warningCount = 0;
-
-
     private boolean editBlocked = false;
-
-
     private boolean pvpBlocked = false;
-
-
     private boolean invSee = false;
 
     public FPlayer(TotalFreedomMod plugin, Player player)
@@ -78,11 +64,6 @@ public class FPlayer
         this.plugin = plugin;
         this.name = name;
         this.ip = ip;
-    }
-
-    public static long getAutoPurgeTicks()
-    {
-        return AUTO_PURGE_TICKS;
     }
 
     public Player getPlayer()
@@ -115,7 +96,6 @@ public class FPlayer
     // Ensure admins don't have admin functionality when removed (FS-222)
     public void removeAdminFunctionality()
     {
-        this.setCommandSpy(false);
         this.setAdminChat(false);
         this.setFuckoffRadius(0);
     }
@@ -123,11 +103,6 @@ public class FPlayer
     public boolean isOrbiting()
     {
         return isOrbiting;
-    }
-
-    public void setOrbiting(boolean orbiting)
-    {
-        isOrbiting = orbiting;
     }
 
     public void startOrbiting(double strength)
@@ -189,26 +164,6 @@ public class FPlayer
     public void resetBlockPlaceCount()
     {
         this.totalBlockPlace = 0;
-    }
-
-    public int incrementAndGetFreecamDestroyCount()
-    {
-        return this.freecamDestroyCount++;
-    }
-
-    public void resetFreecamDestroyCount()
-    {
-        this.freecamDestroyCount = 0;
-    }
-
-    public int incrementAndGetFreecamPlaceCount()
-    {
-        return this.freecamPlaceCount++;
-    }
-
-    public void resetFreecamPlaceCount()
-    {
-        this.freecamPlaceCount = 0;
     }
 
     public void enableMobThrower(EntityType mobThrowerCreature, double mobThrowerSpeed)
@@ -359,16 +314,6 @@ public class FPlayer
         this.lockedUp = lockedUp;
     }
 
-    public String getLastMessage()
-    {
-        return lastMessage;
-    }
-
-    public void setLastMessage(String message)
-    {
-        this.lastMessage = message;
-    }
-
     public void setAdminChat(boolean inAdminchat)
     {
         this.inAdminchat = inAdminchat;
@@ -399,16 +344,6 @@ public class FPlayer
         this.lastCommand = lastCommand;
     }
 
-    public void setCommandSpy(boolean enabled)
-    {
-        this.cmdspyEnabled = enabled;
-    }
-
-    public boolean cmdspyEnabled()
-    {
-        return cmdspyEnabled;
-    }
-
     public String getTag()
     {
         return this.tag;
@@ -424,16 +359,6 @@ public class FPlayer
         {
             this.tag = FUtil.colorize(tag) + ChatColor.WHITE;
         }
-    }
-
-    public int getWarningCount()
-    {
-        return this.warningCount;
-    }
-
-    public void setWarningCount(int warningCount)
-    {
-        this.warningCount = warningCount;
     }
 
     public void incrementWarnings(boolean quiet)
@@ -453,11 +378,6 @@ public class FPlayer
         }
     }
 
-    public TotalFreedomMod getPlugin()
-    {
-        return plugin;
-    }
-
     public String getName()
     {
         return name;
@@ -466,16 +386,6 @@ public class FPlayer
     public String getIp()
     {
         return ip;
-    }
-
-    public BukkitTask getUnmuteTask()
-    {
-        return unmuteTask;
-    }
-
-    public void setUnmuteTask(BukkitTask unmuteTask)
-    {
-        this.unmuteTask = unmuteTask;
     }
 
     public FreezeData getFreezeData()
@@ -493,174 +403,9 @@ public class FPlayer
         this.fuckoffRadius = fuckoffRadius;
     }
 
-    public int getMessageCount()
-    {
-        return messageCount;
-    }
-
-    public void setMessageCount(int messageCount)
-    {
-        this.messageCount = messageCount;
-    }
-
-    public int getTotalBlockDestroy()
-    {
-        return totalBlockDestroy;
-    }
-
-    public void setTotalBlockDestroy(int totalBlockDestroy)
-    {
-        this.totalBlockDestroy = totalBlockDestroy;
-    }
-
-    public int getTotalBlockPlace()
-    {
-        return totalBlockPlace;
-    }
-
-    public void setTotalBlockPlace(int totalBlockPlace)
-    {
-        this.totalBlockPlace = totalBlockPlace;
-    }
-
-    public int getFreecamDestroyCount()
-    {
-        return freecamDestroyCount;
-    }
-
-    public void setFreecamDestroyCount(int freecamDestroyCount)
-    {
-        this.freecamDestroyCount = freecamDestroyCount;
-    }
-
-    public int getFreecamPlaceCount()
-    {
-        return freecamPlaceCount;
-    }
-
-    public void setFreecamPlaceCount(int freecamPlaceCount)
-    {
-        this.freecamPlaceCount = freecamPlaceCount;
-    }
-
     public CageData getCageData()
     {
         return cageData;
-    }
-
-    public double getOrbitStrength()
-    {
-        return orbitStrength;
-    }
-
-    public void setOrbitStrength(double orbitStrength)
-    {
-        this.orbitStrength = orbitStrength;
-    }
-
-    public boolean isMobThrowerEnabled()
-    {
-        return mobThrowerEnabled;
-    }
-
-    public void setMobThrowerEnabled(boolean mobThrowerEnabled)
-    {
-        this.mobThrowerEnabled = mobThrowerEnabled;
-    }
-
-    public EntityType getMobThrowerEntity()
-    {
-        return mobThrowerEntity;
-    }
-
-    public void setMobThrowerEntity(EntityType mobThrowerEntity)
-    {
-        this.mobThrowerEntity = mobThrowerEntity;
-    }
-
-    public double getMobThrowerSpeed()
-    {
-        return mobThrowerSpeed;
-    }
-
-    public void setMobThrowerSpeed(double mobThrowerSpeed)
-    {
-        this.mobThrowerSpeed = mobThrowerSpeed;
-    }
-
-    public List<LivingEntity> getMobThrowerQueue()
-    {
-        return mobThrowerQueue;
-    }
-
-    public BukkitTask getMp44ScheduleTask()
-    {
-        return mp44ScheduleTask;
-    }
-
-    public void setMp44ScheduleTask(BukkitTask mp44ScheduleTask)
-    {
-        this.mp44ScheduleTask = mp44ScheduleTask;
-    }
-
-    public boolean isMp44Armed()
-    {
-        return mp44Armed;
-    }
-
-    public void setMp44Armed(boolean mp44Armed)
-    {
-        this.mp44Armed = mp44Armed;
-    }
-
-    public boolean isMp44Firing()
-    {
-        return mp44Firing;
-    }
-
-    public void setMp44Firing(boolean mp44Firing)
-    {
-        this.mp44Firing = mp44Firing;
-    }
-
-    public BukkitTask getLockupScheduleTask()
-    {
-        return lockupScheduleTask;
-    }
-
-    public void setLockupScheduleTask(BukkitTask lockupScheduleTask)
-    {
-        this.lockupScheduleTask = lockupScheduleTask;
-    }
-
-    public boolean isInAdminchat()
-    {
-        return inAdminchat;
-    }
-
-    public void setInAdminchat(boolean inAdminchat)
-    {
-        this.inAdminchat = inAdminchat;
-    }
-
-    public boolean isAllCommandsBlocked()
-    {
-        return allCommandsBlocked;
-    }
-
-    public void setAllCommandsBlocked(boolean allCommandsBlocked)
-    {
-        this.allCommandsBlocked = allCommandsBlocked;
-    }
-
-    public boolean isCmdspyEnabled()
-    {
-        return cmdspyEnabled;
-    }
-
-    public void setCmdspyEnabled(boolean cmdspyEnabled)
-    {
-        this.cmdspyEnabled = cmdspyEnabled;
     }
 
     public boolean isEditBlocked()
