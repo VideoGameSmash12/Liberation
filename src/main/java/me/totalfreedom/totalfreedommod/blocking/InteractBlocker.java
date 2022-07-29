@@ -21,17 +21,10 @@ public class InteractBlocker extends FreedomService
     {
         switch (event.getAction())
         {
-            case RIGHT_CLICK_AIR:
-            case RIGHT_CLICK_BLOCK:
-            {
-                handleRightClick(event);
-                break;
-            }
-
-            default:
+            case RIGHT_CLICK_AIR, RIGHT_CLICK_BLOCK -> handleRightClick(event);
+            default ->
             {
                 // Do nothing
-                break;
             }
         }
     }
@@ -101,7 +94,7 @@ public class InteractBlocker extends FreedomService
 
         switch (event.getMaterial())
         {
-            case WATER_BUCKET:
+            case WATER_BUCKET ->
             {
                 if (plugin.al.isAdmin(player) || ConfigEntry.ALLOW_WATER_PLACE.getBoolean())
                 {
@@ -111,10 +104,8 @@ public class InteractBlocker extends FreedomService
                 player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
                 player.sendMessage(ChatColor.GRAY + "Water buckets are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-
-            case LAVA_BUCKET:
+            case LAVA_BUCKET ->
             {
                 if (plugin.al.isAdmin(player) || ConfigEntry.ALLOW_LAVA_PLACE.getBoolean())
                 {
@@ -124,10 +115,8 @@ public class InteractBlocker extends FreedomService
                 player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
                 player.sendMessage(ChatColor.GRAY + "Lava buckets are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-
-            case TNT_MINECART:
+            case TNT_MINECART ->
             {
                 if (ConfigEntry.ALLOW_TNT_MINECARTS.getBoolean())
                 {
@@ -137,10 +126,8 @@ public class InteractBlocker extends FreedomService
                 player.getInventory().clear(player.getInventory().getHeldItemSlot());
                 player.sendMessage(ChatColor.GRAY + "TNT minecarts are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-
-            case ARMOR_STAND:
+            case ARMOR_STAND ->
             {
                 if (ConfigEntry.ALLOW_ARMOR_STANDS.getBoolean())
                 {
@@ -150,9 +137,8 @@ public class InteractBlocker extends FreedomService
                 player.getInventory().clear(player.getInventory().getHeldItemSlot());
                 player.sendMessage(ChatColor.GRAY + "Armor stands are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-            case MINECART:
+            case MINECART, HOPPER_MINECART, COMMAND_BLOCK_MINECART, FURNACE_MINECART, CHEST_MINECART ->
             {
                 if (ConfigEntry.ALLOW_MINECARTS.getBoolean())
                 {
@@ -162,19 +148,16 @@ public class InteractBlocker extends FreedomService
                 player.getInventory().clear(player.getInventory().getHeldItemSlot());
                 player.sendMessage(ChatColor.GRAY + "Minecarts are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-            case WRITTEN_BOOK:
+            case WRITTEN_BOOK ->
             {
                 player.getInventory().clear(player.getInventory().getHeldItemSlot());
                 player.sendMessage(ChatColor.GRAY + "Books are currently disabled.");
                 event.setCancelled(true);
-                break;
             }
-            default:
+            default ->
             {
                 // Do nothing
-                break;
             }
         }
     }
