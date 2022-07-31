@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import me.totalfreedom.totalfreedommod.LogViewer.LogsRegistrationMode;
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -182,8 +181,6 @@ public class Admin
                 }
 
             }
-
-            plugin.lv.updateLogsRegistration(null, getName(), LogsRegistrationMode.DELETE);
         }
     }
 
