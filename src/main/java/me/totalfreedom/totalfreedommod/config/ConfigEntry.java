@@ -132,9 +132,6 @@ public enum ConfigEntry
     AUTOKICK_THRESHOLD(Double.class, "autokick.threshold"),
     AUTOKICK_TIME(Integer.class, "autokick.time"),
     //
-    LOGS_SECRET(String.class, "logs.secret"),
-    LOGS_URL(String.class, "logs.url"),
-    //
     ANNOUNCER_ENABLED(Boolean.class, "announcer.enabled"),
     ANNOUNCER_INTERVAL(Integer.class, "announcer.interval"),
     ANNOUNCER_PREFIX(String.class, "announcer.prefix"),
