@@ -21,8 +21,15 @@
         "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
       },
       "flags": {
-        "allowAnimals": false,
-        "allowMonsters": false
+        "autosave": true,
+        "difficulty": "EASY",
+        "hardcore": false,
+        "pvp": true,
+        "spawn": {
+          "allowAnimals": false,
+          "allowMonsters": false,
+          "keepInMemory": true
+        }
       },
       "permissions": {
         "minModifyRank": "OP",
@@ -52,8 +59,15 @@
         "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
       },
       "flags": {
-        "allowAnimals": false,
-        "allowMonsters": false
+        "autosave": true,
+        "difficulty": "PEACEFUL",
+        "hardcore": false,
+        "pvp": true,
+        "spawn": {
+          "allowAnimals": false,
+          "allowMonsters": false,
+          "keepInMemory": true
+        }
       },
       "permissions": {
         "minModifyRank": "OP",
@@ -84,8 +98,15 @@
         "cleanroomParameters": "16,stone,32,dirt,1,grass_block"
       },
       "flags": {
-        "allowAnimals": false,
-        "allowMonsters": false
+        "autosave": true,
+        "difficulty": "EASY",
+        "hardcore": false,
+        "pvp": true,
+        "spawn": {
+          "allowAnimals": false,
+          "allowMonsters": false,
+          "keepInMemory": true
+        }
       },
       "permissions": {
         "minModifyRank": "ADMIN",

@@ -12,10 +12,7 @@ import me.totalfreedom.totalfreedommod.world.CleanroomChunkGenerator;
 import me.videogamesm12.liberation.services.WorldManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -77,7 +74,12 @@ public class CustomWorld implements Listener
         }
 
         // Flags
-        world.setSpawnFlags(flags.allowAnimals, flags.allowMonsters);
+        world.setSpawnFlags(flags.spawn.allowAnimals, flags.spawn.allowMonsters);
+        world.setAutoSave(flags.autosave);
+        world.setDifficulty(flags.difficulty);
+        world.setKeepSpawnInMemory(flags.spawn.keepInMemory);
+        world.setHardcore(flags.hardcore);
+        world.setPVP(flags.pvp);
 
         return world;
     }
@@ -243,8 +245,18 @@ public class CustomWorld implements Listener
     @Getter
     public static class Flags
     {
-        private boolean allowAnimals;
-        private boolean allowMonsters;
+        private boolean autosave = true;
+        private Difficulty difficulty = Difficulty.EASY;
+        private boolean hardcore;
+        private boolean pvp;
+        private SpawnFlags spawn;
+
+        public static class SpawnFlags
+        {
+            private boolean allowAnimals;
+            private boolean allowMonsters;
+            private boolean keepInMemory = true;
+        }
     }
 
     @Getter
