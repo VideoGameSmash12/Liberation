@@ -39,9 +39,6 @@ server:
   # All players who show up as assistant executive
   assistant_executives: []
 
-  # All those who can manage the master builder list
-  master_builder_management: [ ]
-
   # URL players should appeal for bans at
   ban_url: ''
 
@@ -111,9 +108,6 @@ shop:
 
     # How much time (in seconds) before a new reaction prompt is made
     interval: 300
-
-    # How much time do players have to react
-    time: 30.0
 
     # How many coins do winners get?
     coins_per_win: 5
@@ -460,7 +454,6 @@ nukemonitor:
   count_place: 40
   range: 10.0
 
-freecam_trigger_count: 10
 explosive_radius: 4.0
 
 # Show all attempted commands in the log, will result in duplicate log messages
@@ -580,9 +573,6 @@ first_join_info:
 # Pet Protect - Prevent tamed pets from being killed.
 petprotect:
   enabled: true
-
-# Mojang service checker
-service_checker_url: http://status.mojang.com/check
 
 # HTTPD server
 httpd:
