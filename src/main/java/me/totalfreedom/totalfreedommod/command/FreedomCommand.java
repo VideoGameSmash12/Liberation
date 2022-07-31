@@ -11,6 +11,7 @@ import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -142,6 +143,16 @@ public abstract class FreedomCommand implements CommandExecutor, TabCompleter
     protected void msg(String message, ChatColor color)
     {
         msg(color + message);
+    }
+
+    protected void msg(CommandSender sender, Component component)
+    {
+        sender.sendMessage(component);
+    }
+
+    protected void msg(Component component)
+    {
+        sender.sendMessage(component);
     }
 
     protected void msg(String message, net.md_5.bungee.api.ChatColor color)

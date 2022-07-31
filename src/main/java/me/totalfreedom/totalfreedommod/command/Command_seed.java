@@ -1,13 +1,11 @@
 package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.rank.Rank;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.TranslatableComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +28,7 @@ public class Command_seed extends FreedomCommand
             world = server.getWorld(args[0]);
             if (world == null)
             {
-                msg("That world could not be found", ChatColor.RED);
+                msg(Component.text("That world could not be found", TextColor.color(0xFF5555)));
                 return true;
             }
         }
@@ -47,34 +45,16 @@ public class Command_seed extends FreedomCommand
             }
         }
 
-        // If the sender is not a Player, use the usual msg method to
-        if (senderIsConsole)
-        {
-            msg("Seed: [" + ChatColor.GREEN + world.getSeed() + ChatColor.WHITE + "]", ChatColor.WHITE);
-        }
-        else
-        {
-            // Gets the seed for later uses
-            String seed = String.valueOf(world.getSeed());
+        String seed = String.valueOf(world.getSeed());
 
-            // This is a really stupid hack to get things to play nicely, but it works so I don't give a damn
-            BaseComponent[] components = {new TranslatableComponent("chat.copy.click")};
-            TextComponent seedAsComponent = new TextComponent(seed);
+        TextComponent seedComponent = Component.text("[")
+                .append(Component.text(seed, TextColor.color(0x55FF55))
+                        .hoverEvent(HoverEvent.showText(Component.translatable("chat.copy.click")))
+                        .clickEvent(ClickEvent.copyToClipboard(seed)))
+                .append(Component.text("]"));
 
-            // Style the message like in vanilla Minecraft.
-            seedAsComponent.setColor(ChatColor.GREEN.asBungee());
-            seedAsComponent.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, seed));
-            seedAsComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(components)));
+        sender.sendMessage(Component.translatable("commands.seed.success", seedComponent));
 
-            // Enclose the seed with brackets
-            TextComponent seedString = new TextComponent("[");
-            seedString.addExtra(seedAsComponent);
-            seedString.addExtra("]");
-
-            // Send the message to the player.
-            TranslatableComponent response = new TranslatableComponent("commands.seed.success", seedString);
-            playerSender.spigot().sendMessage(response);
-        }
         return true;
     }
 

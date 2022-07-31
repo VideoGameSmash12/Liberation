@@ -4,58 +4,40 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.util.FSync;
 import me.totalfreedom.totalfreedommod.util.FUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AntiSpam extends FreedomService
 {
-
-    public static final int MSG_PER_CYCLE = 8;
-    public static final int TICKS_PER_CYCLE = 2 * 10;
+    public static final int MSG_PER_CYCLE = 4;
     //
-    public BukkitTask cycleTask = null;
+    public CyclerThread cyclerThread;
     private Map<Player, Integer> muteCounts = new HashMap<>();
 
     @Override
     public void onStart()
     {
-        new BukkitRunnable()
-        {
+        if (cyclerThread != null)
+            cyclerThread.interrupt();
 
-            @Override
-            public void run()
-            {
-                cycle();
-            }
-        }.runTaskTimer(plugin, TICKS_PER_CYCLE, TICKS_PER_CYCLE);
+        cyclerThread = new CyclerThread();
+        cyclerThread.start();
     }
 
     @Override
     public void onStop()
     {
-        FUtil.cancel(cycleTask);
-    }
-
-    private void cycle()
-    {
-        for (Player player : server.getOnlinePlayers())
-        {
-            final FPlayer playerdata = plugin.pl.getPlayer(player);
-
-            // TODO: Move each to their own section
-            playerdata.resetMsgCount();
-            playerdata.resetBlockDestroyCount();
-            playerdata.resetBlockPlaceCount();
-        }
+        cyclerThread.interrupt();
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -124,6 +106,41 @@ public class AntiSpam extends FreedomService
 
             fPlayer.resetMsgCount();
             event.setCancelled(true);
+        }
+    }
+
+    public static class CyclerThread extends Thread
+    {
+        private Timer timer;
+
+        @Override
+        public void run()
+        {
+            if (timer != null)
+                timer.cancel();
+
+            timer = new Timer();
+            timer.schedule(new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    Bukkit.getOnlinePlayers().forEach(player ->
+                    {
+                        final FPlayer fp = TotalFreedomMod.getPlugin().pl.getPlayer(player);
+                        fp.resetMsgCount();
+                        fp.resetBlockDestroyCount();
+                        fp.resetBlockPlaceCount();
+                    });
+                }
+            }, 0, 1000);
+        }
+
+        @Override
+        public void interrupt()
+        {
+            timer.cancel();
+            super.interrupt();
         }
     }
 }

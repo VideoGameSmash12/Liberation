@@ -238,7 +238,6 @@ public class Command_saconfig extends FreedomCommand
                 Player player = getPlayer(args[1]);
 
                 Admin admin = player != null ? plugin.al.getAdmin(player) : plugin.al.getEntryByName(args[1]);
-                String adminName = admin.getName();
 
                 if (admin == null)
                 {
@@ -259,7 +258,7 @@ public class Command_saconfig extends FreedomCommand
 
                 if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
                 {
-                    Discord.syncRoles(admin, plugin.pl.getData(adminName).getDiscordID());
+                    Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
                 }
 
                 return true;
