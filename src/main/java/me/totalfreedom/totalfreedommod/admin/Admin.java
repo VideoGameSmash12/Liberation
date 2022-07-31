@@ -69,7 +69,7 @@ public class Admin
 
     public Map<String, Object> toSQLStorable()
     {
-        Map<String, Object> map = new HashMap<String, Object>()
+        return new HashMap<>()
         {{
             put("uuid", uuid.toString());
             put("active", active);
@@ -80,7 +80,6 @@ public class Admin
             put("potion_spy", potionSpy);
             put("ac_format", acFormat);
         }};
-        return map;
     }
 
     // Util IP methods

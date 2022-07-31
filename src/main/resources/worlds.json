@@ -33,7 +33,7 @@
         "weatherDisabled": true
       }
     },
-    "masterrbuilderworld": {
+    "masterbuilderworld": {
       "name": "masterbuilderworld",
       "command": {
         "enabled": true,
