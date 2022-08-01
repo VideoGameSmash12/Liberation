@@ -417,8 +417,6 @@
                             </relocations>
                             <artifactSet>
                                 <includes>
-                                    <include>commons-io:commons-io</include>
-                                    <include>org.apache.commons:commons-lang3</include>
                                     <include>org.reflections:reflections</include>
                                     <include>org.javassist:javassist</include>
                                     <include>io.papermc:paperlib</include>
