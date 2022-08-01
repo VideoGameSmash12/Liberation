@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.command;
 
 import com.google.common.collect.Lists;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 import me.totalfreedom.totalfreedommod.TotalFreedomMod;

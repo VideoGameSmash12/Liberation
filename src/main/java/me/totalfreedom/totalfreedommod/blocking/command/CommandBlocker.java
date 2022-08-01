@@ -2,7 +2,6 @@ package me.totalfreedom.totalfreedommod.blocking.command;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -12,15 +11,12 @@ import me.totalfreedom.totalfreedommod.config.ConfigEntry;
 import me.totalfreedom.totalfreedommod.util.FLog;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.plugin.SimplePluginManager;
 
 public class CommandBlocker extends FreedomService
 {
@@ -29,24 +25,6 @@ public class CommandBlocker extends FreedomService
     //
     private final Map<String, CommandBlockerEntry> entryList = Maps.newHashMap();
     private final List<String> unknownCommands = Lists.newArrayList();
-
-    public static CommandMap getCommandMap()
-    {
-        try
-        {
-            SimplePluginManager simplePluginManager = (SimplePluginManager)Bukkit.getServer().getPluginManager();
-
-            Field commandMapField = SimplePluginManager.class.getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-
-            return (SimpleCommandMap)commandMapField.get(simplePluginManager);
-        }
-        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
-        {
-            FLog.severe("Failed to get command map field (" + e.getMessage() + ")");
-        }
-        return null;
-    }
 
     @Override
     public void onStart()
@@ -65,7 +43,7 @@ public class CommandBlocker extends FreedomService
         entryList.clear();
         unknownCommands.clear();
 
-        final CommandMap commandMap = getCommandMap();
+        final CommandMap commandMap = server.getCommandMap();
 
         @SuppressWarnings("unchecked")
         List<String> blockedCommands = (List<String>)ConfigEntry.BLOCKED_COMMANDS.getList();

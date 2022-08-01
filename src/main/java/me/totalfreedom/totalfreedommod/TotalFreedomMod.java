@@ -164,6 +164,11 @@ public class TotalFreedomMod extends JavaPlugin
         FLog.info("Version " + build.version);
         FLog.info("Compiled " + build.date + " by " + build.author);
 
+        if (!FUtil.isPaper())
+        {
+            throw new IllegalStateException("This plugin requires Paper (or a fork of it) to work properly.");
+        }
+
         final MethodTimer timer = new MethodTimer();
         timer.start();
 
@@ -209,7 +214,8 @@ public class TotalFreedomMod extends JavaPlugin
     public void onDisable()
     {
         // Stop services and bridges
-        fsh.stopServices();
+        if (fsh != null)
+            fsh.stopServices();
 
         getServer().getScheduler().cancelTasks(plugin);
 

