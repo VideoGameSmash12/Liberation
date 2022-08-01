@@ -23,7 +23,6 @@ import me.totalfreedom.totalfreedommod.bridge.WorldGuardBridge;
 import me.totalfreedom.totalfreedommod.caging.Cager;
 import me.totalfreedom.totalfreedommod.command.CommandLoader;
 import me.totalfreedom.totalfreedommod.config.MainConfig;
-import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.freeze.Freezer;
 import me.totalfreedom.totalfreedommod.fun.ItemFun;
 import me.totalfreedom.totalfreedommod.fun.Jumppads;
@@ -88,7 +87,6 @@ public class TotalFreedomMod extends JavaPlugin
     public SQLite sql;
     public Announcer an;
     public ChatManager cm;
-    public Discord dc;
     public PunishmentList pul;
     public BanManager bm;
     public IndefiniteBanList im;
@@ -307,7 +305,6 @@ public class TotalFreedomMod extends JavaPlugin
             vo = new Votifier();
             an = new Announcer();
             cm = new ChatManager();
-            dc = new Discord();
             pul = new PunishmentList();
             bm = new BanManager();
             im = new IndefiniteBanList();

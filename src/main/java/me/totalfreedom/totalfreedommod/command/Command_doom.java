@@ -2,8 +2,6 @@ package me.totalfreedom.totalfreedommod.command;
 
 import me.totalfreedom.totalfreedommod.admin.Admin;
 import me.totalfreedom.totalfreedommod.banning.Ban;
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.punishments.Punishment;
 import me.totalfreedom.totalfreedommod.punishments.PunishmentType;
 import me.totalfreedom.totalfreedommod.rank.Rank;
@@ -52,10 +50,6 @@ public class Command_doom extends FreedomCommand
             admin.setActive(false);
             plugin.al.save(admin);
             plugin.al.updateTables();
-            if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
-            {
-                Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
-            }
         }
 
         // Remove from whitelist

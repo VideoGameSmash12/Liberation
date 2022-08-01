@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.admin.Admin;
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.discord.Discord;
-import me.totalfreedom.totalfreedommod.player.PlayerData;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = Rank.ADMIN, source = SourceType.ONLY_IN_GAME)
-@CommandParameters(description = "Manage your admin entry.", usage = "/<command> [-o <admin name>] <clearips | clearip <ip> | setscformat <format> | clearscformat> | syncroles>")
+@CommandParameters(description = "Manage your admin entry.", usage = "/<command> [-o <admin name>] <clearips | clearip <ip> | setscformat <format> | clearscformat>")
 public class Command_myadmin extends FreedomCommand
 {
     @Override
@@ -161,35 +158,6 @@ public class Command_myadmin extends FreedomCommand
                 return true;
             }
 
-            case "syncroles":
-            {
-                if (plugin.dc.enabled)
-                {
-                    if (!ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
-                    {
-                        msg("Role syncing is not enabled.", ChatColor.RED);
-                        return true;
-                    }
-                    PlayerData playerData = plugin.pl.getData(target.getName());
-                    if (playerData.getDiscordID() == null)
-                    {
-                        msg("Please run /linkdiscord first!", ChatColor.RED);
-                        return true;
-                    }
-                    boolean synced = Discord.syncRoles(target, playerData.getDiscordID());
-                    if (synced)
-                    {
-                        msg("Successfully synced your roles.", ChatColor.GREEN);
-                    }
-                    else
-                    {
-                        msg("Failed to sync your roles, please check the console.", ChatColor.RED);
-                    }
-                }
-
-                return true;
-            }
-
             default:
             {
                 return false;
@@ -206,7 +174,7 @@ public class Command_myadmin extends FreedomCommand
         }
 
         List<String> singleArguments = Arrays.asList("clearips", "setscformat", "setacformat");
-        List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "clearacformat", "syncroles");
+        List<String> doubleArguments = Arrays.asList("clearip", "clearscformat", "clearacformat");
         if (args.length == 1)
         {
             List<String> options = new ArrayList<>();

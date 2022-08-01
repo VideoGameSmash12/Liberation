@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import me.totalfreedom.totalfreedommod.admin.Admin;
-import me.totalfreedom.totalfreedommod.config.ConfigEntry;
-import me.totalfreedom.totalfreedommod.discord.Discord;
 import me.totalfreedom.totalfreedommod.player.FPlayer;
 import me.totalfreedom.totalfreedommod.rank.Rank;
 import me.totalfreedom.totalfreedommod.util.FUtil;
@@ -107,11 +105,6 @@ public class Command_saconfig extends FreedomCommand
                     plugin.rm.updateDisplay(player);
                 }
 
-                if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
-                {
-                    Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
-                }
-
                 msg("Set " + admin.getName() + "'s rank to " + rank.getName());
                 return true;
             }
@@ -204,11 +197,6 @@ public class Command_saconfig extends FreedomCommand
                     plugin.al.save(admin);
                     plugin.al.updateTables();
                     plugin.rm.updateDisplay(player);
-
-                    if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
-                    {
-                        Discord.syncRoles(admin, plugin.pl.getData(player).getDiscordID());
-                    }
                 }
                 final FPlayer fPlayer = plugin.pl.getPlayer(player);
                 if (fPlayer.getFreezeData().isFrozen())
@@ -255,12 +243,6 @@ public class Command_saconfig extends FreedomCommand
                 {
                     plugin.rm.updateDisplay(player);
                 }
-
-                if (plugin.dc.enabled && ConfigEntry.DISCORD_ROLE_SYNC.getBoolean())
-                {
-                    Discord.syncRoles(admin, plugin.pl.getData(admin.getName()).getDiscordID());
-                }
-
                 return true;
             }
 

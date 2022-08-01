@@ -4,7 +4,6 @@ import net.md_5.bungee.api.ChatColor;
 
 public enum Title implements Displayable
 {
-    DISCORD("from", "Discord", "Discord Users", ChatColor.BLUE, org.bukkit.ChatColor.BLUE, "Discord", false, false),
     MASTER_BUILDER("a", "Master Builder", "Master Builders", ChatColor.DARK_AQUA, org.bukkit.ChatColor.DARK_AQUA, "MB", true, true),
     EXECUTIVE("an", "Executive", "Executives", ChatColor.RED, org.bukkit.ChatColor.RED, "Exec", true, true),
     ASSTEXEC("an", "Assistant Executive", "Assistant Executives", ChatColor.RED, org.bukkit.ChatColor.RED, "Asst Exec", true, true),

@@ -51,41 +51,6 @@ server:
   # What to display at the bottom of the tab list
   tablist_footer: ''
 
-# Discord
-discord:
-  # If you do not have a token, make a bot account and get one at https://discordapp.com/developers/applications/me
-  token: ''
-  # The prefix for the integrated bot commands
-  prefix: 'tf!'
-  # The official discord server's ID for this server
-  server_id: ''
-  # Channel to send /report messages to
-  report_channel_id: ''
-  # Channel to send archived reports to
-  report_archive_channel_id: ''
-  # Channel for Discord to Minecraft and vice-versa
-  chat_channel_id: ''
-  # Channel for Discord to AdminChat and vice-versa
-  adminchat_channel_id: ''
-  # Do you want roles to sync with the server?
-  role_sync: false
-  # Master Builder role ID
-  master_builder_role_id: ''
-  # Admin role ID
-  admin_role_id: ''
-  # Senior Admin role ID
-  senior_admin_role_id: ''
-  # Developer role ID
-  developer_role_id: ''
-  # Assistant Executive role ID
-  assistant_executive_role_id: ''
-  # Executive Admin role ID
-  executive_role_id: ''
-  # Owner role ID
-  server_owner_role_id: ''
-  # Invite link for your Discord server
-  invite_link: 'https://discord.com/invite/PW4savJR9a'
-
 # The shop
 shop:
   # Enable the shop
@@ -375,7 +340,6 @@ blocked_commands:
     - 'a:b:/paper heap:_'
     - 'a:u:/burn:_'
     - 'a:b:/summon:_'
-    - 'a:b:/discord:_'
     - 'a:b:/bossbar:_'
     - 'a:b:/team:_'
     - 'a:b:/spawner:_'
@@ -527,8 +491,6 @@ announcer:
     - 'All forms of discrimination are strictly forbidden!'
     - 'Join our Discord server! https://discord.com/invite/PW4savJR9a'
     - 'Remember to save your hotbar, otherwise you may lose your items!'
-    - 'Link your discord account with &6/linkdiscord for extra features!'
- #   - 'Check out our reddit at &6https://www.reddit.com/r/TotalFreedom/ &byou can even link your account!'
     - 'Want to see cool builds? Check out our Master Builder World with &6/mbworld'
     - 'Be sure to follow our twitter for all the latest updates. &6https://twitter.com/totalfreedommc'
 

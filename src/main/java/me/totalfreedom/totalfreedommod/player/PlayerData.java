@@ -19,7 +19,6 @@ public class PlayerData
     private final List<String> ips = Lists.newArrayList();
     private final List<String> notes = Lists.newArrayList();
     private String tag = null;
-    private String discordID = null;
     private Boolean masterBuilder = false;
 
 
@@ -28,15 +27,8 @@ public class PlayerData
 
     private int coins;
     private List<String> items = Lists.newArrayList();
-
-
     private int totalVotes;
-
-    private boolean displayDiscord = true;
-
-
     private String loginMessage;
-
     private Boolean inspect = false;
 
     public PlayerData(ResultSet resultSet)
@@ -49,14 +41,12 @@ public class PlayerData
             notes.clear();
             notes.addAll(FUtil.stringToList(resultSet.getString("notes")));
             tag = resultSet.getString("tag");
-            discordID = resultSet.getString("discord_id");
             masterBuilder = resultSet.getBoolean("master_builder");
             rideMode = resultSet.getString("ride_mode");
             coins = resultSet.getInt("coins");
             items.clear();
             items.addAll(FUtil.stringToList(resultSet.getString("items")));
             totalVotes = resultSet.getInt("total_votes");
-            displayDiscord = resultSet.getBoolean("display_discord");
             loginMessage = resultSet.getString("login_message");
             inspect = resultSet.getBoolean("inspect");
         }
@@ -76,11 +66,9 @@ public class PlayerData
     {
         return "Player: " + getName() + "\n" +
                 "- IPs: " + StringUtils.join(ips, ", ") + "\n" +
-                "- Discord ID: " + discordID + "\n" +
                 "- Master Builder: " + masterBuilder + "\n" +
                 "- Coins: " + coins + "\n" +
                 "- Total Votes: " + totalVotes + "\n" +
-                "- Display Discord: " + displayDiscord + "\n" +
                 "- Tag: " + FUtil.colorize(tag) + ChatColor.GRAY + "\n" +
                 "- Ride Mode: " + rideMode + "\n" +
                 "- Login Message: " + loginMessage;
@@ -192,21 +180,14 @@ public class PlayerData
             put("ips", FUtil.listToString(ips));
             put("notes", FUtil.listToString(notes));
             put("tag", tag);
-            put("discord_id", discordID);
             put("master_builder", masterBuilder);
             put("ride_mode", rideMode);
             put("coins", coins);
             put("items", FUtil.listToString(items));
             put("total_votes", totalVotes);
-            put("display_discord", displayDiscord);
             put("login_message", loginMessage);
             put("inspect", inspect);
         }};
-    }
-
-    public boolean doesDisplayDiscord()
-    {
-        return displayDiscord;
     }
 
     public UUID getUuid()
@@ -227,16 +208,6 @@ public class PlayerData
     public void setTag(String tag)
     {
         this.tag = tag;
-    }
-
-    public String getDiscordID()
-    {
-        return discordID;
-    }
-
-    public void setDiscordID(String discordID)
-    {
-        this.discordID = discordID;
     }
 
     public Boolean getMasterBuilder()
@@ -277,16 +248,6 @@ public class PlayerData
     public void setTotalVotes(int totalVotes)
     {
         this.totalVotes = totalVotes;
-    }
-
-    public boolean isDisplayDiscord()
-    {
-        return displayDiscord;
-    }
-
-    public void setDisplayDiscord(boolean displayDiscord)
-    {
-        this.displayDiscord = displayDiscord;
     }
 
     public String getLoginMessage()
