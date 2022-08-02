@@ -122,7 +122,7 @@ public class Command_namehistory extends FreedomCommand
 
                 builder.append(Component.text(username, TextColor.color(0x55FF55))
                         .clickEvent(ClickEvent.copyToClipboard(username))
-                        .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard"))));
+                        .hoverEvent(HoverEvent.showText(Component.translatable("chat.copy.click"))));
 
                 return builder.build();
             }

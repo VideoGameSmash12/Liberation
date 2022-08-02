@@ -21,7 +21,7 @@ public class CommandSpy extends FreedomService
         component.append(
                 Component.text(from.getName())
                         .clickEvent(ClickEvent.copyToClipboard(from.getName()))
-                        .hoverEvent(HoverEvent.showText(Component.text("Click to copy to clipboard"))),
+                        .hoverEvent(HoverEvent.showText(Component.translatable("chat.copy.click"))),
                 Component.text(": "),
                 Component.text(event.getMessage())
         );
