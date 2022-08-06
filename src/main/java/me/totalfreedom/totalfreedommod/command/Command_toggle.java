@@ -26,17 +26,7 @@ public class Command_toggle extends FreedomCommand
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        if (args.length == 0)
-        {
-            msg("Available toggles: ");
-            for (String toggle : toggles)
-            {
-                msg("- " + toggle);
-            }
-            return false;
-        }
-
-        switch (args[0].toLowerCase())
+        switch (args.length == 0 ? "list" : args[0].toLowerCase())
         {
             case "waterplace" -> toggle("Water placement is", ConfigEntry.ALLOW_WATER_PLACE);
             case "frostwalk" -> toggle("Frost walker enchantment is", ConfigEntry.ALLOW_FROSTWALKER);

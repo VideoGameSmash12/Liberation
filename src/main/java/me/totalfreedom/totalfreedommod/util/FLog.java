@@ -1,112 +1,86 @@
 package me.totalfreedom.totalfreedommod.util;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import me.totalfreedom.totalfreedommod.TotalFreedomMod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FLog
 {
+    private static final Logger logger = LogManager.getLogger(TotalFreedomMod.getPlugin().getName());
+    private static final Logger rawLogger = LogManager.getLogger("Minecraft");
 
-    private static final Logger FALLBACK_LOGGER = Logger.getLogger("Minecraft-Server");
-    private static Logger serverLogger = null;
-    private static Logger pluginLogger = null;
-
-    // Level.INFO:
     public static void info(String message)
     {
         info(message, false);
     }
 
-    public static void info(String message, Boolean raw)
+    public static void info(String message, boolean raw)
     {
-        log(Level.INFO, message, raw);
+        getLogger(raw).info(message);
     }
 
     public static void info(Throwable ex)
     {
-        log(Level.INFO, ex);
+        info(ex, false);
     }
 
-    // Fuck spigot for not using log4j, we would of had a debug log level if they did
-    public static void debug(String message)
+    public static void info(Throwable ex, boolean raw)
     {
-        if (FUtil.inDeveloperMode())
-        {
-            log(Level.INFO, "\u001B[35m[TotalFreedomMod | DEBUG] " + message + "\u001B[0m", true);
-        }
+        getLogger(raw).info(ex);
     }
 
-    // Level.WARNING:
     public static void warning(String message)
     {
         warning(message, false);
     }
 
-    public static void warning(String message, Boolean raw)
+    public static void warning(String message, boolean raw)
     {
-        log(Level.WARNING, message, raw);
+        getLogger(raw).warn(message);
     }
 
     public static void warning(Throwable ex)
     {
-        log(Level.WARNING, ex);
+        warning(ex, false);
     }
 
-    // Level.SEVERE:
+    public static void warning(Throwable ex, boolean raw)
+    {
+        getLogger(raw).warn(ex);
+    }
+
     public static void severe(String message)
     {
         severe(message, false);
     }
 
-    public static void severe(String message, Boolean raw)
+    public static void severe(String message, boolean raw)
     {
-        log(Level.SEVERE, message, raw);
+        getLogger(raw).error(message);
     }
 
     public static void severe(Throwable ex)
     {
-        log(Level.SEVERE, ex);
+        severe(ex, false);
     }
 
-    // Utility
-    private static void log(Level level, String message, boolean raw)
+    public static void severe(Throwable ex, boolean raw)
     {
-        getLogger(raw).log(level, message);
+        getLogger(raw).error(ex);
     }
 
-    private static void log(Level level, Throwable throwable)
+    public static void debug(String message)
     {
-        getLogger(false).log(level, null, throwable);
+        getLogger(false).debug(message);
     }
 
-    private static Logger getLogger(boolean raw)
+    public static void debug(Throwable ex)
     {
-        if (raw || pluginLogger == null)
-        {
-            return (serverLogger != null ? serverLogger : FALLBACK_LOGGER);
-        }
-        else
-        {
-            return pluginLogger;
-        }
+        getLogger(false).debug(ex);
     }
 
-    public static Logger getPluginLogger()
+    public static Logger getLogger(boolean raw)
     {
-        return (pluginLogger != null ? pluginLogger : FALLBACK_LOGGER);
-    }
-
-    public static void setPluginLogger(Logger logger)
-    {
-        pluginLogger = logger;
-    }
-
-    public static Logger getServerLogger()
-    {
-        return (serverLogger != null ? serverLogger : FALLBACK_LOGGER);
-    }
-
-    public static void setServerLogger(Logger logger)
-    {
-        serverLogger = logger;
+        return raw ? rawLogger : logger;
     }
 }

@@ -151,9 +151,6 @@ public class TotalFreedomMod extends JavaPlugin
         TotalFreedomMod.pluginName = plugin.getDescription().getName();
         TotalFreedomMod.pluginVersion = plugin.getDescription().getVersion();
 
-        FLog.setPluginLogger(plugin.getLogger());
-        FLog.setServerLogger(getServer().getLogger());
-
         build.load(plugin);
     }
 
