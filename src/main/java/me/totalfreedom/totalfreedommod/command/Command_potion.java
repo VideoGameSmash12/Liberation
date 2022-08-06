@@ -21,8 +21,6 @@ import org.bukkit.potion.PotionEffectType;
         aliases = "effect")
 public class Command_potion extends FreedomCommand
 {
-
-    @SuppressWarnings("deprecation")
     @Override
     public boolean run(CommandSender sender, Player playerSender, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
@@ -164,7 +162,7 @@ public class Command_potion extends FreedomCommand
                     }
 
                     PotionEffect new_effect = potion_effect_type.createEffect(duration, amplifier);
-                    target.addPotionEffect(new_effect, true);
+                    target.addPotionEffect(new_effect);
                     msg(
                             "Added potion effect: " + new_effect.getType().getName()
                                     + ", Duration: " + new_effect.getDuration()
