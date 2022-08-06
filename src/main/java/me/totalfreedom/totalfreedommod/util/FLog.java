@@ -26,7 +26,7 @@ public class FLog
 
     public static void info(Throwable ex, boolean raw)
     {
-        getLogger(raw).info(ex);
+        getLogger(raw).info("", ex);
     }
 
     public static void warning(String message)
@@ -46,7 +46,7 @@ public class FLog
 
     public static void warning(Throwable ex, boolean raw)
     {
-        getLogger(raw).warn(ex);
+        getLogger(raw).warn("", ex);
     }
 
     public static void severe(String message)
@@ -66,7 +66,7 @@ public class FLog
 
     public static void severe(Throwable ex, boolean raw)
     {
-        getLogger(raw).error(ex);
+        getLogger(raw).error("", ex);
     }
 
     public static void debug(String message)
@@ -76,7 +76,7 @@ public class FLog
 
     public static void debug(Throwable ex)
     {
-        getLogger(false).debug(ex);
+        getLogger(false).debug("", ex);
     }
 
     public static Logger getLogger(boolean raw)
